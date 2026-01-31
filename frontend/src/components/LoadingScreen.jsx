@@ -42,9 +42,9 @@ const LoadingScreen = ({ onComplete }) => {
                         animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                         exit={{ opacity: 0, y: -20, filter: 'blur(10px)', transition: { duration: 0.2 } }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
-                        className="text-5xl md:text-7xl font-bold font-display tracking-wider flex items-center gap-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"
+                        className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold font-display tracking-wider flex flex-wrap justify-center items-center gap-2 sm:gap-4 text-center px-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"
                     >
-                        <span className="w-4 h-4 bg-primary-500 rounded-full inline-block mt-2 shadow-[0_0_15px_rgba(59,130,246,0.8)]"></span>
+                        <span className="w-3 h-3 sm:w-4 sm:h-4 bg-primary-500 rounded-full inline-block mt-1 sm:mt-2 shadow-[0_0_15px_rgba(59,130,246,0.8)]"></span>
                         {greetings[index]}
                     </motion.h1>
                 </AnimatePresence>
