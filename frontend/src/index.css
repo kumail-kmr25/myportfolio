@@ -33,7 +33,7 @@
 
 @layer components {
   .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32;
   }
 
   .section-title {
@@ -108,7 +108,7 @@
     @apply bg-black/30 border-primary-500/20;
     box-shadow: 0 0 15px rgba(0, 240, 255, 0.05), inset 0 0 20px rgba(0, 240, 255, 0.05);
   }
-  
+
   .cyber-glass {
     @apply glass-effect border-t border-l border-white/10 border-b-primary-500/20 border-r-primary-500/20;
   }

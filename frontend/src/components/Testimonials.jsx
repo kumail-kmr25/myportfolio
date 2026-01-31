@@ -10,6 +10,7 @@ const Testimonials = () => {
     const [testimonials, setTestimonials] = useState([]);
     const [formData, setFormData] = useState({ name: '', email: '', role: '', rating: 8, message: '' });
     const [loading, setLoading] = useState(false);
+    const [isFetching, setIsFetching] = useState(true);
     const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -24,6 +25,8 @@ const Testimonials = () => {
             setTestimonials(response.data);
         } catch (error) {
             console.error('Error fetching testimonials:', error);
+        } finally {
+            setIsFetching(false);
         }
     };
 
@@ -43,8 +46,18 @@ const Testimonials = () => {
 
             setSubmitStatus({
                 type: 'success',
-                message: 'Thank you! Your testimonial is now live.',
+                message: 'Thank you! Your testimonial is now live. Redirecting to WhatsApp...',
             });
+
+            // Redirect to WhatsApp
+            const waNumber = '916006121192'; // India code + number
+            const waMessage = `Hi, I just submitted a testimonial on your portfolio:\n\nName: ${formData.name}\nRole: ${formData.role}\nRating: ${formData.rating}/8\nMessage: ${formData.message}`;
+            const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
+
+            setTimeout(() => {
+                window.open(waUrl, '_blank');
+            }, 1000);
+
             setFormData({ name: '', email: '', role: '', rating: 8, message: '' });
         } catch (error) {
             setSubmitStatus({
@@ -103,8 +116,12 @@ const Testimonials = () => {
                     </motion.p>
                 </motion.div>
 
-                {/* Testimonials Grid */}
-                {testimonials.length > 0 ? (
+                {/* Testimonials Grid or Loading */}
+                {isFetching ? (
+                    <div className="flex justify-center items-center py-20 mb-16">
+                        <div className="spinner w-12 h-12 border-4"></div>
+                    </div>
+                ) : testimonials.length > 0 ? (
                     <motion.div
                         initial="hidden"
                         animate={isInView ? 'visible' : 'hidden'}
