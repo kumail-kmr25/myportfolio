@@ -1,4 +1,5 @@
 const express = require('express');
+const crypto = require('crypto');
 const router = express.Router();
 const Testimonial = require('../models/Testimonial');
 const { testimonialValidationRules, validate } = require('../middleware/validation');
@@ -23,13 +24,19 @@ router.get('/', async (req, res, next) => {
 // @access  Public
 router.post('/', testimonialValidationRules(), validate, async (req, res, next) => {
     try {
-        const { name, role, message, rating } = req.body;
+        const { name, email, role, message, rating } = req.body;
+
+        // Generate Gravatar URL
+        const emailHash = crypto.createHash('md5').update(email.toLowerCase().trim()).digest('hex');
+        const image = `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
 
         const testimonial = await Testimonial.create({
             name,
+            email,
             role,
             message,
             rating,
+            image,
             approved: true, // Auto-approve for live update
         });
 
