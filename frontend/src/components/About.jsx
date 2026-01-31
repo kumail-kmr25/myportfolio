@@ -5,37 +5,25 @@ import aboutImage from '../assets/images/about-image.jpg';
 
 const About = () => {
     const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: '-100px' });
+    const isInView = useInView(ref, { once: true, margin: '-50px' });
 
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.2,
+                staggerChildren: 0.1,
             },
         },
     };
 
     const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
+        hidden: { opacity: 0, y: 20 },
         visible: {
             opacity: 1,
             y: 0,
             transition: {
-                duration: 0.6,
-                ease: 'easeOut',
-            },
-        },
-    };
-
-    const imageVariants = {
-        hidden: { opacity: 0, x: -50 },
-        visible: {
-            opacity: 1,
-            x: 0,
-            transition: {
-                duration: 0.8,
+                duration: 0.5,
                 ease: 'easeOut',
             },
         },
@@ -45,14 +33,14 @@ const About = () => {
         <section
             id="about"
             ref={ref}
-            className="py-20 bg-transparent"
+            className="py-16 md:py-24 bg-transparent"
         >
             <div className="section-container">
                 <motion.div
                     initial="hidden"
                     animate={isInView ? 'visible' : 'hidden'}
                     variants={containerVariants}
-                    className="text-center mb-16"
+                    className="text-center mb-12"
                 >
                     <motion.h2 variants={itemVariants} className="section-title">
                         About Me
@@ -62,27 +50,24 @@ const About = () => {
                     </motion.p>
                 </motion.div>
 
-                <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div className="flex flex-col md:grid md:grid-cols-2 gap-10 items-center">
                     {/* Image */}
                     <motion.div
                         initial="hidden"
                         animate={isInView ? 'visible' : 'hidden'}
-                        variants={imageVariants}
-                        className="flex justify-center"
+                        variants={itemVariants}
+                        className="flex justify-center w-full"
                     >
-                        <div className="relative">
-                            {/* Decorative Elements */}
-                            <div className="absolute -top-4 -left-4 w-72 h-72 bg-primary-500/20 rounded-3xl -z-10" />
-                            <div className="absolute -bottom-4 -right-4 w-72 h-72 bg-purple-500/20 rounded-3xl -z-10" />
-
+                        <div className="relative max-w-sm w-full">
                             <motion.img
                                 src={aboutImage}
                                 alt="Kumale Ali Bhat - About"
                                 loading="lazy"
-                                className="w-full max-w-md h-auto rounded-3xl shadow-2xl object-cover relative z-10"
+                                className="w-full h-auto rounded-2xl shadow-xl object-cover relative z-10 aspect-[4/5]"
                                 whileHover={{ scale: 1.02 }}
                                 transition={{ duration: 0.3 }}
                             />
+                            <div className="absolute inset-0 border-2 border-white/10 rounded-2xl transform translate-x-3 translate-y-3 -z-10" />
                         </div>
                     </motion.div>
 
@@ -91,73 +76,43 @@ const About = () => {
                         initial="hidden"
                         animate={isInView ? 'visible' : 'hidden'}
                         variants={containerVariants}
-                        className="space-y-6"
+                        className="space-y-6 text-center md:text-left"
                     >
                         <motion.div variants={itemVariants}>
-                            <h3 className="text-3xl font-bold font-display mb-4 text-gray-900 dark:text-gray-100">
-                                My Journey into Web Development
+                            <h3 className="text-2xl font-bold font-display mb-3 text-white">
+                                My Journey
                             </h3>
-                            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                                I'm a passionate Full-Stack Developer, Web Designer, and DevOps Engineer with a strong focus on creating
-                                fast, scalable, and secure web products. My journey in tech started with a curiosity for how websites work,
-                                and it has evolved into a deep commitment to building exceptional digital experiences.
+                            <p className="text-base text-gray-400 leading-relaxed">
+                                I'm a passionate Full-Stack Developer and Designer focused on creating
+                                fast, scalable, and secure web products. I combine clean code with beautiful design
+                                to deliver production-ready solutions that make a real impact.
                             </p>
                         </motion.div>
 
                         <motion.div variants={itemVariants}>
-                            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                                I specialize in modern web technologies including React, Node.js, and cloud infrastructure. My approach
-                                combines clean code, beautiful design, and robust DevOps practices to deliver production-ready solutions
-                                that make a real impact.
-                            </p>
-                        </motion.div>
-
-                        <motion.div variants={itemVariants}>
-                            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                                When I'm not coding, I'm constantly learning new technologies, contributing to open-source projects,
-                                and exploring ways to optimize development workflows. I believe in continuous improvement and staying
-                                at the forefront of web development trends.
-                            </p>
+                            <h4 className="text-lg font-semibold mb-4 text-white">
+                                Key Skills
+                            </h4>
+                            <div className="flex flex-wrap justify-center md:justify-start gap-2">
+                                {[
+                                    'Full-Stack Dev',
+                                    'UI/UX Design',
+                                    'API Integration',
+                                    'Database Design',
+                                    'CI/CD & DevOps',
+                                    'Cloud Infrastructure',
+                                ].map((item, index) => (
+                                    <span
+                                        key={index}
+                                        className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm text-gray-300 hover:text-white hover:border-primary-500/50 transition-colors duration-200 cursor-default"
+                                    >
+                                        {item}
+                                    </span>
+                                ))}
+                            </div>
                         </motion.div>
 
                         <motion.div variants={itemVariants} className="pt-4">
-                            <h4 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-                                What I Bring to the Table:
-                            </h4>
-                            <ul className="space-y-3">
-                                {[
-                                    'Full-stack development with modern frameworks',
-                                    'Responsive and accessible UI/UX design',
-                                    'RESTful API development and integration',
-                                    'Database design and optimization',
-                                    'CI/CD pipelines and DevOps automation',
-                                    'Cloud deployment and infrastructure management',
-                                ].map((item, index) => (
-                                    <motion.li
-                                        key={index}
-                                        variants={itemVariants}
-                                        className="flex items-start gap-3"
-                                    >
-                                        <svg
-                                            className="w-6 h-6 text-primary-500 flex-shrink-0 mt-1"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M5 13l4 4L19 7"
-                                            />
-                                        </svg>
-                                        <span className="text-gray-700 dark:text-gray-300">{item}</span>
-                                    </motion.li>
-                                ))}
-                            </ul>
-                        </motion.div>
-
-                        <motion.div variants={itemVariants} className="pt-6">
                             <Link
                                 to="contact"
                                 smooth={true}
@@ -165,19 +120,10 @@ const About = () => {
                                 offset={-80}
                             >
                                 <motion.button
-                                    whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="inline-flex items-center gap-2 btn-primary"
+                                    className="btn-primary"
                                 >
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                                        />
-                                    </svg>
-                                    Contact Me
+                                    Let's Connect
                                 </motion.button>
                             </Link>
                         </motion.div>
