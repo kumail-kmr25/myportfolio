@@ -24,7 +24,7 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: ./frontend
-        run: npm ci
+        run: npm install
 
       - name: Build frontend
         working-directory: ./frontend
@@ -53,11 +53,11 @@ jobs:
 
       - name: Install backend dependencies
         working-directory: ./backend
-        run: npm ci
+        run: npm install
 
-      - name: Check backend code
+      - name: Check backend code syntax
         working-directory: ./backend
-        run: node src/server.js --check || echo "Server check completed"
+        run: node --check src/server.js
 
   # Docker Build
   docker:
