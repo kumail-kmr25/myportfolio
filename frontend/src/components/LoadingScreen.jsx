@@ -15,15 +15,15 @@ const LoadingScreen = ({ onComplete }) => {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        // Cycle through greetings
+        // Cycle through greetings - Slower pace (1.2s per word)
         const timeout = setTimeout(() => {
             if (index < greetings.length - 1) {
                 setIndex(prev => prev + 1);
             } else {
-                // Determine when to finish (short delay after last word)
-                setTimeout(onComplete, 800);
+                // Determine when to finish
+                setTimeout(onComplete, 1000);
             }
-        }, 250); // Duration per greeting
+        }, 1200);
 
         return () => clearTimeout(timeout);
     }, [index, onComplete]);
@@ -34,21 +34,24 @@ const LoadingScreen = ({ onComplete }) => {
             initial={{ opacity: 1 }}
             exit={{ y: -window.innerHeight, transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
         >
-            <div className="relative overflow-hidden">
+            <div className="relative z-10">
                 <AnimatePresence mode='wait'>
                     <motion.h1
                         key={index}
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: -50, opacity: 0, transition: { duration: 0.2 } }}
-                        transition={{ duration: 0.2 }}
-                        className="text-4xl md:text-6xl font-bold font-display tracking-wider flex items-center gap-4"
+                        initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                        exit={{ opacity: 0, y: -20, filter: 'blur(10px)', transition: { duration: 0.2 } }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        className="text-5xl md:text-7xl font-bold font-display tracking-wider flex items-center gap-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"
                     >
-                        <span className="w-3 h-3 bg-primary-500 rounded-full inline-block mb-2"></span>
+                        <span className="w-4 h-4 bg-primary-500 rounded-full inline-block mt-2 shadow-[0_0_15px_rgba(59,130,246,0.8)]"></span>
                         {greetings[index]}
                     </motion.h1>
                 </AnimatePresence>
             </div>
+
+            {/* Background Texture Effect */}
+            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 pointer-events-none"></div>
         </motion.div>
     );
 };
