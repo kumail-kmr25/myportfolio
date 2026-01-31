@@ -55,9 +55,9 @@ jobs:
         working-directory: ./backend
         run: npm install
 
-      - name: Check backend code syntax
+      - name: Run backend tests
         working-directory: ./backend
-        run: node --check src/server.js
+        run: npm test
 
   # Docker Build
   docker:
