@@ -2,29 +2,22 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const greetings = [
-    "Hello",
-    "Assalamualaikum", // Islam
-    "Namaste",         // Hinduism
-    "Sat Sri Akal",    // Sikhism
-    "Shalom",          // Judaism
-    "Peace be with you", // Christianity
-    "Bonjour",         // French
-    "Hola"             // Spanish
+    "Hello"
 ];
 
 const LoadingScreen = ({ onComplete }) => {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        // Cycle through greetings - Slower pace (1.2s per word)
+        // Show greeting for 800ms
         const timeout = setTimeout(() => {
             if (index < greetings.length - 1) {
                 setIndex(prev => prev + 1);
             } else {
-                // Determine when to finish
-                setTimeout(onComplete, 1000);
+                // Determine when to finish (500ms after last greeting)
+                setTimeout(onComplete, 500);
             }
-        }, 1200);
+        }, 800);
 
         return () => clearTimeout(timeout);
     }, [index, onComplete]);
