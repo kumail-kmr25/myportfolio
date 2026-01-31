@@ -7,6 +7,7 @@ const greetings = [
     "Namaste",         // Hinduism
     "Sat Sri Akal",    // Sikhism
     "Shalom",          // Judaism
+    "Peace be with you", // Christianity
     "Bonjour",         // French
     "Hola"             // Spanish
 ];
