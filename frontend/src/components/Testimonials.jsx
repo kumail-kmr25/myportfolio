@@ -8,9 +8,7 @@ const Testimonials = () => {
     const isInView = useInView(ref, { once: true, margin: '-100px' });
 
     const [testimonials, setTestimonials] = useState([]);
-    const [testimonials, setTestimonials] = useState([]);
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', role: '', rating: 8, message: '' });
-    const [loading, setLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isFetching, setIsFetching] = useState(true);
     const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
@@ -51,7 +49,6 @@ const Testimonials = () => {
                 message: 'Thank you! Your testimonial is now live. Redirecting to WhatsApp...',
             });
 
-            // Redirect to WhatsApp
             // Redirect to WhatsApp
             const waNumber = '916006121193'; // India code + number
             const waMessage = `Hi, I just submitted a testimonial on your portfolio:\n\nName: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nRole: ${formData.role}\nRating: ${formData.rating}/8\nMessage: ${formData.message}`;
