@@ -45,9 +45,26 @@ const Testimonials = () => {
 
             setFormData({ name: '', email: '', phone: '', role: '', rating: 5, message: '' });
         } catch (error) {
+            console.error('Submission Error:', error);
+            let errorMessage = 'Failed to submit testimonial. Please try again.';
+
+            if (error.response) {
+                // Server responded with an error
+                if (error.response.data.errors && Array.isArray(error.response.data.errors)) {
+                    // Validation errors
+                    errorMessage = error.response.data.errors.map(err => err.msg).join('. ');
+                } else if (error.response.data.message) {
+                    // Generic API error
+                    errorMessage = error.response.data.message;
+                }
+            } else if (error.request) {
+                // Network error
+                errorMessage = 'Network error. Please check your connection or try again later.';
+            }
+
             setSubmitStatus({
                 type: 'error',
-                message: error.response?.data?.message || 'Failed to submit testimonial. Please try again.',
+                message: errorMessage,
             });
         } finally {
             setLoading(false);

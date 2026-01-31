@@ -28,7 +28,7 @@ const testimonialValidationRules = () => {
             .trim()
             .notEmpty()
             .withMessage('Phone number is required')
-            .matches(/^[0-9+\-\s()]{10,20}$/)
+            .matches(/^[0-9+\-\s()]{7,25}$/)
             .withMessage('Please include a valid phone number')
             .escape(),
         body('message')
