@@ -24,6 +24,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.get('/', (req, res) => {
+    res.send(`
+        <h1>✅ Backend is Running</h1>
+        <p>Status: Active</p>
+        <p>Port: ${PORT}</p>
+        <p>Time: ${new Date().toISOString()}</p>
+    `);
+});
+
 app.use('/api/testimonials', testimonialRoutes);
 
 // Health check route
