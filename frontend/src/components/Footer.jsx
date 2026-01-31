@@ -10,7 +10,7 @@ const Footer = () => {
                     {/* Brand */}
                     <div>
                         <h3 className="text-2xl font-bold font-display gradient-text mb-4">
-                            Kumail Kmr
+                            Kumale Ali Bhat
                         </h3>
                         <p className="text-gray-400 mb-4">
                             Full-Stack Developer | Designer | DevOps Engineer
@@ -84,7 +84,7 @@ const Footer = () => {
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-white/10 text-center">
                     <p className="text-gray-500 text-sm">
-                        © {currentYear} Kumail Kmr. All rights reserved.
+                        © {currentYear} Kumale Ali Bhat. All rights reserved.
                     </p>
                     <p className="text-gray-600 text-xs mt-2">
                         Built with React, Tailwind CSS, and Framer Motion

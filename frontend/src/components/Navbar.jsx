@@ -43,7 +43,7 @@ const Navbar = () => {
                         transition={{ delay: 0.2 }}
                         className="text-2xl font-bold font-display"
                     >
-                        <span className="gradient-text">Kumail Kmr</span>
+                        <span className="gradient-text">Kumale Ali Bhat</span>
                     </motion.div>
 
                     {/* Hamburger Menu Button (Always Visible) */}

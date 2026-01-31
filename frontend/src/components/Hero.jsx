@@ -88,7 +88,7 @@ const Hero = () => {
                             </span>
                             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-display mb-4 leading-tight">
                                 Hi, I'm{' '}
-                                <span className="gradient-text">Kumail Kmr</span>
+                                <span className="gradient-text">Kumale Ali Bhat</span>
                             </h1>
                         </motion.div>
 

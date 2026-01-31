@@ -36,7 +36,7 @@ const Contact = () => {
                 from_email: formData.email,
                 service_type: formData.service,
                 message: formData.message,
-                to_name: 'Kumail Kmr',
+                to_name: 'Kumale Ali Bhat',
             };
 
             await emailjs.send(serviceId, templateId, templateParams, publicKey);

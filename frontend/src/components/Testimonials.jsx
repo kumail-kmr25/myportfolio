@@ -50,8 +50,9 @@ const Testimonials = () => {
             });
 
             // Redirect to WhatsApp
-            const waNumber = '916006121192'; // India code + number
+            const waNumber = '916006121193'; // India code + number
             const waMessage = `Hi, I just submitted a testimonial on your portfolio:\n\nName: ${formData.name}\nRole: ${formData.role}\nRating: ${formData.rating}/8\nMessage: ${formData.message}`;
+
             const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
 
             setTimeout(() => {
