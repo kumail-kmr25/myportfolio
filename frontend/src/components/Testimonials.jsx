@@ -8,7 +8,9 @@ const Testimonials = () => {
     const isInView = useInView(ref, { once: true, margin: '-100px' });
 
     const [testimonials, setTestimonials] = useState([]);
-    const [formData, setFormData] = useState({ name: '', phone: '', role: '', rating: 8, message: '' });
+    const [testimonials, setTestimonials] = useState([]);
+    const [formData, setFormData] = useState({ name: '', email: '', phone: '', role: '', rating: 8, message: '' });
+    const [loading, setLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isFetching, setIsFetching] = useState(true);
     const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
@@ -50,8 +52,9 @@ const Testimonials = () => {
             });
 
             // Redirect to WhatsApp
+            // Redirect to WhatsApp
             const waNumber = '916006121193'; // India code + number
-            const waMessage = `Hi, I just submitted a testimonial on your portfolio:\n\nName: ${formData.name}\nPhone: ${formData.phone}\nRole: ${formData.role}\nRating: ${formData.rating}/8\nMessage: ${formData.message}`;
+            const waMessage = `Hi, I just submitted a testimonial on your portfolio:\n\nName: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nRole: ${formData.role}\nRating: ${formData.rating}/8\nMessage: ${formData.message}`;
 
             const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
 
@@ -59,7 +62,7 @@ const Testimonials = () => {
                 window.open(waUrl, '_blank');
             }, 1000);
 
-            setFormData({ name: '', phone: '', role: '', rating: 8, message: '' });
+            setFormData({ name: '', email: '', phone: '', role: '', rating: 8, message: '' });
         } catch (error) {
             setSubmitStatus({
                 type: 'error',
@@ -213,6 +216,28 @@ const Testimonials = () => {
                                     className="input-field"
                                     placeholder="John Doe"
                                 />
+                            </div>
+
+                            <div>
+                                <label
+                                    htmlFor="email"
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    Your Email *
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    className="input-field"
+                                    placeholder="john@example.com"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    We use your email to contact you if needed.
+                                </p>
                             </div>
 
                             <div>

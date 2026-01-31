@@ -24,7 +24,7 @@ router.get('/', async (req, res, next) => {
 // @access  Public
 router.post('/', testimonialValidationRules(), validate, async (req, res, next) => {
     try {
-        const { name, phone, role, message, rating } = req.body;
+        const { name, email, phone, role, message, rating } = req.body;
 
         // Default image (initials based) is handled by frontend or can be set here if needed
         // For now, we'll let frontend handle the display image fallbacks
@@ -32,6 +32,7 @@ router.post('/', testimonialValidationRules(), validate, async (req, res, next) 
 
         const testimonial = await Testimonial.create({
             name,
+            email,
             phone,
             role,
             message,
