@@ -23,18 +23,19 @@ router.get('/', async (req, res, next) => {
 // @access  Public
 router.post('/', testimonialValidationRules(), validate, async (req, res, next) => {
     try {
-        const { name, role, message } = req.body;
+        const { name, role, message, rating } = req.body;
 
         const testimonial = await Testimonial.create({
             name,
             role,
             message,
-            approved: false, // Requires admin approval
+            rating,
+            approved: true, // Auto-approve for live update
         });
 
         res.status(201).json({
             success: true,
-            message: 'Testimonial submitted successfully. It will be reviewed by the admin.',
+            message: 'Testimonial submitted successfully!',
             data: testimonial,
         });
     } catch (error) {

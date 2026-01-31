@@ -13,11 +13,27 @@ const testimonialSchema = new mongoose.Schema({
         trim: true,
         maxlength: [100, 'Role cannot exceed 100 characters'],
     },
+    email: {
+        type: String,
+        required: [true, 'Email is required'],
+        trim: true,
+        match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
+    },
+    image: {
+        type: String, // Gravatar URL
+    },
     message: {
         type: String,
         required: [true, 'Message is required'],
         trim: true,
         maxlength: [500, 'Message cannot exceed 500 characters'],
+    },
+    rating: {
+        type: Number,
+        required: true,
+        default: 8,
+        min: 1,
+        max: 8,
     },
     approved: {
         type: Boolean,

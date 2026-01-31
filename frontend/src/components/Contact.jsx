@@ -7,9 +7,18 @@ const Contact = () => {
     const formRef = useRef();
     const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [formData, setFormData] = useState({ name: '', email: '', service: '', message: '' });
     const [loading, setLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
+
+    const services = [
+        'UI/UX Design',
+        'Frontend Development',
+        'Backend Development',
+        'Database Development',
+        'SEO Optimisation',
+        'Website Audit'
+    ];
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,8 +34,9 @@ const Contact = () => {
             const templateParams = {
                 from_name: formData.name,
                 from_email: formData.email,
+                service_type: formData.service,
                 message: formData.message,
-                to_name: 'Kumale Ali Bhat',
+                to_name: 'Kumail Kmr',
             };
 
             await emailjs.send(serviceId, templateId, templateParams, publicKey);
@@ -35,7 +45,7 @@ const Contact = () => {
                 type: 'success',
                 message: 'Message sent successfully! I\'ll get back to you soon.',
             });
-            setFormData({ name: '', email: '', message: '' });
+            setFormData({ name: '', email: '', service: '', message: '' });
         } catch (error) {
             setSubmitStatus({
                 type: 'error',
@@ -81,8 +91,8 @@ const Contact = () => {
                 </svg>
             ),
             label: 'Email',
-            value: 'kumaleali@example.com',
-            link: 'mailto:kumaleali@example.com',
+            value: 'ka6307464@gmail.com',
+            link: 'mailto:ka6307464@gmail.com',
         },
         {
             icon: (
@@ -110,7 +120,7 @@ const Contact = () => {
         <section
             id="contact"
             ref={ref}
-            className="py-20 bg-white dark:bg-dark-bg"
+            className="py-20 bg-transparent"
         >
             <div className="section-container">
                 <motion.div
@@ -134,12 +144,15 @@ const Contact = () => {
                         animate={isInView ? 'visible' : 'hidden'}
                         variants={itemVariants}
                     >
-                        <form ref={formRef} onSubmit={handleSubmit} className="card">
+                        <form ref={formRef} onSubmit={handleSubmit} className="glass-effect p-8 rounded-2xl relative overflow-hidden">
+                            {/* Decorative Glow */}
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/10 rounded-full blur-2xl -z-10" />
+
                             <div className="space-y-6">
                                 <div>
                                     <label
                                         htmlFor="name"
-                                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        className="block text-sm font-medium text-gray-300 mb-2"
                                     >
                                         Name *
                                     </label>
@@ -150,7 +163,7 @@ const Contact = () => {
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
-                                        className="input-field"
+                                        className="input-field bg-white/5 border-white/10 focus:border-primary-500 text-gray-100"
                                         placeholder="Your name"
                                     />
                                 </div>
@@ -158,7 +171,7 @@ const Contact = () => {
                                 <div>
                                     <label
                                         htmlFor="email"
-                                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        className="block text-sm font-medium text-gray-300 mb-2"
                                     >
                                         Email *
                                     </label>
@@ -169,15 +182,39 @@ const Contact = () => {
                                         value={formData.email}
                                         onChange={handleChange}
                                         required
-                                        className="input-field"
+                                        className="input-field bg-white/5 border-white/10 focus:border-primary-500 text-gray-100"
                                         placeholder="your.email@example.com"
                                     />
                                 </div>
 
                                 <div>
                                     <label
+                                        htmlFor="service"
+                                        className="block text-sm font-medium text-gray-300 mb-2"
+                                    >
+                                        In which service you are interested? *
+                                    </label>
+                                    <select
+                                        id="service"
+                                        name="service"
+                                        value={formData.service}
+                                        onChange={handleChange}
+                                        required
+                                        className="input-field bg-white/5 border-white/10 focus:border-primary-500 text-gray-100 w-full p-3 rounded-lg"
+                                    >
+                                        <option value="" disabled className="bg-gray-900">Select a service</option>
+                                        {services.map((service) => (
+                                            <option key={service} value={service} className="bg-gray-900 text-gray-100">
+                                                {service}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label
                                         htmlFor="message"
-                                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        className="block text-sm font-medium text-gray-300 mb-2"
                                     >
                                         Message *
                                     </label>
@@ -188,7 +225,7 @@ const Contact = () => {
                                         onChange={handleChange}
                                         required
                                         rows="6"
-                                        className="input-field resize-none"
+                                        className="input-field bg-white/5 border-white/10 focus:border-primary-500 text-gray-100 resize-none"
                                         placeholder="Tell me about your project..."
                                     />
                                 </div>
@@ -197,9 +234,9 @@ const Contact = () => {
                                     <motion.div
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className={`p-4 rounded-lg ${submitStatus.type === 'success'
-                                                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                                                : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                                        className={`p-4 rounded-lg glass-effect ${submitStatus.type === 'success'
+                                            ? 'text-green-400 border-green-500/30'
+                                            : 'text-red-400 border-red-500/30'
                                             }`}
                                     >
                                         {submitStatus.message}
@@ -211,11 +248,11 @@ const Contact = () => {
                                     disabled={loading}
                                     whileHover={{ scale: loading ? 1 : 1.02 }}
                                     whileTap={{ scale: loading ? 1 : 0.98 }}
-                                    className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-neon-cyan"
                                 >
                                     {loading ? (
                                         <>
-                                            <div className="spinner" />
+                                            <div className="spinner border-white/20 border-t-white" />
                                             Sending...
                                         </>
                                     ) : (
@@ -244,10 +281,10 @@ const Contact = () => {
                         className="space-y-8"
                     >
                         <motion.div variants={itemVariants}>
-                            <h3 className="text-2xl font-bold font-display mb-4 text-gray-900 dark:text-gray-100">
+                            <h3 className="text-2xl font-bold font-display mb-4 text-gray-100">
                                 Let's Connect
                             </h3>
-                            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            <p className="text-gray-400 leading-relaxed">
                                 I'm always excited to discuss new projects, creative ideas, or opportunities to be part of your vision.
                                 Feel free to reach out through any of the channels below.
                             </p>
@@ -262,14 +299,14 @@ const Contact = () => {
                                     rel="noopener noreferrer"
                                     variants={itemVariants}
                                     whileHover={{ x: 5 }}
-                                    className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-dark-surface rounded-xl hover:bg-gray-100 dark:hover:bg-dark-card transition-colors duration-200 border border-gray-200 dark:border-dark-border"
+                                    className="flex items-center gap-4 p-4 glass-effect rounded-xl hover:bg-white/5 transition-colors duration-200 border border-white/5 hover:border-primary-500/30 group"
                                 >
-                                    <div className="p-3 bg-gradient-to-r from-primary-500 to-purple-500 rounded-lg text-white">
+                                    <div className="p-3 bg-gradient-to-r from-primary-500 to-purple-500 rounded-lg text-white shadow-lg group-hover:shadow-neon-cyan transition-shadow duration-300">
                                         {info.icon}
                                     </div>
                                     <div>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">{info.label}</p>
-                                        <p className="font-semibold text-gray-900 dark:text-gray-100">{info.value}</p>
+                                        <p className="text-sm text-gray-400">{info.label}</p>
+                                        <p className="font-semibold text-gray-100">{info.value}</p>
                                     </div>
                                 </motion.a>
                             ))}

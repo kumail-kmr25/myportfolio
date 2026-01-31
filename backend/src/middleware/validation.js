@@ -17,6 +17,13 @@ const testimonialValidationRules = () => {
             .isLength({ max: 100 })
             .withMessage('Role cannot exceed 100 characters')
             .escape(),
+        body('email')
+            .trim()
+            .notEmpty()
+            .withMessage('Email is required')
+            .isEmail()
+            .withMessage('Please include a valid email')
+            .normalizeEmail(),
         body('message')
             .trim()
             .notEmpty()

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-scroll';
-import heroImage from '../assets/images/hero-image.jpg';
+import heroImage from '../assets/images/about-image.jpg';
 
 const Hero = () => {
     const containerVariants = {
@@ -41,7 +41,7 @@ const Hero = () => {
     return (
         <section
             id="home"
-            className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-dark-bg dark:via-dark-surface dark:to-dark-bg pt-20"
+            className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20"
         >
             {/* Animated Background Elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -83,25 +83,25 @@ const Hero = () => {
                         className="text-center md:text-left"
                     >
                         <motion.div variants={itemVariants} className="mb-6">
-                            <span className="inline-block px-4 py-2 bg-primary-500/10 dark:bg-primary-500/20 text-primary-600 dark:text-primary-400 rounded-full text-sm font-semibold mb-4">
+                            <span className="inline-block px-4 py-2 glass-effect text-primary-500 border border-primary-500/30 rounded-full text-sm font-semibold mb-4 hover:shadow-neon-cyan transition-shadow duration-300">
                                 Welcome to my portfolio
                             </span>
                             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-display mb-4 leading-tight">
                                 Hi, I'm{' '}
-                                <span className="gradient-text">Kumale Ali Bhat</span>
+                                <span className="gradient-text">Kumail Kmr</span>
                             </h1>
                         </motion.div>
 
                         <motion.h2
                             variants={itemVariants}
-                            className="text-2xl md:text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-6"
+                            className="text-2xl md:text-3xl font-semibold text-gray-300 mb-6"
                         >
                             Full-Stack Developer | Designer | DevOps Engineer
                         </motion.h2>
 
                         <motion.p
                             variants={itemVariants}
-                            className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl"
+                            className="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl"
                         >
                             Turning ideas into fast, scalable, and secure web products.
                         </motion.p>
@@ -209,10 +209,10 @@ const Hero = () => {
                             {/* Image */}
                             <motion.img
                                 src={heroImage}
-                                alt="Kumale Ali Bhat"
+                                alt="Kumail Kmr"
                                 loading="lazy"
-                                className="relative w-full max-w-md h-auto rounded-3xl shadow-2xl object-cover"
-                                whileHover={{ scale: 1.02 }}
+                                className="relative w-64 h-64 md:w-80 md:h-80 rounded-full shadow-2xl object-cover border-4 border-primary-500/30"
+                                whileHover={{ scale: 1.05, rotate: 5 }}
                                 transition={{ duration: 0.3 }}
                             />
                         </div>

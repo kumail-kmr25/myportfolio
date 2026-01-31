@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { FaStar } from 'react-icons/fa';
 import axios from 'axios';
 
 const Testimonials = () => {
@@ -7,7 +8,7 @@ const Testimonials = () => {
     const isInView = useInView(ref, { once: true, margin: '-100px' });
 
     const [testimonials, setTestimonials] = useState([]);
-    const [formData, setFormData] = useState({ name: '', role: '', message: '' });
+    const [formData, setFormData] = useState({ name: '', email: '', role: '', rating: 8, message: '' });
     const [loading, setLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
 
@@ -32,12 +33,19 @@ const Testimonials = () => {
         setSubmitStatus({ type: '', message: '' });
 
         try {
-            await axios.post(`${API_URL}/api/testimonials`, formData);
+            const response = await axios.post(`${API_URL}/api/testimonials`, formData);
+            // Add new testimonial to the list immediately (Live Update)
+            if (response.data.data) {
+                setTestimonials([response.data.data, ...testimonials]);
+            } else {
+                fetchTestimonials(); // Fallback if no data returned
+            }
+
             setSubmitStatus({
                 type: 'success',
-                message: 'Thank you! Your testimonial has been submitted for review.',
+                message: 'Thank you! Your testimonial is now live.',
             });
-            setFormData({ name: '', role: '', message: '' });
+            setFormData({ name: '', email: '', role: '', rating: 8, message: '' });
         } catch (error) {
             setSubmitStatus({
                 type: 'error',
@@ -78,7 +86,7 @@ const Testimonials = () => {
         <section
             id="testimonials"
             ref={ref}
-            className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-dark-surface dark:via-dark-bg dark:to-dark-surface"
+            className="py-20 bg-transparent"
         >
             <div className="section-container">
                 <motion.div
@@ -108,36 +116,41 @@ const Testimonials = () => {
                                 key={testimonial._id}
                                 variants={itemVariants}
                                 whileHover={{ y: -5 }}
-                                className="card"
+                                className="glass-effect p-8 rounded-2xl flex flex-col items-center text-center relative mt-8"
                             >
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl">
-                                        {testimonial.name.charAt(0).toUpperCase()}
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                                            {testimonial.name}
-                                        </h4>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                                            {testimonial.role}
-                                        </p>
-                                    </div>
+                                {/* Avatar - Overlapping top */}
+                                <div className="absolute -top-10 w-20 h-20 rounded-full p-1 bg-gradient-to-r from-primary-500 to-purple-500 shadow-lg">
+                                    <img
+                                        src={testimonial.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=random`}
+                                        alt={testimonial.name}
+                                        className="w-full h-full rounded-full object-cover border-2 border-gray-900 bg-gray-800"
+                                    />
                                 </div>
-                                <p className="text-gray-600 dark:text-gray-400 italic">
-                                    "{testimonial.message}"
-                                </p>
-                                <div className="flex gap-1 mt-4">
-                                    {[...Array(5)].map((_, i) => (
-                                        <svg
+
+                                <div className="mt-10 mb-4">
+                                    <h4 className="font-semibold text-lg text-gray-900 dark:text-gray-100 mb-1">
+                                        {testimonial.name}
+                                    </h4>
+                                    <p className="text-sm text-primary-500 font-medium">
+                                        {testimonial.role}
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-1 mb-4">
+                                    {[...Array(8)].map((_, i) => (
+                                        <FaStar
                                             key={i}
-                                            className="w-5 h-5 text-yellow-400"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                        >
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                        </svg>
+                                            className={`w-4 h-4 ${(testimonial.rating || 5) > i
+                                                ? 'text-yellow-400'
+                                                : 'text-gray-300 dark:text-gray-600'
+                                                }`}
+                                        />
                                     ))}
                                 </div>
+
+                                <p className="text-gray-600 dark:text-gray-400 italic leading-relaxed">
+                                    "{testimonial.message}"
+                                </p>
                             </motion.div>
                         ))}
                     </motion.div>
@@ -186,6 +199,28 @@ const Testimonials = () => {
 
                             <div>
                                 <label
+                                    htmlFor="email"
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    Your Email (for avatar) *
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    className="input-field"
+                                    placeholder="john@example.com"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    We use your email to fetch your Gravatar photo.
+                                </p>
+                            </div>
+
+                            <div>
+                                <label
                                     htmlFor="role"
                                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                 >
@@ -201,6 +236,31 @@ const Testimonials = () => {
                                     className="input-field"
                                     placeholder="CEO at Company"
                                 />
+                            </div>
+
+                            <div>
+                                <label
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    Your Rating *
+                                </label>
+                                <div className="flex gap-2 mb-6">
+                                    {[...Array(8)].map((_, i) => (
+                                        <button
+                                            key={i}
+                                            type="button"
+                                            onClick={() => setFormData({ ...formData, rating: i + 1 })}
+                                            className="focus:outline-none transition-colors duration-200"
+                                        >
+                                            <FaStar
+                                                className={`w-6 h-6 ${(formData.rating || 0) > i
+                                                    ? 'text-yellow-400'
+                                                    : 'text-gray-300 dark:text-gray-600'
+                                                    }`}
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
 
                             <div>
@@ -227,8 +287,8 @@ const Testimonials = () => {
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     className={`p-4 rounded-lg ${submitStatus.type === 'success'
-                                            ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                                            : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                                        : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
                                         }`}
                                 >
                                     {submitStatus.message}

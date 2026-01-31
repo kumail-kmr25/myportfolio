@@ -1,5 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
+
 const cors = require('cors');
 const dotenv = require('dotenv');
 const testimonialRoutes = require('./routes/testimonials');
@@ -43,18 +43,7 @@ app.use('*', (req, res) => {
 app.use(errorHandler);
 
 // Database connection
-const connectDB = async () => {
-    try {
-        const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio';
-
-        await mongoose.connect(mongoURI);
-
-        console.log('✅ MongoDB connected successfully');
-    } catch (error) {
-        console.error('❌ MongoDB connection error:', error.message);
-        process.exit(1);
-    }
-};
+const connectDB = require('./config/db');
 
 // Start server
 const startServer = async () => {
