@@ -24,15 +24,15 @@ router.get('/', async (req, res, next) => {
 // @access  Public
 router.post('/', testimonialValidationRules(), validate, async (req, res, next) => {
     try {
-        const { name, email, role, message, rating } = req.body;
+        const { name, phone, role, message, rating } = req.body;
 
-        // Generate Gravatar URL
-        const emailHash = crypto.createHash('md5').update(email.toLowerCase().trim()).digest('hex');
-        const image = `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
+        // Default image (initials based) is handled by frontend or can be set here if needed
+        // For now, we'll let frontend handle the display image fallbacks
+        const image = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
 
         const testimonial = await Testimonial.create({
             name,
-            email,
+            phone,
             role,
             message,
             rating,

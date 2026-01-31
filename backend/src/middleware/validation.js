@@ -17,13 +17,13 @@ const testimonialValidationRules = () => {
             .isLength({ max: 100 })
             .withMessage('Role cannot exceed 100 characters')
             .escape(),
-        body('email')
+        body('phone')
             .trim()
             .notEmpty()
-            .withMessage('Email is required')
-            .isEmail()
-            .withMessage('Please include a valid email')
-            .normalizeEmail(),
+            .withMessage('Phone number is required')
+            .matches(/^[0-9+\-\s()]{10,20}$/)
+            .withMessage('Please include a valid phone number')
+            .escape(),
         body('message')
             .trim()
             .notEmpty()
