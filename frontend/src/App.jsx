@@ -11,6 +11,9 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Resume from './components/Resume';
 import LoadingScreen from './components/LoadingScreen';
+import AdminLogin from './components/AdminLogin';
+import AdminDashboard from './components/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 import { AnimatePresence } from 'framer-motion';
 
 const Home = () => (
@@ -43,6 +46,12 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/resume" element={<Resume />} />
+
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              </Route>
             </Routes>
           </div>
         </BrowserRouter>

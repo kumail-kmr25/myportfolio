@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { FaStar } from 'react-icons/fa';
+import { FaStar, FaCheckCircle, FaQuoteLeft } from 'react-icons/fa';
 import axios from 'axios';
 
 const Testimonials = () => {
@@ -8,7 +8,7 @@ const Testimonials = () => {
     const isInView = useInView(ref, { once: true, margin: '-50px' });
 
     const [testimonials, setTestimonials] = useState([]);
-    const [formData, setFormData] = useState({ name: '', email: '', phone: '', role: '', rating: 8, message: '' });
+    const [formData, setFormData] = useState({ name: '', email: '', phone: '', role: '', rating: 5, message: '' });
     const [loading, setLoading] = useState(false);
     const [isFetching, setIsFetching] = useState(true);
     const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
@@ -36,28 +36,14 @@ const Testimonials = () => {
         setSubmitStatus({ type: '', message: '' });
 
         try {
-            const response = await axios.post(`${API_URL}/api/testimonials`, formData);
-            if (response.data.data) {
-                setTestimonials([response.data.data, ...testimonials]);
-            } else {
-                fetchTestimonials();
-            }
+            await axios.post(`${API_URL}/api/testimonials`, formData);
 
             setSubmitStatus({
                 type: 'success',
-                message: 'Thank you! Your testimonial is now live.',
+                message: 'Thank you! Your testimonial has been submitted for review and will appear shortly.',
             });
 
-            // Redirect to WhatsApp
-            const waNumber = '916006121193';
-            const waMessage = `Hi, I just submitted a testimonial on your portfolio:\n\nName: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nRole: ${formData.role}\nRating: ${formData.rating}/8\nMessage: ${formData.message}`;
-            const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
-
-            setTimeout(() => {
-                window.open(waUrl, '_blank');
-            }, 1000);
-
-            setFormData({ name: '', email: '', phone: '', role: '', rating: 8, message: '' });
+            setFormData({ name: '', email: '', phone: '', role: '', rating: 5, message: '' });
         } catch (error) {
             setSubmitStatus({
                 type: 'error',
@@ -104,10 +90,10 @@ const Testimonials = () => {
                     className="text-center mb-12"
                 >
                     <motion.h2 variants={itemVariants} className="section-title">
-                        Testimonials
+                        Client Stories
                     </motion.h2>
                     <motion.p variants={itemVariants} className="section-subtitle">
-                        What clients and collaborators say about working with me
+                        Feedback from people I've worked with
                     </motion.p>
                 </motion.div>
 
@@ -129,6 +115,8 @@ const Testimonials = () => {
                                 variants={itemVariants}
                                 className="glass-effect p-6 rounded-xl flex flex-col relative group hover:border-primary-500/30 transition-all duration-300"
                             >
+                                <FaQuoteLeft className="text-primary-500/20 text-4xl absolute top-6 right-6" />
+
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary-500 to-purple-500 p-0.5">
                                         <img
@@ -138,9 +126,12 @@ const Testimonials = () => {
                                         />
                                     </div>
                                     <div>
-                                        <h4 className="font-semibold text-white">
-                                            {testimonial.name}
-                                        </h4>
+                                        <div className="flex items-center gap-1">
+                                            <h4 className="font-semibold text-white">
+                                                {testimonial.name}
+                                            </h4>
+                                            <FaCheckCircle className="text-blue-400 text-xs" title="Verified Client" />
+                                        </div>
                                         <p className="text-xs text-primary-400 font-medium">
                                             {testimonial.role}
                                         </p>
@@ -148,7 +139,7 @@ const Testimonials = () => {
                                 </div>
 
                                 <div className="flex gap-1 mb-4">
-                                    {[...Array(8)].map((_, i) => (
+                                    {[...Array(5)].map((_, i) => (
                                         <FaStar
                                             key={i}
                                             className={`w-3 h-3 ${(testimonial.rating || 5) > i
@@ -172,7 +163,7 @@ const Testimonials = () => {
                         className="text-center py-12 mb-16"
                     >
                         <p className="text-gray-400">
-                            Be the first to leave a testimonial!
+                            Be the first to share your experience!
                         </p>
                     </motion.div>
                 )}
@@ -186,7 +177,7 @@ const Testimonials = () => {
                 >
                     <div className="glass-effect p-6 md:p-8 rounded-2xl">
                         <h3 className="text-xl font-bold font-display mb-6 text-center text-white">
-                            Share Your Experience
+                            Share Your Feedback
                         </h3>
                         <form onSubmit={handleSubmit} className="space-y-5">
                             <div>
@@ -251,7 +242,7 @@ const Testimonials = () => {
                                     Rating
                                 </label>
                                 <div className="flex gap-2">
-                                    {[...Array(8)].map((_, i) => (
+                                    {[...Array(5)].map((_, i) => (
                                         <button
                                             key={i}
                                             type="button"
@@ -270,7 +261,7 @@ const Testimonials = () => {
                             </div>
 
                             <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">Testimonial</label>
+                                <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">Feedback</label>
                                 <textarea
                                     id="message"
                                     name="message"
@@ -279,7 +270,7 @@ const Testimonials = () => {
                                     required
                                     rows="4"
                                     className="input-field resize-none"
-                                    placeholder="Share your experience working with me..."
+                                    placeholder="Share your experience..."
                                 />
                             </div>
 
@@ -302,7 +293,7 @@ const Testimonials = () => {
                                 whileTap={{ scale: 0.98 }}
                                 className="w-full btn-primary disabled:opacity-70"
                             >
-                                {loading ? 'Submitting...' : 'Submit Testimonial'}
+                                {loading ? 'Submitting...' : 'Submit Feedback'}
                             </motion.button>
                         </form>
                     </div>

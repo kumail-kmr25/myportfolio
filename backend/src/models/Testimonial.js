@@ -37,9 +37,9 @@ const testimonialSchema = new mongoose.Schema({
     rating: {
         type: Number,
         required: true,
-        default: 8,
+        default: 5,
         min: 1,
-        max: 8,
+        max: 5,
     },
     approved: {
         type: Boolean,

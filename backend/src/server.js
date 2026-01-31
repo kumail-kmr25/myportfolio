@@ -2,6 +2,7 @@ const express = require('express');
 
 const cors = require('cors');
 const dotenv = require('dotenv');
+const authRoutes = require('./routes/auth');
 const testimonialRoutes = require('./routes/testimonials');
 const errorHandler = require('./middleware/errorHandler');
 
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
     `);
 });
 
+app.use('/api/auth', authRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 
 // Health check route

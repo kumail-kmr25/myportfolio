@@ -1,8 +1,8 @@
 const express = require('express');
-const crypto = require('crypto');
 const router = express.Router();
 const Testimonial = require('../models/Testimonial');
 const { testimonialValidationRules, validate } = require('../middleware/validation');
+const { protect, admin } = require('../middleware/auth');
 
 // @route   GET /api/testimonials
 // @desc    Get all approved testimonials
@@ -26,8 +26,6 @@ router.post('/', testimonialValidationRules(), validate, async (req, res, next) 
     try {
         const { name, email, phone, role, message, rating } = req.body;
 
-        // Default image (initials based) is handled by frontend or can be set here if needed
-        // For now, we'll let frontend handle the display image fallbacks
         const image = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
 
         const testimonial = await Testimonial.create({
@@ -38,12 +36,12 @@ router.post('/', testimonialValidationRules(), validate, async (req, res, next) 
             message,
             rating,
             image,
-            approved: true, // Auto-approve for live update
+            approved: false, // Must be approved by admin
         });
 
         res.status(201).json({
             success: true,
-            message: 'Testimonial submitted successfully!',
+            message: 'Testimonial submitted successfully! It will be visible after admin approval.',
             data: testimonial,
         });
     } catch (error) {
@@ -53,10 +51,9 @@ router.post('/', testimonialValidationRules(), validate, async (req, res, next) 
 
 // @route   GET /api/testimonials/all
 // @desc    Get all testimonials (including pending) - Admin only
-// @access  Admin (In production, add authentication middleware)
-router.get('/all', async (req, res, next) => {
+// @access  Admin
+router.get('/all', protect, admin, async (req, res, next) => {
     try {
-        // TODO: Add authentication middleware for admin access
         const testimonials = await Testimonial.find()
             .sort({ createdAt: -1 })
             .select('-__v');
@@ -69,10 +66,9 @@ router.get('/all', async (req, res, next) => {
 
 // @route   PATCH /api/testimonials/:id/approve
 // @desc    Approve a testimonial - Admin only
-// @access  Admin (In production, add authentication middleware)
-router.patch('/:id/approve', async (req, res, next) => {
+// @access  Admin
+router.patch('/:id/approve', protect, admin, async (req, res, next) => {
     try {
-        // TODO: Add authentication middleware for admin access
         const testimonial = await Testimonial.findByIdAndUpdate(
             req.params.id,
             { approved: true },
@@ -98,10 +94,9 @@ router.patch('/:id/approve', async (req, res, next) => {
 
 // @route   DELETE /api/testimonials/:id
 // @desc    Delete a testimonial - Admin only
-// @access  Admin (In production, add authentication middleware)
-router.delete('/:id', async (req, res, next) => {
+// @access  Admin
+router.delete('/:id', protect, admin, async (req, res, next) => {
     try {
-        // TODO: Add authentication middleware for admin access
         const testimonial = await Testimonial.findByIdAndDelete(req.params.id);
 
         if (!testimonial) {
