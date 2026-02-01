@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FaCheck, FaTrash, FaSignOutAlt, FaStar, FaClock } from 'react-icons/fa';
@@ -14,25 +14,25 @@ const AdminDashboard = () => {
     const token = localStorage.getItem('adminToken');
 
     useEffect(() => {
-        fetchTestimonials();
-    }, []);
-
-    const fetchTestimonials = async () => {
-        try {
-            const config = {
-                headers: { Authorization: `Bearer ${token}` },
-            };
-            const response = await axios.get(`${API_URL}/api/testimonials/all`, config);
-            setTestimonials(response.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            if (error.response?.status === 401) {
-                handleLogout(); // Token invalid
+        const fetchTestimonials = async () => {
+            try {
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` },
+                };
+                const response = await axios.get(`${API_URL}/api/testimonials/all`, config);
+                setTestimonials(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                if (error.response?.status === 401) {
+                    handleLogout(); // Token invalid
+                }
+            } finally {
+                setLoading(false);
             }
-        } finally {
-            setLoading(false);
-        }
-    };
+        };
+
+        fetchTestimonials();
+    }, [API_URL, token, handleLogout]);
 
     const handleApprove = async (id) => {
         try {
@@ -59,11 +59,11 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleLogout = () => {
+    const handleLogout = useCallback(() => {
         localStorage.removeItem('adminToken');
         localStorage.removeItem('adminUser');
         navigate('/admin/login');
-    };
+    }, [navigate]);
 
     const pendingTestimonials = testimonials.filter(t => !t.approved);
     const approvedTestimonials = testimonials.filter(t => t.approved);
@@ -157,7 +157,7 @@ const AdminDashboard = () => {
                                         </div>
                                     </div>
                                     <p className="text-sm text-primary-400 mb-3">{testimonial.role}</p>
-                                    <p className="text-gray-300 italic mb-4">"{testimonial.message}"</p>
+                                    <p className="text-gray-300 italic mb-4">&quot;{testimonial.message}&quot;</p>
                                     <div className="flex gap-4 text-xs text-gray-500">
                                         <span className="flex items-center gap-1">
                                             <FaClock /> {new Date(testimonial.createdAt).toLocaleDateString()}

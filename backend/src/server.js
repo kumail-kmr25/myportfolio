@@ -1,13 +1,13 @@
 const express = require('express');
-
 const cors = require('cors');
 const dotenv = require('dotenv');
+
+// Load environment variables FIRST
+dotenv.config();
+
 const authRoutes = require('./routes/auth');
 const testimonialRoutes = require('./routes/testimonials');
 const errorHandler = require('./middleware/errorHandler');
-
-// Load environment variables
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

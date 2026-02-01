@@ -34,6 +34,30 @@ const testimonialSchema = new mongoose.Schema({
         trim: true,
         maxlength: [500, 'Message cannot exceed 500 characters'],
     },
+    projectType: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Project type cannot exceed 100 characters'],
+    },
+    problem: {
+        type: String,
+        trim: true,
+        maxlength: [500, 'Problem description cannot exceed 500 characters'],
+    },
+    solution: {
+        type: String,
+        trim: true,
+        maxlength: [500, 'Solution description cannot exceed 500 characters'],
+    },
+    outcome: {
+        type: String,
+        trim: true,
+        maxlength: [500, 'Outcome description cannot exceed 500 characters'],
+    },
+    tags: {
+        type: [String],
+        default: [],
+    },
     rating: {
         type: Number,
         required: true,

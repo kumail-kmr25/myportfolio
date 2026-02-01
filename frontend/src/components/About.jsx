@@ -83,7 +83,7 @@ const About = () => {
                                 My Journey
                             </h3>
                             <p className="text-base text-gray-400 leading-relaxed">
-                                I'm a passionate Full-Stack Developer and Designer focused on creating
+                                I&apos;m a passionate Full-Stack Developer and Designer focused on creating
                                 fast, scalable, and secure web products. I combine clean code with beautiful design
                                 to deliver production-ready solutions that make a real impact.
                             </p>
@@ -123,7 +123,7 @@ const About = () => {
                                     whileTap={{ scale: 0.95 }}
                                     className="btn-primary"
                                 >
-                                    Let's Connect
+                                    Let&apos;s Connect
                                 </motion.button>
                             </Link>
                         </motion.div>

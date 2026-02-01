@@ -24,7 +24,7 @@ router.get('/', async (req, res, next) => {
 // @access  Public
 router.post('/', testimonialValidationRules(), validate, async (req, res, next) => {
     try {
-        const { name, email, phone, role, message, rating } = req.body;
+        const { name, email, phone, role, message, rating, projectType, problem, solution, outcome, tags } = req.body;
 
         const image = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
 
@@ -35,6 +35,11 @@ router.post('/', testimonialValidationRules(), validate, async (req, res, next) 
             role,
             message,
             rating,
+            projectType,
+            problem,
+            solution,
+            outcome,
+            tags,
             image,
             approved: false, // Must be approved by admin
         });

@@ -57,7 +57,7 @@ const Hero = () => {
                                 Welcome to my portfolio
                             </span>
                             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-display leading-tight mb-4">
-                                Hi, I'm{' '}
+                                Hi, I&apos;m{' '}
                                 <span className="text-gradient block mt-1">Kumale Ali Bhat</span>
                             </h1>
                         </motion.div>

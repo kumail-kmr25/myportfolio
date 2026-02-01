@@ -101,7 +101,7 @@ const Contact = () => {
                         Get In Touch
                     </motion.h2>
                     <motion.p variants={itemVariants} className="section-subtitle">
-                        Have a project in mind? Let's work together
+                        Have a project in mind? Let&apos;s work together
                     </motion.p>
                 </motion.div>
 
@@ -207,9 +207,9 @@ const Contact = () => {
                         className="space-y-8"
                     >
                         <motion.div variants={itemVariants}>
-                            <h3 className="text-2xl font-bold font-display mb-4 text-white">Let's Connect</h3>
+                            <h3 className="text-2xl font-bold font-display mb-4 text-white">Let&apos;s Connect</h3>
                             <p className="text-gray-400 leading-relaxed mb-8">
-                                I'm always looking for new opportunities and interesting projects.
+                                I&apos;m always looking for new opportunities and interesting projects.
                                 Whether you have a question or just want to say hi, feel free to reach out!
                             </p>
                         </motion.div>
