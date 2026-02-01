@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaStar, FaWrench, FaLightbulb, FaChartLine, FaComment } from 'react-icons/fa';
+import { FaTimes, FaStar, FaWrench, FaLightbulb, FaChartLine, FaComment, FaCheckCircle } from 'react-icons/fa';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
     const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
     });
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null); // { type: 'success' | 'error', message: '' }
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -57,7 +59,7 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                 message: 'Thanks! Your feedback has been submitted for review.'
             });
 
-            // Close after delay
+            // Redirect after delay
             setTimeout(() => {
                 onClose();
                 setFormData({
@@ -65,7 +67,8 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                     type: 'simple', message: '', problem: '', solution: '', outcome: '', tags: ''
                 });
                 setStatus(null);
-            }, 3000);
+                navigate('/testimonials');
+            }, 2000);
 
         } catch (error) {
             console.error(error);
@@ -189,8 +192,8 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                                         type="button"
                                         onClick={() => setFormData({ ...formData, type: 'simple' })}
                                         className={`flex-1 py-2 text-sm font-medium rounded-md transition-all flex items-center justify-center gap-2 ${formData.type === 'simple'
-                                                ? 'bg-primary-500 text-white shadow-lg'
-                                                : 'text-gray-400 hover:text-white'
+                                            ? 'bg-primary-500 text-white shadow-lg'
+                                            : 'text-gray-400 hover:text-white'
                                             }`}
                                     >
                                         <FaComment /> Simple
@@ -199,8 +202,8 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                                         type="button"
                                         onClick={() => setFormData({ ...formData, type: 'structured' })}
                                         className={`flex-1 py-2 text-sm font-medium rounded-md transition-all flex items-center justify-center gap-2 ${formData.type === 'structured'
-                                                ? 'bg-primary-500 text-white shadow-lg'
-                                                : 'text-gray-400 hover:text-white'
+                                            ? 'bg-primary-500 text-white shadow-lg'
+                                            : 'text-gray-400 hover:text-white'
                                             }`}
                                     >
                                         <FaWrench /> Problem/Solution
@@ -290,9 +293,16 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full btn-primary py-3"
+                                    className="w-full btn-primary py-3 flex justify-center items-center gap-2"
                                 >
-                                    {loading ? 'Submitting...' : 'Submit Testimonial'}
+                                    {loading ? (
+                                        <>
+                                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                            <span>Submitting...</span>
+                                        </>
+                                    ) : (
+                                        'Submit Testimonial'
+                                    )}
                                 </button>
                             </form>
                         ) : (

@@ -112,7 +112,7 @@ const Testimonials = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ delay: 0.5 }}
-                    className="text-center"
+                    className="flex flex-col items-center gap-4 mt-8"
                 >
                     <button
                         onClick={() => setIsModalOpen(true)}
@@ -121,9 +121,13 @@ const Testimonials = () => {
                         <FaPlus className="text-xs group-hover:rotate-90 transition-transform" />
                         Leave Feedback
                     </button>
-                    <p className="mt-4 text-xs text-gray-500">
-                        * New testimonials are reviewed before appearing.
-                    </p>
+
+                    <a
+                        href="/testimonials"
+                        className="text-sm text-gray-400 hover:text-white transition-colors border-b border-transparent hover:border-white pb-0.5"
+                    >
+                        View All Client Stories
+                    </a>
                 </motion.div>
             </div>
 
@@ -133,7 +137,7 @@ const Testimonials = () => {
                 onClose={() => setIsModalOpen(false)}
                 API_URL={API_URL}
             />
-        </section>
+        </section >
     );
 };
 

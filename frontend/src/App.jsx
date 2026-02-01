@@ -16,6 +16,8 @@ import AdminDashboard from './components/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AnimatePresence } from 'framer-motion';
 
+import TestimonialsPage from './components/TestimonialsPage';
+
 const Home = () => (
   <>
     <Navbar />
@@ -46,6 +48,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/resume" element={<Resume />} />
+              <Route path="/testimonials" element={<TestimonialsPage />} />
 
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
