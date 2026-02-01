@@ -21,7 +21,6 @@ const testimonialSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: [true, 'Phone number is required'],
         trim: true,
         match: [/^[0-9+\-\s()]{10,20}$/, 'Please fill a valid phone number'],
     },
