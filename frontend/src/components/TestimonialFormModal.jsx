@@ -72,9 +72,13 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
 
         } catch (error) {
             console.error(error);
+            const errorMsg = error.response?.data?.errors
+                ? error.response.data.errors.map(e => e.msg).join(', ')
+                : error.response?.data?.message || 'Something went wrong. Please try again.';
+
             setStatus({
                 type: 'error',
-                message: error.response?.data?.message || 'Something went wrong. Please try again.'
+                message: errorMsg
             });
         } finally {
             setLoading(false);
