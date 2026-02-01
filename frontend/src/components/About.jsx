@@ -33,7 +33,7 @@ const About = () => {
         <section
             id="about"
             ref={ref}
-            className="py-16 md:py-24 bg-transparent"
+            className="py-10 md:py-16 bg-transparent"
         >
             <div className="section-container">
                 <motion.div

@@ -89,7 +89,7 @@ const Contact = () => {
     };
 
     return (
-        <section id="contact" className="py-16 md:py-24 bg-transparent border-t border-white/5" ref={ref}>
+        <section id="contact" className="pt-2 md:pt-4 pb-10 md:pb-16 bg-transparent border-t border-white/5" ref={ref}>
             <div className="section-container">
                 <motion.div
                     initial="hidden"
@@ -180,8 +180,8 @@ const Contact = () => {
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     className={`p-4 rounded-lg text-sm ${submitStatus.type === 'success'
-                                            ? 'bg-green-500/10 text-green-400 border border-green-500/20'
-                                            : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                                        ? 'bg-green-500/10 text-green-400 border border-green-500/20'
+                                        : 'bg-red-500/10 text-red-400 border border-red-500/20'
                                         }`}
                                 >
                                     {submitStatus.message}

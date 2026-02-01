@@ -9,15 +9,15 @@ const LoadingScreen = ({ onComplete }) => {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        // Show greeting for 800ms
+        // Show greeting for 600ms
         const timeout = setTimeout(() => {
             if (index < greetings.length - 1) {
                 setIndex(prev => prev + 1);
             } else {
-                // Determine when to finish (500ms after last greeting)
-                setTimeout(onComplete, 500);
+                // Determine when to finish (200ms after last greeting)
+                setTimeout(onComplete, 200);
             }
-        }, 800);
+        }, 600);
 
         return () => clearTimeout(timeout);
     }, [index, onComplete]);

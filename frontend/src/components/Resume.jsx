@@ -6,7 +6,7 @@ const Resume = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white text-gray-900 p-8 md:p-16 printable">
+        <div className="min-h-screen bg-white text-gray-900 p-4 md:p-8 printable">
             <div className="max-w-4xl mx-auto bg-white shadow-xl p-12 md:p-16 relative">
                 {/* Print Button */}
                 <button

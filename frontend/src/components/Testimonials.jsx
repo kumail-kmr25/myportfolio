@@ -98,7 +98,7 @@ const Testimonials = () => {
     };
 
     return (
-        <section id="testimonials" className="py-16 md:py-24 bg-transparent border-t border-white/5" ref={ref}>
+        <section id="testimonials" className="pt-10 md:pt-16 pb-2 md:pb-4 bg-transparent border-t border-white/5" ref={ref}>
             <div className="section-container">
                 <motion.div
                     initial="hidden"

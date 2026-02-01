@@ -35,15 +35,36 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
                     {/* Logo */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-2xl font-bold font-display tracking-tight z-50"
-                    >
-                        <span className="text-white">Kumale</span>
-                        <span className="text-primary-500">.</span>
-                    </motion.div>
+                    <div className="flex items-center gap-1 z-50">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.5 }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="relative group cursor-pointer"
+                        >
+                            <Link
+                                to="home"
+                                smooth={true}
+                                duration={500}
+                                className="relative inline-flex items-center justify-center px-5 py-2 overflow-hidden font-bold rounded-full group bg-white/5 border border-white/10 hover:border-primary-500/50 transition-all duration-300 logo-button"
+                            >
+                                <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-primary-500 rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+                                <div className="flex items-center gap-1">
+                                    <span className="text-2xl font-display tracking-tight logo-shine font-extrabold">
+                                        Kumale
+                                    </span>
+                                    <div className="flex items-center justify-center">
+                                        <span className="relative flex h-2 w-2">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </Link>
+                        </motion.div>
+                    </div>
 
                     {/* Desktop Links */}
                     <div className="hidden lg:flex items-center space-x-8">

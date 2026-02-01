@@ -41,7 +41,7 @@ const Hero = () => {
     return (
         <section
             id="home"
-            className="flex items-center justify-center relative pt-24 pb-12 lg:min-h-screen"
+            className="flex items-center justify-center relative pt-24 pb-8 lg:min-h-screen"
         >
             <div className="section-container relative z-10">
                 <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
