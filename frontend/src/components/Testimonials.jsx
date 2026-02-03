@@ -4,6 +4,7 @@ import { FaPlus } from 'react-icons/fa';
 import axios from 'axios';
 import TestimonialCard from './TestimonialCard';
 import TestimonialFormModal from './TestimonialFormModal';
+import config from '../config';
 
 const Testimonials = () => {
     const ref = useRef(null);
@@ -13,7 +14,7 @@ const Testimonials = () => {
     const [isFetching, setIsFetching] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const { API_URL } = config;
 
     useEffect(() => {
         const fetchTestimonials = async () => {

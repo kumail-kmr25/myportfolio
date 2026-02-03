@@ -6,13 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import TestimonialCard from './TestimonialCard';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import config from '../config';
 
 const TestimonialsPage = () => {
     const [testimonials, setTestimonials] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const { API_URL } = config;
 
     useEffect(() => {
         const fetchTestimonials = async () => {

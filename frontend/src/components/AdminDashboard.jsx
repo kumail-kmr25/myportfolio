@@ -3,6 +3,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FaCheck, FaTrash, FaSignOutAlt, FaStar, FaClock } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import config from '../config';
 
 const AdminDashboard = () => {
     const [testimonials, setTestimonials] = useState([]);
@@ -10,7 +11,7 @@ const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('pending');
     const navigate = useNavigate();
 
-    const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
+    const { API_URL } = config;
     const token = localStorage.getItem('adminToken');
 
     useEffect(() => {

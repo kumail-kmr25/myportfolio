@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { FaLock } from 'react-icons/fa';
+import config from '../config';
 
 const AdminLogin = () => {
     const [formData, setFormData] = useState({ username: '', password: '' });
@@ -10,7 +11,7 @@ const AdminLogin = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
+    const { API_URL } = config;
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
