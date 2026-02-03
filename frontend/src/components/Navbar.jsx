@@ -41,7 +41,7 @@ const Navbar = () => {
                     duration={500}
                     className="text-xl font-bold text-white tracking-tighter cursor-pointer flex items-center gap-2 group"
                 >
-                    Kumale Bhat
+                    kumail kmr
                     <div className="w-1.5 h-1.5 rounded-full bg-white opacity-20 group-hover:opacity-100 transition-opacity duration-200" />
                 </Link>
 

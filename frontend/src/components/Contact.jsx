@@ -13,11 +13,12 @@ const Contact = () => {
     const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
 
     const services = [
-        'Bug Fixing & Error Resolution',
-        'Authentication Stabilization',
-        'API & Backend Recovery',
-        'Performance Audit & Fix',
-        'Full-Stack Stabilization',
+        'Full Stack Development',
+        'UI/UX Design',
+        'Frontend Development',
+        'Backend Development',
+        'Database Architecture',
+        'DevOps and Cloud',
     ];
 
     const handleSubmit = async (e) => {

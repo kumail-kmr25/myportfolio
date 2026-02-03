@@ -71,7 +71,7 @@ const About = () => {
                     {/* Right Column: Content */}
                     <div className="space-y-8">
                         <motion.div variants={itemVariants} className="space-y-4">
-                            <h2 className="section-title text-left">The Journey</h2>
+                            <h2 className="section-title text-left">Kumale Ali Bhat</h2>
                             <h3 className="text-2xl font-bold text-white">From Hello World to Production</h3>
                             <p className="text-gray-400 leading-relaxed text-lg">
                                 My journey began with a simple curiosity about how websites worked. That curiosity quickly turned into a passion for building.
