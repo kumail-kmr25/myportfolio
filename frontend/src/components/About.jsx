@@ -85,6 +85,26 @@ const About = () => {
                         </motion.div>
 
                         <motion.div variants={itemVariants} className="space-y-6">
+                            <h3 className="text-lg font-bold uppercase tracking-widest text-gray-500">Why I&apos;m Trusted</h3>
+                            <div className="space-y-4">
+                                {[
+                                    { label: 'System Recovery', sub: 'I fix deep-seated bugs that others miss.' },
+                                    { label: 'Security First', sub: 'Hardened JWT and session management flows.' },
+                                    { label: 'Performance', sub: 'Sub-second API responses and optimized frontend state.' },
+                                    { label: 'Reliability', sub: 'Clean code built for long-term production stability.' }
+                                ].map((item, index) => (
+                                    <div key={index} className="flex items-start gap-4">
+                                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-white/20 shrink-0" />
+                                        <div>
+                                            <p className="text-white font-semibold text-base">{item.label}</p>
+                                            <p className="text-gray-500 text-sm leading-relaxed">{item.sub}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+
+                        <motion.div variants={itemVariants} className="space-y-6">
                             <h3 className="text-lg font-bold uppercase tracking-widest text-gray-500">Tech Arsenal</h3>
                             <div className="flex flex-wrap gap-6">
                                 {techStack.map((tech, index) => (

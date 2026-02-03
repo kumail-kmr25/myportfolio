@@ -14,10 +14,15 @@ const Contact = () => {
 
     const services = [
         'Full Stack Development',
+        'Bug Fixing & Error Resolution',
         'UI/UX Design',
+        'Authentication Stabilization',
         'Frontend Development',
+        'API & Backend Recovery',
         'Backend Development',
+        'Performance Audit & Fix',
         'Database Architecture',
+        'Full-Stack Stabilization',
         'DevOps and Cloud',
     ];
 
