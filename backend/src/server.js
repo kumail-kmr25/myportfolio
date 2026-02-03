@@ -64,20 +64,56 @@ app.use(errorHandler);
 // Database connection
 const connectDB = require('./config/db');
 
+// Graceful shutdown function
+const gracefulShutdown = (server) => {
+    return () => {
+        console.log('🛑 Received kill signal, shutting down gracefully');
+        server.close(() => {
+            console.log('✅ Closed out remaining connections');
+            process.exit(0);
+        });
+
+        // Force close if it takes too long
+        setTimeout(() => {
+            console.error('❌ Could not close connections in time, forcefully shutting down');
+            process.exit(1);
+        }, 10000);
+    };
+};
+
 // Start server
 const startServer = async () => {
-    await connectDB();
+    try {
+        await connectDB();
 
-    app.listen(PORT, () => {
-        console.log(`🚀 Server is running on port ${PORT}`);
-        console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-    });
+        const server = app.listen(PORT, () => {
+            console.log(`🚀 Server is running on port ${PORT}`);
+            console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+        });
+
+        // Handle termination signals
+        process.on('SIGTERM', gracefulShutdown(server));
+        process.on('SIGINT', gracefulShutdown(server));
+
+    } catch (error) {
+        console.error('❌ Failed to start server:', error.message);
+        process.exit(1);
+    }
 };
 
 startServer();
 
-// Handle unhandled promise rejections
+// Handle unhandled promise rejections (Don't crash immediately)
 process.on('unhandledRejection', (err) => {
     console.error('❌ Unhandled Rejection:', err.message);
-    process.exit(1);
+    // console.error(err.stack); // Optional: log stack trace
+    // Only exit if critical, otherwise keep running
+    // process.exit(1); 
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+    console.error('❌ Uncaught Exception:', err.message);
+    console.error(err.stack);
+    // process.exit(1); // Optional: Restart is usually safer, but for stability we log and monitor
 });
