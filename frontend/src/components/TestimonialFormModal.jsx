@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaStar, FaWrench, FaLightbulb, FaChartLine, FaComment, FaCheckCircle } from 'react-icons/fa';
+import { FaTimes, FaStar, FaWrench, FaLightbulb, FaChartLine, FaCheck } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,15 +11,15 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
         email: '',
         projectType: '',
         rating: 5,
-        type: 'simple', // 'simple' or 'structured'
+        type: 'simple',
         message: '',
         problem: '',
         solution: '',
         outcome: '',
-        tags: '' // comma separated string
+        tags: ''
     });
     const [loading, setLoading] = useState(false);
-    const [status, setStatus] = useState(null); // { type: 'success' | 'error', message: '' }
+    const [status, setStatus] = useState(null);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -32,34 +32,26 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
         setStatus(null);
 
         try {
-            // Prepare payload
             const payload = {
                 ...formData,
                 tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean)
             };
 
-            // If simple, clear structured fields just in case
             if (formData.type === 'simple') {
                 delete payload.problem;
                 delete payload.solution;
                 delete payload.outcome;
-            } else {
-                // For structured, we can use 'message' as a summary or concatenation if backend requires it.
-                // But backend validation requires 'message'. So we should ensuring message is populated.
-                // Let's auto-generate message if it's empty for structured
-                if (!payload.message) {
-                    payload.message = `${payload.problem} -> ${payload.outcome}`;
-                }
+            } else if (!payload.message) {
+                payload.message = `${payload.problem} -> ${payload.outcome}`;
             }
 
             await axios.post(`${API_URL}/api/testimonials`, payload);
 
             setStatus({
                 type: 'success',
-                message: 'Thanks! Your feedback has been submitted for review.'
+                message: 'Inquiry Verification: Your records have been submitted for review.'
             });
 
-            // Redirect after delay
             setTimeout(() => {
                 onClose();
                 setFormData({
@@ -72,9 +64,7 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
 
         } catch (error) {
             console.error(error);
-            const errorMsg = error.response?.data?.errors
-                ? error.response.data.errors.map(e => e.msg).join(', ')
-                : error.response?.data?.message || 'Something went wrong. Please try again.';
+            const errorMsg = error.response?.data?.message || 'Submission error. Please verify requirements.';
 
             setStatus({
                 type: 'error',
@@ -95,144 +85,129 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={onClose}
-                    className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/90 backdrop-blur-md"
                 />
 
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    className="relative bg-[#0f1014] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="relative bg-[#050505] border border-white/[0.05] rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl"
                 >
                     <button
                         onClick={onClose}
-                        className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                        className="absolute top-8 right-8 text-gray-600 hover:text-white transition-colors"
                     >
                         <FaTimes />
                     </button>
 
-                    <div className="p-6 md:p-8">
-                        <h3 className="text-2xl font-bold font-display text-white mb-2">Share Your Experience</h3>
-                        <p className="text-gray-400 mb-6 text-sm">Your feedback helps me improve and helps others trust my work.</p>
+                    <div className="p-8 md:p-12">
+                        <header className="mb-12">
+                            <h3 className="text-3xl font-bold text-white mb-3">Validation Input</h3>
+                            <p className="text-gray-500 text-sm">Provide feedback on the architectural intervention or system stabilization performed.</p>
+                        </header>
 
                         {!status || status.type === 'error' ? (
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                {/* Basic Info */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <form onSubmit={handleSubmit} className="space-y-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div>
-                                        <label className="block text-xs font-medium text-gray-400 mb-1">Name *</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Professional Name</label>
                                         <input
                                             required
                                             type="text"
                                             name="name"
                                             value={formData.name}
                                             onChange={handleChange}
-                                            className="input-field py-2"
-                                            placeholder="Your Name"
+                                            className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-white/20 transition-colors text-sm"
+                                            placeholder="John Doe"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-medium text-gray-400 mb-1">Company / Role *</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Corporate Role / Entity</label>
                                         <input
                                             required
                                             type="text"
                                             name="role"
                                             value={formData.role}
                                             onChange={handleChange}
-                                            className="input-field py-2"
-                                            placeholder="CEO @ Startup"
+                                            className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-white/20 transition-colors text-sm"
+                                            placeholder="CTO @ TechGlobal"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-medium text-gray-400 mb-1">Email (Private) *</label>
-                                        <input
-                                            required
-                                            type="email"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            className="input-field py-2"
-                                            placeholder="For verification only"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs font-medium text-gray-400 mb-1">Project Type</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Project Domain</label>
                                         <input
                                             type="text"
                                             name="projectType"
                                             value={formData.projectType}
                                             onChange={handleChange}
-                                            className="input-field py-2"
-                                            placeholder="e.g. Portfolio Website"
+                                            className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-white/20 transition-colors text-sm"
+                                            placeholder="e.g. API Stabilization"
                                         />
                                     </div>
-                                </div>
-
-                                {/* Rating */}
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-400 mb-1">Rating</label>
-                                    <div className="flex gap-2">
-                                        {[...Array(5)].map((_, i) => (
-                                            <button
-                                                key={i}
-                                                type="button"
-                                                onClick={() => setFormData({ ...formData, rating: i + 1 })}
-                                                className="focus:outline-none transition-transform hover:scale-110"
-                                            >
-                                                <FaStar
-                                                    className={`w-6 h-6 ${(formData.rating || 0) > i
-                                                        ? 'text-yellow-400'
-                                                        : 'text-gray-700 hover:text-gray-500'
-                                                        }`}
-                                                />
-                                            </button>
-                                        ))}
+                                    <div>
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Performance Rating</label>
+                                        <div className="flex gap-2 py-2">
+                                            {[...Array(5)].map((_, i) => (
+                                                <button
+                                                    key={i}
+                                                    type="button"
+                                                    onClick={() => setFormData({ ...formData, rating: i + 1 })}
+                                                    className="focus:outline-none"
+                                                >
+                                                    <FaStar
+                                                        className={`w-5 h-5 ${(formData.rating || 0) > i
+                                                            ? 'text-white'
+                                                            : 'text-white/10 hover:text-white/30'
+                                                            } transition-colors`}
+                                                    />
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Feedback Type Toggle */}
-                                <div className="bg-white/5 p-1 rounded-lg flex gap-1">
+                                <div className="flex gap-4 p-1 rounded-xl bg-white/[0.03] border border-white/[0.05]">
                                     <button
                                         type="button"
                                         onClick={() => setFormData({ ...formData, type: 'simple' })}
-                                        className={`flex-1 py-2 text-sm font-medium rounded-md transition-all flex items-center justify-center gap-2 ${formData.type === 'simple'
-                                            ? 'bg-primary-500 text-white shadow-lg'
-                                            : 'text-gray-400 hover:text-white'
+                                        className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all ${formData.type === 'simple'
+                                            ? 'bg-white text-black'
+                                            : 'text-gray-500 hover:text-white'
                                             }`}
                                     >
-                                        <FaComment /> Simple
+                                        Executive Summary
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => setFormData({ ...formData, type: 'structured' })}
-                                        className={`flex-1 py-2 text-sm font-medium rounded-md transition-all flex items-center justify-center gap-2 ${formData.type === 'structured'
-                                            ? 'bg-primary-500 text-white shadow-lg'
-                                            : 'text-gray-400 hover:text-white'
+                                        className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all ${formData.type === 'structured'
+                                            ? 'bg-white text-black'
+                                            : 'text-gray-500 hover:text-white'
                                             }`}
                                     >
-                                        <FaWrench /> Problem/Solution
+                                        Technical Audit
                                     </button>
                                 </div>
 
-                                {/* Text Areas */}
                                 {formData.type === 'simple' ? (
-                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                        <label className="block text-xs font-medium text-gray-400 mb-1">Message *</label>
+                                    <div>
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Observation</label>
                                         <textarea
                                             required
                                             name="message"
                                             rows="4"
                                             value={formData.message}
                                             onChange={handleChange}
-                                            className="input-field resize-none"
-                                            placeholder="What was it like working with me?"
+                                            className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-white/20 transition-colors text-sm resize-none"
+                                            placeholder="Describe the engagement and results..."
                                         />
-                                    </motion.div>
+                                    </div>
                                 ) : (
-                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+                                    <div className="space-y-6">
                                         <div>
-                                            <label className="flex items-center gap-2 text-xs font-medium text-red-400 mb-1">
-                                                <FaWrench /> The Problem *
+                                            <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-2 flex items-center gap-2">
+                                                <FaWrench className="text-[8px]" /> Anomaly / Problem
                                             </label>
                                             <textarea
                                                 required
@@ -240,13 +215,13 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                                                 rows="2"
                                                 value={formData.problem}
                                                 onChange={handleChange}
-                                                className="input-field resize-none border-red-500/20 focus:border-red-500/50"
-                                                placeholder="What challenge were you facing?"
+                                                className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-white/20 transition-colors text-sm resize-none"
+                                                placeholder="What baseline issues were identified?"
                                             />
                                         </div>
                                         <div>
-                                            <label className="flex items-center gap-2 text-xs font-medium text-blue-400 mb-1">
-                                                <FaLightbulb /> The Solution *
+                                            <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-2 flex items-center gap-2">
+                                                <FaLightbulb className="text-[8px]" /> Intervention Applied
                                             </label>
                                             <textarea
                                                 required
@@ -254,13 +229,13 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                                                 rows="2"
                                                 value={formData.solution}
                                                 onChange={handleChange}
-                                                className="input-field resize-none border-blue-500/20 focus:border-blue-500/50"
-                                                placeholder="How did I help fix or build it?"
+                                                className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-white/20 transition-colors text-sm resize-none"
+                                                placeholder="What surgical fixes were implemented?"
                                             />
                                         </div>
                                         <div>
-                                            <label className="flex items-center gap-2 text-xs font-medium text-green-400 mb-1">
-                                                <FaChartLine /> The Result *
+                                            <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-2 flex items-center gap-2">
+                                                <FaChartLine className="text-[8px]" /> Measured Outcome
                                             </label>
                                             <textarea
                                                 required
@@ -268,28 +243,27 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                                                 rows="2"
                                                 value={formData.outcome}
                                                 onChange={handleChange}
-                                                className="input-field resize-none border-green-500/20 focus:border-green-500/50"
-                                                placeholder="What was the outcome? (e.g. 20% faster load time)"
+                                                className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-white/20 transition-colors text-sm resize-none"
+                                                placeholder="Specify quantifiable results (e.g. 50ms latency reduced)..."
                                             />
                                         </div>
-                                    </motion.div>
+                                    </div>
                                 )}
 
-                                {/* Tags */}
                                 <div>
-                                    <label className="block text-xs font-medium text-gray-400 mb-1">Skills/Tags Used</label>
+                                    <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Core Technologies (Optional)</label>
                                     <input
                                         type="text"
                                         name="tags"
                                         value={formData.tags}
                                         onChange={handleChange}
-                                        className="input-field py-2"
-                                        placeholder="React, CSS, Bug Fix (comma separated)"
+                                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-white/20 transition-colors text-sm"
+                                        placeholder="Comma-separated e.g. Node.js, AWS, Redis"
                                     />
                                 </div>
 
                                 {status?.type === 'error' && (
-                                    <div className="text-red-400 text-sm bg-red-500/10 p-3 rounded-lg border border-red-500/20">
+                                    <div className="text-red-400 text-xs font-medium bg-red-500/5 p-4 rounded-xl border border-red-500/10">
                                         {status.message}
                                     </div>
                                 )}
@@ -297,29 +271,22 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full btn-primary py-3 flex justify-center items-center gap-2"
+                                    className="w-full btn-primary py-4 text-sm font-bold uppercase tracking-[0.2em]"
                                 >
-                                    {loading ? (
-                                        <>
-                                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                            <span>Submitting...</span>
-                                        </>
-                                    ) : (
-                                        'Submit Testimonial'
-                                    )}
+                                    {loading ? 'Processing Submission...' : 'Transmit Validation'}
                                 </button>
                             </form>
                         ) : (
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                className="text-center py-12"
+                                className="py-20 text-center"
                             >
-                                <div className="w-16 h-16 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                                    <FaCheckCircle />
+                                <div className="w-16 h-16 bg-white/5 text-white rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <FaCheck className="text-xl" />
                                 </div>
-                                <h4 className="text-xl font-bold text-white mb-2">Thank You!</h4>
-                                <p className="text-gray-400">Your feedback has been submitted successfully.</p>
+                                <h4 className="text-2xl font-bold text-white mb-3">Submission Received</h4>
+                                <p className="text-gray-500 text-sm max-w-sm mx-auto leading-relaxed">Your professional validation has been successfully recorded. Redirecting to validation registry...</p>
                             </motion.div>
                         )}
                     </div>

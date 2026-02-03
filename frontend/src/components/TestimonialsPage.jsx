@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaHome, FaQuoteLeft } from 'react-icons/fa';
+import { FaArrowLeft } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import TestimonialCard from './TestimonialCard';
@@ -27,6 +27,7 @@ const TestimonialsPage = () => {
         };
 
         fetchTestimonials();
+        window.scrollTo(0, 0);
     }, [API_URL]);
 
     const containerVariants = {
@@ -38,37 +39,45 @@ const TestimonialsPage = () => {
     };
 
     const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 }
+        hidden: { opacity: 0, y: 10 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.3 }
+        }
     };
 
     return (
-        <div className="bg-[#050505] min-h-screen flex flex-col">
+        <div className="bg-[#050505] min-h-screen flex flex-col font-sans">
             <Navbar />
 
-            <main className="flex-grow pt-32 pb-20 px-4 md:px-8">
-                <div className="max-w-7xl mx-auto">
+            <main className="flex-grow pt-40 pb-24">
+                <div className="section-container !py-0">
                     <motion.div
-                        initial={{ opacity: 0, y: -20 }}
+                        initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-center mb-16"
+                        className="mb-20"
                     >
                         <button
                             onClick={() => navigate('/')}
-                            className="mb-8 inline-flex items-center gap-2 text-primary-400 hover:text-white transition-colors"
+                            className="mb-12 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-white transition-colors group"
                         >
-                            <FaHome /> Back to Home
+                            <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" />
+                            Back to Core Portfolio
                         </button>
 
-                        <h1 className="section-title mb-6">Client Success Stories</h1>
-                        <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-                            See what people are saying about their experience working with me.
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 tracking-tight">
+                            Client <span className="text-gray-500">Validation</span>
+                        </h1>
+                        <p className="text-lg text-gray-400 max-w-2xl leading-relaxed">
+                            A record of performance across diverse production environments.
+                            These insights reflect the measurable impact of stabilization and architectural recovery.
                         </p>
                     </motion.div>
 
                     {loading ? (
                         <div className="flex justify-center py-20">
-                            <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
+                            <div className="w-8 h-8 border border-white/10 border-t-white rounded-full animate-spin" />
                         </div>
                     ) : (
                         <motion.div
@@ -86,9 +95,8 @@ const TestimonialsPage = () => {
                                     />
                                 ))
                             ) : (
-                                <div className="col-span-full text-center py-20 bg-white/5 rounded-2xl border border-white/5 border-dashed">
-                                    <FaQuoteLeft className="text-4xl text-white/10 mx-auto mb-4" />
-                                    <p className="text-gray-500">No testimonials published yet.</p>
+                                <div className="col-span-full py-24 text-center border border-white/[0.05] rounded-3xl bg-white/[0.01]">
+                                    <p className="text-gray-500 uppercase tracking-widest text-xs font-bold">No Records Found</p>
                                 </div>
                             )}
                         </motion.div>
