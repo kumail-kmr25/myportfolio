@@ -6,7 +6,7 @@ const Footer = () => {
 
     const socialLinks = [
         { icon: <FaGithub />, href: "https://github.com/kumail-kmr25" },
-        { icon: <FaLinkedin />, href: "https://www.linkedin.com/in/kumale-ali-bhat" },
+        { icon: <FaLinkedin />, href: "https://www.linkedin.com/in/kumale-ali-bhat-6196a0384" },
         { icon: <FaTwitter />, href: "https://x.com/KumailKmr" }
     ];
 

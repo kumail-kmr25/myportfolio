@@ -55,7 +55,7 @@ const Projects = () => {
     };
 
     return (
-        <section id="projects" className="py-24 bg-transparent border-t border-white/[0.05]">
+        <section id="projects" className="bg-transparent border-t border-white/[0.05]">
             <div className="section-container">
                 <motion.div
                     initial="hidden"

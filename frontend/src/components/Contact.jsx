@@ -89,7 +89,7 @@ const Contact = () => {
     };
 
     return (
-        <section id="contact" className="py-24 bg-transparent border-t border-white/[0.05]" ref={ref}>
+        <section id="contact" className="bg-transparent border-t border-white/[0.05]" ref={ref}>
             <div className="section-container">
                 <div className="grid lg:grid-cols-2 gap-20 items-start">
                     <motion.div
@@ -116,7 +116,7 @@ const Contact = () => {
                                 </div>
                             </a>
 
-                            <a href="https://www.linkedin.com/in/kumale-ali-bhat" target="_blank" rel="noopener noreferrer" className="flex items-center gap-6 p-6 rounded-2xl bg-white/[0.03] border border-white/[0.05] hover:border-white/10 transition-colors group">
+                            <a href="https://www.linkedin.com/in/kumale-ali-bhat-6196a0384" target="_blank" rel="noopener noreferrer" className="flex items-center gap-6 p-6 rounded-2xl bg-white/[0.03] border border-white/[0.05] hover:border-white/10 transition-colors group">
                                 <div className="p-3 rounded-lg bg-white/5 text-gray-400 group-hover:text-white transition-colors">
                                     <FaLinkedin className="w-6 h-6" />
                                 </div>

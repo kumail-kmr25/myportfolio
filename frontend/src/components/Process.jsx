@@ -42,7 +42,7 @@ const Process = () => {
     };
 
     return (
-        <section id="process" className="py-24 bg-transparent">
+        <section id="process" className="bg-transparent">
             <div className="section-container">
                 <motion.div
                     initial="hidden"
