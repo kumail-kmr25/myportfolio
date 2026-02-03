@@ -4,23 +4,23 @@ const Process = () => {
     const steps = [
         {
             number: '01',
-            title: 'Audit & Analysis',
-            description: 'You explain the issue, and I analyze the codebase to confirm the root cause and the best solution.'
+            title: 'Diagnostic Audit',
+            description: 'A deep dive into your existing codebase to trace the origin of instability and security gaps.'
         },
         {
             number: '02',
-            title: 'Fix & Refactor',
-            description: 'I fix the bug or build the feature using clean, maintainable code following industry best practices.'
+            title: 'Intervention',
+            description: 'Surgical code fixes and refactoring focused on immediate stabilization and long-term health.'
         },
         {
             number: '03',
-            title: 'Test & Validate',
-            description: 'You test the solution in a staging environment to ensure everything works exactly as expected.'
+            title: 'Validation',
+            description: 'Rigorous testing and end-to-end site verification to ensure 100% bug-free delivery.'
         },
         {
             number: '04',
-            title: 'Deliver & Support',
-            description: 'I push to production and offer optional post-delivery support to ensure long-term stability.'
+            title: 'Deployment',
+            description: 'Controlled production launch with monitoring to guarantee absolute system reliability.'
         }
     ];
 
@@ -28,35 +28,31 @@ const Process = () => {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
-            transition: { staggerChildren: 0.2 }
+            transition: { staggerChildren: 0.1 }
         }
     };
 
     const itemVariants = {
-        hidden: { opacity: 0, x: -20 },
+        hidden: { opacity: 0, y: 10 },
         visible: {
             opacity: 1,
-            x: 0,
-            transition: { duration: 0.5 }
+            y: 0,
+            transition: { duration: 0.3 }
         }
     };
 
     return (
-        <section id="process" className="py-16 md:py-24 bg-dark-surface/30">
+        <section id="process" className="py-24 bg-transparent">
             <div className="section-container">
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
+                    viewport={{ once: true, margin: "-100px" }}
                     variants={containerVariants}
-                    className="text-center mb-16"
+                    className="mb-20"
                 >
-                    <motion.h2 variants={itemVariants} className="section-title">
-                        A Simple Process
-                    </motion.h2>
-                    <motion.p variants={itemVariants} className="section-subtitle mx-auto">
-                        No confusion. No overcomplication. Just a clear path from problem to solution.
-                    </motion.p>
+                    <h2 className="section-title">The Stabilization Process</h2>
+                    <p className="section-subtitle">A controlled, methodical approach to taking your application from broken to production-grade.</p>
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -66,16 +62,16 @@ const Process = () => {
                             variants={itemVariants}
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: "-50px" }}
-                            className="relative p-8 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 group"
+                            viewport={{ once: true, margin: "-100px" }}
+                            className="group relative p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-white/10 transition-all duration-300"
                         >
-                            <span className="absolute -top-4 -left-4 text-6xl font-black text-white/5 group-hover:text-primary-500/10 transition-colors">
-                                {step.number}
+                            <span className="block text-xs font-bold text-gray-600 mb-6 tracking-widest uppercase">
+                                Step {step.number}
                             </span>
-                            <h3 className="text-xl font-bold text-white mb-4 font-display relative z-10">
+                            <h3 className="text-xl font-bold text-white mb-4">
                                 {step.title}
                             </h3>
-                            <p className="text-gray-400 text-sm leading-relaxed relative z-10">
+                            <p className="text-gray-500 text-sm leading-relaxed">
                                 {step.description}
                             </p>
                         </motion.div>
