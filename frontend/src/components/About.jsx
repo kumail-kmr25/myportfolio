@@ -80,27 +80,42 @@ const About = () => {
                     >
                         <motion.div variants={itemVariants}>
                             <h3 className="text-2xl font-bold font-display mb-3 text-white">
-                                My Journey
+                                Why Clients Choose Me
                             </h3>
-                            <p className="text-base text-gray-400 leading-relaxed">
-                                I&apos;m a passionate Full-Stack Developer and Designer focused on creating
-                                fast, scalable, and secure web products. I combine clean code with beautiful design
-                                to deliver production-ready solutions that make a real impact.
+                            <p className="text-base text-gray-400 leading-relaxed mb-6">
+                                I don’t just write code — I fix what’s broken. I specialize in taking unstable, buggy,
+                                or incomplete web applications and turning them into secure, production-ready solutions.
                             </p>
+                            <div className="space-y-3">
+                                {[
+                                    { label: 'Problem-solver mindset', sub: 'I focus on the fix, not just the task' },
+                                    { label: 'Clean, maintainable code', sub: 'Built for longevity and easy handovers' },
+                                    { label: 'Clear communication', sub: 'No technical jargon, just updates and results' },
+                                    { label: 'Fast turnaround', sub: 'Critical fixes delivered when you need them' }
+                                ].map((item, index) => (
+                                    <div key={index} className="flex items-start gap-3">
+                                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
+                                        <div>
+                                            <p className="text-white font-medium text-sm">{item.label}</p>
+                                            <p className="text-gray-500 text-xs">{item.sub}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </motion.div>
 
                         <motion.div variants={itemVariants}>
                             <h4 className="text-lg font-semibold mb-4 text-white">
-                                Key Skills
+                                Core Expertise
                             </h4>
                             <div className="flex flex-wrap justify-center md:justify-start gap-2">
                                 {[
-                                    'Full-Stack Dev',
-                                    'UI/UX Design',
-                                    'API Integration',
-                                    'Database Design',
-                                    'CI/CD & DevOps',
-                                    'Cloud Infrastructure',
+                                    'Bug Resolution',
+                                    'Auth Stabilization',
+                                    'API Architecture',
+                                    'Performance Audit',
+                                    'Database Fixes',
+                                    'Secure Deployment',
                                 ].map((item, index) => (
                                     <span
                                         key={index}

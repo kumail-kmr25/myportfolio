@@ -54,11 +54,10 @@ const Hero = () => {
                     >
                         <motion.div variants={itemVariants} className="mb-4 lg:mb-6">
                             <span className="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-primary-500/10 text-primary-500 border border-primary-500/20 rounded-full text-xs md:text-sm font-semibold mb-4 tracking-wide">
-                                Welcome to my portfolio
+                                Freelance Full-Stack Developer
                             </span>
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-display leading-tight mb-4">
-                                Hi, I&apos;m{' '}
-                                <span className="text-gradient block mt-1">Kumale Ali Bhat</span>
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-display leading-tight mb-4 text-white">
+                                I Fix Broken Web Apps & Build <span className="text-gradient block mt-1">Production-Ready Solutions</span>
                             </h1>
                         </motion.div>
 
@@ -66,34 +65,20 @@ const Hero = () => {
                             variants={itemVariants}
                             className="text-xl md:text-2xl font-medium text-gray-300 mb-6 max-w-lg"
                         >
-                            Full-Stack Developer | Designer | DevOps
+                            React • Node.js • MongoDB • JWT Auth • Bug Fixing • API Stabilization
                         </motion.h2>
 
                         <motion.p
                             variants={itemVariants}
                             className="text-base md:text-lg text-gray-400 mb-8 max-w-xl leading-relaxed"
                         >
-                            Turning ideas into fast, scalable, and secure web products.
+                            I help startups and businesses fix bugs, repair authentication issues, and turn unstable apps into reliable, scalable systems.
                         </motion.p>
 
                         <motion.div
                             variants={itemVariants}
                             className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
                         >
-                            <Link
-                                to="projects"
-                                smooth={true}
-                                duration={500}
-                                offset={-80}
-                                className="w-full sm:w-auto"
-                            >
-                                <motion.button
-                                    whileTap={{ scale: 0.98 }}
-                                    className="btn-primary w-full sm:w-auto"
-                                >
-                                    View Projects
-                                </motion.button>
-                            </Link>
                             <Link
                                 to="contact"
                                 smooth={true}
@@ -103,9 +88,23 @@ const Hero = () => {
                             >
                                 <motion.button
                                     whileTap={{ scale: 0.98 }}
+                                    className="btn-primary w-full sm:w-auto"
+                                >
+                                    Get Your Issue Fixed
+                                </motion.button>
+                            </Link>
+                            <Link
+                                to="projects"
+                                smooth={true}
+                                duration={500}
+                                offset={-80}
+                                className="w-full sm:w-auto"
+                            >
+                                <motion.button
+                                    whileTap={{ scale: 0.98 }}
                                     className="btn-secondary w-full sm:w-auto"
                                 >
-                                    Contact Me
+                                    View My Work
                                 </motion.button>
                             </Link>
                         </motion.div>

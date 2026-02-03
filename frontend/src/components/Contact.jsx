@@ -13,11 +13,11 @@ const Contact = () => {
     const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
 
     const services = [
-        'UI/UX Design',
-        'Frontend Development',
-        'Backend Development',
-        'Database Development',
-        'Full Stack Project',
+        'Bug Fixing & Error Resolution',
+        'Authentication & Authorization',
+        'Backend & API Development',
+        'App Stabilization & Performance',
+        'Full-Stack Solution',
         'Other'
     ];
 
@@ -98,10 +98,10 @@ const Contact = () => {
                     className="text-center mb-12"
                 >
                     <motion.h2 variants={itemVariants} className="section-title">
-                        Get In Touch
+                        Ready to Fix Your App?
                     </motion.h2>
-                    <motion.p variants={itemVariants} className="section-subtitle">
-                        Have a project in mind? Let&apos;s work together
+                    <motion.p variants={itemVariants} className="section-subtitle mx-auto">
+                        If you&apos;re stuck with bugs, broken features, or auth issues — I can help.
                     </motion.p>
                 </motion.div>
 

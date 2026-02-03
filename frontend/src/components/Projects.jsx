@@ -1,47 +1,31 @@
 import { motion } from 'framer-motion';
+import authImage from '../assets/projects/auth-dashboard.png';
+import recoveryImage from '../assets/projects/app-recovery.png';
 
 const Projects = () => {
     const projects = [
         {
-            title: 'Enterprise SaaS Platform',
-            description: 'A comprehensive SaaS platform featuring user authentication, role-based access control, interactive dashboards, and integrated payment processing with Stripe.',
-            tech: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+            title: 'Full-Stack Auth Dashboard',
+            problem: 'Users couldn’t log in and sessions were breaking, leading to high drop-off rates.',
+            solution: 'Implemented robust JWT authentication with secure HttpOnly cookies and fixed backend session logic.',
+            result: '100% stable authentication flow and a secure, role-based admin dashboard.',
+            tech: ['React', 'Node.js', 'Express', 'MongoDB'],
             github: 'https://github.com/kumail-kmr25/saas-platform',
             live: 'https://saas-demo.example.com',
             gradient: 'from-blue-600 to-purple-600',
-            features: ['User Authentication', 'Payment Integration', 'Admin Dashboard'],
-            image: '/assets/projects/saas-dashboard.png'
+            image: authImage
         },
         {
-            title: 'Full-Stack MERN Application',
-            description: 'Complete MERN stack application with advanced admin panel, real-time notifications, data visualization, and comprehensive CRUD operations.',
-            tech: ['MongoDB', 'Express', 'React', 'Node.js'],
+            title: 'Bug Fix & App Recovery',
+            problem: 'React app crashing frequently due to unhandled API errors and race conditions in state management.',
+            solution: 'Refactored API layer with proper error boundaries and optimized state updates using clean React patterns.',
+            result: 'Eliminated 95% of production crashes and improved initial load time by 40%.',
+            tech: ['React', 'Node.js', 'Axios', 'Context API'],
             github: 'https://github.com/kumail-kmr25/mern-admin',
             live: 'https://mern-app.example.com',
             gradient: 'from-green-600 to-teal-600',
-            features: ['Real-time Updates', 'Data Visualization', 'CRUD Operations'],
-            image: '/assets/projects/mern-admin.png'
-        },
-        {
-            title: 'CI/CD DevOps Pipeline',
-            description: 'Automated DevOps infrastructure with containerized deployment, continuous integration/delivery, monitoring, and automated testing.',
-            tech: ['Docker', 'GitHub Actions', 'AWS'],
-            github: 'https://github.com/kumail-kmr25/devops-pipeline',
-            live: '#',
-            gradient: 'from-orange-600 to-red-600',
-            features: ['Auto Deployment', 'Container Orchestration', 'Monitoring'],
-            image: '/assets/projects/devops-pipeline.png'
-        },
-        {
-            title: 'Scalable E-Commerce Platform',
-            description: 'Modern e-commerce platform with product management, shopping cart, order processing, and admin analytics.',
-            tech: ['React', 'Node.js', 'PostgreSQL', 'Redis'],
-            github: 'https://github.com/kumail-kmr25/ecommerce',
-            live: 'https://shop.example.com',
-            gradient: 'from-pink-600 to-purple-600',
-            features: ['Shopping Cart', 'Payment Gateway', 'Inventory System'],
-            image: '/assets/projects/ecommerce-store.png'
-        },
+            image: recoveryImage
+        }
     ];
 
     const containerVariants = {
@@ -108,12 +92,24 @@ const Projects = () => {
 
                             {/* Content */}
                             <div className="flex flex-col flex-grow">
-                                <h3 className="text-2xl font-bold font-display text-white mb-3 group-hover:text-primary-500 transition-colors">
+                                <h3 className="text-2xl font-bold font-display text-white mb-4 group-hover:text-primary-500 transition-colors">
                                     {project.title}
                                 </h3>
-                                <p className="text-gray-400 mb-6 flex-grow">
-                                    {project.description}
-                                </p>
+
+                                <div className="space-y-4 mb-6 flex-grow">
+                                    <div className="p-3 rounded-lg bg-red-500/5 border border-red-500/10">
+                                        <p className="text-xs font-bold text-red-500 uppercase tracking-wider mb-1">Problem</p>
+                                        <p className="text-gray-300 text-sm leading-relaxed">{project.problem}</p>
+                                    </div>
+                                    <div className="p-3 rounded-lg bg-primary-500/5 border border-primary-500/10">
+                                        <p className="text-xs font-bold text-primary-500 uppercase tracking-wider mb-1">What I Fixed</p>
+                                        <p className="text-gray-300 text-sm leading-relaxed">{project.solution}</p>
+                                    </div>
+                                    <div className="p-3 rounded-lg bg-green-500/5 border border-green-500/10">
+                                        <p className="text-xs font-bold text-green-500 uppercase tracking-wider mb-1">Result</p>
+                                        <p className="text-gray-300 text-sm leading-relaxed">{project.result}</p>
+                                    </div>
+                                </div>
 
                                 {/* Tech Stack */}
                                 <div className="flex flex-wrap gap-2 mb-6">

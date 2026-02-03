@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const greetings = [
-    "Hello"
+    "Analyzing Code...",
+    "Patching Vulnerabilities...",
+    "Optimizing Database...",
+    "Stabilizing UI...",
+    "Fix Confirmed."
 ];
 
 const LoadingScreen = ({ onComplete }) => {
@@ -14,10 +18,10 @@ const LoadingScreen = ({ onComplete }) => {
             if (index < greetings.length - 1) {
                 setIndex(prev => prev + 1);
             } else {
-                // Determine when to finish (200ms after last greeting)
-                setTimeout(onComplete, 200);
+                // Determine when to finish (100ms after last greeting)
+                setTimeout(onComplete, 100);
             }
-        }, 600);
+        }, 400);
 
         return () => clearTimeout(timeout);
     }, [index, onComplete]);

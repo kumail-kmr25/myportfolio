@@ -69,10 +69,10 @@ const Testimonials = () => {
                         Testimonials
                     </motion.div>
                     <motion.h2 variants={itemVariants} className="section-title mb-4">
-                        What Clients Say
+                        Client Results
                     </motion.h2>
                     <motion.p variants={itemVariants} className="section-subtitle max-w-2xl mx-auto">
-                        Real feedback from real people I’ve helped through clean code, bug fixing, and responsive design.
+                        Real feedback from businesses and startups I’ve helped through bug fixing, app stabilization, and production-ready code.
                     </motion.p>
                 </motion.div>
 

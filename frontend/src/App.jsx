@@ -17,15 +17,24 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { AnimatePresence } from 'framer-motion';
 
 import TestimonialsPage from './components/TestimonialsPage';
+import ProblemsSolved from './components/ProblemsSolved';
+import Services from './components/Services';
+import Process from './components/Process';
+
+import Stats from './components/Stats';
 
 const Home = () => (
   <>
     <Navbar />
     <main>
       <Hero />
-      <About />
-      <Skills />
+      <Stats />
+      <ProblemsSolved />
+      <Services />
       <Projects />
+      <About />
+      <Process />
+      <Skills />
       <Testimonials />
       <Contact />
     </main>

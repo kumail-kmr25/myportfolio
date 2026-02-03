@@ -20,7 +20,7 @@ const Footer = () => {
                             Kumale Ali Bhat
                         </h3>
                         <p className="text-gray-400 max-w-xs leading-relaxed">
-                            Full-Stack Developer turning complex problems into elegant solutions.
+                            Helping startups fix critical bugs and build production-ready full-stack solutions.
                         </p>
                     </div>
 
@@ -28,13 +28,19 @@ const Footer = () => {
                     <div>
                         <h4 className="text-lg font-semibold mb-6 text-white">Quick Links</h4>
                         <ul className="space-y-3">
-                            {['Home', 'About', 'Skills', 'Projects', 'Contact'].map((link) => (
-                                <li key={link}>
+                            {[
+                                { name: 'Home', id: 'home' },
+                                { name: 'Work', id: 'projects' },
+                                { name: 'Services', id: 'services' },
+                                { name: 'Process', id: 'process' },
+                                { name: 'Contact', id: 'contact' }
+                            ].map((link) => (
+                                <li key={link.id}>
                                     <a
-                                        href={`#${link.toLowerCase()}`}
+                                        href={`#${link.id}`}
                                         className="text-gray-400 hover:text-primary-500 transition-colors duration-200 block w-fit"
                                     >
-                                        {link}
+                                        {link.name}
                                     </a>
                                 </li>
                             ))}

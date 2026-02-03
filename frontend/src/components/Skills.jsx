@@ -53,10 +53,10 @@ const Skills = () => {
                     className="text-center mb-12"
                 >
                     <motion.h2 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="section-title">
-                        Skills & Technologies
+                        Tech Stack
                     </motion.h2>
-                    <motion.p variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="section-subtitle">
-                        The tools I use to bring ideas to life
+                    <motion.p variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="section-subtitle mx-auto">
+                        A robust set of tools I use to build stable, production-ready applications.
                     </motion.p>
 
                     <motion.div

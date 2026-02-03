@@ -21,8 +21,8 @@ const Resume = () => {
 
                 {/* Header */}
                 <header className="border-b-2 border-gray-900 pb-8 mb-8">
-                    <h1 className="text-5xl font-bold mb-4 tracking-tight">KUMALE ALI BHAT</h1>
-                    <h2 className="text-2xl text-gray-600 font-light mb-6">FULL STACK DEVELOPER</h2>
+                    <h1 className="text-5xl font-bold mb-4 tracking-tight uppercase">KUMALE ALI BHAT</h1>
+                    <h2 className="text-2xl text-gray-600 font-light mb-6">FREELANCE FULL STACK DEVELOPER & BUG FIX SPECIALIST</h2>
 
                     <div className="flex flex-wrap gap-6 text-sm text-gray-600 font-medium">
                         <a href="mailto:contact@kumail.dev" className="flex items-center gap-2 hover:text-blue-600">
