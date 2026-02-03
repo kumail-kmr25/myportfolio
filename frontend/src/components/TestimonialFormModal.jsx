@@ -146,6 +146,29 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                                         />
                                     </div>
                                     <div>
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Phone (Optional)</label>
+                                        <input
+                                            type="tel"
+                                            name="phone"
+                                            value={formData.phone || ''} // Ensure controlled input
+                                            onChange={handleChange}
+                                            className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-white/20 transition-colors text-sm"
+                                            placeholder="+1 (555) 000-0000"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Email Address</label>
+                                        <input
+                                            required
+                                            type="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            className="w-full bg-white/[0.03] border border-white/[0.05] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-white/20 transition-colors text-sm"
+                                            placeholder="you@company.com"
+                                        />
+                                    </div>
+                                    <div>
                                         <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Performance Rating</label>
                                         <div className="flex gap-2 py-2">
                                             {[...Array(5)].map((_, i) => (
