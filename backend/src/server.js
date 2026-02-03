@@ -101,7 +101,12 @@ const startServer = async () => {
     }
 };
 
-startServer();
+// Start server only if run directly (not imported)
+if (require.main === module) {
+    startServer();
+}
+
+module.exports = app;
 
 // Handle unhandled promise rejections (Don't crash immediately)
 process.on('unhandledRejection', (err) => {
