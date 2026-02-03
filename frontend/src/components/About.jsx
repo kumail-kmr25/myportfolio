@@ -78,7 +78,7 @@ const About = () => {
                                 Starting with the fundamentals of HTML & CSS, I dived deep into JavaScript and the modern web ecosystem.
                             </p>
                             <p className="text-gray-400 leading-relaxed text-lg">
-                                Today, I specialize in the MERN stack and cloud architectures. I love solving complex problems, whether it's optimizing
+                                Today, I specialize in the MERN stack and cloud architectures. I love solving complex problems, whether it&apos;s optimizing
                                 database queries or creating butter-smooth UI animations. My goal is to build software that is not just functional,
                                 but exceptional.
                             </p>
@@ -133,7 +133,7 @@ const About = () => {
                                 offset={-80}
                             >
                                 <button className="btn-primary">
-                                    Let's collaborate
+                                    Let&apos;s collaborate
                                 </button>
                             </Link>
                         </motion.div>
