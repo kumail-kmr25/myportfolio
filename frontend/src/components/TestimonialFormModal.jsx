@@ -60,7 +60,7 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                 });
                 setStatus(null);
                 navigate('/testimonials');
-            }, 2000);
+            }, 500);
 
         } catch (error) {
             console.error(error);
@@ -296,7 +296,7 @@ const TestimonialFormModal = ({ isOpen, onClose, API_URL }) => {
                                     disabled={loading}
                                     className="w-full btn-primary py-4 text-sm font-bold uppercase tracking-[0.2em]"
                                 >
-                                    {loading ? 'Processing Submission...' : 'Transmit Validation'}
+                                    {loading ? 'Transmitting...' : 'Transmit Validation'}
                                 </button>
                             </form>
                         ) : (
