@@ -11,17 +11,29 @@ import config from '../config';
 const TestimonialsPage = () => {
     const [testimonials, setTestimonials] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const { API_URL } = config;
 
     useEffect(() => {
         const fetchTestimonials = async () => {
+            setLoading(true);
+            setError(null);
             try {
-                const response = await axios.get(`${API_URL}/api/testimonials`);
-                setTestimonials(response.data);
+                const response = await axios.get(`${API_URL}/api/testimonials`, {
+                    timeout: 10000 // 10 second timeout
+                });
+
+                if (Array.isArray(response.data)) {
+                    setTestimonials(response.data);
+                } else {
+                    console.error('Testimonials data is not an array:', response.data);
+                    setTestimonials([]);
+                }
             } catch (error) {
                 console.error('Error fetching testimonials:', error);
+                setError('Failed to retrieve client validation records.');
             } finally {
                 setLoading(false);
             }
@@ -79,6 +91,16 @@ const TestimonialsPage = () => {
                     {loading ? (
                         <div className="flex justify-center py-20">
                             <div className="w-8 h-8 border border-white/10 border-t-white rounded-full animate-spin" />
+                        </div>
+                    ) : error ? (
+                        <div className="py-24 text-center border border-red-500/10 rounded-3xl bg-red-500/5">
+                            <p className="text-red-400 uppercase tracking-widest text-xs font-bold mb-4">{error}</p>
+                            <button
+                                onClick={() => window.location.reload()}
+                                className="text-white/50 hover:text-white transition-colors text-xs uppercase tracking-tighter"
+                            >
+                                Retry Connection
+                            </button>
                         </div>
                     ) : (
                         <motion.div

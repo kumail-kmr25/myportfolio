@@ -12,17 +12,29 @@ const Testimonials = () => {
 
     const [testimonials, setTestimonials] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
+    const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { API_URL } = config;
 
     useEffect(() => {
         const fetchTestimonials = async () => {
+            setIsFetching(true);
+            setError(null);
             try {
-                const response = await axios.get(`${API_URL}/api/testimonials`);
-                setTestimonials(response.data);
+                const response = await axios.get(`${API_URL}/api/testimonials`, {
+                    timeout: 10000 // 10 second timeout
+                });
+
+                if (Array.isArray(response.data)) {
+                    setTestimonials(response.data);
+                } else {
+                    console.error('Testimonials data is not an array:', response.data);
+                    setTestimonials([]);
+                }
             } catch (error) {
                 console.error('Error fetching testimonials:', error);
+                setError('Unable to load testimonials at this time.');
             } finally {
                 setIsFetching(false);
             }
@@ -81,6 +93,16 @@ const Testimonials = () => {
                 {isFetching ? (
                     <div className="flex justify-center items-center py-20 mb-12">
                         <div className="w-10 h-10 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+                    </div>
+                ) : error ? (
+                    <div className="text-center py-20 mb-12 glass-effect rounded-2xl border border-red-500/10">
+                        <p className="text-red-400 mb-4">{error}</p>
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="text-sm text-primary-400 hover:text-primary-300 transition-colors"
+                        >
+                            Try refreshing the page
+                        </button>
                     </div>
                 ) : (
                     <motion.div
