@@ -55,8 +55,8 @@ const Navbar = () => {
                             smooth={true}
                             offset={-80}
                             duration={500}
-                            className="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-white cursor-pointer transition-colors duration-200 activeClass:text-white"
-                            activeClass="!text-white"
+                            className="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-white cursor-pointer transition-all duration-300 activeClass:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
+                            activeClass="!text-white !drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]"
                         >
                             {link.name}
                         </Link>
