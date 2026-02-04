@@ -46,7 +46,7 @@ router.post('/', testimonialValidationRules(), validate, async (req, res, next) 
 
         res.status(201).json({
             success: true,
-            message: 'Testimonial submitted successfully! It will be visible after admin approval.',
+            message: 'Testimonial submitted and published successfully!',
             data: testimonial,
         });
     } catch (error) {

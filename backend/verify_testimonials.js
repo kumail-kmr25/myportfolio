@@ -139,7 +139,13 @@ const runTest = async () => {
         console.log('\n🎉 ALL SYSTEMS GO! Testimonial workflow is 100% operational.');
 
     } catch (error) {
-        console.error('❌ Test Script Error:', error);
+        console.error('⚠️ Verification script notice:', error.message);
+        // If it's a connection error, it might be running during build phase without server
+        if (error.code === 'ECONNREFUSED') {
+            console.log('ℹ️ Server unreachable, skipping verification (expected during build/CI).');
+            process.exit(0);
+        }
+        process.exit(1);
     }
 };
 
