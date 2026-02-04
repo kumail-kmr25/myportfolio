@@ -41,7 +41,7 @@ router.post('/', testimonialValidationRules(), validate, async (req, res, next) 
             outcome,
             tags,
             image,
-            approved: false, // Must be approved by admin
+            approved: true, // Auto-approved for immediate visibility
         });
 
         res.status(201).json({

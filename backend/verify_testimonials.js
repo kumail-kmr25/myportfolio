@@ -95,32 +95,15 @@ const runTest = async () => {
 
         const newTestimonial = allRes.data.find(t => t.email === 'test@example.com' && t.message === testimonialData.message);
 
-        if (newTestimonial && !newTestimonial.approved) {
-            console.log('✅ Found new pending testimonial:', newTestimonial._id);
+        if (newTestimonial && newTestimonial.approved) {
+            console.log('✅ Found new auto-approved testimonial:', newTestimonial._id);
         } else {
-            console.error('❌ Check Failed: Testimonial not found or already approved.');
+            console.error('❌ Check Failed: Testimonial not found or not approved.');
             process.exit(1);
         }
 
-        // 4. Approve Testimonial
-        console.log('\n4️⃣  Approving Testimonial...');
-        const approveRes = await request({
-            hostname: 'localhost',
-            port: 5000,
-            path: `/api/testimonials/${newTestimonial._id}/approve`,
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (approveRes.status === 200) {
-            console.log('✅ Approval Successful');
-        } else {
-            console.error('❌ Approval Failed:', approveRes.data);
-            process.exit(1);
-        }
+        // 4. (Deprecated) Approve Testimonial - Now auto-approved
+        console.log('\n4️⃣  (Skipping Approval - Auto-approved)');
 
         // 5. Verify Public Display
         console.log('\n5️⃣  Verifying Public Endpoint...');
