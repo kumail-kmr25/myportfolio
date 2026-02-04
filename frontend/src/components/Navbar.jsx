@@ -39,10 +39,10 @@ const Navbar = () => {
                     to="home"
                     smooth={true}
                     duration={500}
-                    className="text-xl font-bold text-white tracking-tighter cursor-pointer flex items-center gap-2 group"
+                    className="text-xl font-bold text-white tracking-tighter cursor-pointer flex items-center gap-2 group transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
                 >
                     kumail kmr
-                    <div className="w-1.5 h-1.5 rounded-full bg-white opacity-20 group-hover:opacity-100 transition-opacity duration-200" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-white opacity-20 group-hover:opacity-100 group-hover:shadow-[0_0_10px_#fff] transition-all duration-300" />
                 </Link>
 
                 {/* Desktop Links */}

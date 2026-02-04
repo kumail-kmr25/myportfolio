@@ -83,7 +83,7 @@ const Projects = () => {
                             className="group grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-12 border-b border-white/[0.05] last:border-0"
                         >
                             <div className="space-y-8">
-                                <h3 className="text-3xl font-bold text-white group-hover:text-primary-500 transition-colors">
+                                <h3 className="text-3xl font-bold text-white group-hover:text-white transition-all duration-300 group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
                                     {project.title}
                                 </h3>
 

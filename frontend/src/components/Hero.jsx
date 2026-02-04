@@ -60,7 +60,7 @@ const Hero = () => {
                             duration={500}
                             offset={-80}
                         >
-                            <button className="btn-primary">
+                            <button className="btn-primary hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-all duration-300">
                                 Fix My App
                             </button>
                         </Link>
@@ -70,7 +70,7 @@ const Hero = () => {
                             duration={500}
                             offset={-80}
                         >
-                            <button className="btn-secondary">
+                            <button className="btn-secondary hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] transition-all duration-300">
                                 View Projects
                             </button>
                         </Link>
