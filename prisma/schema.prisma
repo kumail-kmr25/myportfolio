@@ -30,3 +30,14 @@ model ContactSubmission {
   message    String   @db.Text
   created_at DateTime @default(now())
 }
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  tags        String[]
+  image       String
+  demo        String
+  github      String
+  created_at  DateTime @default(now())
+}
