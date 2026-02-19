@@ -251,7 +251,7 @@ export default function Contact() {
                                         </div>
                                     ) : (
                                         <div className="flex items-center justify-center">
-                                            Submit Professional Request
+                                            Submit Request
                                             <Send size={20} className="ml-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                         </div>
                                     )}
