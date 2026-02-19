@@ -26,8 +26,8 @@ export default function About() {
                         <div className="glass-effect p-4 rounded-3xl relative overflow-hidden aspect-square flex items-center justify-center">
                             {/* Using next/image would require configuring domains or local import. Using simple img tag for SVG placeholder for now or standard next/image if configured */}
                             <img
-                                src="/profile.svg"
-                                alt="Kumail Kmr Profile"
+                                src="/profile.jpg"
+                                alt="Kumail Kmr"
                                 className="w-full h-full object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
                             />
                         </div>

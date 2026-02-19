@@ -19,16 +19,16 @@ export default function Footer() {
                 </div>
 
                 <div className="flex space-x-6">
-                    <Link href="#" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                    <Link href="https://github.com/kumail-kmr25" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
                         <Github size={24} />
                     </Link>
-                    <Link href="#" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                    <Link href="https://x.com/KumailKmr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
                         <Twitter size={24} />
                     </Link>
-                    <Link href="#" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                    <Link href="https://www.linkedin.com/in/kumale-ali-bhat-6196a0384/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
                         <Linkedin size={24} />
                     </Link>
-                    <Link href="#" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                    <Link href="https://www.instagram.com/kumail.kmr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
                         <Instagram size={24} />
                     </Link>
                 </div>
