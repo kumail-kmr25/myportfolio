@@ -124,14 +124,14 @@ export default function Testimonials() {
                                             {testimonial.name[0]}
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-white group-hover:text-blue-400 transition-colors">
+                                            <h3 className="font-bold text-white group-hover:text-blue-400 transition-colors">
                                                 {testimonial.name}
                                                 {testimonial.company && (
                                                     <span className="text-gray-500 font-normal text-xs ml-2">
                                                         @{testimonial.company}
                                                     </span>
                                                 )}
-                                            </h4>
+                                            </h3>
                                             <div className="flex flex-col gap-0.5 mt-0.5">
                                                 <p className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">{testimonial.intervention_type}</p>
                                                 <p className="text-[9px] text-gray-500 font-medium uppercase tracking-tight italic">Works as {testimonial.relationship_type}</p>

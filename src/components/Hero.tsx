@@ -14,21 +14,26 @@ export default function Hero() {
     const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
-        const currentRole = roles[roleIndex];
-        const typeSpeed = isDeleting ? 50 : 150;
+        // Delay typing start to prioritize critical rendering path
+        const startDelay = setTimeout(() => {
+            const currentRole = roles[roleIndex];
+            const typeSpeed = isDeleting ? 40 : 100; // Slightly faster deletions, regular typing
 
-        const timer = setTimeout(() => {
-            if (!isDeleting && text === currentRole) {
-                setTimeout(() => setIsDeleting(true), 1500);
-            } else if (isDeleting && text === "") {
-                setIsDeleting(false);
-                setRoleIndex((prev) => (prev + 1) % roles.length);
-            } else {
-                setText(currentRole.substring(0, isDeleting ? text.length - 1 : text.length + 1));
-            }
-        }, typeSpeed);
+            const timer = setTimeout(() => {
+                if (!isDeleting && text === currentRole) {
+                    setTimeout(() => setIsDeleting(true), 2000); // Wait longer on full text
+                } else if (isDeleting && text === "") {
+                    setIsDeleting(false);
+                    setRoleIndex((prev) => (prev + 1) % roles.length);
+                } else {
+                    setText(currentRole.substring(0, isDeleting ? text.length - 1 : text.length + 1));
+                }
+            }, typeSpeed);
 
-        return () => clearTimeout(timer);
+            return () => clearTimeout(timer);
+        }, text === "" && !isDeleting ? 500 : 0); // 500ms initial delay
+
+        return () => clearTimeout(startDelay);
     }, [text, isDeleting, roleIndex]);
 
     return (

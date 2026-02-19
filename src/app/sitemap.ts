@@ -1,30 +1,44 @@
-import { MetadataRoute } from 'next';
+import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
+    const baseUrl = 'https://your-portfolio-url.com' // Replace with your actual domain
+
     return [
         {
-            url: 'https://your-domain.com',
+            url: baseUrl,
             lastModified: new Date(),
-            changeFrequency: 'yearly',
+            changeFrequency: 'monthly',
             priority: 1,
         },
         {
-            url: 'https://your-domain.com/about',
+            url: `${baseUrl}#about`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: 'https://your-domain.com/projects',
+            url: `${baseUrl}#projects`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.5,
+            changeFrequency: 'monthly',
+            priority: 0.8,
         },
         {
-            url: 'https://your-domain.com/contact',
+            url: `${baseUrl}#services`,
             lastModified: new Date(),
-            changeFrequency: 'yearly',
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}#blog`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.6,
+        },
+        {
+            url: `${baseUrl}#contact`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
             priority: 0.5,
         },
-    ];
+    ]
 }

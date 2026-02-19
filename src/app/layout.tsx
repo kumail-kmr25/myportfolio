@@ -15,21 +15,25 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://your-portfolio-url.com'),
   title: "Kumail Kmr | Full Stack Developer & DevOps Engineer",
-  description: "Portfolio of Kumail Kmr - Expert Full Stack Developer, DevOps Engineer, and UI/UX Designer specializing in scalable web applications and premium digital experiences.",
-  keywords: ["Full Stack Developer", "DevOps", "Next.js", "React", "Tailwind CSS", "Web Development", "freelance"],
+  description: "Portfolio of Kumail Kmr - Expert Full Stack Developer, DevOps Engineer, and UI/UX Designer. Explore my featured projects in Next.js, MERN stack, and cloud deployments.",
+  keywords: ["Full Stack Developer", "DevOps Engineer", "Next.js Expert", "Kumail Kmr", "Web Development", "MERN Stack", "React Developer", "Freelance Developer"],
   authors: [{ name: "Kumail Kmr" }],
+  alternatives: {
+    canonical: '/',
+  },
   openGraph: {
     title: "Kumail Kmr | Full Stack Developer",
-    description: "Building high-performance, premium web applications.",
+    description: "Building high-performance, premium web applications with Next.js and DevOps best practices.",
     url: "https://your-portfolio-url.com",
     siteName: "Kumail Kmr Portfolio",
     images: [
       {
-        url: "/hero_background.svg", // Fallback image until a real OG image is added
+        url: "/hero_background.svg",
         width: 1200,
         height: 630,
-        alt: "Kumail Kmr Portfolio",
+        alt: "Kumail Kmr Portfolio - Full Stack Developer",
       },
     ],
     locale: "en_US",
