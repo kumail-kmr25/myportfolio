@@ -14,7 +14,11 @@ import AdminContact from "@/components/admin/AdminContact";
 import AdminProjects from "@/components/admin/AdminProjects";
 import AdminBlog from "@/components/admin/AdminBlog";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Fetch failed");
+    return res.json();
+};
 
 export default function AdminPage() {
     const [email, setEmail] = useState("");
@@ -276,10 +280,10 @@ export default function AdminPage() {
                         {activeTab === "overview" && (
                             <DashboardOverview
                                 stats={{
-                                    testimonials: allTestimonials?.length || 0,
-                                    messages: messages?.length || 0,
-                                    projects: projects?.length || 0,
-                                    blogPosts: blogPosts?.length || 0
+                                    testimonials: Array.isArray(allTestimonials) ? allTestimonials.length : 0,
+                                    messages: Array.isArray(messages) ? messages.length : 0,
+                                    projects: Array.isArray(projects) ? projects.length : 0,
+                                    blogPosts: Array.isArray(blogPosts) ? blogPosts.length : 0
                                 }}
                                 recentActivity={[]}
                             />
@@ -287,7 +291,7 @@ export default function AdminPage() {
 
                         {activeTab === "messages" && (
                             <AdminContact
-                                messages={messages || []}
+                                messages={Array.isArray(messages) ? messages : []}
                                 onToggleReplied={handleToggleReplied}
                                 onDelete={handleMessageDelete}
                             />
@@ -295,7 +299,7 @@ export default function AdminPage() {
 
                         {activeTab === "testimonials" && (
                             <AdminTestimonials
-                                testimonials={allTestimonials || []}
+                                testimonials={Array.isArray(allTestimonials) ? allTestimonials : []}
                                 onApprove={handleTestimonialApproval}
                                 onDelete={handleTestimonialDelete}
                             />
@@ -303,7 +307,7 @@ export default function AdminPage() {
 
                         {activeTab === "projects" && (
                             <AdminProjects
-                                projects={projects || []}
+                                projects={Array.isArray(projects) ? projects : []}
                                 onAdd={handleAddProject}
                                 onDelete={handleProjectDelete}
                             />
@@ -311,7 +315,7 @@ export default function AdminPage() {
 
                         {activeTab === "blog" && (
                             <AdminBlog
-                                posts={blogPosts || []}
+                                posts={Array.isArray(blogPosts) ? blogPosts : []}
                                 onAdd={handleAddBlog}
                                 onDelete={handleBlogDelete}
                             />
