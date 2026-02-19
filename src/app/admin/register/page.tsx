@@ -1,17 +1,14 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Loader2, ShieldCheck, CheckCircle2, Copy, Phone, AlertTriangle } from "lucide-react";
+import { Loader2, ShieldCheck, CheckCircle2, Phone, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
-    const [result, setResult] = useState<{
-        userId: string;
-    } | null>(null);
-    const [copied, setCopied] = useState("");
+    const [success, setSuccess] = useState(false);
 
     // Real-time matching state
     const [matchStatus, setMatchStatus] = useState({
@@ -117,9 +114,7 @@ export default function RegisterPage() {
                 return;
             }
 
-            setResult({
-                userId: data.userId,
-            });
+            setSuccess(true);
         } catch {
             setError("Something went wrong. Please try again.");
         } finally {
@@ -127,45 +122,23 @@ export default function RegisterPage() {
         }
     };
 
-    const copyToClipboard = (text: string, label: string) => {
-        navigator.clipboard.writeText(text);
-        setCopied(label);
-        setTimeout(() => setCopied(""), 2000);
-    };
-
     // ===== SUCCESS SCREEN =====
-    if (result) {
+    if (success) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[#050505] p-6">
-                <div className="w-full max-w-md glass-effect rounded-[2.5rem] p-12 border border-white/10 shadow-2xl">
-                    <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-green-500/10 border border-green-500/20 mb-6">
-                            <CheckCircle2 className="w-8 h-8 text-green-500" />
-                        </div>
-                        <h1 className="text-3xl font-bold text-white">Registration Complete!</h1>
-                        <p className="text-gray-400 mt-2">Save your credentials below.</p>
+                <div className="w-full max-w-md glass-effect rounded-[2.5rem] p-12 border border-white/10 shadow-2xl text-center">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-green-500/10 border border-green-500/20 mb-6">
+                        <CheckCircle2 className="w-10 h-10 text-green-500" />
                     </div>
-
-                    <div className="space-y-4">
-                        <div className="bg-yellow-500/5 rounded-2xl p-4 border border-yellow-500/20">
-                            <p className="text-xs text-yellow-500 uppercase tracking-widest font-bold mb-2">Your User ID</p>
-                            <div className="flex items-center justify-between">
-                                <p className="text-2xl font-mono font-bold text-white">{result.userId}</p>
-                                <button onClick={() => copyToClipboard(result.userId, "userId")} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                                    <Copy className={`w-4 h-4 ${copied === "userId" ? "text-green-400" : "text-gray-400"}`} />
-                                </button>
-                            </div>
+                    <h1 className="text-3xl font-bold text-white mb-3">Registration Complete!</h1>
+                    <div className="bg-white/5 rounded-2xl p-5 border border-white/10 mb-8">
+                        <div className="flex items-center justify-center gap-2 text-green-400 text-sm mb-2">
+                            <Phone className="w-5 h-5" />
+                            <span className="font-semibold">Credentials sent to your phone</span>
                         </div>
-
-                        <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
-                            <div className="flex items-center gap-2 text-green-400 text-sm">
-                                <Phone className="w-4 h-4" />
-                                <span>Credentials sent to your phone via SMS</span>
-                            </div>
-                        </div>
+                        <p className="text-gray-500 text-xs">Check your SMS for your User ID and Password.</p>
                     </div>
-
-                    <Link href="/admin" className="btn-primary w-full mt-8 inline-flex items-center justify-center">
+                    <Link href="/admin" className="btn-primary w-full inline-flex items-center justify-center">
                         Go to Login →
                     </Link>
                 </div>

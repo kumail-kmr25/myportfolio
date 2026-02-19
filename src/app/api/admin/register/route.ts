@@ -5,12 +5,15 @@ import crypto from "crypto";
 import { sendRegistrationSMS } from "@/lib/sms";
 
 /**
- * Generate userId in format: KK25-XXXXXX
- * where XXXXXX = last 6 digits of phone number
+ * Generate a random userId in format: KK-XXXXX
  */
-function generateUserId(phone: string): string {
-    const last6 = phone.slice(-6);
-    return `KK25-${last6}`;
+function generateUserId(): string {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let id = "KK-";
+    for (let i = 0; i < 5; i++) {
+        id += chars.charAt(crypto.randomInt(chars.length));
+    }
+    return id;
 }
 
 /**
@@ -119,7 +122,7 @@ export async function POST(req: Request) {
 
         // Auto-generate strong password
         const generatedPassword = generateStrongPassword();
-        const userId = generateUserId(phone);
+        const userId = generateUserId();
         const hashedPassword = await bcrypt.hash(generatedPassword, 12);
 
         const admin = await prisma.admin.create({
