@@ -1,18 +1,102 @@
 "use client";
 
-import { useState } from "react";
-import { Loader2, ShieldCheck, CheckCircle2, Copy } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Loader2, ShieldCheck, CheckCircle2, Copy, Phone, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 
 export default function RegisterPage() {
-    const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+    const [formData, setFormData] = useState({ name: "", email: "", phone: "", password: "" });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [result, setResult] = useState<{
         userId: string;
-        suggestedStrongPassword: string;
     } | null>(null);
     const [copied, setCopied] = useState("");
+
+    // Real-time matching state
+    const [matchStatus, setMatchStatus] = useState({
+        nameMatch: false,
+        emailMatch: false,
+        phoneMatch: false,
+    });
+    const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
+
+    // Real-time credential verification for yellow spotlight
+    const checkMatch = useCallback(
+        (name: string, email: string, phone: string) => {
+            if (debounceTimer) clearTimeout(debounceTimer);
+
+            const timer = setTimeout(async () => {
+                if (!name && !email && !phone) {
+                    setMatchStatus({ nameMatch: false, emailMatch: false, phoneMatch: false });
+                    return;
+                }
+
+                try {
+                    const params = new URLSearchParams({
+                        name: name || "",
+                        email: email || "",
+                        phone: phone || "",
+                    });
+                    const res = await fetch(`/api/admin/register?${params}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        setMatchStatus({
+                            nameMatch: data.nameMatch,
+                            emailMatch: data.emailMatch,
+                            phoneMatch: data.phoneMatch,
+                        });
+                    }
+                } catch {
+                    // Silent fail for spotlight check
+                }
+            }, 300);
+
+            setDebounceTimer(timer);
+        },
+        [] // eslint-disable-line react-hooks/exhaustive-deps
+    );
+
+    // Trigger verification on field change
+    useEffect(() => {
+        checkMatch(formData.name, formData.email, formData.phone);
+    }, [formData.name, formData.email, formData.phone, checkMatch]);
+
+    const handleFieldChange = (field: string, value: string) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const getFieldClasses = (fieldName: "name" | "email" | "phone", value: string) => {
+        if (!value.trim()) return "input-field";
+
+        const matchKey = `${fieldName}Match` as keyof typeof matchStatus;
+        const isMatch = matchStatus[matchKey];
+
+        if (isMatch) {
+            return "input-field border-yellow-400/80 shadow-[0_0_20px_rgba(234,179,8,0.25)] bg-yellow-500/5";
+        }
+        return "input-field border-red-500/30 bg-red-500/5";
+    };
+
+    const getMatchLabel = (fieldName: "name" | "email" | "phone", value: string) => {
+        if (!value.trim()) return null;
+
+        const matchKey = `${fieldName}Match` as keyof typeof matchStatus;
+        const isMatch = matchStatus[matchKey];
+
+        if (isMatch) {
+            return (
+                <span className="flex items-center gap-1 text-[11px] font-semibold text-yellow-400 mt-1 animate-pulse">
+                    <CheckCircle2 className="w-3 h-3" /> Matching
+                </span>
+            );
+        }
+        return (
+            <span className="flex items-center gap-1 text-[11px] font-semibold text-red-400 mt-1">
+                <AlertTriangle className="w-3 h-3" /> Not matching
+            </span>
+        );
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,7 +119,6 @@ export default function RegisterPage() {
 
             setResult({
                 userId: data.userId,
-                suggestedStrongPassword: data.suggestedStrongPassword,
             });
         } catch {
             setError("Something went wrong. Please try again.");
@@ -50,6 +133,7 @@ export default function RegisterPage() {
         setTimeout(() => setCopied(""), 2000);
     };
 
+    // ===== SUCCESS SCREEN =====
     if (result) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[#050505] p-6">
@@ -63,10 +147,10 @@ export default function RegisterPage() {
                     </div>
 
                     <div className="space-y-4">
-                        <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
-                            <p className="text-xs text-gray-500 uppercase tracking-widest font-bold mb-2">Your User ID</p>
+                        <div className="bg-yellow-500/5 rounded-2xl p-4 border border-yellow-500/20">
+                            <p className="text-xs text-yellow-500 uppercase tracking-widest font-bold mb-2">Your User ID</p>
                             <div className="flex items-center justify-between">
-                                <p className="text-xl font-mono font-bold text-white">{result.userId}</p>
+                                <p className="text-2xl font-mono font-bold text-white">{result.userId}</p>
                                 <button onClick={() => copyToClipboard(result.userId, "userId")} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
                                     <Copy className={`w-4 h-4 ${copied === "userId" ? "text-green-400" : "text-gray-400"}`} />
                                 </button>
@@ -74,14 +158,10 @@ export default function RegisterPage() {
                         </div>
 
                         <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
-                            <p className="text-xs text-gray-500 uppercase tracking-widest font-bold mb-2">Suggested Strong Password</p>
-                            <div className="flex items-center justify-between">
-                                <p className="font-mono text-sm text-yellow-400 break-all">{result.suggestedStrongPassword}</p>
-                                <button onClick={() => copyToClipboard(result.suggestedStrongPassword, "password")} className="p-2 hover:bg-white/10 rounded-lg transition-colors shrink-0">
-                                    <Copy className={`w-4 h-4 ${copied === "password" ? "text-green-400" : "text-gray-400"}`} />
-                                </button>
+                            <div className="flex items-center gap-2 text-green-400 text-sm">
+                                <Phone className="w-4 h-4" />
+                                <span>Credentials sent to your phone via SMS</span>
                             </div>
-                            <p className="text-[10px] text-gray-600 mt-2">Optional: Update your password to this for extra security.</p>
                         </div>
                     </div>
 
@@ -93,6 +173,7 @@ export default function RegisterPage() {
         );
     }
 
+    // ===== REGISTRATION FORM =====
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#050505] p-6">
             <div className="w-full max-w-md glass-effect rounded-[2.5rem] p-12 border border-white/10 shadow-2xl">
@@ -101,40 +182,63 @@ export default function RegisterPage() {
                         <ShieldCheck className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-3xl font-bold text-white">Admin Registration</h1>
-                    <p className="text-gray-400 mt-2">Create your admin account.</p>
+                    <p className="text-gray-400 mt-2">Verify your identity to register.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Name</label>
+                    {/* Name */}
+                    <div className="space-y-1">
+                        <label className="text-sm font-medium text-gray-300">Full Name</label>
                         <input
                             type="text"
-                            className="input-field"
+                            className={`${getFieldClasses("name", formData.name)} transition-all duration-300`}
                             placeholder="Your full name"
                             value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            onChange={(e) => handleFieldChange("name", e.target.value)}
                             required
                         />
+                        {getMatchLabel("name", formData.name)}
                     </div>
-                    <div className="space-y-2">
+
+                    {/* Email */}
+                    <div className="space-y-1">
                         <label className="text-sm font-medium text-gray-300">Email</label>
                         <input
                             type="email"
-                            className="input-field"
+                            className={`${getFieldClasses("email", formData.email)} transition-all duration-300`}
                             placeholder="your@email.com"
                             value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            onChange={(e) => handleFieldChange("email", e.target.value)}
                             required
                         />
+                        {getMatchLabel("email", formData.email)}
                     </div>
-                    <div className="space-y-2">
+
+                    {/* Phone */}
+                    <div className="space-y-1">
+                        <label className="text-sm font-medium text-gray-300">Phone Number</label>
+                        <input
+                            type="tel"
+                            className={`${getFieldClasses("phone", formData.phone)} transition-all duration-300`}
+                            placeholder="10-digit phone number"
+                            value={formData.phone}
+                            onChange={(e) => handleFieldChange("phone", e.target.value)}
+                            required
+                            pattern="[0-9]{10}"
+                            maxLength={10}
+                        />
+                        {getMatchLabel("phone", formData.phone)}
+                    </div>
+
+                    {/* Password */}
+                    <div className="space-y-1">
                         <label className="text-sm font-medium text-gray-300">Password</label>
                         <input
                             type="password"
                             className="input-field"
                             placeholder="Min 6 characters"
                             value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            onChange={(e) => handleFieldChange("password", e.target.value)}
                             required
                             minLength={6}
                         />

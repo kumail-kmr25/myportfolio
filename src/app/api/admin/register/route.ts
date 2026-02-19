@@ -1,54 +1,95 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import crypto from "crypto";
+import { sendRegistrationSMS } from "@/lib/sms";
 
-function generateUserId(): string {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let id = "KK-";
-    for (let i = 0; i < 5; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
+/**
+ * Generate userId in format: KK25-XXXXXX
+ * where XXXXXX = last 6 digits of phone number
+ */
+function generateUserId(phone: string): string {
+    const last6 = phone.slice(-6);
+    return `KK25-${last6}`;
 }
 
-function generateStrongPassword(): string {
-    const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
-    const lower = "abcdefghjkmnpqrstuvwxyz";
-    const digits = "23456789";
-    const special = "!@#$%&*";
-    const all = upper + lower + digits + special;
+/**
+ * Verify registration credentials against env vars
+ */
+function verifyCredentials(name: string, email: string, phone: string): {
+    nameMatch: boolean;
+    emailMatch: boolean;
+    phoneMatch: boolean;
+    allMatch: boolean;
+} {
+    const adminName = (process.env.ADMIN_NAME || "kumail kmr").toLowerCase().trim();
+    const adminEmail = (process.env.ADMIN_EMAIL || "ka6307464@gmail.com").toLowerCase().trim();
+    const adminPhone = (process.env.ADMIN_PHONE || "6006121193").trim();
 
-    let password = "";
-    password += upper[Math.floor(Math.random() * upper.length)];
-    password += lower[Math.floor(Math.random() * lower.length)];
-    password += digits[Math.floor(Math.random() * digits.length)];
-    password += special[Math.floor(Math.random() * special.length)];
+    const nameMatch = name.toLowerCase().trim() === adminName;
+    const emailMatch = email.toLowerCase().trim() === adminEmail;
+    const phoneMatch = phone.trim() === adminPhone;
 
-    for (let i = 0; i < 8; i++) {
-        password += all[Math.floor(Math.random() * all.length)];
-    }
-
-    return password.split("").sort(() => Math.random() - 0.5).join("");
+    return {
+        nameMatch,
+        emailMatch,
+        phoneMatch,
+        allMatch: nameMatch && emailMatch && phoneMatch,
+    };
 }
 
+/**
+ * GET — Real-time credential verification for yellow spotlight
+ * Query params: name, email, phone
+ */
+export async function GET(req: NextRequest) {
+    try {
+        const { searchParams } = new URL(req.url);
+        const name = searchParams.get("name") || "";
+        const email = searchParams.get("email") || "";
+        const phone = searchParams.get("phone") || "";
+
+        const result = verifyCredentials(name, email, phone);
+
+        return NextResponse.json({
+            nameMatch: result.nameMatch,
+            emailMatch: result.emailMatch,
+            phoneMatch: result.phoneMatch,
+        });
+    } catch (error) {
+        console.error("Verification check error:", error);
+        return NextResponse.json({ error: "Verification failed" }, { status: 500 });
+    }
+}
+
+/**
+ * POST — Register admin (only if credentials match)
+ */
 export async function POST(req: Request) {
     try {
         // Check if admin already exists
         const existingAdmin = await prisma.admin.findFirst();
         if (existingAdmin) {
             return NextResponse.json(
-                { error: "Only admin can register. Registration is closed." },
+                { error: "Only admins can register. Registration is closed." },
                 { status: 403 }
             );
         }
 
-        const { name, email, password } = await req.json();
+        const { name, email, phone, password } = await req.json();
 
-        if (!name || !email || !password) {
+        if (!name || !email || !phone || !password) {
             return NextResponse.json(
-                { error: "Name, email, and password are required." },
+                { error: "Name, email, phone, and password are required." },
                 { status: 400 }
+            );
+        }
+
+        // Verify credentials match the authorized admin
+        const verification = verifyCredentials(name, email, phone);
+        if (!verification.allMatch) {
+            return NextResponse.json(
+                { error: "You cannot register. Only admins can register." },
+                { status: 403 }
             );
         }
 
@@ -59,32 +100,38 @@ export async function POST(req: Request) {
             );
         }
 
-        const userId = generateUserId();
+        const userId = generateUserId(phone);
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const admin = await prisma.admin.create({
             data: {
-                name,
-                email,
+                name: name.trim(),
+                email: email.toLowerCase().trim(),
+                phone: phone.trim(),
                 userId,
                 password: hashedPassword,
             },
         });
 
-        const suggestedPassword = generateStrongPassword();
+        // Send SMS notification (non-blocking)
+        sendRegistrationSMS({
+            to: phone.trim(),
+            userId: admin.userId,
+            password, // send the plain password in the SMS
+        }).catch((err) => console.error("SMS notification failed:", err));
 
         return NextResponse.json({
             success: true,
             message: "Admin registered successfully!",
             userId: admin.userId,
-            suggestedStrongPassword: suggestedPassword,
-            note: "Save your User ID. Use the suggested strong password if you want extra security (you'll need to update your password to use it).",
+            smsSent: true,
+            note: "Your credentials have been sent to your phone number.",
         });
     } catch (error: any) {
         console.error("Registration error:", error);
         if (error.code === "P2002") {
             return NextResponse.json(
-                { error: "Email already in use." },
+                { error: "An account with these details already exists." },
                 { status: 409 }
             );
         }
