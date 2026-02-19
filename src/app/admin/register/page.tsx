@@ -5,7 +5,7 @@ import { Loader2, ShieldCheck, CheckCircle2, Copy, Phone, AlertTriangle } from "
 import Link from "next/link";
 
 export default function RegisterPage() {
-    const [formData, setFormData] = useState({ name: "", email: "", phone: "", password: "" });
+    const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [result, setResult] = useState<{
@@ -182,7 +182,7 @@ export default function RegisterPage() {
                         <ShieldCheck className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-3xl font-bold text-white">Admin Registration</h1>
-                    <p className="text-gray-400 mt-2">Verify your identity to register.</p>
+                    <p className="text-gray-400 mt-2">Verify your identity. Password will be sent to your phone.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -230,19 +230,7 @@ export default function RegisterPage() {
                         {getMatchLabel("phone", formData.phone)}
                     </div>
 
-                    {/* Password */}
-                    <div className="space-y-1">
-                        <label className="text-sm font-medium text-gray-300">Password</label>
-                        <input
-                            type="password"
-                            className="input-field"
-                            placeholder="Min 6 characters"
-                            value={formData.password}
-                            onChange={(e) => handleFieldChange("password", e.target.value)}
-                            required
-                            minLength={6}
-                        />
-                    </div>
+
 
                     {error && (
                         <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-sm text-center">

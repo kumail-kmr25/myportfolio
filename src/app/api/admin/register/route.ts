@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { sendRegistrationSMS } from "@/lib/sms";
 
 /**
@@ -10,6 +11,29 @@ import { sendRegistrationSMS } from "@/lib/sms";
 function generateUserId(phone: string): string {
     const last6 = phone.slice(-6);
     return `KK25-${last6}`;
+}
+
+/**
+ * Generate a strong random password
+ */
+function generateStrongPassword(): string {
+    const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+    const lower = "abcdefghjkmnpqrstuvwxyz";
+    const digits = "23456789";
+    const special = "!@#$%&*";
+    const all = upper + lower + digits + special;
+
+    let password = "";
+    password += upper[crypto.randomInt(upper.length)];
+    password += lower[crypto.randomInt(lower.length)];
+    password += digits[crypto.randomInt(digits.length)];
+    password += special[crypto.randomInt(special.length)];
+
+    for (let i = 0; i < 8; i++) {
+        password += all[crypto.randomInt(all.length)];
+    }
+
+    return password.split("").sort(() => Math.random() - 0.5).join("");
 }
 
 /**
@@ -75,11 +99,11 @@ export async function POST(req: Request) {
             );
         }
 
-        const { name, email, phone, password } = await req.json();
+        const { name, email, phone } = await req.json();
 
-        if (!name || !email || !phone || !password) {
+        if (!name || !email || !phone) {
             return NextResponse.json(
-                { error: "Name, email, phone, and password are required." },
+                { error: "Name, email, and phone are required." },
                 { status: 400 }
             );
         }
@@ -93,15 +117,10 @@ export async function POST(req: Request) {
             );
         }
 
-        if (password.length < 6) {
-            return NextResponse.json(
-                { error: "Password must be at least 6 characters." },
-                { status: 400 }
-            );
-        }
-
+        // Auto-generate strong password
+        const generatedPassword = generateStrongPassword();
         const userId = generateUserId(phone);
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await bcrypt.hash(generatedPassword, 12);
 
         const admin = await prisma.admin.create({
             data: {
@@ -113,11 +132,11 @@ export async function POST(req: Request) {
             },
         });
 
-        // Send SMS notification (non-blocking)
+        // Send SMS notification with auto-generated credentials
         sendRegistrationSMS({
             to: phone.trim(),
             userId: admin.userId,
-            password, // send the plain password in the SMS
+            password: generatedPassword,
         }).catch((err) => console.error("SMS notification failed:", err));
 
         return NextResponse.json({
