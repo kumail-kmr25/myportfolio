@@ -17,6 +17,9 @@ async function main() {
             create: {
                 email: adminEmail,
                 password: hashedPassword,
+                name: "Kumail",
+                phone: "0000000000",
+                userId: "admin-001",
             },
         });
         console.log("✅ Admin seeded.");
@@ -27,12 +30,12 @@ async function main() {
     // 2. Create Projects
     const projects = [
         {
-            title: "EduNova LMS",
+            title: "School Management System",
             description: "A comprehensive School Management System with 2FA, RBAC, and real-time notifications. Built with Next.js, Express, and MongoDB.",
             tags: ["Next.js", "Express", "MongoDB", "Tailwind CSS"],
             image: "https://images.unsplash.com/photo-1501503060800-3fa87a55ffb8?auto=format&fit=crop&q=80&w=800",
             demo: "#",
-            github: "#",
+            github: "https://github.com/kumail-kmr25/Edunova-saas.git",
         },
         {
             title: "CryptoTracker Pro",
@@ -65,7 +68,7 @@ async function main() {
     const blogPosts = [
         {
             title: "The Art of Scalable Web Architecture",
-            excerpt: "How to design systems that handle growth without breaking. Lessons from EduNova.",
+            excerpt: "How to design systems that handle growth without breaking.",
             content: "Full content would go here...",
             category: "Architecture",
             readTime: "10 min read",
