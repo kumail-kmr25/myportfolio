@@ -5,11 +5,11 @@ import { decrypt } from "@/lib/auth";
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    // Only protect /admin routes
+    // Only protect /admin sub-routes (not the login page itself)
     if (pathname.startsWith("/admin")) {
-        // Exclude specific paths like registration or reset password if they need to be public
-        // (Though usually they are also protected or handled differently)
-        if (pathname === "/admin/login") {
+        // Public admin pages that do NOT require auth
+        const publicAdminPaths = ["/admin", "/admin/login", "/admin/register", "/admin/reset-password"];
+        if (publicAdminPaths.includes(pathname)) {
             return NextResponse.next();
         }
 
