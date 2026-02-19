@@ -230,7 +230,7 @@ export default function AdminPage() {
                             {isLoading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Authenticate"}
                         </button>
                         <div className="text-center">
-                            <Link href="/admin/forgot-password" opacity-40 className="text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition-colors">
+                            <Link href="/admin/forgot-password" className="text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition-colors opacity-40">
                                 Forgot Access Secret?
                             </Link>
                         </div>

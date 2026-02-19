@@ -81,7 +81,7 @@ function ResetPasswordForm() {
                 </div>
                 <h1 className="text-3xl font-bold text-white mb-2">Invalid Link</h1>
                 <p className="text-gray-400 mb-8">The password reset link is missing or invalid.</p>
-                <Link href="/admin/forgot-password" opacity-40 className="text-white hover:text-blue-400 underline transition-colors">
+                <Link href="/admin/forgot-password" className="text-white hover:text-blue-400 underline transition-colors opacity-40">
                     Request a new link
                 </Link>
             </div>
