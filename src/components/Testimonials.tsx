@@ -44,9 +44,9 @@ export default function Testimonials() {
     };
 
     return (
-        <section id="testimonials" className="py-20 bg-[#050505] relative">
+        <section id="testimonials" className="py-12 bg-[#050505] relative">
             <div className="section-container">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
                     <div className="max-w-2xl">
                         <h2 className="section-title">Client Feedback</h2>
                         <p className="text-lg text-gray-400 mt-4 leading-relaxed">

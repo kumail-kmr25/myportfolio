@@ -56,7 +56,7 @@ export default function Contact() {
     };
 
     return (
-        <section id="contact" className="bg-[#050505] py-20 relative overflow-hidden">
+        <section id="contact" className="bg-[#050505] py-12 relative overflow-hidden">
             <div className="section-container">
                 <h2 className="section-title">Get In Touch</h2>
                 <p className="section-subtitle">

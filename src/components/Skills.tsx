@@ -23,7 +23,7 @@ import { Cloud } from "lucide-react";
 
 export default function Skills() {
     return (
-        <section className="py-20 bg-[#050505] overflow-hidden relative">
+        <section className="py-12 bg-[#050505] overflow-hidden relative">
             <div className="section-container mb-12 text-center">
                 <h2 className="section-title">Tech Stack</h2>
                 <p className="section-subtitle mx-auto">

@@ -44,13 +44,13 @@ const services = [
 
 export default function Services() {
     return (
-        <section id="services" className="py-24 bg-[#050505] relative overflow-hidden">
+        <section id="services" className="py-12 bg-[#050505] relative overflow-hidden">
             {/* Background blobs */}
             <div className="absolute top-1/4 left-0 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
             <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="section-container relative z-10">
-                <div className="text-center mb-16">
+                <div className="text-center mb-10">
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}

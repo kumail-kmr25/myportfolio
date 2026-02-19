@@ -37,7 +37,7 @@ export default function Projects() {
     }
 
     return (
-        <section id="projects" className="bg-[#050505] py-20">
+        <section id="projects" className="bg-[#050505] py-12">
             <div className="section-container">
                 <h2 className="section-title">Featured Projects</h2>
                 <p className="section-subtitle">
