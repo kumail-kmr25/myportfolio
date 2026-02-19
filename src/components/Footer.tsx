@@ -20,16 +20,16 @@ export default function Footer() {
 
                 <div className="flex items-center gap-6">
                     <div className="flex space-x-6">
-                        <Link href="https://github.com/kumail-kmr25" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                        <Link href="https://github.com/kumail-kmr25" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform" aria-label="Visit my GitHub profile">
                             <Github size={24} />
                         </Link>
-                        <Link href="https://x.com/KumailKmr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                        <Link href="https://x.com/KumailKmr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform" aria-label="Visit my Twitter profile">
                             <Twitter size={24} />
                         </Link>
-                        <Link href="https://www.linkedin.com/in/kumale-ali-bhat-6196a0384/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                        <Link href="https://www.linkedin.com/in/kumale-ali-bhat-6196a0384/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform" aria-label="Visit my LinkedIn profile">
                             <Linkedin size={24} />
                         </Link>
-                        <Link href="https://www.instagram.com/kumail.kmr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                        <Link href="https://www.instagram.com/kumail.kmr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform" aria-label="Visit my Instagram profile">
                             <Instagram size={24} />
                         </Link>
                     </div>

@@ -283,7 +283,13 @@ export default function Contact() {
                                 <p className="text-xs text-gray-500 font-medium">Call / WhatsApp</p>
                                 <div className="flex items-center justify-between">
                                     <p className="text-sm text-white font-semibold">{showPhone ? "6006121193" : "••••••••••"}</p>
-                                    {!showPhone && <button onClick={() => setShowPhone(true)} className="text-[10px] text-blue-400 hover:underline">Reveal</button>}
+                                    {!showPhone && <button
+                                        onClick={() => setShowPhone(true)}
+                                        className="text-[10px] text-blue-400 hover:underline p-2 -m-2 focus:outline-none"
+                                        aria-label="Reveal phone number"
+                                    >
+                                        Reveal
+                                    </button>}
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function About() {
     return (
         <section id="about" className="py-12 md:py-16 bg-[#050505]">
@@ -23,12 +25,13 @@ export default function About() {
                     {/* Profile Photo */}
                     <div className="relative group">
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
-                        <div className="glass-effect p-4 rounded-3xl relative overflow-hidden aspect-square flex items-center justify-center">
-                            {/* Using next/image would require configuring domains or local import. Using simple img tag for SVG placeholder for now or standard next/image if configured */}
-                            <img
+                        <div className="glass-effect p-4 rounded-3xl relative overflow-hidden aspect-square">
+                            <Image
                                 src="/profile.jpg"
                                 alt="Kumail Kmr"
-                                className="w-full h-full object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
+                                fill
+                                priority
+                                className="object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-500 p-4"
                             />
                         </div>
                     </div>

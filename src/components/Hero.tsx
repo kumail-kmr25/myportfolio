@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Download } from "lucide-react";
 import { motion } from "framer-motion";
@@ -37,7 +38,14 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/50 to-[#050505] z-10" />
                 <div className="absolute top-0 left-0 right-0 h-[500px] bg-purple-600/20 blur-[150px] rounded-full mix-blend-screen opacity-30 animate-pulse" />
                 <div className="absolute bottom-0 right-0 h-[500px] w-[500px] bg-blue-600/20 blur-[150px] rounded-full mix-blend-screen opacity-30 animate-pulse delay-1000" />
-                <div className="w-full h-full bg-[url('/hero_background.svg')] bg-cover bg-center opacity-20" />
+                <Image
+                    src="/hero_background.svg"
+                    alt="Background Grid"
+                    fill
+                    priority
+                    className="object-cover object-center opacity-20 pointer-events-none"
+                    fetchPriority="high"
+                />
             </div>
 
             <div className="section-container relative z-10 text-center">

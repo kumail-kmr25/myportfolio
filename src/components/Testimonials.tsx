@@ -92,7 +92,10 @@ export default function Testimonials() {
                                 className="card group hover:-translate-y-2 transition-all duration-500 flex flex-col"
                             >
                                 <div className="mb-6 flex items-center justify-between">
-                                    <div className="flex gap-1">
+                                    <div
+                                        className="flex gap-1"
+                                        aria-label={`Rated ${testimonial.rating} out of 7 stars`}
+                                    >
                                         {[1, 2, 3, 4, 5, 6, 7].map((star) => (
                                             <Star
                                                 key={star}
@@ -100,6 +103,7 @@ export default function Testimonials() {
                                                     ? "text-yellow-500 fill-yellow-500"
                                                     : "text-gray-700"
                                                     }`}
+                                                aria-hidden="true"
                                             />
                                         ))}
                                     </div>
