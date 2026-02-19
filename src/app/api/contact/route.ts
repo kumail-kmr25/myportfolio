@@ -39,18 +39,35 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        const { name, email, message } = result.data;
+        const {
+            name,
+            email,
+            message,
+            company,
+            inquiryType,
+            serviceRequired,
+            budgetRange,
+            timeline,
+            foundBy
+        } = result.data;
 
         // Sanitization
         const sanitizedMessage = xss(message);
         const sanitizedName = xss(name);
+        const sanitizedCompany = company ? xss(company) : null;
 
         // Save to Database
         const submission = await prisma.contactSubmission.create({
             data: {
                 name: sanitizedName,
                 email,
+                company: sanitizedCompany,
+                inquiryType,
+                serviceRequired,
+                budgetRange: budgetRange || null,
+                timeline: timeline || null,
                 message: sanitizedMessage,
+                foundBy: foundBy || null,
             },
         });
 
@@ -62,6 +79,11 @@ export async function POST(req: NextRequest) {
         sendContactNotification({
             name: sanitizedName,
             email,
+            company: sanitizedCompany,
+            inquiryType,
+            serviceRequired,
+            budgetRange: budgetRange || "Not specified",
+            timeline: timeline || "Not specified",
             message: sanitizedMessage,
         }).catch((err) => console.error("Email notification failed:", err));
 

@@ -4,25 +4,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { Star, Loader2, CheckCircle2 } from "lucide-react";
 
-const testimonialSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    email: z.string().email("Invalid email format"),
-    intervention_type: z.enum([
-        "UI/UX Design",
-        "DevOps / Cloud",
-        "Frontend",
-        "Backend",
-        "Database Design",
-        "Bug Fix / Error Optimisation",
-        "Full Stack Development",
-        "Others",
-    ]),
-    message: z.string().min(1, "Message is required"),
-    rating: z.number().min(1).max(7),
-    about_delivery_lead: z.string().min(1, "About the delivery lead is required"),
-});
-
-type TestimonialFormData = z.infer<typeof testimonialSchema>;
+import { testimonialSchema, type TestimonialFormData } from "@/lib/schemas/testimonial";
 
 interface TestimonialFormProps {
     onSuccess: () => void;
@@ -32,6 +14,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
     const [formData, setFormData] = useState<Partial<TestimonialFormData>>({
         rating: 7,
         intervention_type: "Full Stack Development",
+        permission: false,
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +42,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
             setIsSuccess(true);
             setTimeout(() => {
                 onSuccess();
-            }, 2000);
+            }, 3000);
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const newErrors: Record<string, string> = {};
@@ -84,98 +67,112 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
 
     if (isSuccess) {
         return (
-            <div className="flex flex-col items-center justify-center py-12 text-center animate-in fade-in zoom-in duration-300">
-                <CheckCircle2 className="w-16 h-16 text-green-500 mb-4" />
-                <h3 className="text-2xl font-bold text-white mb-2">Thank You!</h3>
-                <p className="text-gray-400">Your feedback has been submitted successfully.</p>
+            <div className="flex flex-col items-center justify-center py-16 text-center animate-in fade-in zoom-in duration-500">
+                <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
+                    <CheckCircle2 size={40} className="text-green-500" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">Feedback Submitted!</h3>
+                <p className="text-gray-400 max-w-xs mx-auto">
+                    Thank you for your professional endorsement. It will be visible after a quick review.
+                </p>
             </div>
         );
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">Name</label>
-                    <input
-                        type="text"
-                        className={`input-field ${errors.name ? 'border-red-500' : ''}`}
-                        placeholder="Your Name"
-                        value={formData.name || ""}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        required
-                    />
-                    {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
+        <form onSubmit={handleSubmit} className="space-y-8 p-1">
+            <div className="space-y-4">
+                <h3 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Professional Context</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-400">Full Name <span className="text-red-500">*</span></label>
+                        <input
+                            type="text"
+                            className={`input-field ${errors.name ? 'border-red-500/50' : ''}`}
+                            placeholder="John Doe"
+                            value={formData.name || ""}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        />
+                        {errors.name && <p className="text-[10px] text-red-500">{errors.name}</p>}
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-400">Email Address <span className="text-gray-600">(Private) *</span></label>
+                        <input
+                            type="email"
+                            className={`input-field ${errors.email ? 'border-red-500/50' : ''}`}
+                            placeholder="john@example.com"
+                            value={formData.email || ""}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        />
+                        {errors.email && <p className="text-[10px] text-red-500">{errors.email}</p>}
+                    </div>
                 </div>
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">Email ID</label>
-                    <input
-                        type="email"
-                        className={`input-field ${errors.email ? 'border-red-500' : ''}`}
-                        placeholder="your@email.com"
-                        value={formData.email || ""}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
-                    />
-                    {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-400">Company / Organization <span className="text-gray-600">(Optional)</span></label>
+                        <input
+                            type="text"
+                            className="input-field"
+                            placeholder="e.g. Google, Startup X"
+                            value={formData.company || ""}
+                            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-400">Worked With Me As <span className="text-red-500">*</span></label>
+                        <select
+                            className={`input-field appearance-none bg-[#0a0a0a] text-white ${errors.relationship_type ? 'border-red-500/50' : ''}`}
+                            value={formData.relationship_type || ""}
+                            onChange={(e) => setFormData({ ...formData, relationship_type: e.target.value as any })}
+                        >
+                            <option value="" className="bg-[#0a0a0a] text-white">Select relationship...</option>
+                            <option value="Freelance Client" className="bg-[#0a0a0a] text-white">Freelance Client</option>
+                            <option value="Internship Mentor" className="bg-[#0a0a0a] text-white">Internship Mentor</option>
+                            <option value="Hackathon Teammate" className="bg-[#0a0a0a] text-white">Hackathon Teammate</option>
+                            <option value="Open Source Collaborator" className="bg-[#0a0a0a] text-white">Open Source Collaborator</option>
+                            <option value="Hiring Manager" className="bg-[#0a0a0a] text-white">Hiring Manager</option>
+                            <option value="Other" className="bg-[#0a0a0a] text-white">Other</option>
+                        </select>
+                        {errors.relationship_type && <p className="text-[10px] text-red-500">{errors.relationship_type}</p>}
+                    </div>
                 </div>
             </div>
 
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Intervention Type</label>
-                <select
-                    className="input-field appearance-none cursor-pointer bg-[#1a1a1a] text-white"
-                    value={formData.intervention_type}
-                    onChange={(e) => setFormData({ ...formData, intervention_type: e.target.value as any })}
-                    style={{ colorScheme: "dark" }}
-                >
-                    <option className="bg-[#1a1a1a] text-white" value="UI/UX Design">UI/UX Design</option>
-                    <option className="bg-[#1a1a1a] text-white" value="DevOps / Cloud">DevOps / Cloud</option>
-                    <option className="bg-[#1a1a1a] text-white" value="Frontend">Frontend</option>
-                    <option className="bg-[#1a1a1a] text-white" value="Backend">Backend</option>
-                    <option className="bg-[#1a1a1a] text-white" value="Database Design">Database Design</option>
-                    <option className="bg-[#1a1a1a] text-white" value="Bug Fix / Error Optimisation">Bug Fix / Error Optimisation</option>
-                    <option className="bg-[#1a1a1a] text-white" value="Full Stack Development">Full Stack Development</option>
-                    <option className="bg-[#1a1a1a] text-white" value="Others">Others</option>
-                </select>
-            </div>
-
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Message</label>
-                <textarea
-                    className={`input-field min-h-[120px] ${errors.message ? 'border-red-500' : ''}`}
-                    placeholder="Share your experience..."
-                    value={formData.message || ""}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    required
-                />
-                {errors.message && <p className="text-xs text-red-500">{errors.message}</p>}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+            <div className="space-y-4">
+                <h3 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Project Feedback</h3>
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">About the Delivery Lead</label>
-                    <input
-                        type="text"
-                        className={`input-field ${errors.about_delivery_lead ? 'border-red-500' : ''}`}
-                        placeholder="Short description..."
-                        value={formData.about_delivery_lead || ""}
-                        onChange={(e) => setFormData({ ...formData, about_delivery_lead: e.target.value })}
-                        required
-                    />
-                    {errors.about_delivery_lead && <p className="text-xs text-red-500">{errors.about_delivery_lead}</p>}
+                    <label className="text-sm font-medium text-gray-400">Service Provided <span className="text-red-500">*</span></label>
+                    <select
+                        className={`input-field appearance-none bg-[#0a0a0a] text-white ${errors.intervention_type ? 'border-red-500/50' : ''}`}
+                        value={formData.intervention_type || ""}
+                        onChange={(e) => setFormData({ ...formData, intervention_type: e.target.value as any })}
+                    >
+                        <option value="" className="bg-[#0a0a0a] text-white">Select service...</option>
+                        <option value="UI/UX Design" className="bg-[#0a0a0a] text-white">UI/UX Design</option>
+                        <option value="Frontend Development" className="bg-[#0a0a0a] text-white">Frontend Development</option>
+                        <option value="Backend Development" className="bg-[#0a0a0a] text-white">Backend Development</option>
+                        <option value="Full Stack Development" className="bg-[#0a0a0a] text-white">Full Stack Development</option>
+                        <option value="DevOps / Cloud" className="bg-[#0a0a0a] text-white">DevOps / Cloud</option>
+                        <option value="Database Design" className="bg-[#0a0a0a] text-white">Database Design</option>
+                        <option value="Bug Fix / Error Optimisation" className="bg-[#0a0a0a] text-white">Bug Fix / Error Optimisation</option>
+                        <option value="Performance Optimization" className="bg-[#0a0a0a] text-white">Performance Optimization</option>
+                        <option value="API Integration" className="bg-[#0a0a0a] text-white">API Integration</option>
+                        <option value="Other" className="bg-[#0a0a0a] text-white">Other</option>
+                    </select>
+                    {errors.intervention_type && <p className="text-[10px] text-red-500">{errors.intervention_type}</p>}
                 </div>
 
                 <div className="space-y-3">
-                    <label className="text-sm font-medium text-gray-300 block">Rating (1-7)</label>
+                    <label className="text-sm font-medium text-gray-400 block">Overall Rating (1-7) <span className="text-red-500">*</span></label>
                     <div className="flex gap-2">
                         {[1, 2, 3, 4, 5, 6, 7].map((num) => (
                             <button
                                 key={num}
                                 type="button"
                                 onClick={() => handleRatingClick(num)}
-                                className={`w-8 h-8 flex items-center justify-center rounded-lg transition-all ${formData.rating === num
-                                    ? "bg-white text-black scale-110 shadow-lg"
+                                className={`w-10 h-10 flex items-center justify-center rounded-xl font-bold transition-all ${formData.rating === num
+                                    ? "bg-blue-500 text-white scale-110 shadow-lg shadow-blue-500/20"
                                     : "bg-white/5 text-gray-400 hover:bg-white/10"
                                     }`}
                             >
@@ -183,26 +180,78 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                             </button>
                         ))}
                     </div>
+                    <p className="text-[10px] text-gray-500 italic">Where 7 is Exceptionally Professional</p>
+                </div>
+
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-400">Testimonial Message <span className="text-red-500">*</span></label>
+                    <textarea
+                        className={`input-field min-h-[120px] resize-none ${errors.message ? 'border-red-500/50' : ''}`}
+                        placeholder="Share the impact, results, and your overall experience..."
+                        value={formData.message || ""}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    />
+                    <div className="flex justify-between items-center">
+                        {errors.message && <p className="text-[10px] text-red-500">{errors.message}</p>}
+                        <p className={`text-[10px] ml-auto ${(formData.message?.length || 0) < 20 ? 'text-gray-500' : 'text-blue-400'}`}>
+                            {(formData.message?.length || 0)}/500 characters
+                        </p>
+                    </div>
+                </div>
+
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-400">How was communication & delivery? <span className="text-red-500">*</span></label>
+                    <input
+                        type="text"
+                        className={`input-field ${errors.about_delivery_lead ? 'border-red-500/50' : ''}`}
+                        placeholder="e.g. Clear, professional, and detail-oriented"
+                        value={formData.about_delivery_lead || ""}
+                        onChange={(e) => setFormData({ ...formData, about_delivery_lead: e.target.value })}
+                    />
+                    {errors.about_delivery_lead && <p className="text-[10px] text-red-500">{errors.about_delivery_lead}</p>}
                 </div>
             </div>
 
-            {errors.form && (
-                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-sm">
-                    {errors.form}
-                </div>
-            )}
+            <div className="pt-4 border-t border-white/5 space-y-4">
+                <label className="flex items-start gap-3 cursor-pointer group">
+                    <div className="relative flex items-center mt-1">
+                        <input
+                            type="checkbox"
+                            className="peer sr-only"
+                            checked={formData.permission || false}
+                            onChange={(e) => setFormData({ ...formData, permission: e.target.checked })}
+                        />
+                        <div className="w-5 h-5 border border-white/20 rounded-md bg-white/5 peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-all"></div>
+                        <CheckCircle2 size={12} className="absolute inset-0 m-auto text-white opacity-0 peer-checked:opacity-100 transition-opacity" />
+                    </div>
+                    <span className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">
+                        I give permission to display this testimonial publicly on this portfolio.
+                        I understand my email remains private. <span className="text-red-500">*</span>
+                    </span>
+                </label>
+                {errors.permission && <p className="text-[10px] text-red-500">{errors.permission}</p>}
 
-            <button
-                type="submit"
-                disabled={isLoading}
-                className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed group"
-            >
-                {isLoading ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                    "Submit Testimonial"
+                {errors.form && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-sm">
+                        {errors.form}
+                    </div>
                 )}
-            </button>
+
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="btn-primary w-full py-4 text-base font-bold disabled:opacity-50 disabled:cursor-not-allowed group hover:scale-[1.01] active:scale-[0.99] transition-all"
+                >
+                    {isLoading ? (
+                        <div className="flex items-center justify-center">
+                            <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                            <span>Processing...</span>
+                        </div>
+                    ) : (
+                        "Submit Professional Testimonial"
+                    )}
+                </button>
+            </div>
         </form>
     );
 }

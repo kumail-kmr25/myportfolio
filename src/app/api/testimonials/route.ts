@@ -1,24 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
-
-const testimonialSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    email: z.string().email("Invalid email format"),
-    intervention_type: z.enum([
-        "UI/UX Design",
-        "DevOps / Cloud",
-        "Frontend",
-        "Backend",
-        "Database Design",
-        "Bug Fix / Error Optimisation",
-        "Full Stack Development",
-        "Others",
-    ]),
-    message: z.string().min(1, "Message is required"),
-    rating: z.number().min(1).max(7),
-    about_delivery_lead: z.string().min(1, "About the delivery lead is required"),
-});
+import { testimonialSchema } from "@/lib/schemas/testimonial";
 
 // Basic in-memory rate limiting (use Redis for production)
 const rateLimit = new Map<string, { count: number; lastReset: number }>();
@@ -78,8 +61,14 @@ export async function POST(req: Request) {
         const body = await req.json();
         const validatedData = testimonialSchema.parse(body);
 
+        // Strip frontend-only fields before persisting
+        const { permission, ...dbData } = validatedData;
+
         const testimonial = await prisma.testimonial.create({
-            data: validatedData,
+            data: {
+                ...dbData,
+                approved: false,
+            },
         });
 
         const { email, ...sanitizedTestimonial } = testimonial;
@@ -87,7 +76,7 @@ export async function POST(req: Request) {
         return NextResponse.json(sanitizedTestimonial, { status: 201 });
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return new Response(JSON.stringify({ error: error.format() }), {
+            return new Response(JSON.stringify({ error: "Validation failed", details: error.format() }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
             });

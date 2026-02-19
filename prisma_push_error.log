@@ -1,0 +1,16 @@
+﻿Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+Datasource "db": MongoDB database "portfolio" at "127.0.0.1:27017"
+Applying the following changes:
+
+[+] Unique index `Admin_phone_key` on ({"phone":1})
+
+
+Your database indexes are now in sync with your Prisma schema. Done in 402ms
+
+Running generate... (Use --skip-generate to skip the generators)
+[2K[1A[2K[GRunning generate... - Prisma Client
+[2K[1A[2K[GEPERM: operation not permitted, rename 'C:\portfolio\node_modules\.prisma\client
+\query_engine-windows.dll.node.tmp14936' -> 'C:\portfolio\node_modules\.prisma\c
+lient\query_engine-windows.dll.node'
+

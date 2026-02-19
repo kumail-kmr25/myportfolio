@@ -27,20 +27,30 @@ model Testimonial {
   id                  String   @id @default(auto()) @map("_id") @db.ObjectId
   name                String
   email               String
-  intervention_type   String
+  company             String?
+  relationship_type   String   // Worked With Me As
+  intervention_type   String   // Service Provided
   message             String
-  rating              Int
-  about_delivery_lead String
+  rating              Int      // 1-7
+  about_delivery_lead String   // How was communication & delivery?
+  permission          Boolean  @default(false)
   approved            Boolean  @default(false)
   created_at          DateTime @default(now())
 }
 
 model ContactSubmission {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  email      String
-  message    String
-  created_at DateTime @default(now())
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  email           String
+  company         String?
+  inquiryType     String   // Reason for Contact
+  serviceRequired String   // Service Needed
+  budgetRange     String?
+  timeline        String?
+  message         String   // Project Details
+  foundBy         String?  // How Did You Find Me?
+  replied         Boolean  @default(false)
+  created_at      DateTime @default(now())
 }
 
 model Project {

@@ -136,11 +136,15 @@ export async function POST(req: Request) {
         });
 
         // Send SMS notification with auto-generated credentials
+        console.log(`[Registration] Triggering SMS for ${admin.userId}...`);
         sendRegistrationSMS({
             to: phone.trim(),
             userId: admin.userId,
             password: generatedPassword,
-        }).catch((err) => console.error("SMS notification failed:", err));
+        }).then((sent) => {
+            if (sent) console.log(`[Registration] SMS process completed for ${admin.userId}`);
+            else console.error(`[Registration] SMS process failed for ${admin.userId}`);
+        }).catch((err) => console.error("[Registration] SMS notification error:", err));
 
         return NextResponse.json({
             success: true,

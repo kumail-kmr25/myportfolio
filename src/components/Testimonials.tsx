@@ -25,6 +25,8 @@ const fetcher = async (url: string) => {
 interface Testimonial {
     id: string;
     name: string;
+    company?: string | null;
+    relationship_type: string;
     intervention_type: string;
     message: string;
     rating: number;
@@ -118,8 +120,18 @@ export default function Testimonials() {
                                             {testimonial.name[0]}
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-white group-hover:text-blue-400 transition-colors">{testimonial.name}</h4>
-                                            <p className="text-xs text-gray-500 font-medium uppercase tracking-tight">{testimonial.intervention_type}</p>
+                                            <h4 className="font-bold text-white group-hover:text-blue-400 transition-colors">
+                                                {testimonial.name}
+                                                {testimonial.company && (
+                                                    <span className="text-gray-500 font-normal text-xs ml-2">
+                                                        @{testimonial.company}
+                                                    </span>
+                                                )}
+                                            </h4>
+                                            <div className="flex flex-col gap-0.5 mt-0.5">
+                                                <p className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">{testimonial.intervention_type}</p>
+                                                <p className="text-[9px] text-gray-500 font-medium uppercase tracking-tight italic">Works as {testimonial.relationship_type}</p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="mt-4 bg-white/5 rounded-2xl p-4 border border-white/5">

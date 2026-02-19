@@ -63,124 +63,173 @@ export default function Contact() {
                     Have a project in mind or just want to say hi? I&apos;d love to hear from you.
                 </p>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
-                    {/* Contact Info */}
-                    <div className="space-y-8">
-                        <div className="card">
-                            <div className="flex items-start space-x-4">
-                                <div className="p-3 bg-blue-500/10 rounded-lg text-blue-400">
-                                    <Mail size={24} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold text-white mb-2">Email Me</h3>
-                                    <a
-                                        href="mailto:ka6307464@gmail.com"
-                                        className="text-gray-400 hover:text-blue-400 transition-colors"
-                                    >
-                                        ka6307464@gmail.com
-                                    </a>
-                                    <p className="text-gray-500 text-sm mt-1">I usually respond within 24 hours.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start space-x-4">
-                            <div className="p-3 bg-green-500/10 rounded-lg text-green-400">
-                                <Phone size={24} />
-                            </div>
-                            <div className="w-full">
-                                <h3 className="text-xl font-bold text-white mb-2">Call Me</h3>
-                                {!showPhone ? (
-                                    <button
-                                        onClick={() => setShowPhone(true)}
-                                        className="text-sm bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors text-white"
-                                    >
-                                        Get Phone Number
-                                    </button>
-                                ) : (
-                                    <div className="flex items-center gap-4 mt-1 animate-fade-in-up">
-                                        <p className="text-gray-400 text-lg">6006121193</p>
-                                        <a
-                                            href="https://wa.me/916006121193"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="p-2 bg-green-500/20 hover:bg-green-500/30 rounded-full text-green-400 transition-colors"
-                                        >
-                                            <MessageCircle size={20} />
-                                        </a>
-                                    </div>
-                                )}
-                                <p className="text-gray-500 text-sm mt-2">Available Mon-Fri, 9am - 6pm.</p>
-                            </div>
-                        </div>
-
-                        <div className="card">
-                            <div className="flex items-start space-x-4">
-                                <div className="p-3 bg-purple-500/10 rounded-lg text-purple-400">
-                                    <MapPin size={24} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold text-white mb-2">Location</h3>
-                                    <p className="text-gray-400">Kashmir, India</p>
-                                    <p className="text-gray-500 text-sm mt-1">Open to remote work worldwide.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Contact Form */}
-                    <div className="card">
+                <div className="max-w-4xl mx-auto">
+                    {/* Contact Form HERO - Professional & High-Converting */}
+                    <div className="card shadow-2xl shadow-blue-500/5 border-white/10">
                         {submitStatus === "success" ? (
-                            <div className="flex flex-col items-center justify-center py-12 text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
-                                    <CheckCircle2 size={40} className="text-green-500" />
+                            <div className="flex flex-col items-center justify-center py-16 text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                <div className="w-24 h-24 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
+                                    <CheckCircle2 size={48} className="text-green-500" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
-                                <p className="text-gray-400">Thank you for reaching out. I&apos;ll get back to you soon.</p>
+                                <h3 className="text-3xl font-bold text-white mb-3">Inquiry Received!</h3>
+                                <p className="text-gray-400 text-lg max-w-md">
+                                    Thank you for your professional interest. I will review your details and respond within 24 business hours.
+                                </p>
                                 <button
                                     onClick={() => setSubmitStatus("idle")}
-                                    className="mt-8 text-sm text-gray-400 hover:text-white transition-colors"
+                                    className="mt-10 px-8 py-3 bg-white/5 hover:bg-white/10 text-white rounded-full transition-all border border-white/10 text-sm font-medium"
                                 >
-                                    Send another message
+                                    Send another inquiry
                                 </button>
                             </div>
                         ) : (
-                            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label htmlFor="name" className="text-sm font-medium text-gray-300">Name</label>
-                                        <input
-                                            {...register("name")}
-                                            type="text"
-                                            id="name"
-                                            placeholder="John Doe"
-                                            className={`input-field ${errors.name ? 'border-red-500/50 focus:border-red-500' : ''}`}
-                                        />
-                                        {errors.name && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.name.message}</p>}
+                            <form className="space-y-8 p-2 md:p-6" onSubmit={handleSubmit(onSubmit)}>
+                                <div className="space-y-4">
+                                    <h3 className="text-xl font-semibold text-white/90 border-b border-white/5 pb-2">Basic Information</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <label htmlFor="name" className="text-sm font-medium text-gray-400">Full Name <span className="text-blue-500">*</span></label>
+                                            <input
+                                                {...register("name")}
+                                                type="text"
+                                                id="name"
+                                                placeholder="e.g. John Doe"
+                                                className={`input-field ${errors.name ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                                            />
+                                            {errors.name && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.name.message}</p>}
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label htmlFor="email" className="text-sm font-medium text-gray-400">Email Address <span className="text-blue-500">*</span></label>
+                                            <input
+                                                {...register("email")}
+                                                type="email"
+                                                id="email"
+                                                placeholder="john@company.com"
+                                                className={`input-field ${errors.email ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                                            />
+                                            {errors.email && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.email.message}</p>}
+                                        </div>
                                     </div>
                                     <div className="space-y-2">
-                                        <label htmlFor="email" className="text-sm font-medium text-gray-300">Email</label>
+                                        <label htmlFor="company" className="text-sm font-medium text-gray-400">Company / Organization <span className="text-gray-600">(Optional)</span></label>
                                         <input
-                                            {...register("email")}
-                                            type="email"
-                                            id="email"
-                                            placeholder="john@example.com"
-                                            className={`input-field ${errors.email ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                                            {...register("company")}
+                                            type="text"
+                                            id="company"
+                                            placeholder="Where do you work?"
+                                            className="input-field"
                                         />
-                                        {errors.email && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.email.message}</p>}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <h3 className="text-xl font-semibold text-white/90 border-b border-white/5 pb-2">Project & Opportunity Details</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <label htmlFor="inquiryType" className="text-sm font-medium text-gray-400">Reason for Contact <span className="text-blue-500">*</span></label>
+                                            <div className="relative">
+                                                <select
+                                                    {...register("inquiryType")}
+                                                    id="inquiryType"
+                                                    className={`input-field appearance-none bg-[#0a0a0a] text-white pr-10 ${errors.inquiryType ? 'border-red-500/50' : ''}`}
+                                                >
+                                                    <option value="" className="bg-[#0a0a0a] text-white">Choose one...</option>
+                                                    <option value="Internship Opportunity" className="bg-[#0a0a0a] text-white">Internship Opportunity</option>
+                                                    <option value="Full-Time Role" className="bg-[#0a0a0a] text-white">Full-Time Role</option>
+                                                    <option value="Freelance Project" className="bg-[#0a0a0a] text-white">Freelance Project</option>
+                                                    <option value="Bug Fix / Error Resolution" className="bg-[#0a0a0a] text-white">Bug Fix / Error Resolution</option>
+                                                    <option value="Performance Optimization" className="bg-[#0a0a0a] text-white">Performance Optimization</option>
+                                                    <option value="API Integration" className="bg-[#0a0a0a] text-white">API Integration</option>
+                                                    <option value="Collaboration" className="bg-[#0a0a0a] text-white">Collaboration</option>
+                                                    <option value="Other" className="bg-[#0a0a0a] text-white">Other</option>
+                                                </select>
+                                                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                                                    <Loader2 size={14} className="animate-pulse" />
+                                                </div>
+                                            </div>
+                                            {errors.inquiryType && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.inquiryType.message}</p>}
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label htmlFor="serviceRequired" className="text-sm font-medium text-gray-400">Service Required <span className="text-blue-500">*</span></label>
+                                            <select
+                                                {...register("serviceRequired")}
+                                                id="serviceRequired"
+                                                className={`input-field appearance-none bg-[#0a0a0a] text-white ${errors.serviceRequired ? 'border-red-500/50' : ''}`}
+                                            >
+                                                <option value="" className="bg-[#0a0a0a] text-white">Select a service...</option>
+                                                <option value="UI/UX Design" className="bg-[#0a0a0a] text-white">UI/UX Design</option>
+                                                <option value="Frontend Development" className="bg-[#0a0a0a] text-white">Frontend Development</option>
+                                                <option value="Backend Development" className="bg-[#0a0a0a] text-white">Backend Development</option>
+                                                <option value="Full Stack Development" className="bg-[#0a0a0a] text-white">Full Stack Development</option>
+                                                <option value="DevOps / Cloud" className="bg-[#0a0a0a] text-white">DevOps / Cloud</option>
+                                                <option value="Database Design" className="bg-[#0a0a0a] text-white">Database Design</option>
+                                                <option value="Bug Fix / Error Optimisation" className="bg-[#0a0a0a] text-white">Bug Fix / Error Optimisation</option>
+                                                <option value="Performance Tuning" className="bg-[#0a0a0a] text-white">Performance Tuning</option>
+                                                <option value="Other" className="bg-[#0a0a0a] text-white">Other</option>
+                                            </select>
+                                            {errors.serviceRequired && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.serviceRequired.message}</p>}
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <label htmlFor="budgetRange" className="text-sm font-medium text-gray-400">Budget Range <span className="text-gray-600">(Optional)</span></label>
+                                            <select
+                                                {...register("budgetRange")}
+                                                id="budgetRange"
+                                                className="input-field appearance-none bg-[#0a0a0a] text-white"
+                                            >
+                                                <option value="" className="bg-[#0a0a0a] text-white">Optional...</option>
+                                                <option value="Below ₹10,000" className="bg-[#0a0a0a] text-white">Below ₹10,000</option>
+                                                <option value="₹10,000 – ₹50,000" className="bg-[#0a0a0a] text-white">₹10,000 – ₹50,000</option>
+                                                <option value="₹50,000+" className="bg-[#0a0a0a] text-white">₹50,000+</option>
+                                                <option value="Discuss Later" className="bg-[#0a0a0a] text-white">Discuss Later</option>
+                                            </select>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label htmlFor="timeline" className="text-sm font-medium text-gray-400">Project Timeline <span className="text-gray-600">(Optional)</span></label>
+                                            <select
+                                                {...register("timeline")}
+                                                id="timeline"
+                                                className="input-field appearance-none bg-[#0a0a0a] text-white"
+                                            >
+                                                <option value="" className="bg-[#0a0a0a] text-white">Optional...</option>
+                                                <option value="Urgent (1–3 days)" className="bg-[#0a0a0a] text-white">Urgent (1–3 days)</option>
+                                                <option value="1–2 weeks" className="bg-[#0a0a0a] text-white">1–2 weeks</option>
+                                                <option value="1 month" className="bg-[#0a0a0a] text-white">1 month</option>
+                                                <option value="Flexible" className="bg-[#0a0a0a] text-white">Flexible</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label htmlFor="message" className="text-sm font-medium text-gray-300">Message</label>
+                                    <label htmlFor="message" className="text-sm font-medium text-gray-400">Project Details <span className="text-blue-500">*</span></label>
                                     <textarea
                                         {...register("message")}
                                         id="message"
                                         rows={5}
-                                        placeholder="Tell me about your project..."
-                                        className={`input-field resize-none ${errors.message ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                                        placeholder="Please provide a detailed explanation (min 20 characters)..."
+                                        className={`input-field resize-none bg-[#0a0a0a] focus:ring-1 focus:ring-blue-500/50 ${errors.message ? 'border-red-500/50 focus:border-red-500' : ''}`}
                                     />
                                     {errors.message && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.message.message}</p>}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label htmlFor="foundBy" className="text-sm font-medium text-gray-400">How Did You Find Me? <span className="text-gray-600">(Optional)</span></label>
+                                    <select
+                                        {...register("foundBy")}
+                                        id="foundBy"
+                                        className="input-field appearance-none bg-[#0a0a0a] text-white"
+                                    >
+                                        <option value="" className="bg-[#0a0a0a] text-white">Optional...</option>
+                                        <option value="LinkedIn" className="bg-[#0a0a0a] text-white">LinkedIn</option>
+                                        <option value="X (Twitter)" className="bg-[#0a0a0a] text-white">X (Twitter)</option>
+                                        <option value="GitHub" className="bg-[#0a0a0a] text-white">GitHub</option>
+                                        <option value="Referral" className="bg-[#0a0a0a] text-white">Referral</option>
+                                        <option value="Google Search" className="bg-[#0a0a0a] text-white">Google Search</option>
+                                        <option value="Other" className="bg-[#0a0a0a] text-white">Other</option>
+                                    </select>
                                 </div>
 
                                 {submitStatus === "error" && (
@@ -193,19 +242,60 @@ export default function Contact() {
                                 <button
                                     type="submit"
                                     disabled={submitStatus === "loading"}
-                                    className="btn-primary w-full group disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="btn-primary w-full py-4 text-lg font-bold group disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.01] active:scale-[0.99] transition-all"
                                 >
                                     {submitStatus === "loading" ? (
-                                        <Loader2 size={18} className="animate-spin" />
+                                        <div className="flex items-center justify-center">
+                                            <Loader2 size={24} className="animate-spin mr-3" />
+                                            <span>Processing Inquiry...</span>
+                                        </div>
                                     ) : (
-                                        <>
-                                            Send Message
-                                            <Send size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                                        </>
+                                        <div className="flex items-center justify-center">
+                                            Submit Professional Request
+                                            <Send size={20} className="ml-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                        </div>
                                     )}
                                 </button>
+                                <p className="text-[11px] text-center text-gray-500 max-w-sm mx-auto">
+                                    Secure and professional communication ensured.
+                                    Expect a high-quality response within 1 business day.
+                                </p>
                             </form>
                         )}
+                    </div>
+
+                    {/* Quick Reach Info - Now more subtle below the main form */}
+                    <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="flex items-center space-x-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                            <div className="p-3 bg-blue-500/10 rounded-xl text-blue-400">
+                                <Mail size={20} />
+                            </div>
+                            <div>
+                                <p className="text-xs text-gray-500 font-medium">Direct Email</p>
+                                <p className="text-sm text-white font-semibold">ka6307464@gmail.com</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center space-x-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                            <div className="p-3 bg-green-500/10 rounded-xl text-green-400">
+                                <Phone size={20} />
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-xs text-gray-500 font-medium">Call / WhatsApp</p>
+                                <div className="flex items-center justify-between">
+                                    <p className="text-sm text-white font-semibold">{showPhone ? "6006121193" : "••••••••••"}</p>
+                                    {!showPhone && <button onClick={() => setShowPhone(true)} className="text-[10px] text-blue-400 hover:underline">Reveal</button>}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex items-center space-x-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                            <div className="p-3 bg-purple-500/10 rounded-xl text-purple-400">
+                                <MapPin size={20} />
+                            </div>
+                            <div>
+                                <p className="text-xs text-gray-500 font-medium">Location</p>
+                                <p className="text-sm text-white font-semibold">Kashmir, India</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -23,3 +23,30 @@ export async function GET() {
         );
     }
 }
+export async function PATCH(req: Request) {
+    try {
+        const session = await getSession();
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const { id, approved } = await req.json();
+
+        if (!id) {
+            return NextResponse.json({ error: "Testimonial ID is required" }, { status: 400 });
+        }
+
+        const testimonial = await prisma.testimonial.update({
+            where: { id },
+            data: { approved },
+        });
+
+        return NextResponse.json(testimonial);
+    } catch (error) {
+        console.error("Admin testimonials PATCH error:", error);
+        return NextResponse.json(
+            { error: "Failed to update testimonial" },
+            { status: 500 }
+        );
+    }
+}
