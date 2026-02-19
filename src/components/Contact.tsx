@@ -68,7 +68,7 @@ export default function Contact() {
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-bold text-white mb-2">Location</h3>
-                                    <p className="text-gray-400">New York, NY</p>
+                                    <p className="text-gray-400">Kashmir, India</p>
                                     <p className="text-gray-500 text-sm mt-1">Open to remote work worldwide.</p>
                                 </div>
                             </div>
