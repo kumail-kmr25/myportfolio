@@ -81,7 +81,7 @@ export default function Testimonials() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {testimonials?.map((testimonial) => (
+                        {Array.isArray(testimonials) && testimonials.map((testimonial) => (
                             <motion.div
                                 key={testimonial.id}
                                 initial={{ opacity: 0, y: 20 }}

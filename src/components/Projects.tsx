@@ -5,7 +5,14 @@ import Image from "next/image";
 import { ExternalLink, Github, Loader2 } from "lucide-react";
 import useSWR from "swr";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    if (!res.ok) {
+        const error = await res.json().catch(() => ({}));
+        throw new Error(error.error || "Failed to fetch projects");
+    }
+    return res.json();
+};
 
 interface Project {
     id: string;
@@ -20,7 +27,14 @@ interface Project {
 export default function Projects() {
     const { data: projects, error, isLoading } = useSWR<Project[]>("/api/projects", fetcher);
 
-    if (error) return null; // Or handle error UI
+    if (error) {
+        return (
+            <div className="text-center py-20 text-red-500 bg-red-500/5 rounded-3xl border border-red-500/10 mx-auto max-w-4xl">
+                <p className="font-medium">Error: {error.message}</p>
+                <p className="text-sm text-gray-500 mt-2">Please check if the server is running and the database is connected.</p>
+            </div>
+        );
+    }
 
     return (
         <section id="projects" className="bg-[#050505] py-20">
@@ -40,7 +54,7 @@ export default function Projects() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {projects.map((project) => (
+                        {Array.isArray(projects) && projects.map((project) => (
                             <div key={project.id} className="card group">
                                 <div className="relative overflow-hidden rounded-xl mb-6 h-48">
                                     <Image
