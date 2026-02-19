@@ -34,10 +34,13 @@ export async function GET() {
         });
 
         // Sanitize: remove email from public display
-        const sanitizedTestimonials = testimonials.map(({ email, ...rest }) => ({
-            ...rest,
-            created_at: rest.created_at.toISOString(),
-        }));
+        const sanitizedTestimonials = testimonials.map((t: any) => {
+            const { email, ...rest } = t;
+            return {
+                ...rest,
+                created_at: rest.created_at.toISOString(),
+            };
+        });
 
         return NextResponse.json(sanitizedTestimonials);
     } catch (error) {
@@ -83,7 +86,7 @@ export async function POST(req: Request) {
         return NextResponse.json(sanitizedTestimonial, { status: 201 });
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return NextResponse.json({ error: error.errors }, { status: 400 });
+            return NextResponse.json({ error: error.format() }, { status: 400 });
         }
         console.error("Error creating testimonial:", error);
         return NextResponse.json(

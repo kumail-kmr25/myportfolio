@@ -63,8 +63,11 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const newErrors: Record<string, string> = {};
-                error.errors.forEach((err) => {
-                    if (err.path[0]) newErrors[err.path[0].toString()] = err.message;
+                error.issues.forEach((issue) => {
+                    const path = issue.path[0];
+                    if (path) {
+                        newErrors[path.toString()] = issue.message;
+                    }
                 });
                 setErrors(newErrors);
             } else {
@@ -171,8 +174,8 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                                 type="button"
                                 onClick={() => handleRatingClick(num)}
                                 className={`w-8 h-8 flex items-center justify-center rounded-lg transition-all ${formData.rating === num
-                                        ? "bg-white text-black scale-110 shadow-lg"
-                                        : "bg-white/5 text-gray-400 hover:bg-white/10"
+                                    ? "bg-white text-black scale-110 shadow-lg"
+                                    : "bg-white/5 text-gray-400 hover:bg-white/10"
                                     }`}
                             >
                                 {num}
