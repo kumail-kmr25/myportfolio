@@ -32,7 +32,14 @@ export default function Contact() {
                 body: JSON.stringify(data),
             });
 
-            const result = await response.json();
+            const contentType = response.headers.get("content-type");
+            let result;
+
+            if (contentType && contentType.includes("application/json")) {
+                result = await response.json();
+            } else {
+                throw new Error(`Server returned ${response.status}: ${response.statusText}. Expected JSON but received ${contentType || 'unknown'}.`);
+            }
 
             if (response.ok && result.success) {
                 setSubmitStatus("success");
@@ -42,9 +49,9 @@ export default function Contact() {
                 setSubmitStatus("error");
                 setErrorMessage(result.error || "Something went wrong. Please try again.");
             }
-        } catch (error) {
+        } catch (error: any) {
             setSubmitStatus("error");
-            setErrorMessage("Failed to connect to the server.");
+            setErrorMessage(error.message || "Failed to connect to the server.");
         }
     };
 
@@ -66,7 +73,12 @@ export default function Contact() {
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-bold text-white mb-2">Email Me</h3>
-                                    <p className="text-gray-400">kumailkmr25@gmail.com</p>
+                                    <a
+                                        href="mailto:kumailkmr25@gmail.com"
+                                        className="text-gray-400 hover:text-blue-400 transition-colors"
+                                    >
+                                        kumailkmr25@gmail.com
+                                    </a>
                                     <p className="text-gray-500 text-sm mt-1">I usually respond within 24 hours.</p>
                                 </div>
                             </div>

@@ -6,7 +6,21 @@ import useSWR from "swr";
 import TestimonialModal from "./TestimonialModal";
 import { motion } from "framer-motion";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    const contentType = res.headers.get("content-type");
+    if (!res.ok) {
+        if (contentType && contentType.includes("application/json")) {
+            const error = await res.json();
+            throw new Error(error.error || "Failed to fetch");
+        }
+        throw new Error(`Server returned ${res.status}: ${res.statusText}`);
+    }
+    if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Invalid response format: Expected JSON but received something else.");
+    }
+    return res.json();
+};
 
 interface Testimonial {
     id: string;
@@ -52,7 +66,8 @@ export default function Testimonials() {
                     </div>
                 ) : error ? (
                     <div className="text-center py-20 text-red-500 bg-red-500/5 rounded-3xl border border-red-500/10">
-                        <p className="font-medium">Failed to load feedback. Please try again later.</p>
+                        <p className="font-medium">Error: {error.message}</p>
+                        <p className="text-sm text-gray-500 mt-2">Please check if the server is running and the database is connected.</p>
                     </div>
                 ) : testimonials?.length === 0 ? (
                     <div className="text-center py-20 border-2 border-dashed border-white/5 rounded-[3rem]">
@@ -80,8 +95,8 @@ export default function Testimonials() {
                                             <Star
                                                 key={star}
                                                 className={`w-4 h-4 ${star <= testimonial.rating
-                                                        ? "text-yellow-500 fill-yellow-500"
-                                                        : "text-gray-700"
+                                                    ? "text-yellow-500 fill-yellow-500"
+                                                    : "text-gray-700"
                                                     }`}
                                             />
                                         ))}

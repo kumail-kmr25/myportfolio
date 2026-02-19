@@ -45,10 +45,10 @@ export async function GET() {
         return NextResponse.json(sanitizedTestimonials);
     } catch (error) {
         console.error("Error fetching testimonials:", error);
-        return NextResponse.json(
-            { error: "Failed to fetch testimonials" },
-            { status: 500 }
-        );
+        return new Response(JSON.stringify({ error: "Failed to fetch testimonials" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 }
 
@@ -86,12 +86,15 @@ export async function POST(req: Request) {
         return NextResponse.json(sanitizedTestimonial, { status: 201 });
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return NextResponse.json({ error: error.format() }, { status: 400 });
+            return new Response(JSON.stringify({ error: error.format() }), {
+                status: 400,
+                headers: { "Content-Type": "application/json" },
+            });
         }
         console.error("Error creating testimonial:", error);
-        return NextResponse.json(
-            { error: "Failed to create testimonial" },
-            { status: 500 }
-        );
+        return new Response(JSON.stringify({ error: "Failed to create testimonial" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 }

@@ -33,10 +33,10 @@ export async function POST(req: NextRequest) {
         // Validation
         const result = contactSchema.safeParse(body);
         if (!result.success) {
-            return NextResponse.json(
-                { success: false, error: "Validation failed", details: result.error.format() },
-                { status: 400 }
-            );
+            return new Response(JSON.stringify({ success: false, error: "Validation failed", details: result.error.format() }), {
+                status: 400,
+                headers: { "Content-Type": "application/json" },
+            });
         }
 
         const { name, email, message } = result.data;
@@ -69,12 +69,12 @@ export async function POST(req: NextRequest) {
             { success: true, message: "Your message has been sent successfully!" },
             { status: 200 }
         );
-    } catch (error) {
+    } catch (error: any) {
         console.error("Contact API error:", error);
-        return NextResponse.json(
-            { success: false, error: "Internal server error. Please try again later." },
-            { status: 500 }
-        );
+        return new Response(JSON.stringify({ success: false, error: error.message || "Internal server error. Please try again later." }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+        });
     }
 }
 
