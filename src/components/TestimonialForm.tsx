@@ -124,18 +124,19 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
             <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-300">Intervention Type</label>
                 <select
-                    className="input-field appearance-none cursor-pointer"
+                    className="input-field appearance-none cursor-pointer bg-[#1a1a1a] text-white"
                     value={formData.intervention_type}
                     onChange={(e) => setFormData({ ...formData, intervention_type: e.target.value as any })}
+                    style={{ colorScheme: "dark" }}
                 >
-                    <option value="UI/UX Design">UI/UX Design</option>
-                    <option value="DevOps / Cloud">DevOps / Cloud</option>
-                    <option value="Frontend">Frontend</option>
-                    <option value="Backend">Backend</option>
-                    <option value="Database Design">Database Design</option>
-                    <option value="Bug Fix / Error Optimisation">Bug Fix / Error Optimisation</option>
-                    <option value="Full Stack Development">Full Stack Development</option>
-                    <option value="Others">Others</option>
+                    <option className="bg-[#1a1a1a] text-white" value="UI/UX Design">UI/UX Design</option>
+                    <option className="bg-[#1a1a1a] text-white" value="DevOps / Cloud">DevOps / Cloud</option>
+                    <option className="bg-[#1a1a1a] text-white" value="Frontend">Frontend</option>
+                    <option className="bg-[#1a1a1a] text-white" value="Backend">Backend</option>
+                    <option className="bg-[#1a1a1a] text-white" value="Database Design">Database Design</option>
+                    <option className="bg-[#1a1a1a] text-white" value="Bug Fix / Error Optimisation">Bug Fix / Error Optimisation</option>
+                    <option className="bg-[#1a1a1a] text-white" value="Full Stack Development">Full Stack Development</option>
+                    <option className="bg-[#1a1a1a] text-white" value="Others">Others</option>
                 </select>
             </div>
 

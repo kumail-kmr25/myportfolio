@@ -79,6 +79,22 @@ export async function POST(req: NextRequest) {
 }
 
 // Block other methods
-export async function GET() { return NextResponse.json({ error: "Method not allowed" }, { status: 405 }); }
+export async function GET(req: NextRequest) {
+    try {
+        const { getSession } = await import("@/lib/auth");
+        const session = await getSession();
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const messages = await prisma.contactSubmission.findMany({
+            orderBy: { created_at: "desc" },
+        });
+        return NextResponse.json(messages);
+    } catch (error: any) {
+        console.error("Contact GET error:", error);
+        return NextResponse.json({ error: "Failed to fetch messages" }, { status: 500 });
+    }
+}
 export async function PUT() { return NextResponse.json({ error: "Method not allowed" }, { status: 405 }); }
 export async function DELETE() { return NextResponse.json({ error: "Method not allowed" }, { status: 405 }); }

@@ -2,35 +2,43 @@
 
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 import Link from "next/link";
+import useSWR from "swr";
 
-const posts = [
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+// Fallback posts when no database posts exist
+const fallbackPosts = [
     {
+        id: "fallback-1",
         title: "How I Scaled a Next.js App to 1 Million Users",
         excerpt: "Learn the architectural decisions and performance optimizations that made scaling possible.",
-        date: "Feb 15, 2026",
-        readTime: "8 min read",
         category: "Development",
-        slug: "#",
+        readTime: "8 min read",
+        created_at: "2026-02-15T00:00:00Z",
     },
     {
+        id: "fallback-2",
         title: "The Future of Web Design: Glassmorphism & Beyond",
         excerpt: "Exploring the latest UI trends and how to implement them effectively using Tailwind CSS.",
-        date: "Feb 02, 2026",
-        readTime: "5 min read",
         category: "Design",
-        slug: "#",
+        readTime: "5 min read",
+        created_at: "2026-02-02T00:00:00Z",
     },
     {
+        id: "fallback-3",
         title: "Why DevOps is Critical for Freelance Developers",
-        excerpt: " streamline your workflow and deliver more value to clients with automated CI/CD pipelines.",
-        date: "Jan 28, 2026",
-        readTime: "6 min read",
+        excerpt: "Streamline your workflow and deliver more value to clients with automated CI/CD pipelines.",
         category: "DevOps",
-        slug: "#",
+        readTime: "6 min read",
+        created_at: "2026-01-28T00:00:00Z",
     },
 ];
 
 export default function Blog() {
+    const { data: blogPosts } = useSWR("/api/blog", fetcher);
+
+    const posts = blogPosts && Array.isArray(blogPosts) && blogPosts.length > 0 ? blogPosts : fallbackPosts;
+
     return (
         <section id="blog" className="py-20 bg-[#050505]">
             <div className="section-container">
@@ -47,8 +55,8 @@ export default function Blog() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {posts.map((post, index) => (
-                        <Link href={post.slug} key={index} className="card group hover:bg-white/10 transition-colors">
+                    {posts.map((post: any) => (
+                        <div key={post.id} className="card group hover:bg-white/10 transition-colors">
                             <div className="flex justify-between items-center mb-4 text-xs font-semibold uppercase tracking-wider text-blue-400">
                                 <span>{post.category}</span>
                             </div>
@@ -64,14 +72,14 @@ export default function Blog() {
                             <div className="flex items-center text-xs text-gray-500 gap-4 mt-auto">
                                 <div className="flex items-center">
                                     <Calendar className="w-3 h-3 mr-1" />
-                                    {post.date}
+                                    {new Date(post.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                                 </div>
                                 <div className="flex items-center">
                                     <Clock className="w-3 h-3 mr-1" />
                                     {post.readTime}
                                 </div>
                             </div>
-                        </Link>
+                        </div>
                     ))}
                 </div>
 

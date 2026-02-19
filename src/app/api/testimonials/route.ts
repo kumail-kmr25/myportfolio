@@ -28,6 +28,7 @@ const MAX_REQUESTS = 5;
 export async function GET() {
     try {
         const testimonials = await prisma.testimonial.findMany({
+            where: { approved: true },
             orderBy: {
                 created_at: "desc",
             },

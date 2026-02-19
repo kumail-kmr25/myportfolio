@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Twitter, Linkedin, Instagram, ArrowUp } from "lucide-react";
+import { Github, Twitter, Linkedin, Instagram, ArrowUp, ShieldCheck } from "lucide-react";
 
 export default function Footer() {
     const scrollToTop = () => {
@@ -18,18 +18,30 @@ export default function Footer() {
                     </p>
                 </div>
 
-                <div className="flex space-x-6">
-                    <Link href="https://github.com/kumail-kmr25" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
-                        <Github size={24} />
-                    </Link>
-                    <Link href="https://x.com/KumailKmr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
-                        <Twitter size={24} />
-                    </Link>
-                    <Link href="https://www.linkedin.com/in/kumale-ali-bhat-6196a0384/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
-                        <Linkedin size={24} />
-                    </Link>
-                    <Link href="https://www.instagram.com/kumail.kmr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
-                        <Instagram size={24} />
+                <div className="flex items-center gap-6">
+                    <div className="flex space-x-6">
+                        <Link href="https://github.com/kumail-kmr25" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                            <Github size={24} />
+                        </Link>
+                        <Link href="https://x.com/KumailKmr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                            <Twitter size={24} />
+                        </Link>
+                        <Link href="https://www.linkedin.com/in/kumale-ali-bhat-6196a0384/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                            <Linkedin size={24} />
+                        </Link>
+                        <Link href="https://www.instagram.com/kumail.kmr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors hover:scale-110 transform">
+                            <Instagram size={24} />
+                        </Link>
+                    </div>
+
+                    {/* Admin Dashboard Link */}
+                    <Link
+                        href="/admin"
+                        className="flex items-center gap-1.5 text-gray-600 hover:text-gray-400 transition-colors text-xs"
+                        title="Admin Dashboard"
+                    >
+                        <ShieldCheck size={14} />
+                        <span className="hidden md:inline">Admin</span>
                     </Link>
                 </div>
             </div>

@@ -9,36 +9,57 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
+model Admin {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  userId    String   @unique
+  password  String
+  created_at DateTime @default(now())
+}
+
 model Testimonial {
-  id                  String   @id @default(cuid())
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
   name                String
   email               String
   intervention_type   String
   message             String
   rating              Int
   about_delivery_lead String
+  approved            Boolean  @default(false)
   created_at          DateTime @default(now())
 }
 
 model ContactSubmission {
-  id         String   @id @default(uuid())
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   email      String
-  message    String   @db.Text
+  message    String
   created_at DateTime @default(now())
 }
 
 model Project {
-  id          String   @id @default(cuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
-  description String   @db.Text
+  description String
   tags        String[]
   image       String
   demo        String
   github      String
   created_at  DateTime @default(now())
+}
+
+model BlogPost {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  excerpt    String
+  content    String
+  category   String
+  readTime   String
+  published  Boolean  @default(false)
+  created_at DateTime @default(now())
 }
