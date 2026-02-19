@@ -23,3 +23,11 @@ model Testimonial {
   about_delivery_lead String
   created_at          DateTime @default(now())
 }
+
+model ContactSubmission {
+  id         String   @id @default(uuid())
+  name       String
+  email      String
+  message    String   @db.Text
+  created_at DateTime @default(now())
+}

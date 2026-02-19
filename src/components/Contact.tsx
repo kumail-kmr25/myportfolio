@@ -1,14 +1,55 @@
 "use client";
 
-import { Mail, Phone, MapPin, Send, MessageCircle } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Mail, Phone, MapPin, Send, MessageCircle, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { contactSchema, type ContactFormData } from "@/lib/schemas/contact";
 
 export default function Contact() {
     const [showPhone, setShowPhone] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors, isValid },
+    } = useForm<ContactFormData>({
+        resolver: zodResolver(contactSchema),
+        mode: "onBlur",
+    });
+
+    const onSubmit = async (data: ContactFormData) => {
+        setSubmitStatus("loading");
+        setErrorMessage("");
+
+        try {
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                setSubmitStatus("success");
+                reset();
+                setTimeout(() => setSubmitStatus("idle"), 5000);
+            } else {
+                setSubmitStatus("error");
+                setErrorMessage(result.error || "Something went wrong. Please try again.");
+            }
+        } catch (error) {
+            setSubmitStatus("error");
+            setErrorMessage("Failed to connect to the server.");
+        }
+    };
 
     return (
         <section id="contact" className="bg-[#050505] py-20 relative overflow-hidden">
-            {/* Background blobs or effects can be added here */}
             <div className="section-container">
                 <h2 className="section-title">Get In Touch</h2>
                 <p className="section-subtitle">
@@ -76,36 +117,84 @@ export default function Contact() {
                     </div>
 
                     {/* Contact Form */}
-                    <form className="space-y-6 card" onSubmit={(e) => {
-                        e.preventDefault();
-                        alert("Thank you for your message! This is a demo form.");
-                    }}>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <label htmlFor="name" className="text-sm font-medium text-gray-300">Name</label>
-                                <input type="text" id="name" placeholder="John Doe" className="input-field" required />
+                    <div className="card">
+                        {submitStatus === "success" ? (
+                            <div className="flex flex-col items-center justify-center py-12 text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
+                                    <CheckCircle2 size={40} className="text-green-500" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
+                                <p className="text-gray-400">Thank you for reaching out. I&apos;ll get back to you soon.</p>
+                                <button
+                                    onClick={() => setSubmitStatus("idle")}
+                                    className="mt-8 text-sm text-gray-400 hover:text-white transition-colors"
+                                >
+                                    Send another message
+                                </button>
                             </div>
-                            <div className="space-y-2">
-                                <label htmlFor="email" className="text-sm font-medium text-gray-300">Email</label>
-                                <input type="email" id="email" placeholder="john@example.com" className="input-field" required />
-                            </div>
-                        </div>
+                        ) : (
+                            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label htmlFor="name" className="text-sm font-medium text-gray-300">Name</label>
+                                        <input
+                                            {...register("name")}
+                                            type="text"
+                                            id="name"
+                                            placeholder="John Doe"
+                                            className={`input-field ${errors.name ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                                        />
+                                        {errors.name && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.name.message}</p>}
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="email" className="text-sm font-medium text-gray-300">Email</label>
+                                        <input
+                                            {...register("email")}
+                                            type="email"
+                                            id="email"
+                                            placeholder="john@example.com"
+                                            className={`input-field ${errors.email ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                                        />
+                                        {errors.email && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.email.message}</p>}
+                                    </div>
+                                </div>
 
-                        <div className="space-y-2">
-                            <label htmlFor="subject" className="text-sm font-medium text-gray-300">Subject</label>
-                            <input type="text" id="subject" placeholder="Project Inquiry" className="input-field" required />
-                        </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="message" className="text-sm font-medium text-gray-300">Message</label>
+                                    <textarea
+                                        {...register("message")}
+                                        id="message"
+                                        rows={5}
+                                        placeholder="Tell me about your project..."
+                                        className={`input-field resize-none ${errors.message ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                                    />
+                                    {errors.message && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.message.message}</p>}
+                                </div>
 
-                        <div className="space-y-2">
-                            <label htmlFor="message" className="text-sm font-medium text-gray-300">Message</label>
-                            <textarea id="message" rows={4} placeholder="Tell me about your project..." className="input-field resize-none" required />
-                        </div>
+                                {submitStatus === "error" && (
+                                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-sm flex items-center gap-3">
+                                        <AlertCircle size={18} />
+                                        {errorMessage}
+                                    </div>
+                                )}
 
-                        <button type="submit" className="btn-primary w-full group">
-                            Send Message
-                            <Send size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                        </button>
-                    </form>
+                                <button
+                                    type="submit"
+                                    disabled={submitStatus === "loading"}
+                                    className="btn-primary w-full group disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {submitStatus === "loading" ? (
+                                        <Loader2 size={18} className="animate-spin" />
+                                    ) : (
+                                        <>
+                                            Send Message
+                                            <Send size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                                        </>
+                                    )}
+                                </button>
+                            </form>
+                        )}
+                    </div>
                 </div>
             </div>
         </section>

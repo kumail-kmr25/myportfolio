@@ -4,20 +4,25 @@ A modern, responsive portfolio website built with [Next.js](https://nextjs.org/)
 
 ## 🚀 Features
 
+- **Interactive Testimonials**: Client feedback system with real-time updates.
+- **Admin Moderation Interface**: Secure dashboard at `/admin` for managing feedback.
+- **Full Stack Integration**: Backend API routes with PostgreSQL database.
 - **Modern UI/UX**: Clean, minimalist design with dark mode aesthetic.
 - **Responsive Layout**: Fully responsive across all devices (mobile, tablet, desktop).
-- **Interactive Elements**: Smooth animations, hover effects, and transitions.
+- **Interactive Elements**: Smooth animations using Framer Motion.
 - **Project Showcase**: Filterable grid layout for displaying projects.
-- **Contact Form**: Functional contact form with client-side handling.
 - **SEO Optimized**: Built with Next.js for optimal performance and SEO.
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 14+ (App Router)
+- **Framework**: Next.js 15+ (App Router)
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: JWT-based session management (`jose`)
+- **State Management**: SWR for real-time data fetching
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
 - **Icons**: Lucide React
-- **Animations**: Framer Motion (optional/future), CSS Keyframes
 
 ## 📂 Project Structure
 
