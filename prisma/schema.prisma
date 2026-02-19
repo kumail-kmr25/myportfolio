@@ -20,6 +20,8 @@ model Admin {
   phone     String   @unique
   userId    String   @unique
   password  String
+  resetToken       String?
+  resetTokenExpiry DateTime?
   created_at DateTime @default(now())
 }
 

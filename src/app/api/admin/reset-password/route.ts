@@ -4,39 +4,35 @@ import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
     try {
-        const { identifier, newPassword } = await req.json();
+        const { token, newPassword } = await req.json();
 
-        if (!identifier || !newPassword) {
+        if (!token || !newPassword) {
             return NextResponse.json(
-                { error: "Recovery identifier and new password are required." },
+                { error: "Token and new password are required." },
                 { status: 400 }
             );
         }
 
-        if (newPassword.length < 6) {
+        if (newPassword.length < 8) {
             return NextResponse.json(
-                { error: "New password must be at least 6 characters." },
+                { error: "Password must be at least 8 characters long." },
                 { status: 400 }
             );
         }
 
-        const recoveryPhone = process.env.RECOVERY_PHONE || "6006121193";
-        const recoveryEmail = process.env.RECOVERY_EMAIL || "ka6307464@gmail.com";
+        const admin = await prisma.admin.findFirst({
+            where: {
+                resetToken: token,
+                resetTokenExpiry: {
+                    gt: new Date(),
+                },
+            },
+        });
 
-        const trimmedIdentifier = identifier.trim();
-
-        if (trimmedIdentifier !== recoveryPhone && trimmedIdentifier.toLowerCase() !== recoveryEmail.toLowerCase()) {
-            return NextResponse.json(
-                { error: "Verification failed. The phone number or email does not match our records." },
-                { status: 403 }
-            );
-        }
-
-        const admin = await prisma.admin.findFirst();
         if (!admin) {
             return NextResponse.json(
-                { error: "No admin account found. Please register first." },
-                { status: 404 }
+                { error: "Invalid or expired reset token." },
+                { status: 400 }
             );
         }
 
@@ -44,17 +40,21 @@ export async function POST(req: Request) {
 
         await prisma.admin.update({
             where: { id: admin.id },
-            data: { password: hashedPassword },
+            data: {
+                password: hashedPassword,
+                resetToken: null,
+                resetTokenExpiry: null,
+            },
         });
 
         return NextResponse.json({
             success: true,
-            message: "Password reset successfully! You can now login with your new password.",
+            message: "Password reset successfully! You can now login.",
         });
-    } catch (error: any) {
-        console.error("Password reset error:", error);
+    } catch (error) {
+        console.error("Reset password error:", error);
         return NextResponse.json(
-            { error: "Password reset failed. Please try again." },
+            { error: "Internal server error" },
             { status: 500 }
         );
     }

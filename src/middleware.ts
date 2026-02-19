@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
     // Only protect /admin sub-routes (not the login page itself)
     if (pathname.startsWith("/admin")) {
         // Public admin pages that do NOT require auth
-        const publicAdminPaths = ["/admin", "/admin/login", "/admin/register", "/admin/reset-password"];
+        const publicAdminPaths = ["/admin", "/admin/login", "/admin/register", "/admin/reset-password", "/admin/forgot-password"];
         if (publicAdminPaths.includes(pathname)) {
             return NextResponse.next();
         }
