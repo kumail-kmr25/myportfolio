@@ -6,40 +6,30 @@ export default function About() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     {/* Text Content */}
-                    <div className="space-y-6 text-gray-400 text-lg leading-relaxed">
+                    <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                         <p>
-                            I am a passionate Full Stack Developer with a strong foundation in modern web technologies.
-                            My journey involves building scalable applications, optimizing performance, and designing intuitive user interfaces.
+                            Started my coding journey in 2023, I quickly discovered a passion for building software that solves real-world problems.
+                            What began as curiosity has evolved into a dedicated pursuit of mastering full-stack development.
                         </p>
                         <p>
-                            With expertise in the MERN stack (`MongoDB`, `Express.js`, `React`, `Node.js`) and Next.js,
-                            I strive to create seamless digital experiences. I also have a keen interest in DevOps,
-                            ensuring that applications are deployed efficiently and securely.
+                            Over the past year, I&apos;ve immersed myself in the MERN stack and Next.js, building projects like **Edunova SaaS** and e-commerce platforms
+                            that prioritize performance and user experience. I view code not just as syntax, but as a tool for creative expression and logical problem solving.
                         </p>
                         <p>
-                            When I&apos;m not coding, I&apos;m exploring new design trends or contributing to open-source projects.
+                            My approach combines technical precision with a design-first mindset, ensuring that every application I build is robust, scalable, and visually engaging.
                         </p>
                     </div>
 
-                    {/* Stats / Skills or Image Placeholder */}
-                    <div className="glass-effect p-8 rounded-3xl">
-                        <div className="grid grid-cols-2 gap-8">
-                            <div className="text-center">
-                                <h3 className="text-4xl font-bold text-white mb-2">3+</h3>
-                                <p className="text-sm text-gray-500 uppercase tracking-widest">Years Experience</p>
-                            </div>
-                            <div className="text-center">
-                                <h3 className="text-4xl font-bold text-white mb-2">50+</h3>
-                                <p className="text-sm text-gray-500 uppercase tracking-widest">Projects Completed</p>
-                            </div>
-                            <div className="text-center">
-                                <h3 className="text-4xl font-bold text-white mb-2">20+</h3>
-                                <p className="text-sm text-gray-500 uppercase tracking-widest">Happy Clients</p>
-                            </div>
-                            <div className="text-center">
-                                <h3 className="text-4xl font-bold text-white mb-2">24/7</h3>
-                                <p className="text-sm text-gray-500 uppercase tracking-widest">Support</p>
-                            </div>
+                    {/* Profile Photo */}
+                    <div className="relative group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+                        <div className="glass-effect p-4 rounded-3xl relative overflow-hidden aspect-square flex items-center justify-center">
+                            {/* Using next/image would require configuring domains or local import. Using simple img tag for SVG placeholder for now or standard next/image if configured */}
+                            <img
+                                src="/profile.svg"
+                                alt="Kumail Kmr Profile"
+                                className="w-full h-full object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
+                            />
                         </div>
                     </div>
                 </div>

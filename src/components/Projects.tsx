@@ -4,18 +4,18 @@ import { ExternalLink, Github } from "lucide-react";
 
 const projects = [
     {
+        title: "Edunova SaaS",
+        description: "A comprehensive School Management System with role-based access control, attendance tracking, and grading. Features a powerful dashboard for administrators, teachers, and students.",
+        tags: ["React", "Node.js", "MongoDB", "Express", "JWT"],
+        image: "/edunova_dashboard.svg",
+        demo: "#",
+        github: "https://github.com/kumail-kmr25/Edunova-saas.git",
+    },
+    {
         title: "E-Commerce Platform",
         description: "A full-featured e-commerce platform built with Next.js, Stripe, and Sanity CMS.",
         tags: ["Next.js", "TypeScript", "Stripe", "Sanity"],
-        image: "/project1.svg",
-        demo: "#",
-        github: "#",
-    },
-    {
-        title: "Task Management App",
-        description: "A collaborative task management tool with real-time updates using Socket.io.",
-        tags: ["React", "Node.js", "Socket.io", "MongoDB"],
-        image: "/project2.svg",
+        image: "/ecommerce_project.svg",
         demo: "#",
         github: "#",
     },
@@ -23,7 +23,7 @@ const projects = [
         title: "AI Content Generator",
         description: "An AI-powered application that generates marketing copy using OpenAI API.",
         tags: ["OpenAI", "Next.js", "Tailwind CSS"],
-        image: "/project3.svg",
+        image: "/ai_project.svg",
         demo: "#",
         github: "#",
     },

@@ -1,8 +1,11 @@
 "use client";
 
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, MessageCircle } from "lucide-react";
+import { useState } from "react";
 
 export default function Contact() {
+    const [showPhone, setShowPhone] = useState(false);
+
     return (
         <section id="contact" className="bg-[#050505] py-20 relative overflow-hidden">
             {/* Background blobs or effects can be added here */}
@@ -22,22 +25,39 @@ export default function Contact() {
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-bold text-white mb-2">Email Me</h3>
-                                    <p className="text-gray-400">kumail@example.com</p>
+                                    <p className="text-gray-400">kumailkmr25@gmail.com</p>
                                     <p className="text-gray-500 text-sm mt-1">I usually respond within 24 hours.</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="card">
-                            <div className="flex items-start space-x-4">
-                                <div className="p-3 bg-green-500/10 rounded-lg text-green-400">
-                                    <Phone size={24} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold text-white mb-2">Call Me</h3>
-                                    <p className="text-gray-400">+1 (555) 123-4567</p>
-                                    <p className="text-gray-500 text-sm mt-1">Available Mon-Fri, 9am - 6pm.</p>
-                                </div>
+                        <div className="flex items-start space-x-4">
+                            <div className="p-3 bg-green-500/10 rounded-lg text-green-400">
+                                <Phone size={24} />
+                            </div>
+                            <div className="w-full">
+                                <h3 className="text-xl font-bold text-white mb-2">Call Me</h3>
+                                {!showPhone ? (
+                                    <button
+                                        onClick={() => setShowPhone(true)}
+                                        className="text-sm bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors text-white"
+                                    >
+                                        Get Phone Number
+                                    </button>
+                                ) : (
+                                    <div className="flex items-center gap-4 mt-1 animate-fade-in-up">
+                                        <p className="text-gray-400 text-lg">6006121193</p>
+                                        <a
+                                            href="https://wa.me/916006121193"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="p-2 bg-green-500/20 hover:bg-green-500/30 rounded-full text-green-400 transition-colors"
+                                        >
+                                            <MessageCircle size={20} />
+                                        </a>
+                                    </div>
+                                )}
+                                <p className="text-gray-500 text-sm mt-2">Available Mon-Fri, 9am - 6pm.</p>
                             </div>
                         </div>
 

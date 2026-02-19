@@ -4,6 +4,7 @@ import { Code2, Database, Layout, Server, Smartphone, Terminal, Cpu, Globe } fro
 
 const skills = [
     { name: "React", icon: Code2, color: "text-cyan-400" },
+    { name: "JavaScript", icon: Code2, color: "text-yellow-400" },
     { name: "Next.js", icon: Globe, color: "text-white" },
     { name: "TypeScript", icon: Code2, color: "text-blue-400" },
     { name: "Node.js", icon: Server, color: "text-green-500" },

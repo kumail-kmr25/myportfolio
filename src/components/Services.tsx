@@ -1,6 +1,6 @@
 "use client";
 
-import { Code, Layout, Smartphone, Server, Globe, Rocket } from "lucide-react";
+import { Code, Layout, Smartphone, Server, Globe, Rocket, Terminal } from "lucide-react";
 import { motion } from "framer-motion";
 
 const services = [
@@ -11,21 +11,21 @@ const services = [
         delay: 0,
     },
     {
-        icon: Smartphone,
-        title: "Mobile App Development",
-        description: "Cross-platform mobile applications using React Native for iOS and Android.",
-        delay: 0.1,
-    },
-    {
         icon: Code,
         title: "Full Stack Solutions",
         description: "End-to-end development including backend APIs, database design, and frontend implementation.",
-        delay: 0.2,
+        delay: 0.1,
     },
     {
         icon: Server,
         title: "DevOps & Deployment",
         description: "CI/CD pipelines, Docker containerization, and cloud deployment on AWS/Vercel.",
+        delay: 0.2,
+    },
+    {
+        icon: Terminal,
+        title: "Bug Fixing & Optimization",
+        description: "Debugging complex issues, resolving runtime errors, and optimizing application performance.",
         delay: 0.3,
     },
     {
