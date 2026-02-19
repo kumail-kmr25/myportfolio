@@ -21,7 +21,7 @@ export async function sendContactNotification({
     try {
         const { data, error } = await resend.emails.send({
             from: "Portfolio <onboarding@resend.dev>", // Transition to custom domain in production
-            to: process.env.CONTACT_EMAIL || "kumailkmr25@gmail.com",
+            to: process.env.CONTACT_EMAIL || "ka6307464@gmail.com",
             subject: `New Contact Form Submission from ${name}`,
             replyTo: email,
             html: `

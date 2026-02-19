@@ -74,10 +74,10 @@ export default function Contact() {
                                 <div>
                                     <h3 className="text-xl font-bold text-white mb-2">Email Me</h3>
                                     <a
-                                        href="mailto:kumailkmr25@gmail.com"
+                                        href="mailto:ka6307464@gmail.com"
                                         className="text-gray-400 hover:text-blue-400 transition-colors"
                                     >
-                                        kumailkmr25@gmail.com
+                                        ka6307464@gmail.com
                                     </a>
                                     <p className="text-gray-500 text-sm mt-1">I usually respond within 24 hours.</p>
                                 </div>
