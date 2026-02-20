@@ -1,8 +1,9 @@
 "use client";
 
-import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Sparkles } from "lucide-react";
 import Link from "next/link";
 import useSWR from "swr";
+import { motion } from "framer-motion";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -55,31 +56,50 @@ export default function Blog() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {posts.map((post: any) => (
-                        <div key={post.id} className="card group hover:bg-white/10 transition-colors">
-                            <div className="flex justify-between items-center mb-4 text-xs font-semibold uppercase tracking-wider text-blue-400">
-                                <span>{post.category}</span>
-                            </div>
+                    {posts.map((post: any, index: number) => (
+                        <motion.div
+                            key={post.id}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            className="group"
+                        >
+                            <div className="card h-full flex flex-col bg-white/[0.02] backdrop-blur-3xl border-white/5 group-hover:border-blue-500/40 group-hover:bg-blue-500/[0.02] transition-all duration-500 p-8 rounded-[2rem] relative overflow-hidden">
+                                {/* Glow Effect */}
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
-                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors line-clamp-2">
-                                {post.title}
-                            </h3>
-
-                            <p className="text-gray-400 mb-6 line-clamp-3 text-sm">
-                                {post.excerpt}
-                            </p>
-
-                            <div className="flex items-center text-xs text-gray-500 gap-4 mt-auto">
-                                <div className="flex items-center">
-                                    <Calendar className="w-3 h-3 mr-1" />
-                                    {new Date(post.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                                <div className="flex justify-between items-center mb-6">
+                                    <div className="flex items-center gap-2 px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full">
+                                        <Sparkles size={10} className="text-blue-400" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">{post.category}</span>
+                                    </div>
+                                    <div className="flex items-center text-[10px] text-gray-500 font-bold uppercase tracking-tighter">
+                                        <Clock className="w-3 h-3 mr-1 text-blue-400/50" />
+                                        {post.readTime}
+                                    </div>
                                 </div>
-                                <div className="flex items-center">
-                                    <Clock className="w-3 h-3 mr-1" />
-                                    {post.readTime}
+
+                                <h3 className="text-2xl font-black text-white mb-4 group-hover:text-blue-400 transition-colors line-clamp-2 leading-tight tracking-tight">
+                                    {post.title}
+                                </h3>
+
+                                <p className="text-gray-400 mb-8 line-clamp-3 text-sm leading-relaxed font-medium">
+                                    {post.excerpt}
+                                </p>
+
+                                <div className="mt-auto flex items-center justify-between pt-6 border-t border-white/5">
+                                    <div className="flex items-center text-[10px] font-black uppercase tracking-wider text-gray-500">
+                                        <Calendar className="w-3 h-3 mr-2" />
+                                        {new Date(post.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                                    </div>
+
+                                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white group-hover:bg-blue-500 group-hover:text-white transition-all transform group-hover:translate-x-1">
+                                        <ArrowRight size={18} />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
 

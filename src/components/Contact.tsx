@@ -10,6 +10,7 @@ export default function Contact() {
     const [showPhone, setShowPhone] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
+    const [submittedData, setSubmittedData] = useState<ContactFormData | null>(null);
 
     const {
         register,
@@ -42,9 +43,10 @@ export default function Contact() {
             }
 
             if (response.ok && result.success) {
+                setSubmittedData(data);
                 setSubmitStatus("success");
                 reset();
-                setTimeout(() => setSubmitStatus("idle"), 5000);
+                // We don't auto-reset to idle here anymore to let user read summary
             } else {
                 setSubmitStatus("error");
                 setErrorMessage(result.error || "Something went wrong. Please try again.");
@@ -66,21 +68,56 @@ export default function Contact() {
                 <div className="max-w-4xl mx-auto">
                     {/* Contact Form HERO - Professional & High-Converting */}
                     <div className="card shadow-2xl shadow-blue-500/5 border-white/10">
-                        {submitStatus === "success" ? (
-                            <div className="flex flex-col items-center justify-center py-16 text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                <div className="w-24 h-24 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
-                                    <CheckCircle2 size={48} className="text-green-500" />
+                        {submitStatus === "success" && submittedData ? (
+                            <div className="p-8 md:p-12 animate-in fade-in zoom-in duration-500">
+                                <div className="flex flex-col items-center justify-center text-center mb-12">
+                                    <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
+                                        <CheckCircle2 size={40} className="text-green-500" />
+                                    </div>
+                                    <h3 className="text-3xl font-bold text-white mb-3">Inquiry Received!</h3>
+                                    <p className="text-gray-400 text-lg">
+                                        Thank you, <span className="text-white font-bold">{submittedData.name}</span>. Here is a summary of what you sent:
+                                    </p>
                                 </div>
-                                <h3 className="text-3xl font-bold text-white mb-3">Inquiry Received!</h3>
-                                <p className="text-gray-400 text-lg max-w-md">
-                                    Thank you for your professional interest. I will review your details and respond within 24 business hours.
-                                </p>
-                                <button
-                                    onClick={() => setSubmitStatus("idle")}
-                                    className="mt-10 px-8 py-3 bg-white/5 hover:bg-white/10 text-white rounded-full transition-all border border-white/10 text-sm font-medium"
-                                >
-                                    Send another inquiry
-                                </button>
+
+                                <div className="glass-effect rounded-3xl p-8 border border-white/5 bg-white/[0.02] space-y-6 mb-10">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-1">
+                                            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-black">Official Email</p>
+                                            <p className="text-white font-medium">{submittedData.email}</p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-black">Company</p>
+                                            <p className="text-white font-medium">{submittedData.company || "Not Specified"}</p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-black">Inquiry Type</p>
+                                            <p className="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-lg text-[10px] font-bold inline-block border border-blue-500/20">{submittedData.inquiryType}</p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-black">Service Category</p>
+                                            <p className="text-white font-medium">{submittedData.serviceRequired}</p>
+                                        </div>
+                                    </div>
+                                    <div className="pt-6 border-t border-white/5">
+                                        <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-black mb-3">Project Narrative</p>
+                                        <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line italic bg-white/5 p-6 rounded-2xl border border-white/5">
+                                            &quot;{submittedData.message}&quot;
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="text-center">
+                                    <button
+                                        onClick={() => {
+                                            setSubmitStatus("idle");
+                                            setSubmittedData(null);
+                                        }}
+                                        className="btn-primary px-10"
+                                    >
+                                        Send Another Request
+                                    </button>
+                                </div>
                             </div>
                         ) : (
                             <form className="space-y-8 p-2 md:p-6" onSubmit={handleSubmit(onSubmit)}>

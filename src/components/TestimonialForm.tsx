@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { Star, Loader2, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { testimonialSchema, type TestimonialFormData } from "@/lib/schemas/testimonial";
 
@@ -163,24 +164,37 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                     {errors.intervention_type && <p className="text-[10px] text-red-500">{errors.intervention_type}</p>}
                 </div>
 
-                <div className="space-y-3">
-                    <label className="text-sm font-medium text-gray-400 block">Overall Rating (1-7) <span className="text-red-500">*</span></label>
-                    <div className="flex gap-2">
+                <div className="space-y-4">
+                    <label className="text-sm font-medium text-gray-400 block">Overall Rating <span className="text-red-500">*</span></label>
+                    <div className="flex gap-3">
                         {[1, 2, 3, 4, 5, 6, 7].map((num) => (
                             <button
                                 key={num}
                                 type="button"
                                 onClick={() => handleRatingClick(num)}
-                                className={`w-10 h-10 flex items-center justify-center rounded-xl font-bold transition-all ${formData.rating === num
-                                    ? "bg-blue-500 text-white scale-110 shadow-lg shadow-blue-500/20"
-                                    : "bg-white/5 text-gray-400 hover:bg-white/10"
-                                    }`}
+                                className="group relative p-1 focus:outline-none transition-transform active:scale-90"
                             >
-                                {num}
+                                <Star
+                                    size={32}
+                                    className={`transition-all duration-300 ${formData.rating !== undefined && num <= formData.rating
+                                        ? "text-yellow-500 fill-yellow-500 scale-110 drop-shadow-[0_0_10px_rgba(234,179,8,0.3)]"
+                                        : "text-white/10 group-hover:text-yellow-500/50"
+                                        }`}
+                                />
+                                {formData.rating === num && (
+                                    <motion.div
+                                        layoutId="rating-glow"
+                                        className="absolute inset-0 bg-yellow-500/20 blur-xl rounded-full -z-10"
+                                    />
+                                )}
                             </button>
                         ))}
                     </div>
-                    <p className="text-[10px] text-gray-500 italic">Where 7 is Exceptionally Professional</p>
+                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2 px-1">
+                        {formData.rating === 7 ? "Exceptionalsly Professional" :
+                            formData.rating === 1 ? "Needs Improvement" :
+                                "Level of Excellence"}
+                    </p>
                 </div>
 
                 <div className="space-y-2">
