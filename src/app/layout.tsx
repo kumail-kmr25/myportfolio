@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description: "Portfolio of Kumail Kmr - Expert Full Stack Developer, DevOps Engineer, and UI/UX Designer. Explore my featured projects in Next.js, MERN stack, and cloud deployments.",
   keywords: ["Full Stack Developer", "DevOps Engineer", "Next.js Expert", "Kumail Kmr", "Web Development", "MERN Stack", "React Developer", "Freelance Developer"],
   authors: [{ name: "Kumail Kmr" }],
-  alternatives: {
+  alternates: {
     canonical: '/',
   },
   openGraph: {

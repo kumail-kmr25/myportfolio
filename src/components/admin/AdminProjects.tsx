@@ -7,7 +7,8 @@ import {
     ExternalLink,
     Github,
     Image as ImageIcon,
-    Loader2
+    Loader2,
+    PenLine
 } from "lucide-react";
 import { useState } from "react";
 import { ProjectFormData } from "@/lib/schemas/project";
@@ -25,11 +26,13 @@ interface Project {
 interface AdminProjectsProps {
     projects: Project[];
     onAdd: (data: ProjectFormData) => Promise<void>;
+    onUpdate: (id: string, data: ProjectFormData) => Promise<void>;
     onDelete: (id: string) => Promise<void>;
 }
 
-export default function AdminProjects({ projects, onAdd, onDelete }: AdminProjectsProps) {
+export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: AdminProjectsProps) {
     const [isAdding, setIsAdding] = useState(false);
+    const [editingProject, setEditingProject] = useState<Project | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState<Partial<ProjectFormData>>({
         tags: [],
@@ -38,18 +41,42 @@ export default function AdminProjects({ projects, onAdd, onDelete }: AdminProjec
     });
     const [tagInput, setTagInput] = useState("");
 
+    const handleEdit = (project: Project) => {
+        setEditingProject(project);
+        setFormData({
+            title: project.title,
+            description: project.description,
+            image: project.image,
+            tags: project.tags,
+            demo: project.demo,
+            github: project.github,
+        });
+        setIsAdding(true);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            await onAdd(formData as ProjectFormData);
+            if (editingProject) {
+                await onUpdate(editingProject.id, formData as ProjectFormData);
+            } else {
+                await onAdd(formData as ProjectFormData);
+            }
             setFormData({ tags: [], demo: "#", github: "#" });
             setIsAdding(false);
+            setEditingProject(null);
         } catch (err) {
             console.error(err);
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleDiscard = () => {
+        setIsAdding(false);
+        setEditingProject(null);
+        setFormData({ tags: [], demo: "#", github: "#" });
     };
 
     const addTag = () => {
@@ -76,7 +103,7 @@ export default function AdminProjects({ projects, onAdd, onDelete }: AdminProjec
                     <p className="text-xs text-gray-500">Manage your dynamic portfolio portfolio</p>
                 </div>
                 <button
-                    onClick={() => setIsAdding(!isAdding)}
+                    onClick={isAdding ? handleDiscard : () => setIsAdding(true)}
                     className="btn-primary gap-2"
                 >
                     {isAdding ? <X size={18} /> : <Plus size={18} />}
@@ -183,7 +210,13 @@ export default function AdminProjects({ projects, onAdd, onDelete }: AdminProjec
                             disabled={isLoading}
                             className="btn-primary w-full py-5 text-base font-black uppercase tracking-[0.2em] shadow-2xl shadow-blue-500/20 disabled:opacity-50"
                         >
-                            {isLoading ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "Publish Project"}
+                            {isLoading ? (
+                                <Loader2 className="w-6 h-6 animate-spin mx-auto" />
+                            ) : editingProject ? (
+                                "Update Project"
+                            ) : (
+                                "Publish Project"
+                            )}
                         </button>
                     </form>
                 </div>
@@ -201,6 +234,12 @@ export default function AdminProjects({ projects, onAdd, onDelete }: AdminProjec
                                 className="absolute top-6 right-6 p-3 bg-red-500/20 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all backdrop-blur-xl border border-red-500/20 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100"
                             >
                                 <Trash2 size={18} />
+                            </button>
+                            <button
+                                onClick={() => handleEdit(project)}
+                                className="absolute top-6 right-20 p-3 bg-blue-500/20 text-blue-500 rounded-2xl hover:bg-blue-500 hover:text-white transition-all backdrop-blur-xl border border-blue-500/20 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100"
+                            >
+                                <PenLine size={18} />
                             </button>
                         </div>
 

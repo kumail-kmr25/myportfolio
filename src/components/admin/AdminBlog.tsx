@@ -26,11 +26,13 @@ interface BlogPost {
 interface AdminBlogProps {
     posts: BlogPost[];
     onAdd: (data: any) => Promise<void>;
+    onUpdate: (id: string, data: any) => Promise<void>;
     onDelete: (id: string) => Promise<void>;
 }
 
-export default function AdminBlog({ posts, onAdd, onDelete }: AdminBlogProps) {
+export default function AdminBlog({ posts, onAdd, onUpdate, onDelete }: AdminBlogProps) {
     const [isAdding, setIsAdding] = useState(false);
+    const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
@@ -40,18 +42,41 @@ export default function AdminBlog({ posts, onAdd, onDelete }: AdminBlogProps) {
         readTime: "5 min read",
     });
 
+    const handleEdit = (post: BlogPost) => {
+        setEditingPost(post);
+        setFormData({
+            title: post.title,
+            excerpt: post.excerpt,
+            content: post.content,
+            category: post.category,
+            readTime: post.readTime,
+        });
+        setIsAdding(true);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            await onAdd({ ...formData, published: true });
+            if (editingPost) {
+                await onUpdate(editingPost.id, { ...formData, published: true });
+            } else {
+                await onAdd({ ...formData, published: true });
+            }
             setFormData({ title: "", excerpt: "", content: "", category: "", readTime: "5 min read" });
             setIsAdding(false);
+            setEditingPost(null);
         } catch (err) {
             console.error(err);
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleDiscard = () => {
+        setIsAdding(false);
+        setEditingPost(null);
+        setFormData({ title: "", excerpt: "", content: "", category: "", readTime: "5 min read" });
     };
 
     return (
@@ -62,11 +87,11 @@ export default function AdminBlog({ posts, onAdd, onDelete }: AdminBlogProps) {
                     <p className="text-xs text-gray-500">Share your technical knowledge and updates</p>
                 </div>
                 <button
-                    onClick={() => setIsAdding(!isAdding)}
+                    onClick={isAdding ? handleDiscard : () => setIsAdding(true)}
                     className="btn-primary gap-2"
                 >
                     {isAdding ? <X size={18} /> : <Plus size={18} />}
-                    {isAdding ? "Discard Draft" : "New Article"}
+                    {isAdding ? "Discard Changes" : "New Article"}
                 </button>
             </div>
 
@@ -138,7 +163,13 @@ export default function AdminBlog({ posts, onAdd, onDelete }: AdminBlogProps) {
                             disabled={isLoading}
                             className="btn-primary w-full py-5 text-base font-black uppercase tracking-[0.2em] shadow-2xl shadow-purple-500/20 disabled:opacity-50"
                         >
-                            {isLoading ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "Publish Article"}
+                            {isLoading ? (
+                                <Loader2 className="w-6 h-6 animate-spin mx-auto" />
+                            ) : editingPost ? (
+                                "Update Article"
+                            ) : (
+                                "Publish Article"
+                            )}
                         </button>
                     </form>
                 </div>
@@ -166,7 +197,7 @@ export default function AdminBlog({ posts, onAdd, onDelete }: AdminBlogProps) {
                         </div>
 
                         <div className="flex items-center gap-6 shrink-0 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-white/5 md:pl-8">
-                            <div className="flex flex-col items-center md:items-start">
+                            <div className="flex flex-col items-center md:items-start mr-4">
                                 <span className="text-[10px] text-gray-600 font-black uppercase tracking-widest mb-1">Created</span>
                                 <div className="flex items-center gap-2 text-xs text-gray-400">
                                     <Calendar size={12} className="text-purple-500/50" />
@@ -174,12 +205,20 @@ export default function AdminBlog({ posts, onAdd, onDelete }: AdminBlogProps) {
                                 </div>
                             </div>
 
-                            <button
-                                onClick={() => onDelete(post.id)}
-                                className="p-4 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all border border-red-500/10"
-                            >
-                                <Trash2 size={20} />
-                            </button>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => handleEdit(post)}
+                                    className="p-4 bg-purple-500/10 text-purple-500 rounded-2xl hover:bg-purple-500 hover:text-white transition-all border border-purple-500/10"
+                                >
+                                    <PenLine size={20} />
+                                </button>
+                                <button
+                                    onClick={() => onDelete(post.id)}
+                                    className="p-4 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all border border-red-500/10"
+                                >
+                                    <Trash2 size={20} />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}

@@ -159,6 +159,15 @@ export default function AdminPage() {
         if (res.ok) mutateProjects();
     };
 
+    const handleProjectUpdate = async (id: string, projectData: any) => {
+        const res = await fetch(`/api/projects/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(projectData),
+        });
+        if (res.ok) mutateProjects();
+    };
+
     const handleProjectDelete = async (id: string) => {
         if (!confirm("Delete this project?")) return;
         await fetch(`/api/projects/${id}`, { method: "DELETE" });
@@ -168,6 +177,15 @@ export default function AdminPage() {
     const handleAddBlog = async (blogData: any) => {
         const res = await fetch("/api/blog", {
             method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(blogData),
+        });
+        if (res.ok) mutateBlogPosts();
+    };
+
+    const handleBlogUpdate = async (id: string, blogData: any) => {
+        const res = await fetch(`/api/blog/${id}`, {
+            method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(blogData),
         });
@@ -314,6 +332,7 @@ export default function AdminPage() {
                             <AdminProjects
                                 projects={Array.isArray(projects) ? projects : []}
                                 onAdd={handleAddProject}
+                                onUpdate={handleProjectUpdate}
                                 onDelete={handleProjectDelete}
                             />
                         )}
@@ -322,6 +341,7 @@ export default function AdminPage() {
                             <AdminBlog
                                 posts={Array.isArray(blogPosts) ? blogPosts : []}
                                 onAdd={handleAddBlog}
+                                onUpdate={handleBlogUpdate}
                                 onDelete={handleBlogDelete}
                             />
                         )}
