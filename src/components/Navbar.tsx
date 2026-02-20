@@ -41,6 +41,7 @@ export default function Navbar() {
                         <Link
                             key={link.name}
                             href={link.href}
+                            prefetch={false}
                             className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
                         >
                             {link.name}
@@ -73,6 +74,7 @@ export default function Navbar() {
                                 <Link
                                     key={link.name}
                                     href={link.href}
+                                    prefetch={false}
                                     className="text-gray-300 hover:text-white text-lg font-medium"
                                     onClick={() => setIsOpen(false)}
                                 >

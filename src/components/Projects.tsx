@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ExternalLink, Github, Loader2, ArrowUpRight } from "lucide-react";
+import { ExternalLink, Github, Loader2, ArrowUpRight, PenLine, Trash2, Globe } from "lucide-react";
 import useSWR from "swr";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const fetcher = async (url: string) => {
     const res = await fetch(url);
@@ -22,11 +24,34 @@ interface Project {
     tags: string[];
     image: string;
     demo: string;
+    deployment?: string | null;
     github: string;
 }
 
 export default function Projects() {
-    const { data: projects, error, isLoading } = useSWR<Project[]>("/api/projects", fetcher);
+    const { data: projects, error, isLoading, mutate } = useSWR<Project[]>("/api/projects", fetcher);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        const checkSession = async () => {
+            try {
+                const res = await fetch("/api/contact");
+                if (res.ok) setIsAdmin(true);
+            } catch (err) { }
+        };
+        checkSession();
+    }, []);
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this project?")) return;
+        try {
+            await fetch(`/api/projects/${id}`, { method: "DELETE" });
+            mutate();
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     if (error) {
         return (
@@ -77,21 +102,42 @@ export default function Projects() {
                                             className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
-                                            <div className="flex gap-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                                                <Link
-                                                    href={project.demo}
-                                                    target="_blank"
-                                                    className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
-                                                >
-                                                    <ExternalLink size={18} />
-                                                </Link>
-                                                <Link
-                                                    href={project.github}
-                                                    target="_blank"
-                                                    className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
-                                                >
-                                                    <Github size={18} />
-                                                </Link>
+                                            <div className="flex justify-between items-end w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                                <div className="flex gap-4">
+                                                    <Link
+                                                        href={project.demo}
+                                                        target="_blank"
+                                                        className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
+                                                    >
+                                                        <ExternalLink size={18} />
+                                                    </Link>
+                                                    {project.deployment && project.deployment !== "https://" && project.deployment !== "" && (
+                                                        <Link
+                                                            href={project.deployment}
+                                                            target="_blank"
+                                                            className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
+                                                        >
+                                                            <Globe size={18} />
+                                                        </Link>
+                                                    )}
+                                                    <Link
+                                                        href={project.github}
+                                                        target="_blank"
+                                                        className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
+                                                    >
+                                                        <Github size={18} />
+                                                    </Link>
+                                                </div>
+                                                {isAdmin && (
+                                                    <div className="flex gap-2">
+                                                        <button onClick={() => router.push(`/admin?tab=projects&edit=${project.id}`)} className="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all backdrop-blur-md">
+                                                            <PenLine size={18} />
+                                                        </button>
+                                                        <button onClick={() => handleDelete(project.id)} className="w-10 h-10 rounded-full bg-red-500/20 text-red-500 border border-red-500/30 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all backdrop-blur-md">
+                                                            <Trash2 size={18} />
+                                                        </button>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

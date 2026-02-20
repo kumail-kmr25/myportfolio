@@ -122,3 +122,49 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string) {
     console.error("Mail utility error:", error);
   }
 }
+
+export async function sendAutoReplyToClient(email: string, name: string) {
+  if (!resend) {
+    console.warn("RESEND_API_KEY is not set. Auto-reply skipped.");
+    return;
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "Kumail Kmr <onboarding@resend.dev>", // Transition to your custom domain email
+      to: email,
+      subject: "Thanks for contacting Kumail Kmr 🚀",
+      html: `
+        <div style="font-family: sans-serif; padding: 30px; color: #333; line-height: 1.8; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 12px;">
+          <h2 style="color: #000; font-size: 24px; margin-bottom: 20px;">Hello ${name},</h2>
+          
+          <p>Thank you for reaching out through my portfolio! I've successfully received your inquiry.</p>
+          
+          <p>I usually review my messages daily and will get back to you within <strong>24–48 hours</strong> with a detailed response.</p>
+          
+          <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #3b82f6;">
+            <p style="margin: 0; color: #1e40af; font-weight: 500;">
+              "Looking forward to potentially collaborating and bringing your vision to life!"
+            </p>
+          </div>
+
+          <p>In the meantime, feel free to check out my latest work on <a href="https://github.com/kumail-kmr25" style="color: #3b82f6; text-decoration: none;">GitHub</a>.</p>
+          
+          <p style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 14px; color: #666;">
+            Best Regards,<br/>
+            <strong>Kumail Kmr</strong><br/>
+            Full-Stack Developer
+          </p>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend auto-reply error:", error);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Auto-reply mail utility error:", error);
+  }
+}

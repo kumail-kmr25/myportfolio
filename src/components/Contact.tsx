@@ -294,7 +294,7 @@ export default function Contact() {
                                     )}
                                 </button>
                                 <p className="text-[11px] text-center text-gray-500 max-w-sm mx-auto">
-                                    Secure and professional communication ensured.
+                                    Your information is secure and will never be shared. 🛡️
                                     Expect a high-quality response within 1 business day.
                                 </p>
                             </form>

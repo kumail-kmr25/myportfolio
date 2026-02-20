@@ -10,8 +10,11 @@ import {
     Loader2,
     PenLine
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProjectFormData } from "@/lib/schemas/project";
+
+import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 interface Project {
     id: string;
@@ -20,6 +23,7 @@ interface Project {
     tags: string[];
     image: string;
     demo: string;
+    deployment?: string | null;
     github: string;
 }
 
@@ -31,15 +35,33 @@ interface AdminProjectsProps {
 }
 
 export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: AdminProjectsProps) {
+    const searchParams = useSearchParams();
+    const router = useRouter();
     const [isAdding, setIsAdding] = useState(false);
     const [editingProject, setEditingProject] = useState<Project | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState<Partial<ProjectFormData>>({
         tags: [],
         demo: "#",
+        deployment: "",
         github: "#",
     });
     const [tagInput, setTagInput] = useState("");
+
+    useEffect(() => {
+        const editId = searchParams?.get("edit");
+        if (editId && projects.length > 0) {
+            const projectToEdit = projects.find(p => p.id === editId);
+            if (projectToEdit && !editingProject) {
+                handleEdit(projectToEdit);
+
+                // Optional: Clean up URL after loading edit state so it doesn't persist
+                const newParams = new URLSearchParams(searchParams.toString());
+                newParams.delete("edit");
+                router.replace(`/admin?${newParams.toString()}`);
+            }
+        }
+    }, [searchParams, projects, editingProject, router]);
 
     const handleEdit = (project: Project) => {
         setEditingProject(project);
@@ -49,6 +71,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             image: project.image,
             tags: project.tags,
             demo: project.demo,
+            deployment: project.deployment || "",
             github: project.github,
         });
         setIsAdding(true);
@@ -63,7 +86,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             } else {
                 await onAdd(formData as ProjectFormData);
             }
-            setFormData({ tags: [], demo: "#", github: "#" });
+            setFormData({ tags: [], demo: "#", deployment: "", github: "#" });
             setIsAdding(false);
             setEditingProject(null);
         } catch (err) {
@@ -76,7 +99,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
     const handleDiscard = () => {
         setIsAdding(false);
         setEditingProject(null);
-        setFormData({ tags: [], demo: "#", github: "#" });
+        setFormData({ tags: [], demo: "#", deployment: "", github: "#" });
     };
 
     const addTag = () => {
@@ -153,7 +176,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                             />
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div className="space-y-2">
                                 <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Live Demo URL</label>
                                 <input
@@ -161,6 +184,16 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                                     className="input-field"
                                     value={formData.demo || "#"}
                                     onChange={(e) => setFormData({ ...formData, demo: e.target.value })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Deployment URL</label>
+                                <input
+                                    type="text"
+                                    className="input-field"
+                                    placeholder="https://"
+                                    value={formData.deployment || ""}
+                                    onChange={(e) => setFormData({ ...formData, deployment: e.target.value })}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -226,7 +259,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                 {projects.map((project) => (
                     <div key={project.id} className="group relative glass-effect rounded-[2.5rem] overflow-hidden border border-white/5 hover:border-blue-500/30 transition-all duration-500 flex flex-col">
                         <div className="h-56 relative overflow-hidden">
-                            <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                            <Image src={project.image} alt={project.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
                             <div className="absolute inset-0 bg-gradient-to-t from-[#080808] to-transparent opacity-80" />
 
                             <button

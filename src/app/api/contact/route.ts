@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { contactSchema } from "@/lib/schemas/contact";
-import { sendContactNotification } from "@/lib/mail";
+import { sendContactNotification, sendAutoReplyToClient } from "@/lib/mail";
 import xss from "xss";
+
+export const dynamic = 'force-dynamic';
 
 // In-memory rate limiting (simple implementation)
 const rateLimit = new Map<string, { count: number; lastReset: number }>();
@@ -86,6 +88,10 @@ export async function POST(req: NextRequest) {
             timeline: timeline || "Not specified",
             message: sanitizedMessage,
         }).catch((err) => console.error("Email notification failed:", err));
+
+        // Auto-reply to Client (Non-blocking)
+        sendAutoReplyToClient(email, sanitizedName)
+            .catch((err) => console.error("Auto-reply failed:", err));
 
         return NextResponse.json(
             { success: true, message: "Your message has been sent successfully!" },

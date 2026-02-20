@@ -79,7 +79,7 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="flex flex-col md:flex-row gap-4 justify-center items-center"
                 >
-                    <Link href="#contact" className="relative inline-flex group items-center justify-center px-8 py-4 bg-white text-black font-semibold rounded-full overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-105">
+                    <Link href="#contact" prefetch={false} className="relative inline-flex group items-center justify-center px-8 py-4 bg-white text-black font-semibold rounded-full overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-105">
                         <span className="z-10 flex items-center">
                             Hire Me
                             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -87,7 +87,7 @@ export default function Hero() {
                         <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity" />
                     </Link>
 
-                    <Link href="#projects" className="inline-flex items-center justify-center px-8 py-4 bg-white/5 border border-white/10 text-white font-semibold rounded-full hover:bg-white/10 transition-all duration-300 backdrop-blur-md hover:scale-105">
+                    <Link href="#projects" prefetch={false} className="inline-flex items-center justify-center px-8 py-4 bg-white/5 border border-white/10 text-white font-semibold rounded-full hover:bg-white/10 transition-all duration-300 backdrop-blur-md hover:scale-105">
                         <span className="flex items-center">
                             View Work
                         </span>

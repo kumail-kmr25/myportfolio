@@ -1,0 +1,72 @@
+[
+  {
+    "id": "6996da5d4988a8ac8526bb57",
+    "name": "kumail kmr ",
+    "email": "ka6307464@gmail.com",
+    "company": null,
+    "inquiryType": null,
+    "serviceRequired": null,
+    "budgetRange": null,
+    "timeline": null,
+    "message": "testing as a engineer ",
+    "foundBy": null,
+    "replied": false,
+    "created_at": "2026-02-19T09:39:41.434Z"
+  },
+  {
+    "id": "6996db594988a8ac8526bb58",
+    "name": "kumail kmr ",
+    "email": "ka6307464@gmail.com",
+    "company": null,
+    "inquiryType": null,
+    "serviceRequired": null,
+    "budgetRange": null,
+    "timeline": null,
+    "message": "intervention insystem needed ",
+    "foundBy": null,
+    "replied": false,
+    "created_at": "2026-02-19T09:43:53.648Z"
+  },
+  {
+    "id": "69972167c5da4b60f0a687c9",
+    "name": "kumail kmr ",
+    "email": "kumailkmr25@gmail.com",
+    "company": "ex hoook ,com",
+    "inquiryType": "Collaboration",
+    "serviceRequired": "Other",
+    "budgetRange": "Discuss Later",
+    "timeline": "Urgent (1–3 days)",
+    "message": "needed at pace  needed at scale up to introduce ",
+    "foundBy": "Referral",
+    "replied": false,
+    "created_at": "2026-02-19T14:42:47.131Z"
+  },
+  {
+    "id": "6997e92497221d74fd9ab7ef",
+    "name": "kumail kmr",
+    "email": "joinwst12@gmail.com",
+    "company": "ex cogify ",
+    "inquiryType": "Full-Time Role",
+    "serviceRequired": "Performance Tuning",
+    "budgetRange": "₹10,000 – ₹50,000",
+    "timeline": "1–2 weeks",
+    "message": "i need a web page to scale up  the challanges going on ",
+    "foundBy": "LinkedIn",
+    "replied": false,
+    "created_at": "2026-02-20T04:55:00.957Z"
+  },
+  {
+    "id": "6997ee0c97221d74fd9ab7f0",
+    "name": "kumail kmr",
+    "email": "ka6307464@gmail.com",
+    "company": "conifyz ",
+    "inquiryType": "API Integration",
+    "serviceRequired": "Database Design",
+    "budgetRange": "Below ₹10,000",
+    "timeline": "1–2 weeks",
+    "message": "provided a saas application for outscaling to enhancement ",
+    "foundBy": "X (Twitter)",
+    "replied": false,
+    "created_at": "2026-02-20T05:15:56.026Z"
+  }
+]

@@ -4,9 +4,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
 export default function IntroAnimation() {
-    const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(false); // Default to false for SSR
+    const [shouldRender, setShouldRender] = useState(false);
 
     useEffect(() => {
+        // Only run on client after mount
+        setIsVisible(true);
+        setShouldRender(true);
+
         const timer = setTimeout(() => {
             setIsVisible(false);
         }, 1500);
@@ -45,6 +50,8 @@ export default function IntroAnimation() {
             },
         },
     };
+
+    if (!shouldRender) return null; // Prevent hydration mismatch
 
     return (
         <AnimatePresence>

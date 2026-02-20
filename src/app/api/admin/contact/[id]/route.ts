@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 
+export const dynamic = 'force-dynamic';
+
 export async function PATCH(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
@@ -41,6 +43,15 @@ export async function DELETE(
         }
 
         const { id } = await params;
+
+        // Verify message exists
+        const existingMessage = await prisma.contactSubmission.findUnique({
+            where: { id },
+        });
+
+        if (!existingMessage) {
+            return NextResponse.json({ error: "Message not found" }, { status: 404 });
+        }
 
         await prisma.contactSubmission.delete({
             where: { id },

@@ -50,19 +50,19 @@ export default function AdminContact({ messages, onToggleReplied, onDelete }: Ad
                     <div key={msg.id} className={`group relative glass-effect rounded-[2.5rem] p-8 border transition-all ${msg.replied ? 'border-white/5 bg-white/[0.02] opacity-70' : 'border-blue-500/20 bg-blue-500/[0.03] shadow-lg shadow-blue-500/5'}`}>
                         {/* Status Label */}
                         <div className={`absolute top-8 right-32 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${msg.replied
-                                ? 'bg-white/5 text-gray-500 border-white/10'
-                                : 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                            ? 'bg-white/5 text-gray-500 border-white/10'
+                            : 'bg-blue-500/10 text-blue-400 border-blue-500/20'
                             }`}>
                             {msg.replied ? 'Replied' : 'New Inquiry'}
                         </div>
 
                         {/* Actions */}
-                        <div className="absolute top-8 right-8 flex gap-3">
+                        <div className="absolute top-8 right-8 flex gap-3 z-10">
                             <button
                                 onClick={() => onToggleReplied(msg.id, msg.replied)}
-                                className={`p-3 rounded-xl transition-all shadow-xl ${msg.replied
-                                        ? "bg-white/10 text-white/40 hover:bg-white/20"
-                                        : "bg-blue-500 text-white hover:bg-blue-600 shadow-blue-500/20"
+                                className={`p-3 rounded-xl transition-all shadow-xl cursor-pointer ${msg.replied
+                                    ? "bg-white/10 text-white/40 hover:bg-white/20"
+                                    : "bg-blue-500 text-white hover:bg-blue-600 shadow-blue-500/20"
                                     }`}
                                 title={msg.replied ? "Mark as New" : "Mark as Replied"}
                             >
@@ -70,7 +70,7 @@ export default function AdminContact({ messages, onToggleReplied, onDelete }: Ad
                             </button>
                             <button
                                 onClick={() => onDelete(msg.id)}
-                                className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-xl border border-red-500/20"
+                                className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-xl border border-red-500/20 cursor-pointer"
                             >
                                 <Trash2 size={18} />
                             </button>

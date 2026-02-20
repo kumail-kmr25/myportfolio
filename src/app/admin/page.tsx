@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { Loader2, ShieldCheck, LogOut } from "lucide-react";
 import useSWR from "swr";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 // Admin Components
 import Sidebar from "@/components/admin/Sidebar";
@@ -20,7 +21,7 @@ const fetcher = async (url: string) => {
     return res.json();
 };
 
-export default function AdminPage() {
+function AdminPageContent() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,6 +30,14 @@ export default function AdminPage() {
     const [activeTab, setActiveTab] = useState<"overview" | "messages" | "testimonials" | "projects" | "blog">("overview");
 
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const tab = searchParams.get("tab");
+        if (tab && ["overview", "messages", "testimonials", "projects", "blog"].includes(tab)) {
+            setActiveTab(tab as any);
+        }
+    }, [searchParams]);
 
     // Data Fetching
     const { data: allTestimonials, mutate: mutateTestimonials } = useSWR(
@@ -130,10 +139,15 @@ export default function AdminPage() {
     const handleMessageDelete = async (id: string) => {
         if (!confirm("Delete this message?")) return;
         try {
-            await fetch(`/api/admin/contact/${id}`, { method: "DELETE" });
+            const res = await fetch(`/api/admin/contact/${id}`, { method: "DELETE" });
+            if (!res.ok) {
+                const data = await res.json().catch(() => ({}));
+                alert(`Failed to delete message: ${data.error || res.statusText}`);
+            }
             mutateMessages();
         } catch (err) {
             console.error(err);
+            alert("Network error. Please try again.");
         }
     };
 
@@ -360,5 +374,13 @@ export default function AdminPage() {
                 </div>
             </main>
         </div>
+    );
+}
+
+export default function AdminPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#050505] p-6 text-white text-xs tracking-widest uppercase font-black"><Loader2 className="w-5 h-5 animate-spin mr-2" /> Loading Portal...</div>}>
+            <AdminPageContent />
+        </Suspense>
     );
 }

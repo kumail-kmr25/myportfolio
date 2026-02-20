@@ -45,8 +45,8 @@ model ContactSubmission {
   name            String
   email           String
   company         String?
-  inquiryType     String   // Reason for Contact
-  serviceRequired String   // Service Needed
+  inquiryType     String?  // Reason for Contact
+  serviceRequired String?  // Service Needed
   budgetRange     String?
   timeline        String?
   message         String   // Project Details
@@ -62,6 +62,7 @@ model Project {
   tags        String[]
   image       String
   demo        String
+  deployment  String?
   github      String
   created_at  DateTime @default(now())
 }

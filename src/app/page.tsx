@@ -1,7 +1,10 @@
+"use client";
+
 import dynamic from "next/dynamic";
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import IntroAnimation from "@/components/IntroAnimation";
+
+const IntroAnimation = dynamic(() => import("@/components/IntroAnimation"), { ssr: false });
+const Navbar = dynamic(() => import("@/components/Navbar"), { ssr: true });
 
 // Dynamic imports for below-the-fold components to improve TBT and initial load performance
 const Skills = dynamic(() => import("@/components/Skills"), { ssr: true });
