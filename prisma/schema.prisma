@@ -56,15 +56,53 @@ model ContactSubmission {
 }
 
 model Project {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  tags        String[]
-  image       String
-  demo        String
-  deployment  String?
-  github      String
-  created_at  DateTime @default(now())
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  title              String
+  description        String
+  tags               String[]
+  image              String
+  demo               String
+  deployment         String?
+  github             String
+  beforeImageUrl     String?
+  afterImageUrl      String?
+  improvementDetails String?
+  metrics            String[]
+  created_at         DateTime @default(now())
+}
+
+model CaseStudy {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  errorMessage String
+  rootCause    String
+  steps        String[]
+  solution     String
+  impact       String
+  techStack    String[]
+  isPublished  Boolean  @default(false)
+  created_at   DateTime @default(now())
+}
+
+model FeatureRequest {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String
+  message    String
+  category   String   // UI / Performance / New Tool / Other
+  status     String   @default("pending") // pending / building / completed
+  created_at DateTime @default(now())
+}
+
+model SiteStats {
+  id                       String   @id @default(auto()) @map("_id") @db.ObjectId
+  totalProjects            Int      @default(0)
+  bugsFixed                Int      @default(0)
+  caseStudiesWritten       Int      @default(0)
+  featureRequestsCompleted Int      @default(0)
+  yearsLearning            Int      @default(0)
+  deploymentCount          Int      @default(0)
+  lastUpdated              DateTime @default(now())
 }
 
 model BlogPost {

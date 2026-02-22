@@ -8,6 +8,10 @@ export const projectSchema = z.object({
     demo: z.string().url("Invalid demo URL").or(z.literal("#")),
     deployment: z.string().url("Invalid deployment URL").optional().or(z.literal("")),
     github: z.string().url("Invalid GitHub URL").or(z.literal("#")),
+    beforeImageUrl: z.string().url("Invalid image URL").optional().or(z.literal("")),
+    afterImageUrl: z.string().url("Invalid image URL").optional().or(z.literal("")),
+    improvementDetails: z.string().optional().or(z.literal("")),
+    metrics: z.array(z.string()).optional().default([]),
 });
 
 export type ProjectFormData = z.infer<typeof projectSchema>;

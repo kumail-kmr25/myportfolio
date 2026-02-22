@@ -6,6 +6,9 @@ import {
     Mail,
     FolderPlus,
     PenLine,
+    BookOpen,
+    CheckSquare,
+    BarChart3,
     LogOut,
     Menu,
     X
@@ -17,9 +20,10 @@ interface SidebarProps {
     setActiveTab: (tab: any) => void;
     onLogout: () => void;
     messageCount?: number;
+    pendingFeaturesCount?: number;
 }
 
-export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCount }: SidebarProps) {
+export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCount, pendingFeaturesCount }: SidebarProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     const menuItems = [
@@ -27,6 +31,9 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
         { id: "messages", label: "Messages", icon: Mail, count: messageCount },
         { id: "testimonials", label: "Testimonials", icon: MessageSquare },
         { id: "projects", label: "Projects", icon: FolderPlus },
+        { id: "case-studies", label: "Case Studies", icon: BookOpen },
+        { id: "feature-requests", label: "Feature Requests", icon: CheckSquare, count: pendingFeaturesCount },
+        { id: "stats", label: "Site Stats", icon: BarChart3 },
         { id: "blog", label: "Blog Posts", icon: PenLine },
     ];
 
@@ -72,8 +79,8 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
                                     setIsOpen(false);
                                 }}
                                 className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition-all group ${activeTab === item.id
-                                        ? "bg-blue-500 text-white shadow-lg shadow-blue-500/20"
-                                        : "text-gray-500 hover:text-gray-300 hover:bg-white/5"
+                                    ? "bg-blue-500 text-white shadow-lg shadow-blue-500/20"
+                                    : "text-gray-500 hover:text-gray-300 hover:bg-white/5"
                                     }`}
                             >
                                 <item.icon size={20} className={activeTab === item.id ? "text-white" : "group-hover:text-blue-400 transition-colors"} />

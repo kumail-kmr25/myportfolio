@@ -3,7 +3,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Phone, MapPin, Send, MessageCircle, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { contactSchema, type ContactFormData } from "@/lib/schemas/contact";
 
 export default function Contact() {
@@ -16,11 +17,26 @@ export default function Contact() {
         register,
         handleSubmit,
         reset,
+        setValue,
         formState: { errors, isValid },
     } = useForm<ContactFormData>({
         resolver: zodResolver(contactSchema),
         mode: "onBlur",
     });
+
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const service = searchParams.get("service");
+        const inquiry = searchParams.get("inquiry");
+
+        if (service) {
+            setValue("serviceRequired", service as any);
+        }
+        if (inquiry) {
+            setValue("inquiryType", inquiry as any);
+        }
+    }, [searchParams, setValue]);
 
     const onSubmit = async (data: ContactFormData) => {
         setSubmitStatus("loading");

@@ -25,6 +25,10 @@ interface Project {
     demo: string;
     deployment?: string | null;
     github: string;
+    beforeImageUrl?: string | null;
+    afterImageUrl?: string | null;
+    improvementDetails?: string | null;
+    metrics?: string[];
 }
 
 interface AdminProjectsProps {
@@ -73,6 +77,10 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             demo: project.demo,
             deployment: project.deployment || "",
             github: project.github,
+            beforeImageUrl: project.beforeImageUrl || "",
+            afterImageUrl: project.afterImageUrl || "",
+            improvementDetails: project.improvementDetails || "",
+            metrics: project.metrics || [],
         });
         setIsAdding(true);
     };
@@ -176,34 +184,51 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                             />
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="space-y-2">
-                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Live Demo URL</label>
-                                <input
-                                    type="text"
-                                    className="input-field"
-                                    value={formData.demo || "#"}
-                                    onChange={(e) => setFormData({ ...formData, demo: e.target.value })}
-                                />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-white/5">
+                            <div className="space-y-4">
+                                <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-500 ml-4">Transformation (Optional)</h4>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Before Image URL</label>
+                                    <input
+                                        type="text"
+                                        className="input-field"
+                                        placeholder="Internal/Legacy screenshot..."
+                                        value={formData.beforeImageUrl || ""}
+                                        onChange={(e) => setFormData({ ...formData, beforeImageUrl: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">After Image URL</label>
+                                    <input
+                                        type="text"
+                                        className="input-field"
+                                        placeholder="Optimized/Final screenshot..."
+                                        value={formData.afterImageUrl || ""}
+                                        onChange={(e) => setFormData({ ...formData, afterImageUrl: e.target.value })}
+                                    />
+                                </div>
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Deployment URL</label>
-                                <input
-                                    type="text"
-                                    className="input-field"
-                                    placeholder="https://"
-                                    value={formData.deployment || ""}
-                                    onChange={(e) => setFormData({ ...formData, deployment: e.target.value })}
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">GitHub Repository</label>
-                                <input
-                                    type="text"
-                                    className="input-field"
-                                    value={formData.github || "#"}
-                                    onChange={(e) => setFormData({ ...formData, github: e.target.value })}
-                                />
+                            <div className="space-y-4">
+                                <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-500 ml-4">Metrics & Details</h4>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Improvement Details</label>
+                                    <textarea
+                                        className="input-field min-h-[80px] text-sm"
+                                        placeholder="Describe the optimization process..."
+                                        value={formData.improvementDetails || ""}
+                                        onChange={(e) => setFormData({ ...formData, improvementDetails: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Metrics (comma separated)</label>
+                                    <input
+                                        type="text"
+                                        className="input-field"
+                                        placeholder="90% Performance, 50% Less Memory..."
+                                        value={formData.metrics?.join(", ") || ""}
+                                        onChange={(e) => setFormData({ ...formData, metrics: e.target.value.split(",").map(m => m.trim()).filter(Boolean) })}
+                                    />
+                                </div>
                             </div>
                         </div>
 

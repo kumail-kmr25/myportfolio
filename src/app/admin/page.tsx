@@ -14,6 +14,9 @@ import AdminTestimonials from "@/components/admin/AdminTestimonials";
 import AdminContact from "@/components/admin/AdminContact";
 import AdminProjects from "@/components/admin/AdminProjects";
 import AdminBlog from "@/components/admin/AdminBlog";
+import AdminCaseStudies from "@/components/admin/AdminCaseStudies";
+import AdminFeatureRequests from "@/components/admin/AdminFeatureRequests";
+import AdminStats from "@/components/admin/AdminStats";
 
 const fetcher = async (url: string) => {
     const res = await fetch(url);
@@ -27,14 +30,15 @@ function AdminPageContent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [authError, setAuthError] = useState("");
-    const [activeTab, setActiveTab] = useState<"overview" | "messages" | "testimonials" | "projects" | "blog">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "messages" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats">("overview");
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
     useEffect(() => {
         const tab = searchParams.get("tab");
-        if (tab && ["overview", "messages", "testimonials", "projects", "blog"].includes(tab)) {
+        const validTabs = ["overview", "messages", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats"];
+        if (tab && validTabs.includes(tab)) {
             setActiveTab(tab as any);
         }
     }, [searchParams]);
@@ -57,6 +61,21 @@ function AdminPageContent() {
 
     const { data: blogPosts, mutate: mutateBlogPosts } = useSWR(
         isLoggedIn ? "/api/blog" : null,
+        fetcher
+    );
+
+    const { data: caseStudies, mutate: mutateCaseStudies } = useSWR(
+        isLoggedIn ? "/api/admin/case-studies" : null,
+        fetcher
+    );
+
+    const { data: featureRequests, mutate: mutateFeatureRequests } = useSWR(
+        isLoggedIn ? "/api/admin/feature-requests" : null,
+        fetcher
+    );
+
+    const { data: statsData, mutate: mutateStats } = useSWR(
+        isLoggedIn ? "/api/stats" : null,
         fetcher
     );
 
@@ -212,6 +231,19 @@ function AdminPageContent() {
         mutateBlogPosts();
     };
 
+    // New Handlers
+    const handleCaseStudyAction = async () => {
+        mutateCaseStudies();
+    };
+
+    const handleFeatureRequestAction = async () => {
+        mutateFeatureRequests();
+    };
+
+    const handleStatsUpdate = async () => {
+        mutateStats();
+    };
+
     if (!isLoggedIn) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[#050505] p-6">
@@ -283,6 +315,7 @@ function AdminPageContent() {
                 setActiveTab={setActiveTab}
                 onLogout={handleLogout}
                 messageCount={messages?.filter((m: any) => !m.replied).length}
+                pendingFeaturesCount={featureRequests?.filter((f: any) => f.status === "pending").length}
             />
 
             {/* Main Content Area */}
@@ -357,6 +390,27 @@ function AdminPageContent() {
                                 onAdd={handleAddBlog}
                                 onUpdate={handleBlogUpdate}
                                 onDelete={handleBlogDelete}
+                            />
+                        )}
+
+                        {activeTab === "case-studies" && (
+                            <AdminCaseStudies
+                                studies={Array.isArray(caseStudies) ? caseStudies : []}
+                                onUpdate={handleCaseStudyAction}
+                            />
+                        )}
+
+                        {activeTab === "feature-requests" && (
+                            <AdminFeatureRequests
+                                requests={Array.isArray(featureRequests) ? featureRequests : []}
+                                onUpdate={handleFeatureRequestAction}
+                            />
+                        )}
+
+                        {activeTab === "stats" && (
+                            <AdminStats
+                                stats={statsData}
+                                onUpdate={handleStatsUpdate}
                             />
                         )}
                     </div>
