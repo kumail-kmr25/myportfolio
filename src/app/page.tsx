@@ -12,6 +12,7 @@ const Projects = dynamic(() => import("@/components/Projects"), { ssr: true });
 const CaseStudies = dynamic(() => import("@/components/CaseStudies"), { ssr: true });
 const Testimonials = dynamic(() => import("@/components/Testimonials"), { ssr: true });
 const FeatureSuggestion = dynamic(() => import("@/components/FeatureSuggestion"), { ssr: true });
+const DiagnosticTool = dynamic(() => import("@/components/DiagnosticTool"), { ssr: true });
 const Blog = dynamic(() => import("@/components/Blog"), { ssr: true });
 const About = dynamic(() => import("@/components/About"), { ssr: true });
 const HireMeCTA = dynamic(() => import("@/components/HireMeCTA"), { ssr: true });
@@ -31,6 +32,7 @@ export default function Home() {
         <CaseStudies />
         <Testimonials />
         <FeatureSuggestion />
+        <DiagnosticTool />
         <Blog />
         <About />
         <HireMeCTA />

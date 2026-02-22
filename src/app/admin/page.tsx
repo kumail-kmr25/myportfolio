@@ -1,3 +1,4 @@
+/**/
 "use client";
 
 import { useState, useEffect } from "react";
@@ -14,9 +15,10 @@ import AdminTestimonials from "@/components/admin/AdminTestimonials";
 import AdminContact from "@/components/admin/AdminContact";
 import AdminProjects from "@/components/admin/AdminProjects";
 import AdminBlog from "@/components/admin/AdminBlog";
-import AdminCaseStudies from "@/components/admin/AdminCaseStudies";
-import AdminFeatureRequests from "@/components/admin/AdminFeatureRequests";
-import AdminStats from "@/components/admin/AdminStats";
+import AdminCaseStudies from "../../components/admin/AdminCaseStudies";
+import AdminFeatureRequests from "../../components/admin/AdminFeatureRequests";
+import AdminStats from "../../components/admin/AdminStats";
+import AdminDiagnostics from "@/components/admin/AdminDiagnostics";
 
 const fetcher = async (url: string) => {
     const res = await fetch(url);
@@ -30,14 +32,14 @@ function AdminPageContent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [authError, setAuthError] = useState("");
-    const [activeTab, setActiveTab] = useState<"overview" | "messages" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "messages" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics">("overview");
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
     useEffect(() => {
         const tab = searchParams.get("tab");
-        const validTabs = ["overview", "messages", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats"];
+        const validTabs = ["overview", "messages", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats", "diagnostics"];
         if (tab && validTabs.includes(tab)) {
             setActiveTab(tab as any);
         }
@@ -76,6 +78,16 @@ function AdminPageContent() {
 
     const { data: statsData, mutate: mutateStats } = useSWR(
         isLoggedIn ? "/api/stats" : null,
+        fetcher
+    );
+
+    const { data: diagPatterns, mutate: mutateDiagPatterns } = useSWR(
+        isLoggedIn ? "/api/admin/diagnostic-patterns" : null,
+        fetcher
+    );
+
+    const { data: diagLogs, mutate: mutateDiagLogs } = useSWR(
+        isLoggedIn ? "/api/admin/diagnostic-logs" : null,
         fetcher
     );
 
@@ -242,6 +254,11 @@ function AdminPageContent() {
 
     const handleStatsUpdate = async () => {
         mutateStats();
+    };
+
+    const handleDiagAction = async () => {
+        mutateDiagPatterns();
+        mutateDiagLogs();
     };
 
     if (!isLoggedIn) {
@@ -411,6 +428,14 @@ function AdminPageContent() {
                             <AdminStats
                                 stats={statsData}
                                 onUpdate={handleStatsUpdate}
+                            />
+                        )}
+
+                        {activeTab === "diagnostics" && (
+                            <AdminDiagnostics
+                                patterns={Array.isArray(diagPatterns) ? diagPatterns : []}
+                                logs={Array.isArray(diagLogs) ? diagLogs : []}
+                                onUpdate={handleDiagAction}
                             />
                         )}
                     </div>

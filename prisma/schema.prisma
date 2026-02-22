@@ -115,3 +115,23 @@ model BlogPost {
   published  Boolean  @default(false)
   created_at DateTime @default(now())
 }
+
+model IssuePattern {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  keywords           String[]
+  possibleCauses     String[]
+  debugSteps         String[]
+  complexity         String   // Low / Medium / High
+  recommendedService String
+  createdAt          DateTime @default(now())
+}
+
+model DiagnosticLog {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  description      String
+  techStack        String?
+  errorMessage     String?
+  environment      String   // Local / Production / Both
+  matchedPatternId String?  @db.ObjectId
+  createdAt        DateTime @default(now())
+}

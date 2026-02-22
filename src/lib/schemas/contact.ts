@@ -8,6 +8,7 @@ export const contactSchema = z.object({
         "Internship Opportunity",
         "Full-Time Role",
         "Freelance Project",
+        "Technical Inquiry",
         "Bug Fix / Error Resolution",
         "Performance Optimization",
         "API Integration",

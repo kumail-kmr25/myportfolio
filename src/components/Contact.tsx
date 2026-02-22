@@ -36,6 +36,17 @@ function ContactInner() {
         if (inquiry) {
             setValue("inquiryType", inquiry as any);
         }
+
+        // Handle custom event from Diagnostic Tool
+        const handlePrefill = (e: any) => {
+            const { service, diagnostic } = e.detail;
+            if (service) setValue("serviceRequired", service as any);
+            if (diagnostic) setValue("message", diagnostic);
+            setValue("inquiryType", "Technical Inquiry");
+        };
+
+        window.addEventListener("prefill-contact", handlePrefill);
+        return () => window.removeEventListener("prefill-contact", handlePrefill);
     }, [searchParams, setValue]);
 
     const onSubmit = async (data: ContactFormData) => {

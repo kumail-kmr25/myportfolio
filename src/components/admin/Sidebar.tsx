@@ -9,6 +9,7 @@ import {
     BookOpen,
     CheckSquare,
     BarChart3,
+    Activity,
     LogOut,
     Menu,
     X
@@ -34,6 +35,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
         { id: "case-studies", label: "Case Studies", icon: BookOpen },
         { id: "feature-requests", label: "Feature Requests", icon: CheckSquare, count: pendingFeaturesCount },
         { id: "stats", label: "Site Stats", icon: BarChart3 },
+        { id: "diagnostics", label: "Diagnostics", icon: Activity },
         { id: "blog", label: "Blog Posts", icon: PenLine },
     ];
 
