@@ -2,7 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import {
+    CheckSquare,
+    BarChart3,
+    Activity,
+    LogOut,
+    Menu,
+    X,
+    Briefcase,
+    Settings
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
 import useSWR from "swr";
@@ -82,13 +91,19 @@ export default function Navbar() {
                         </motion.span>
                         <div className="flex flex-col">
                             <span className="text-lg font-bold leading-tight tracking-tight uppercase">Kumail KMR</span>
-                            <div className="flex items-center gap-2">
-                                <span className="relative flex h-2 w-2">
-                                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isAvailable ? 'bg-green-400' : 'bg-red-400'} opacity-75`}></span>
-                                    <span className={`relative inline-flex rounded-full h-2 w-2 ${isAvailable ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                            <motion.div
+                                animate={{ opacity: [0.5, 1, 0.5] }}
+                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                className="flex items-center gap-2"
+                            >
+                                <span className={`relative flex h-2 w-2`}>
+                                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${status === 'booked' ? 'bg-red-400' : status === 'limited' ? 'bg-yellow-400' : 'bg-green-400'} opacity-75`}></span>
+                                    <span className={`relative inline-flex rounded-full h-2 w-2 ${status === 'booked' ? 'bg-red-500' : status === 'limited' ? 'bg-yellow-500' : 'bg-green-500'}`}></span>
                                 </span>
-                                <span className="text-[10px] text-gray-500 font-black uppercase tracking-[0.3em]">{status}</span>
-                            </div>
+                                <span className={`text-[10px] font-black uppercase tracking-[0.3em] transition-all ${status === 'booked' ? 'text-red-400/80' : status === 'limited' ? 'text-yellow-400/80' : 'text-green-400/80'}`}>
+                                    {status === 'booked' ? 'Fully Booked' : status === 'limited' ? 'Limited Capacity' : 'Available Now'}
+                                </span>
+                            </motion.div>
                         </div>
                     </Link>
                 </div>

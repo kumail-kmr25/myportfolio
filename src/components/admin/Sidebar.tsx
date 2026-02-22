@@ -13,7 +13,8 @@ import {
     LogOut,
     Menu,
     X,
-    Briefcase
+    Briefcase,
+    Settings
 } from "lucide-react";
 import { useState } from "react";
 
@@ -39,6 +40,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
         { id: "feature-requests", label: "Feature Requests", icon: CheckSquare, count: pendingFeaturesCount },
         { id: "stats", label: "Site Stats", icon: BarChart3 },
         { id: "diagnostics", label: "Diagnostics", icon: Activity },
+        { id: "capacity", label: "Work Capacity", icon: Settings },
         { id: "blog", label: "Blog Posts", icon: PenLine },
     ];
 

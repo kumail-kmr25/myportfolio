@@ -3,7 +3,7 @@ import { z } from "zod";
 export const hireSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email format"),
-    company: z.string().optional(),
+    company: z.string().default(""),
     selectedService: z.enum([
         "Web Development (Full Stack)",
         "Frontend Development (React/Next.js)",
@@ -37,7 +37,7 @@ export const hireSchema = z.object({
     description: z.string()
         .min(20, "Project details must be at least 20 characters")
         .max(3000, "Description must be less than 3000 characters"),
-    source: z.string().default("hire_me"),
+    source: z.string(),
 });
 
 export type HireFormData = z.infer<typeof hireSchema>;

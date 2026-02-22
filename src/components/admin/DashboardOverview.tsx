@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 interface OverviewProps {
     stats: {
@@ -65,32 +66,54 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
                     <h2 className="text-xl font-bold text-white flex items-center gap-3">
-                        <Clock className="text-blue-400" size={20} />
-                        System Overview
+                        <Zap className="text-blue-400" size={20} />
+                        Live Activity Feed
                     </h2>
-                    <div className="glass-effect rounded-[2.5rem] p-10 border border-white/5">
-                        <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-                            <div className="flex-grow space-y-4">
-                                <div className="p-6 bg-white/5 rounded-3xl border border-white/5">
-                                    <p className="text-gray-400 text-sm leading-relaxed">
-                                        Your professional portfolio is currently monitoring <span className="text-white font-bold">{stats.hireRequests} hire requests</span> and <span className="text-white font-bold">{stats.messages} inquiries</span>.
-                                        There are <span className="text-white font-bold">{stats.testimonials} testimonials</span> stored, with 100% database availability metrics.
-                                    </p>
+                    <div className="glass-effect rounded-[2.5rem] p-4 border border-white/5 overflow-hidden">
+                        <div className="space-y-1">
+                            {recentActivity.length === 0 ? (
+                                <div className="p-12 text-center text-gray-600 text-xs font-bold uppercase tracking-widest">
+                                    No recent activity detected
                                 </div>
-                                <div className="flex gap-4">
-                                    <div className="flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-400 rounded-full text-[10px] font-bold uppercase tracking-widest">
-                                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                                        Database Online
-                                    </div>
-                                    <div className="flex items-center gap-2 px-4 py-2 bg-blue-500/10 text-blue-400 rounded-full text-[10px] font-bold uppercase tracking-widest">
-                                        Vercel Deployed
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="w-full md:w-48 h-48 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full flex items-center justify-center border border-white/10 relative overflow-hidden group">
-                                <TrendingUp size={64} className="text-blue-500/40 group-hover:scale-125 transition-transform duration-1000" />
-                                <div className="absolute inset-0 bg-blue-500/5 animate-pulse" />
-                            </div>
+                            ) : (
+                                recentActivity.map((activity, idx) => {
+                                    const Icon = activity.type === "hire" ? Briefcase : activity.type === "message" ? Mail : Zap;
+                                    const color = activity.type === "hire" ? "green" : activity.type === "message" ? "purple" : "blue";
+
+                                    return (
+                                        <div
+                                            key={activity.id}
+                                            className={`flex items-center gap-6 p-6 rounded-[2rem] hover:bg-white/[0.03] transition-all group border border-transparent hover:border-white/5 ${idx !== recentActivity.length - 1 ? 'border-b-white/5' : ''}`}
+                                        >
+                                            <div className={`w-12 h-12 rounded-2xl bg-${color}-500/10 flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                                                <Icon className={`text-${color}-400`} size={20} />
+                                            </div>
+                                            <div className="flex-grow min-w-0">
+                                                <div className="flex items-center justify-between mb-1">
+                                                    <h4 className="text-sm font-bold text-white truncate group-hover:text-blue-400 transition-colors">
+                                                        {activity.title}
+                                                    </h4>
+                                                    <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest whitespace-nowrap ml-4">
+                                                        {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center justify-between">
+                                                    <p className="text-xs text-gray-500 truncate italic">
+                                                        {activity.subtitle}
+                                                    </p>
+                                                    <div className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter
+                                                        ${activity.status === 'new' ? 'bg-blue-500/20 text-blue-400' :
+                                                            activity.status === 'replied' || activity.status === 'completed' ? 'bg-green-500/20 text-green-400' :
+                                                                'bg-white/5 text-gray-500'}`}
+                                                    >
+                                                        {activity.status}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })
+                            )}
                         </div>
                     </div>
                 </div>
@@ -125,23 +148,16 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                             </div>
                             <div className="pt-6">
                                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-4">Availability Status</p>
-                                <button
-                                    onClick={handleToggle}
-                                    disabled={isUpdating}
-                                    className={`w-full p-4 rounded-2xl border transition-all flex items-center justify-between group/btn ${availabilityStatus === "Available"
-                                        ? "bg-green-500/10 border-green-500/20 text-green-500 hover:bg-green-500 hover:text-white"
-                                        : "bg-red-500/10 border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white"
-                                        }`}
-                                >
+                                <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
                                     <div className="flex items-center gap-3">
-                                        {isUpdating ? <Loader2 size={16} className="animate-spin" /> : <Briefcase size={16} />}
+                                        <div className={`w-2 h-2 rounded-full ${availabilityStatus === "Available" ? "bg-green-500" : "bg-red-500"}`} />
                                         <span className="text-xs font-bold uppercase tracking-widest">{availabilityStatus}</span>
                                     </div>
                                     <div className={`w-8 h-4 rounded-full relative transition-colors ${availabilityStatus === "Available" ? "bg-green-500/40" : "bg-red-500/40"}`}>
                                         <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${availabilityStatus === "Available" ? "left-5" : "left-1"}`} />
                                     </div>
-                                </button>
-                                <p className="text-[9px] text-gray-600 mt-3 text-center italic">Click to toggle your public availability badge.</p>
+                                </div>
+                                <p className="text-[9px] text-gray-600 mt-3 text-center italic">Live capacity is now managed via the <strong>Work Capacity</strong> tab.</p>
                             </div>
                         </div>
                     </div>

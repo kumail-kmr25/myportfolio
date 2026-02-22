@@ -7,12 +7,20 @@ export async function GET() {
             projectCount,
             caseStudyCount,
             completedFeaturesCount,
-            siteStats
+            siteStats,
+            diagRuns,
+            leadGenTotal,
+            hireRequests,
+            patternsMatched
         ] = await Promise.all([
             prisma.project.count(),
             prisma.caseStudy.count({ where: { isPublished: true } }),
             prisma.featureRequest.count({ where: { status: "completed" } }),
             prisma.siteStats.findFirst(),
+            (prisma as any).diagnosticLog.count(),
+            (prisma as any).hireRequest.count({ where: { source: "diag_bridge" } }),
+            (prisma as any).hireRequest.count(),
+            (prisma as any).diagnosticLog.count({ where: { matchedPatternId: { not: null } } })
         ]);
 
         const stats = {
@@ -20,8 +28,12 @@ export async function GET() {
             bugsFixed: siteStats?.bugsFixed || 0,
             caseStudiesWritten: caseStudyCount,
             featureRequestsCompleted: completedFeaturesCount,
-            yearsLearning: siteStats?.yearsLearning || 1, // Default to 1 if not set
+            yearsLearning: siteStats?.yearsLearning || 1,
             deploymentCount: siteStats?.deploymentCount || 0,
+            diagRuns,
+            leadGenTotal,
+            hireRequests,
+            patternsMatched
         };
 
         return NextResponse.json(stats);

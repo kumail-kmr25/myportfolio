@@ -20,10 +20,26 @@ model Admin {
   phone     String   @unique
   userId    String   @unique
   password  String
-  availabilityStatus String   @default("Available")
   resetToken       String?
   resetTokenExpiry DateTime?
   created_at DateTime @default(now())
+}
+
+model ActiveProject {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  clientName      String
+  projectTitle    String
+  status          String   // active / completed / cancelled
+  startDate       DateTime
+  expectedEndDate DateTime
+  createdAt       DateTime @default(now())
+}
+
+model SystemConfig {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  maxActiveProjects Int      @default(2)
+  manualOverride    String?  // available / limited / booked
+  overrideMessage   String?
 }
 
 model Testimonial {

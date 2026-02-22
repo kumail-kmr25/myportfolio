@@ -1,22 +1,29 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const prisma = new PrismaClient();
 
 async function main() {
-    const hashedPassword = await bcrypt.hash('password123', 10);
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'password123';
+    const adminName = process.env.ADMIN_NAME || 'Portfolio Admin';
+    const adminUserId = process.env.ADMIN_USER_ID || 'admin_001';
+
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
     const admin = await prisma.admin.upsert({
-        where: { email: 'admin@example.com' },
+        where: { email: adminEmail },
         update: { password: hashedPassword },
         create: {
-            userId: 'admin123',
-            name: 'Test Admin',
-            email: 'admin@example.com',
-            phone: '1234567890',
+            userId: adminUserId,
+            name: adminName,
+            email: adminEmail,
+            phone: '0000000000',
             password: hashedPassword,
         },
     });
-    console.log('Admin ready: admin@example.com / password123');
+    console.log(`Admin ready: ${adminEmail} / [PASSWORD HIDDEN]`);
 }
 
 main().finally(() => prisma.$disconnect());

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, ShieldCheck, LogOut } from "lucide-react";
+import { Loader2, ShieldCheck, LogOut, ExternalLink } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -19,6 +20,8 @@ import AdminCaseStudies from "../../components/admin/AdminCaseStudies";
 import AdminFeatureRequests from "../../components/admin/AdminFeatureRequests";
 import AdminStats from "../../components/admin/AdminStats";
 import AdminDiagnostics from "@/components/admin/AdminDiagnostics";
+import AdminCapacityManager from "@/components/admin/AdminCapacityManager";
+import AdminAnalytics from "@/components/admin/AdminAnalytics";
 
 const fetcher = async (url: string) => {
     const res = await fetch(url);
@@ -32,14 +35,14 @@ function AdminPageContent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [authError, setAuthError] = useState("");
-    const [activeTab, setActiveTab] = useState<"overview" | "messages" | "hire" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "messages" | "hire" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics" | "capacity">("overview");
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
     useEffect(() => {
         const tab = searchParams.get("tab");
-        const validTabs = ["overview", "messages", "hire", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats", "diagnostics"];
+        const validTabs = ["overview", "messages", "hire", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats", "diagnostics", "capacity"];
         if (tab && validTabs.includes(tab)) {
             setActiveTab(tab as any);
         }
@@ -408,93 +411,148 @@ function AdminPageContent() {
                         </div>
                     </div>
 
-                    <div className="min-h-[60vh]">
-                        {activeTab === "overview" && (
-                            <DashboardOverview
-                                stats={{
-                                    testimonials: Array.isArray(allTestimonials) ? allTestimonials.length : 0,
-                                    messages: Array.isArray(messages) ? messages.length : 0,
-                                    hireRequests: Array.isArray(hireRequests) ? hireRequests.length : 0,
-                                    projects: Array.isArray(projects) ? projects.length : 0,
-                                    blogPosts: Array.isArray(blogPosts) ? blogPosts.length : 0
-                                }}
-                                recentActivity={[]}
-                                availabilityStatus={availabilityData?.status || "Available"}
-                                onUpdateAvailability={handleUpdateAvailability}
-                            />
-                        )}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeTab}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            className="min-h-[60vh]"
+                        >
+                            {activeTab === "overview" && (
+                                <div className="space-y-12">
+                                    <AdminAnalytics
+                                        stats={{
+                                            diagRuns: statsData?.diagRuns || 0,
+                                            leadGenTotal: statsData?.leadGenTotal || 0,
+                                            hireRequests: statsData?.hireRequests || 0,
+                                            patternsMatched: statsData?.patternsMatched || 0
+                                        }}
+                                    />
+                                    <DashboardOverview
+                                        stats={{
+                                            testimonials: Array.isArray(allTestimonials) ? allTestimonials.length : 0,
+                                            messages: Array.isArray(messages) ? messages.length : 0,
+                                            hireRequests: Array.isArray(hireRequests) ? hireRequests.length : 0,
+                                            projects: Array.isArray(projects) ? projects.length : 0,
+                                            blogPosts: Array.isArray(blogPosts) ? blogPosts.length : 0,
+                                        }}
+                                        recentActivity={[
+                                            ...(hireRequests || []).map((h: any) => ({
+                                                id: h.id,
+                                                type: "hire",
+                                                title: `Hire Request: ${h.name}`,
+                                                subtitle: h.projectType,
+                                                timestamp: h.createdAt,
+                                                status: h.status
+                                            })),
+                                            ...(messages || []).map((m: any) => ({
+                                                id: m.id,
+                                                type: "message",
+                                                title: `Message: ${m.name}`,
+                                                subtitle: m.inquiryType || "Inquiry",
+                                                timestamp: m.created_at,
+                                                status: m.replied ? "replied" : "new"
+                                            })),
+                                            ...(diagLogs || []).map((l: any) => ({
+                                                id: l.id,
+                                                type: "diagnostic",
+                                                title: "Diagnostic Run",
+                                                subtitle: l.description,
+                                                timestamp: l.createdAt,
+                                                status: "completed"
+                                            }))
+                                        ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 10)}
+                                        availabilityStatus={availabilityData?.status || "Available"}
+                                        onUpdateAvailability={async (status) => {
+                                            await fetch("/api/admin/system-config", {
+                                                method: "PATCH",
+                                                headers: { "Content-Type": "application/json" },
+                                                body: JSON.stringify({ manualOverride: status.toLowerCase() })
+                                            });
+                                            mutateAvailability();
+                                        }}
+                                    />
+                                </div>
+                            )}
 
-                        {activeTab === "messages" && (
-                            <AdminContact
-                                messages={Array.isArray(messages) ? messages : []}
-                                onToggleReplied={handleToggleReplied}
-                                onDelete={handleMessageDelete}
-                            />
-                        )}
+                            {activeTab === "messages" && (
+                                <AdminContact
+                                    messages={Array.isArray(messages) ? messages : []}
+                                    onToggleReplied={handleToggleReplied}
+                                    onDelete={handleMessageDelete}
+                                />
+                            )}
 
-                        {activeTab === "hire" && (
-                            <AdminHireRequests
-                                requests={Array.isArray(hireRequests) ? hireRequests : []}
-                                onUpdateStatus={handleHireStatusUpdate}
-                                onDelete={handleHireDelete}
-                            />
-                        )}
+                            {activeTab === "hire" && (
+                                <AdminHireRequests
+                                    requests={Array.isArray(hireRequests) ? hireRequests : []}
+                                    onUpdateStatus={handleHireStatusUpdate}
+                                    onDelete={handleHireDelete}
+                                />
+                            )}
 
-                        {activeTab === "testimonials" && (
-                            <AdminTestimonials
-                                testimonials={Array.isArray(allTestimonials) ? allTestimonials : []}
-                                onApprove={handleTestimonialApproval}
-                                onDelete={handleTestimonialDelete}
-                            />
-                        )}
+                            {activeTab === "testimonials" && (
+                                <AdminTestimonials
+                                    testimonials={Array.isArray(allTestimonials) ? allTestimonials : []}
+                                    onApprove={handleTestimonialApproval}
+                                    onDelete={handleTestimonialDelete}
+                                />
+                            )}
 
-                        {activeTab === "projects" && (
-                            <AdminProjects
-                                projects={Array.isArray(projects) ? projects : []}
-                                onAdd={handleAddProject}
-                                onUpdate={handleProjectUpdate}
-                                onDelete={handleProjectDelete}
-                            />
-                        )}
+                            {activeTab === "projects" && (
+                                <AdminProjects
+                                    projects={Array.isArray(projects) ? projects : []}
+                                    onAdd={handleAddProject}
+                                    onUpdate={handleProjectUpdate}
+                                    onDelete={handleProjectDelete}
+                                />
+                            )}
 
-                        {activeTab === "blog" && (
-                            <AdminBlog
-                                posts={Array.isArray(blogPosts) ? blogPosts : []}
-                                onAdd={handleAddBlog}
-                                onUpdate={handleBlogUpdate}
-                                onDelete={handleBlogDelete}
-                            />
-                        )}
+                            {activeTab === "blog" && (
+                                <AdminBlog
+                                    posts={Array.isArray(blogPosts) ? blogPosts : []}
+                                    onAdd={handleAddBlog}
+                                    onUpdate={handleBlogUpdate}
+                                    onDelete={handleBlogDelete}
+                                />
+                            )}
 
-                        {activeTab === "case-studies" && (
-                            <AdminCaseStudies
-                                studies={Array.isArray(caseStudies) ? caseStudies : []}
-                                onUpdate={handleCaseStudyAction}
-                            />
-                        )}
+                            {activeTab === "case-studies" && (
+                                <AdminCaseStudies
+                                    studies={Array.isArray(caseStudies) ? caseStudies : []}
+                                    onUpdate={handleCaseStudyAction}
+                                />
+                            )}
 
-                        {activeTab === "feature-requests" && (
-                            <AdminFeatureRequests
-                                requests={Array.isArray(featureRequests) ? featureRequests : []}
-                                onUpdate={handleFeatureRequestAction}
-                            />
-                        )}
+                            {activeTab === "feature-requests" && (
+                                <AdminFeatureRequests
+                                    requests={Array.isArray(featureRequests) ? featureRequests : []}
+                                    onUpdate={handleFeatureRequestAction}
+                                />
+                            )}
 
-                        {activeTab === "stats" && (
-                            <AdminStats
-                                stats={statsData}
-                                onUpdate={handleStatsUpdate}
-                            />
-                        )}
+                            {activeTab === "stats" && (
+                                <AdminStats
+                                    stats={statsData}
+                                    onUpdate={handleStatsUpdate}
+                                />
+                            )}
 
-                        {activeTab === "diagnostics" && (
-                            <AdminDiagnostics
-                                patterns={Array.isArray(diagPatterns) ? diagPatterns : []}
-                                logs={Array.isArray(diagLogs) ? diagLogs : []}
-                                onUpdate={handleDiagAction}
-                            />
-                        )}
-                    </div>
+                            {activeTab === "diagnostics" && (
+                                <AdminDiagnostics
+                                    patterns={Array.isArray(diagPatterns) ? diagPatterns : []}
+                                    logs={Array.isArray(diagLogs) ? diagLogs : []}
+                                    onUpdate={handleDiagAction}
+                                />
+                            )}
+
+                            {activeTab === "capacity" && (
+                                <AdminCapacityManager />
+                            )}
+                        </motion.div>
+                    </AnimatePresence>
 
                     <footer className="pt-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 opacity-40">
                         <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">

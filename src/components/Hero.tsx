@@ -6,6 +6,9 @@ import { ArrowRight, Download } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useHireModal } from "@/context/HireModalContext";
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const roles = ["Full Stack Developer", "DevOps Engineer", "UI/UX Designer"];
 
@@ -15,39 +18,41 @@ export default function Hero() {
     const [isDeleting, setIsDeleting] = useState(false);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const { openModal } = useHireModal();
+    const { data: availability } = useSWR("/api/availability", fetcher);
 
     useEffect(() => {
+        let rafId: number;
         const handleMouseMove = (e: MouseEvent) => {
-            setMousePos({
-                x: (e.clientX / window.innerWidth - 0.5) * 20,
-                y: (e.clientY / window.innerHeight - 0.5) * 20,
+            rafId = requestAnimationFrame(() => {
+                setMousePos({
+                    x: (e.clientX / window.innerWidth - 0.5) * 20,
+                    y: (e.clientY / window.innerHeight - 0.5) * 20,
+                });
             });
         };
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mousemove", handleMouseMove, { passive: true });
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            cancelAnimationFrame(rafId);
+        };
     }, []);
 
     useEffect(() => {
-        // ... previous typing logic
-        const startDelay = setTimeout(() => {
-            const currentRole = roles[roleIndex];
-            const typeSpeed = isDeleting ? 40 : 100;
+        const currentRole = roles[roleIndex];
+        const typeSpeed = isDeleting ? 40 : 100;
 
-            const timer = setTimeout(() => {
-                if (!isDeleting && text === currentRole) {
-                    setTimeout(() => setIsDeleting(true), 2000);
-                } else if (isDeleting && text === "") {
-                    setIsDeleting(false);
-                    setRoleIndex((prev) => (prev + 1) % roles.length);
-                } else {
-                    setText(currentRole.substring(0, isDeleting ? text.length - 1 : text.length + 1));
-                }
-            }, typeSpeed);
+        const timer = setTimeout(() => {
+            if (!isDeleting && text === currentRole) {
+                setTimeout(() => setIsDeleting(true), 2000);
+            } else if (isDeleting && text === "") {
+                setIsDeleting(false);
+                setRoleIndex((prev) => (prev + 1) % roles.length);
+            } else {
+                setText(currentRole.substring(0, isDeleting ? text.length - 1 : text.length + 1));
+            }
+        }, text === "" && !isDeleting ? 500 : typeSpeed);
 
-            return () => clearTimeout(timer);
-        }, text === "" && !isDeleting ? 500 : 0);
-
-        return () => clearTimeout(startDelay);
+        return () => clearTimeout(timer);
     }, [text, isDeleting, roleIndex]);
 
     return (
@@ -104,10 +109,39 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <span className="inline-block py-2 px-4 rounded-full bg-white/[0.03] border border-white/[0.08] text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 mb-8 backdrop-blur-md">
-                        Available for Freelance & Hire
-                    </span>
-                    <h1 className="text-6xl md:text-[10rem] font-bold font-display text-white mb-8 tracking-[-0.04em] leading-[0.9]">
+                    <div className="flex flex-col items-center gap-4 mb-8">
+                        <span className="inline-block py-2 px-4 rounded-full bg-white/[0.03] border border-white/[0.08] text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 backdrop-blur-md">
+                            Expert Technical Intervention
+                        </span>
+
+                        {availability && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="glass-effect px-6 py-3 rounded-2xl border border-white/5 flex items-center gap-6 shadow-2xl"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className={`w-3 h-3 rounded-full ${availability.status === 'booked' ? 'bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.5)]' :
+                                        availability.status === 'limited' ? 'bg-yellow-500 shadow-[0_0_12px_rgba(234,179,8,0.5)]' :
+                                            'bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.5)]'
+                                        }`} />
+                                    <span className="text-xs font-bold text-white uppercase tracking-widest">{availability.message}</span>
+                                </div>
+                                <div className="h-4 w-px bg-white/10" />
+                                <div className="text-left">
+                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">
+                                        {availability.status === 'booked' ? 'Next Slot' : 'Current Slots'}
+                                    </p>
+                                    <p className="text-xs text-white font-bold">
+                                        {availability.status === 'booked' ?
+                                            (availability.nextSlot ? new Date(availability.nextSlot).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) : 'Soon') :
+                                            `${availability.activeCount} / ${availability.maxProjects} Active`}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        )}
+                    </div>
+                    <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-bold font-display text-white mb-8 tracking-[-0.04em] leading-[0.9]">
                         Kumail Kmr
                     </h1>
                     <div className="h-10 mb-12">

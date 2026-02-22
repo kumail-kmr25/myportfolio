@@ -12,8 +12,12 @@ import {
     IndianRupee,
     Sparkles,
     Send,
-    ArrowRight
+    ArrowRight,
+    AlertCircle
 } from "lucide-react";
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { hireSchema, type HireFormData } from "@/lib/schemas/hire";
@@ -72,6 +76,8 @@ export default function HireMeModal() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isSuccess, setIsSuccess] = useState(false);
+    const { data: availability } = useSWR("/api/availability", fetcher);
+    const status = availability?.status || "available";
 
     const {
         register,
@@ -81,12 +87,12 @@ export default function HireMeModal() {
         trigger,
         formState: { errors },
         reset
-    } = useForm<HireFormData>({
+    } = useForm<any>({
         resolver: zodResolver(hireSchema),
         defaultValues: {
             name: "",
             email: "",
-            company: undefined,
+            company: "",
             description: "",
             source: "hire_me",
             selectedService: "Web Development (Full Stack)",
@@ -99,7 +105,7 @@ export default function HireMeModal() {
     const selectedService = watch("selectedService");
     const formData = watch();
 
-    const onSubmit = async (data: HireFormData) => {
+    const onSubmit = async (data: any) => {
         setIsSubmitting(true);
         setError(null);
         try {
@@ -218,8 +224,8 @@ export default function HireMeModal() {
                         <div className="relative z-10">
                             <p className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-2 font-mono">Status</p>
                             <div className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                                <span className="text-[10px] font-bold text-white uppercase tracking-widest">Available for hire</span>
+                                <div className={`w-2 h-2 rounded-full animate-pulse ${status === 'booked' ? 'bg-red-400' : status === 'limited' ? 'bg-yellow-400' : 'bg-green-400'}`} />
+                                <span className="text-[10px] font-bold text-white uppercase tracking-widest capitalize">{status.replace('_', ' ')}</span>
                             </div>
                         </div>
                     </div>
@@ -251,18 +257,18 @@ export default function HireMeModal() {
                                         </div>
                                         <p className="text-gray-400 leading-relaxed text-lg">
                                             Thank you for sharing your vision, <span className="text-white font-bold">{formData.name}</span>.
-                                            I've successfully received your brief for <span className="text-blue-400 font-bold">{formData.selectedService}</span>.
+                                            I&apos;ve successfully received your brief for <span className="text-blue-400 font-bold">{formData.selectedService}</span>.
                                         </p>
                                         <div className="bg-white/5 border border-white/10 rounded-3xl p-8 w-full mt-8 space-y-4">
                                             <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Next Steps</p>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                                                 <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
                                                     <p className="text-white font-bold text-sm mb-1">Brief Review</p>
-                                                    <p className="text-[10px] text-gray-500 leading-normal">I'll analyze your requirements and prepare a preliminary strategy within 12-24 hours.</p>
+                                                    <p className="text-[10px] text-gray-500 leading-normal">I&apos;ll analyze your requirements and prepare a preliminary strategy within 12-24 hours.</p>
                                                 </div>
                                                 <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
                                                     <p className="text-white font-bold text-sm mb-1">Direct Contact</p>
-                                                    <p className="text-[10px] text-gray-500 leading-normal">You'll receive a confirmation email shortly. I'll reach out via <span className="text-blue-400">{formData.email}</span> to discuss the next steps.</p>
+                                                    <p className="text-[10px] text-gray-500 leading-normal">You&apos;ll receive a confirmation email shortly. I&apos;ll reach out via <span className="text-blue-400">{formData.email}</span> to discuss the next steps.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,7 +284,20 @@ export default function HireMeModal() {
                                         {step === "services" && (
                                             <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                                 <div>
-                                                    <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Let's build something <span className="text-blue-500 italic block mt-2">extraordinary</span></h2>
+                                                    <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Let&apos;s build something <span className="text-blue-500 italic block mt-2">extraordinary</span></h2>
+                                                    {status === 'booked' && (
+                                                        <div className="mb-8 p-6 bg-red-500/10 border border-red-500/20 rounded-[2rem] flex items-center gap-4 animate-in fade-in slide-in-from-top-4">
+                                                            <div className="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center shrink-0">
+                                                                <AlertCircle className="text-red-500" size={24} />
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs font-bold text-white uppercase tracking-widest">I&apos;m currently fully booked.</p>
+                                                                <p className="text-[10px] text-gray-500 font-medium">
+                                                                    Next availability: <span className="text-red-400">{availability?.nextSlot ? new Date(availability.nextSlot).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) : 'Soon'}</span>. You can still submit your project request.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                     <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Step 1: Select Your Service</p>
                                                 </div>
 
@@ -380,7 +399,7 @@ export default function HireMeModal() {
                                                             placeholder="Goals, features, target audience..."
                                                             className="w-full h-48 bg-white/5 border border-white/10 rounded-[2rem] p-8 text-sm text-white focus:border-blue-500 outline-none transition-all resize-none"
                                                         />
-                                                        {errors.description && <p className="text-red-500 text-[10px] font-bold uppercase mt-2 ml-2 tracking-widest">{errors.description.message}</p>}
+                                                        {errors.description?.message && <p className="text-red-500 text-[10px] font-bold uppercase mt-2 ml-2 tracking-widest">{errors.description.message as string}</p>}
                                                     </div>
                                                 </div>
                                             </div>
@@ -389,7 +408,7 @@ export default function HireMeModal() {
                                         {step === "contact" && (
                                             <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                                 <div>
-                                                    <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Let's stay in <span className="text-blue-500 italic block mt-2">touch</span></h2>
+                                                    <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Let&apos;s stay in <span className="text-blue-500 italic block mt-2">touch</span></h2>
                                                     <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Step 4: Contact Information</p>
                                                 </div>
 
@@ -402,7 +421,7 @@ export default function HireMeModal() {
                                                                 placeholder="John Doe"
                                                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
                                                             />
-                                                            {errors.name && <p className="text-red-500 text-[10px] font-bold uppercase mt-2 ml-2 tracking-widest">{errors.name.message}</p>}
+                                                            {errors.name?.message && <p className="text-red-500 text-[10px] font-bold uppercase mt-2 ml-2 tracking-widest">{errors.name.message as string}</p>}
                                                         </div>
                                                         <div className="space-y-2">
                                                             <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Work Email</label>
@@ -411,7 +430,7 @@ export default function HireMeModal() {
                                                                 placeholder="john@company.com"
                                                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
                                                             />
-                                                            {errors.email && <p className="text-red-500 text-[10px] font-bold uppercase mt-2 ml-2 tracking-widest">{errors.email.message}</p>}
+                                                            {errors.email?.message && <p className="text-red-500 text-[10px] font-bold uppercase mt-2 ml-2 tracking-widest">{errors.email.message as string}</p>}
                                                         </div>
                                                     </div>
                                                     <div className="space-y-2">

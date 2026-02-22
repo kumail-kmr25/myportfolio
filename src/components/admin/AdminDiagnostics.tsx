@@ -108,11 +108,30 @@ export default function AdminDiagnostics({ patterns, logs, onUpdate }: { pattern
                                             <span>• {new Date(log.createdAt).toLocaleDateString()}</span>
                                         </div>
                                     </div>
-                                    {log.matchedPatternId ? (
-                                        <span className="px-3 py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[9px] font-black uppercase rounded-full">Match Found</span>
-                                    ) : (
-                                        <span className="px-3 py-1 bg-gray-500/10 text-gray-500 border border-gray-500/20 text-[9px] font-black uppercase rounded-full">No Pattern</span>
-                                    )}
+                                    <div className="flex gap-2">
+                                        {!log.matchedPatternId && (
+                                            <button
+                                                onClick={() => {
+                                                    setEditingPattern({
+                                                        keywords: log.techStack ? [log.techStack] : [],
+                                                        possibleCauses: [log.description],
+                                                        debugSteps: [],
+                                                        complexity: "Medium",
+                                                        recommendedService: "Bug Fixing"
+                                                    });
+                                                    setIsAdding(true);
+                                                }}
+                                                className="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[9px] font-black uppercase rounded-full hover:bg-blue-500 hover:text-white transition-all shadow-lg shadow-blue-500/10"
+                                            >
+                                                Convert to Pattern
+                                            </button>
+                                        )}
+                                        {log.matchedPatternId ? (
+                                            <span className="px-3 py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[9px] font-black uppercase rounded-full">Match Found</span>
+                                        ) : (
+                                            <span className="px-3 py-1 bg-gray-500/10 text-gray-500 border border-gray-500/20 text-[9px] font-black uppercase rounded-full">No Pattern</span>
+                                        )}
+                                    </div>
                                 </div>
                                 {log.errorMessage && (
                                     <pre className="p-4 bg-black/40 rounded-2xl border border-white/5 text-[10px] text-red-400 font-mono overflow-x-auto">
