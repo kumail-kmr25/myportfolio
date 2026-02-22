@@ -24,7 +24,7 @@ import { Cloud } from "lucide-react";
 
 export default function Skills() {
     return (
-        <section className="py-24 bg-[#050505] overflow-hidden relative">
+        <section className="py-12 bg-[#050505] overflow-hidden relative">
             <div className="section-container mb-16 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

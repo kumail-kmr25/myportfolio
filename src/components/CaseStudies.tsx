@@ -25,7 +25,7 @@ export default function CaseStudies() {
     if (error) return null;
 
     return (
-        <section id="case-studies" className="py-24 bg-[#050505]">
+        <section id="case-studies" className="py-12 bg-[#050505]">
             <div className="section-container">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
                     <div>

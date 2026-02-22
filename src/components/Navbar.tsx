@@ -65,21 +65,21 @@ export default function Navbar() {
         >
             <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
                 <div className="flex items-center gap-4">
-                    <Link href="/" className="text-xl font-bold tracking-tight text-white group flex items-center gap-3">
+                    <Link href="/" className="text-2xl font-bold tracking-tight text-white group flex items-center gap-4">
                         <motion.span
-                            whileHover={{ rotate: 12 }}
-                            className="bg-white text-black w-8 h-8 flex items-center justify-center rounded-lg font-black"
+                            whileHover={{ rotate: 12, scale: 1.1 }}
+                            className="bg-white text-black w-11 h-11 flex items-center justify-center rounded-xl font-black text-2xl"
                         >
                             K
                         </motion.span>
                         <div className="flex flex-col">
-                            <span className="text-sm font-bold leading-tight tracking-tight">Kumail KMR</span>
-                            <div className="flex items-center gap-1.5">
-                                <span className="relative flex h-1.5 w-1.5">
+                            <span className="text-lg font-bold leading-tight tracking-tight uppercase">Kumail KMR</span>
+                            <div className="flex items-center gap-2">
+                                <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                                 </span>
-                                <span className="text-[9px] text-gray-500 font-bold uppercase tracking-[0.2em]">Available</span>
+                                <span className="text-[10px] text-gray-500 font-black uppercase tracking-[0.3em]">Available</span>
                             </div>
                         </div>
                     </Link>

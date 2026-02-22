@@ -36,7 +36,7 @@ export default function DiagnosticTool() {
     };
 
     return (
-        <section id="diagnose" className="py-32 relative overflow-hidden bg-[#050505]">
+        <section id="diagnose" className="py-12 relative overflow-hidden bg-[#050505]">
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="text-center mb-16">
                     <motion.div

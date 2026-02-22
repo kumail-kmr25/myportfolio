@@ -41,7 +41,7 @@ export default function StatsDashboard() {
     ];
 
     return (
-        <section id="stats" className="py-24 bg-[#050505]">
+        <section id="stats" className="py-12 bg-[#050505]">
             <div className="section-container">
                 <div className="flex flex-col items-center text-center mb-16">
                     <h2 className="section-title !mb-4">Live Developer Stats</h2>

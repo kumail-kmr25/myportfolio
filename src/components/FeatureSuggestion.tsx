@@ -62,7 +62,7 @@ export default function FeatureSuggestion() {
     };
 
     return (
-        <section id="suggest-feature" className="py-24 bg-[#050505]">
+        <section id="suggest-feature" className="py-12 bg-[#050505]">
             <div className="section-container">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
                     {/* Left Side: Info & Form */}
@@ -110,8 +110,8 @@ export default function FeatureSuggestion() {
                                                 type="button"
                                                 onClick={() => setFormData({ ...formData, category: cat })}
                                                 className={`py-3 px-4 rounded-2xl text-xs font-bold border transition-all ${formData.category === cat
-                                                        ? "bg-blue-500 border-blue-500 text-white"
-                                                        : "bg-white/5 border-white/10 text-gray-400 hover:border-white/20"
+                                                    ? "bg-blue-500 border-blue-500 text-white"
+                                                    : "bg-white/5 border-white/10 text-gray-400 hover:border-white/20"
                                                     }`}
                                             >
                                                 {cat}
