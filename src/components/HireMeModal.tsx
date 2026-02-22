@@ -86,7 +86,7 @@ export default function HireMeModal() {
         defaultValues: {
             name: "",
             email: "",
-            company: "",
+            company: undefined,
             description: "",
             source: "hire_me",
             selectedService: "Web Development (Full Stack)",
@@ -291,8 +291,8 @@ export default function HireMeModal() {
                                                                     type="button"
                                                                     onClick={() => setValue("budgetRange", range as any)}
                                                                     className={`px-4 py-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${formData.budgetRange === range
-                                                                            ? "bg-blue-600 border-blue-600 text-white"
-                                                                            : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"
+                                                                        ? "bg-blue-600 border-blue-600 text-white"
+                                                                        : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"
                                                                         }`}
                                                                 >
                                                                     {range}
@@ -310,8 +310,8 @@ export default function HireMeModal() {
                                                                     type="button"
                                                                     onClick={() => setValue("timeline", time as any)}
                                                                     className={`px-4 py-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${formData.timeline === time
-                                                                            ? "bg-blue-600 border-blue-600 text-white"
-                                                                            : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"
+                                                                        ? "bg-blue-600 border-blue-600 text-white"
+                                                                        : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"
                                                                         }`}
                                                                 >
                                                                     {time}
