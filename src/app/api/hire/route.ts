@@ -31,10 +31,12 @@ export async function POST(req: NextRequest) {
         }
 
         const body = await req.json();
+        console.log("Hire request received:", body);
 
         // Validation
         const result = hireSchema.safeParse(body);
         if (!result.success) {
+            console.error("Hire validation failed:", result.error.format());
             return NextResponse.json(
                 { success: false, error: "Validation failed", details: result.error.format() },
                 { status: 400 }

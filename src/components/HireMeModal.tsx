@@ -236,14 +236,37 @@ export default function HireMeModal() {
                         <div className="flex-grow overflow-y-auto px-8 md:px-20 py-12 custom-scrollbar">
                             <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col">
                                 {isSuccess ? (
-                                    <div className="flex-grow flex flex-col items-center justify-center text-center space-y-6">
-                                        <div className="w-24 h-24 bg-green-500/10 rounded-[2rem] flex items-center justify-center text-green-500 mb-8">
+                                    <div className="flex-grow flex flex-col items-center justify-center text-center space-y-6 max-w-2xl mx-auto">
+                                        <div className="w-24 h-24 bg-green-500/10 rounded-[2rem] flex items-center justify-center text-green-500 mb-8 border border-green-500/20 shadow-lg shadow-green-500/5">
                                             <CheckCircle2 size={48} className="animate-in zoom-in duration-500" />
                                         </div>
-                                        <h2 className="text-4xl font-black text-white uppercase tracking-tight">Request Received!</h2>
-                                        <p className="text-gray-400 max-w-md mx-auto leading-relaxed">
-                                            Thanks for reaching out! I've received your inquiry and will get back to you within 24 hours. Check your email for a confirmation.
+                                        <div className="space-y-4">
+                                            <h2 className="text-4xl font-black text-white uppercase tracking-tight">Project Brief Received</h2>
+                                            <div className="h-1 w-20 bg-blue-500 mx-auto rounded-full" />
+                                        </div>
+                                        <p className="text-gray-400 leading-relaxed text-lg">
+                                            Thank you for sharing your vision, <span className="text-white font-bold">{formData.name}</span>.
+                                            I've successfully received your brief for <span className="text-blue-400 font-bold">{formData.selectedService}</span>.
                                         </p>
+                                        <div className="bg-white/5 border border-white/10 rounded-3xl p-8 w-full mt-8 space-y-4">
+                                            <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Next Steps</p>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                                                <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
+                                                    <p className="text-white font-bold text-sm mb-1">Brief Review</p>
+                                                    <p className="text-[10px] text-gray-500 leading-normal">I'll analyze your requirements and prepare a preliminary strategy within 12-24 hours.</p>
+                                                </div>
+                                                <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
+                                                    <p className="text-white font-bold text-sm mb-1">Direct Contact</p>
+                                                    <p className="text-[10px] text-gray-500 leading-normal">You'll receive a confirmation email shortly. I'll reach out via <span className="text-blue-400">{formData.email}</span> to discuss the next steps.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={closeModal}
+                                            className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-white transition-colors pt-8"
+                                        >
+                                            Click anywhere to close
+                                        </button>
                                     </div>
                                 ) : (
                                     <>
@@ -285,7 +308,7 @@ export default function HireMeModal() {
                                                     <div className="space-y-4">
                                                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Budget Range (Expected)</label>
                                                         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                                                            {["₹10,000 – ₹25,000", "₹25,000 – ₹50,000", "₹50,000 – ₹1,00,000", "₹1,00,000+", "Flexible"].map((range) => (
+                                                            {["₹10,000 – ₹25,000", "₹25,000 – ₹50,000", "₹50,000 – ₹1,00,000", "₹1,00,000+", "Flexible / To be discussed"].map((range) => (
                                                                 <button
                                                                     key={range}
                                                                     type="button"
@@ -295,7 +318,7 @@ export default function HireMeModal() {
                                                                         : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"
                                                                         }`}
                                                                 >
-                                                                    {range}
+                                                                    {range.includes("/") ? "Flexible" : range}
                                                                 </button>
                                                             ))}
                                                         </div>
@@ -304,7 +327,7 @@ export default function HireMeModal() {
                                                     <div className="space-y-4">
                                                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Estimated Timeline</label>
                                                         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                                                            {["Urgent", "1–2 weeks", "1 month", "2–3 months", "Flexible"].map((time) => (
+                                                            {["Urgent (less than 1 week)", "1–2 weeks", "1 month", "2–3 months", "Flexible"].map((time) => (
                                                                 <button
                                                                     key={time}
                                                                     type="button"
@@ -314,7 +337,7 @@ export default function HireMeModal() {
                                                                         : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"
                                                                         }`}
                                                                 >
-                                                                    {time}
+                                                                    {time.includes("Urgent") ? "Urgent" : time}
                                                                 </button>
                                                             ))}
                                                         </div>

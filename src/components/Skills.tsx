@@ -1,6 +1,6 @@
 "use client";
 
-import { Code2, Database, Layout, Server, Smartphone, Terminal, Cpu, Globe } from "lucide-react";
+import { Code2, Database, Layout, Server, Smartphone, Terminal, Cpu, Globe, Cloud } from "lucide-react";
 import { motion } from "framer-motion";
 
 const skills = [
@@ -10,6 +10,7 @@ const skills = [
     { name: "TypeScript", icon: Code2, color: "text-blue-400" },
     { name: "Node.js", icon: Server, color: "text-green-500" },
     { name: "Tailwind CSS", icon: Layout, color: "text-cyan-300" },
+    { name: "Prisma", icon: Database, color: "text-blue-500" },
     { name: "MongoDB", icon: Database, color: "text-green-400" },
     { name: "PostgreSQL", icon: Database, color: "text-blue-300" },
     { name: "Docker", icon: Smartphone, color: "text-blue-500" },
@@ -18,9 +19,7 @@ const skills = [
 ];
 
 // Duplicate for infinite scroll effect
-const allSkills = [...skills, ...skills];
-
-import { Cloud } from "lucide-react";
+const allSkills = [...skills, ...skills, ...skills];
 
 export default function Skills() {
     return (
@@ -59,7 +58,7 @@ export default function Skills() {
                     ))}
                 </div>
 
-                <div className="absolute top-0 animate-marquee2 whitespace-nowrap flex gap-8 py-10 ml-8">
+                <div className="absolute top-0 animate-marquee2 whitespace-nowrap flex gap-8 py-10">
                     {allSkills.map((skill, index) => (
                         <motion.div
                             key={`dupe-${index}`}
