@@ -36,9 +36,14 @@ export async function POST(req: NextRequest) {
         // Validation
         const result = hireSchema.safeParse(body);
         if (!result.success) {
-            console.error("Hire validation failed:", result.error.format());
+            console.error("Hire validation failed detailed:", JSON.stringify(result.error.format(), null, 2));
             return NextResponse.json(
-                { success: false, error: "Validation failed", details: result.error.format() },
+                {
+                    success: false,
+                    error: "Validation failed",
+                    details: result.error.format(),
+                    received: body
+                },
                 { status: 400 }
             );
         }
@@ -61,6 +66,7 @@ export async function POST(req: NextRequest) {
         const sanitizedCompany = company ? xss(company) : null;
 
         // Save to Database
+        console.log("Attempting to create hireRequest in Prisma...");
         const hireRequest = await prisma.hireRequest.create({
             data: {
                 name: sanitizedName,
@@ -75,6 +81,7 @@ export async function POST(req: NextRequest) {
                 status: "new"
             },
         });
+        console.log("HireRequest created successfully:", hireRequest.id);
 
         // Update Rate Limit
         clientLimit.count++;
@@ -100,9 +107,14 @@ export async function POST(req: NextRequest) {
             { status: 201 }
         );
     } catch (error: any) {
-        console.error("Hire API error:", error);
+        console.error("Hire API EXCEPTION:", error);
         return NextResponse.json(
-            { success: false, error: "Internal server error. Please try again later." },
+            {
+                success: false,
+                error: "Internal server error",
+                message: error.message,
+                stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+            },
             { status: 500 }
         );
     }

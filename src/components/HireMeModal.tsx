@@ -121,11 +121,16 @@ export default function HireMeModal() {
                     }, 500);
                 }, 3000);
             } else {
-                const errorData = await response.json();
-                setError(errorData.error || "Something went wrong. Please try again.");
+                const errorData = await response.json().catch(() => null);
+                if (errorData) {
+                    setError(errorData.error + (errorData.message ? `: ${errorData.message}` : "") || "Something went wrong.");
+                    console.error("Submission error details:", errorData);
+                } else {
+                    setError(`Error ${response.status}: ${response.statusText}`);
+                }
             }
-        } catch (err) {
-            setError("Something went wrong. Please try again.");
+        } catch (err: any) {
+            setError(`Network error: ${err.message || "Failed to fetch"}`);
         } finally {
             setIsSubmitting(false);
         }
