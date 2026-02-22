@@ -1,9 +1,7 @@
-"use client";
-
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
+import ClientShell from "@/components/ClientShell";
 
-const IntroAnimation = dynamic(() => import("@/components/IntroAnimation"), { ssr: false });
 const Navbar = dynamic(() => import("@/components/Navbar"), { ssr: true });
 
 // Dynamic imports for below-the-fold components to improve TBT and initial load performance
@@ -23,21 +21,23 @@ const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#050505] text-white selection:bg-white/10 selection:text-white">
-      <IntroAnimation />
-      <Navbar />
-      <Hero />
-      <Skills />
-      <Services />
-      <StatsDashboard />
-      <Projects />
-      <CaseStudies />
-      <Testimonials />
-      <FeatureSuggestion />
-      <Blog />
-      <About />
-      <HireMeCTA />
-      <Contact />
-      <Footer />
+      <ClientShell>
+        <Navbar />
+        <Hero />
+        <Skills />
+        <Services />
+        <StatsDashboard />
+        <Projects />
+        <CaseStudies />
+        <Testimonials />
+        <FeatureSuggestion />
+        <Blog />
+        <About />
+        <HireMeCTA />
+        <Contact />
+        <Footer />
+      </ClientShell>
     </main>
   );
 }
+

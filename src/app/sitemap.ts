@@ -1,44 +1,42 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://your-portfolio-url.com' // Replace with your actual domain
-
     return [
         {
-            url: baseUrl,
+            url: 'https://kumailkmr.com',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 1,
         },
         {
-            url: `${baseUrl}#about`,
+            url: 'https://kumailkmr.com/#services',
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}#projects`,
+            url: 'https://kumailkmr.com/#projects',
             lastModified: new Date(),
-            changeFrequency: 'monthly',
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: 'https://kumailkmr.com/#case-studies',
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}#services`,
+            url: 'https://kumailkmr.com/#blog',
             lastModified: new Date(),
-            changeFrequency: 'monthly',
+            changeFrequency: 'weekly',
             priority: 0.7,
         },
         {
-            url: `${baseUrl}#blog`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.6,
-        },
-        {
-            url: `${baseUrl}#contact`,
+            url: 'https://kumailkmr.com/#contact',
             lastModified: new Date(),
             changeFrequency: 'monthly',
-            priority: 0.5,
+            priority: 0.9,
         },
-    ]
+    ];
 }

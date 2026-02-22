@@ -12,7 +12,7 @@ export default function Footer() {
         <footer className="bg-[#050505] border-t border-white/10 py-12 relative">
             <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
                 <div className="text-center md:text-left">
-                    <h2 className="text-2xl font-bold font-display text-white mb-2">Kumail Kmr</h2>
+                    <p className="text-2xl font-bold font-display text-white mb-2">Kumail Kmr</p>
                     <p className="text-gray-400 text-sm">
                         © {new Date().getFullYear()} Kumail Kmr. All rights reserved.
                     </p>

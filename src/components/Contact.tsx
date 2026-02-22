@@ -3,11 +3,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Phone, MapPin, Send, MessageCircle, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { contactSchema, type ContactFormData } from "@/lib/schemas/contact";
 
-export default function Contact() {
+function ContactInner() {
     const [showPhone, setShowPhone] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
@@ -359,5 +359,13 @@ export default function Contact() {
                 </div>
             </div>
         </section>
+    );
+}
+
+export default function Contact() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-[#050505]" />}>
+            <ContactInner />
+        </Suspense>
     );
 }

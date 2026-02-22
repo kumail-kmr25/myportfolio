@@ -50,8 +50,8 @@ export default function Blog() {
                             Thoughts on technology, design, and freelance strategy.
                         </p>
                     </div>
-                    <Link href="#" className="hidden md:flex items-center text-white hover:text-blue-400 font-medium transition-colors mt-4 md:mt-0">
-                        Read all articles <ArrowRight className="ml-2 w-4 h-4" />
+                    <Link href="#blog" aria-label="Read all blog articles" className="hidden md:flex items-center text-white hover:text-blue-400 font-medium transition-colors mt-4 md:mt-0">
+                        Read all articles <ArrowRight className="ml-2 w-4 h-4" aria-hidden="true" />
                     </Link>
                 </div>
 

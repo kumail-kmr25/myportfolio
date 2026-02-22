@@ -164,34 +164,40 @@ export default function Projects() {
                                                     <Link
                                                         href={project.demo}
                                                         target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label={`Live demo of ${project.title}`}
                                                         className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
                                                     >
-                                                        <ExternalLink size={18} />
+                                                        <ExternalLink size={18} aria-hidden="true" />
                                                     </Link>
                                                     {project.deployment && project.deployment !== "https://" && project.deployment !== "" && (
                                                         <Link
                                                             href={project.deployment}
                                                             target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            aria-label={`Deployment link for ${project.title}`}
                                                             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
                                                         >
-                                                            <Globe size={18} />
+                                                            <Globe size={18} aria-hidden="true" />
                                                         </Link>
                                                     )}
                                                     <Link
                                                         href={project.github}
                                                         target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label={`GitHub repository for ${project.title}`}
                                                         className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
                                                     >
-                                                        <Github size={18} />
+                                                        <Github size={18} aria-hidden="true" />
                                                     </Link>
                                                 </div>
                                                 {isAdmin && (
                                                     <div className="flex gap-2">
-                                                        <button onClick={() => router.push(`/admin?tab=projects&edit=${project.id}`)} className="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all backdrop-blur-md">
-                                                            <PenLine size={18} />
+                                                        <button onClick={() => router.push(`/admin?tab=projects&edit=${project.id}`)} aria-label={`Edit ${project.title}`} className="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all backdrop-blur-md">
+                                                            <PenLine size={18} aria-hidden="true" />
                                                         </button>
-                                                        <button onClick={() => handleDelete(project.id)} className="w-10 h-10 rounded-full bg-red-500/20 text-red-500 border border-red-500/30 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all backdrop-blur-md">
-                                                            <Trash2 size={18} />
+                                                        <button onClick={() => handleDelete(project.id)} aria-label={`Delete ${project.title}`} className="w-10 h-10 rounded-full bg-red-500/20 text-red-500 border border-red-500/30 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all backdrop-blur-md">
+                                                            <Trash2 size={18} aria-hidden="true" />
                                                         </button>
                                                     </div>
                                                 )}
