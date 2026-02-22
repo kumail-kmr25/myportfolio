@@ -4,14 +4,13 @@ A modern, responsive portfolio website built with [Next.js](https://nextjs.org/)
 
 ## 🚀 Features
 
-- **Interactive Testimonials**: Client feedback system with real-time updates.
-- **Admin Moderation Interface**: Secure dashboard at `/admin` for managing feedback.
-- **Full Stack Integration**: Backend API routes with PostgreSQL database.
-- **Modern UI/UX**: Clean, minimalist design with dark mode aesthetic.
-- **Responsive Layout**: Fully responsive across all devices (mobile, tablet, desktop).
-- **Interactive Elements**: Smooth animations using Framer Motion.
-- **Project Showcase**: Filterable grid layout for displaying projects.
-- **SEO Optimized**: Built with Next.js for optimal performance and SEO.
+- **Elite Differentiators**: Built-in AI-like Diagnostic Engine and Command Navigation Palette (Cmd+K).
+- **Work Capacity Manager**: Integrated dashboard to manage project workload and public availability.
+- **Lead-Gen Analytics**: Specialized conversion funnel tracking from Technical Diagnostics to Hire Requests.
+- **Live Activity Feed**: Real-time event monitoring and relative time formatting.
+- **Performance Hardened**: Optimized for Lighthouse 80+ with skeleton loaders, `content-visibility`, and RAF-based mouse tracking.
+- **Interactive Testimonials**: Client feedback system with real-time updates and admin moderation.
+- **Responsive & Modern**: Clean, minimalist dark-mode design with smooth Framer Motion animations.
 
 ## 🛠️ Tech Stack
 
