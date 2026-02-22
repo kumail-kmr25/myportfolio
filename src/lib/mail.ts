@@ -168,3 +168,118 @@ export async function sendAutoReplyToClient(email: string, name: string) {
     console.error("Auto-reply mail utility error:", error);
   }
 }
+
+export async function sendHireNotification({
+  name,
+  email,
+  company,
+  selectedService,
+  budgetRange,
+  timeline,
+  projectType,
+  description,
+}: {
+  name: string;
+  email: string;
+  company?: string | null;
+  selectedService: string;
+  budgetRange: string;
+  timeline: string;
+  projectType: string;
+  description: string;
+}) {
+  if (!resend) {
+    console.warn("RESEND_API_KEY is not set. Email notification skipped.");
+    return;
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "Portfolio Hire <onboarding@resend.dev>",
+      to: process.env.CONTACT_EMAIL || "ka6307464@gmail.com",
+      subject: `🚀 New Project Inquiry: ${selectedService} from ${name}`,
+      replyTo: email,
+      html: `
+        <div style="font-family: sans-serif; padding: 20px; color: #333; line-height: 1.6;">
+          <h2 style="color: #000; border-bottom: 2px solid #eee; padding-bottom: 10px;">New Hire Request</h2>
+          
+          <div style="margin-bottom: 20px;">
+            <p style="margin: 5px 0;"><strong>Client Name:</strong> ${name}</p>
+            <p style="margin: 5px 0;"><strong>Client Email:</strong> ${email}</p>
+            ${company ? `<p style="margin: 5px 0;"><strong>Company:</strong> ${company}</p>` : ""}
+          </div>
+
+          <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <p style="margin: 5px 0;"><strong>Service Requested:</strong> ${selectedService}</p>
+            <p style="margin: 5px 0;"><strong>Project Type:</strong> ${projectType}</p>
+            <p style="margin: 5px 0;"><strong>Budget Range:</strong> ${budgetRange}</p>
+            <p style="margin: 5px 0;"><strong>Timeline:</strong> ${timeline}</p>
+          </div>
+
+          <div style="padding: 15px; border-left: 4px solid #10b981; background: #ecfdf5; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0 0 10px 0;"><strong>Project Description:</strong></p>
+            <p style="white-space: pre-wrap; margin: 0;">${description}</p>
+          </div>
+
+          <p style="margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 10px;">
+            Submitted via Portfolio "Hire Me" Flow at ${new Date().toLocaleString()}
+          </p>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Mail utility error (Hire Notification):", error);
+  }
+}
+
+export async function sendHireAutoReply(email: string, name: string) {
+  if (!resend) {
+    console.warn("RESEND_API_KEY is not set. Auto-reply skipped.");
+    return;
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "Kumail Kmr <onboarding@resend.dev>",
+      to: email,
+      subject: "Exciting! I've received your project request 🚀",
+      html: `
+        <div style="font-family: sans-serif; padding: 30px; color: #333; line-height: 1.8; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 12px;">
+          <h2 style="color: #000; font-size: 24px; margin-bottom: 20px;">Hello ${name},</h2>
+          
+          <p>Thank you for expressing interest in working with me! I've received your project details and I'm already getting excited about the possibilities.</p>
+          
+          <p>I take every hire request seriously. I'll review your requirements, budget, and timeline within the next <strong>24 hours</strong> and reach out to schedule a brief discovery call if it's a good fit.</p>
+          
+          <div style="margin: 30px 0; padding: 20px; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #10b981;">
+            <p style="margin: 0; color: #065f46; font-weight: 500;">
+              "Let's build something exceptional together."
+            </p>
+          </div>
+
+          <p>In the meantime, you can explore my previous work and case studies on my portfolio.</p>
+          
+          <p style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 14px; color: #666;">
+            Best Regards,<br/>
+            <strong>Kumail Kmr</strong><br/>
+            Full-Stack Developer & Technical Lead
+          </p>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend auto-reply error:", error);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Auto-reply mail utility error (Hire Auto-reply):", error);
+  }
+}

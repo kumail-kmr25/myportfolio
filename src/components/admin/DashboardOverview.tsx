@@ -13,6 +13,7 @@ interface OverviewProps {
     stats: {
         testimonials: number;
         messages: number;
+        hireRequests: number;
         projects: number;
         blogPosts: number;
     };
@@ -22,8 +23,9 @@ interface OverviewProps {
 export default function DashboardOverview({ stats, recentActivity }: OverviewProps) {
     const cards = [
         { label: "Total Endorsements", value: stats.testimonials, icon: Users, color: "blue" },
+        { label: "Hire Requests", value: stats.hireRequests, icon: Mail, color: "indigo" },
         { label: "Client Inquiries", value: stats.messages, icon: Mail, color: "purple" },
-        { label: "Portfolio Projects", value: stats.projects, icon: FolderPlus, color: "indigo" },
+        { label: "Portfolio Projects", value: stats.projects, icon: FolderPlus, color: "blue" },
         { label: "Insights Published", value: stats.blogPosts, icon: TrendingUp, color: "green" },
     ];
 
@@ -54,7 +56,7 @@ export default function DashboardOverview({ stats, recentActivity }: OverviewPro
                             <div className="flex-grow space-y-4">
                                 <div className="p-6 bg-white/5 rounded-3xl border border-white/5">
                                     <p className="text-gray-400 text-sm leading-relaxed">
-                                        Your professional portfolio is currently monitoring <span className="text-white font-bold">{stats.messages} inquiries</span>.
+                                        Your professional portfolio is currently monitoring <span className="text-white font-bold">{stats.hireRequests} hire requests</span> and <span className="text-white font-bold">{stats.messages} inquiries</span>.
                                         There are <span className="text-white font-bold">{stats.testimonials} testimonials</span> stored, with 100% database availability metrics.
                                     </p>
                                 </div>

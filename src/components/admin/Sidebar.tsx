@@ -12,7 +12,8 @@ import {
     Activity,
     LogOut,
     Menu,
-    X
+    X,
+    Briefcase
 } from "lucide-react";
 import { useState } from "react";
 
@@ -22,14 +23,16 @@ interface SidebarProps {
     onLogout: () => void;
     messageCount?: number;
     pendingFeaturesCount?: number;
+    newHireCount?: number;
 }
 
-export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCount, pendingFeaturesCount }: SidebarProps) {
+export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCount, pendingFeaturesCount, newHireCount }: SidebarProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     const menuItems = [
         { id: "overview", label: "Overview", icon: LayoutDashboard },
         { id: "messages", label: "Messages", icon: Mail, count: messageCount },
+        { id: "hire", label: "Hire Requests", icon: Briefcase, count: newHireCount },
         { id: "testimonials", label: "Testimonials", icon: MessageSquare },
         { id: "projects", label: "Projects", icon: FolderPlus },
         { id: "case-studies", label: "Case Studies", icon: BookOpen },

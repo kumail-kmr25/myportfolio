@@ -64,6 +64,9 @@ export const metadata: Metadata = {
   },
 };
 
+import { HireModalProvider } from "@/context/HireModalContext";
+import HireMeModal from "@/components/HireMeModal";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -97,7 +100,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${outfit.variable} antialiased`}
       >
-        {children}
+        <HireModalProvider>
+          {children}
+          <HireMeModal />
+        </HireModalProvider>
         <QuickNav />
       </body>
     </html>

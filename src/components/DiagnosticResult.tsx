@@ -18,6 +18,7 @@ interface DiagnosticResultProps {
         recommendedService: string;
         isMatch: boolean;
     };
+    onReset: () => void;
 }
 
 export default function DiagnosticResult({ result }: DiagnosticResultProps) {

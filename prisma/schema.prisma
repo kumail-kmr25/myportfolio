@@ -135,3 +135,19 @@ model DiagnosticLog {
   matchedPatternId String?  @db.ObjectId
   createdAt        DateTime @default(now())
 }
+
+model HireRequest {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  email           String
+  company         String?
+  description     String
+  selectedService String
+  budgetRange     String
+  timeline        String
+  projectType     String
+  source          String   @default("hire_me")
+  status          String   @default("new") // new / contacted / closed
+  createdAt       DateTime @default(now())
+}
+

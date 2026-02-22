@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Download } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useHireModal } from "@/context/HireModalContext";
 
 const roles = ["Full Stack Developer", "DevOps Engineer", "UI/UX Designer"];
 
@@ -13,6 +14,7 @@ export default function Hero() {
     const [text, setText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const { openModal } = useHireModal();
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
@@ -128,13 +130,19 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="flex flex-col md:flex-row gap-6 justify-center items-center"
                 >
-                    <Link href="#contact" prefetch={false} className="group relative px-10 py-5 bg-blue-600 text-white rounded-2xl font-bold text-sm tracking-widest uppercase transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-blue-500/20 overflow-hidden">
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            openModal();
+                        }}
+                        className="group relative px-10 py-5 bg-blue-600 text-white rounded-2xl font-bold text-sm tracking-widest uppercase transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-blue-500/20 overflow-hidden"
+                    >
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                         <span className="relative z-10 flex items-center gap-3">
                             Hire Me
                             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                         </span>
-                    </Link>
+                    </button>
 
                     <Link href="#projects" prefetch={false} className="group relative px-10 py-5 bg-white/[0.03] border border-white/[0.08] text-white rounded-2xl font-bold text-sm tracking-widest uppercase transition-all hover:bg-white/[0.06] hover:scale-[1.02] active:scale-[0.98] backdrop-blur-md">
                         <span className="flex items-center gap-3">

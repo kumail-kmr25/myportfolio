@@ -1,4 +1,3 @@
-/**/
 "use client";
 
 import { useState, useEffect } from "react";
@@ -13,6 +12,7 @@ import Sidebar from "@/components/admin/Sidebar";
 import DashboardOverview from "@/components/admin/DashboardOverview";
 import AdminTestimonials from "@/components/admin/AdminTestimonials";
 import AdminContact from "@/components/admin/AdminContact";
+import AdminHireRequests from "@/components/admin/AdminHireRequests";
 import AdminProjects from "@/components/admin/AdminProjects";
 import AdminBlog from "@/components/admin/AdminBlog";
 import AdminCaseStudies from "../../components/admin/AdminCaseStudies";
@@ -32,14 +32,14 @@ function AdminPageContent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [authError, setAuthError] = useState("");
-    const [activeTab, setActiveTab] = useState<"overview" | "messages" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "messages" | "hire" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics">("overview");
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
     useEffect(() => {
         const tab = searchParams.get("tab");
-        const validTabs = ["overview", "messages", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats", "diagnostics"];
+        const validTabs = ["overview", "messages", "hire", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats", "diagnostics"];
         if (tab && validTabs.includes(tab)) {
             setActiveTab(tab as any);
         }
@@ -58,6 +58,11 @@ function AdminPageContent() {
 
     const { data: messages, mutate: mutateMessages } = useSWR(
         isLoggedIn ? "/api/contact" : null,
+        fetcher
+    );
+
+    const { data: hireRequests, mutate: mutateHireRequests } = useSWR(
+        isLoggedIn ? "/api/admin/hire" : null,
         fetcher
     );
 
@@ -195,6 +200,34 @@ function AdminPageContent() {
         }
     };
 
+    const handleHireStatusUpdate = async (id: string, status: string) => {
+        try {
+            await fetch(`/api/admin/hire`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, status }),
+            });
+            mutateHireRequests();
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleHireDelete = async (id: string) => {
+        try {
+            const res = await fetch(`/api/admin/hire/${id}`, { method: "DELETE" });
+            if (res.ok) {
+                mutateHireRequests();
+            } else {
+                const data = await res.json().catch(() => ({}));
+                alert(`Failed to delete request: ${data.error || res.statusText}`);
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Network error. Please try again.");
+        }
+    };
+
     const handleAddProject = async (projectData: any) => {
         const res = await fetch("/api/projects", {
             method: "POST",
@@ -243,7 +276,6 @@ function AdminPageContent() {
         mutateBlogPosts();
     };
 
-    // New Handlers
     const handleCaseStudyAction = async () => {
         mutateCaseStudies();
     };
@@ -316,9 +348,6 @@ function AdminPageContent() {
                             </Link>
                         </div>
                     </form>
-
-                    <div className="flex justify-center mt-10 relative">
-                    </div>
                 </div>
             </div>
         );
@@ -326,25 +355,22 @@ function AdminPageContent() {
 
     return (
         <div className="min-h-screen bg-[#050505] flex">
-            {/* Sidebar Integration */}
             <Sidebar
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 onLogout={handleLogout}
                 messageCount={messages?.filter((m: any) => !m.replied).length}
+                newHireCount={hireRequests?.filter((h: any) => h.status === "new").length}
                 pendingFeaturesCount={featureRequests?.filter((f: any) => f.status === "pending").length}
             />
 
-            {/* Main Content Area */}
             <main className="flex-grow lg:ml-72 p-8 lg:p-16">
                 <div className="max-w-7xl mx-auto space-y-12">
-
-                    {/* Dynamic View Header */}
                     <div className="flex items-end justify-between border-b border-white/5 pb-12">
                         <div>
                             <p className="text-[10px] text-blue-400 font-black uppercase tracking-[0.3em] mb-3">Viewing System</p>
                             <h1 className="text-5xl font-black text-white capitalize tracking-tighter">
-                                {activeTab === 'overview' ? 'Dashboard' : activeTab}
+                                {activeTab === 'overview' ? 'Dashboard' : activeTab.replace('-', ' ')}
                             </h1>
                         </div>
                         <div className="flex flex-col md:flex-row md:items-center gap-4">
@@ -362,13 +388,13 @@ function AdminPageContent() {
                         </div>
                     </div>
 
-                    {/* Tab Switching Logic */}
                     <div className="min-h-[60vh]">
                         {activeTab === "overview" && (
                             <DashboardOverview
                                 stats={{
                                     testimonials: Array.isArray(allTestimonials) ? allTestimonials.length : 0,
                                     messages: Array.isArray(messages) ? messages.length : 0,
+                                    hireRequests: Array.isArray(hireRequests) ? hireRequests.length : 0,
                                     projects: Array.isArray(projects) ? projects.length : 0,
                                     blogPosts: Array.isArray(blogPosts) ? blogPosts.length : 0
                                 }}
@@ -381,6 +407,14 @@ function AdminPageContent() {
                                 messages={Array.isArray(messages) ? messages : []}
                                 onToggleReplied={handleToggleReplied}
                                 onDelete={handleMessageDelete}
+                            />
+                        )}
+
+                        {activeTab === "hire" && (
+                            <AdminHireRequests
+                                requests={Array.isArray(hireRequests) ? hireRequests : []}
+                                onUpdateStatus={handleHireStatusUpdate}
+                                onDelete={handleHireDelete}
                             />
                         )}
 
@@ -440,7 +474,6 @@ function AdminPageContent() {
                         )}
                     </div>
 
-                    {/* Footer Signature */}
                     <footer className="pt-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 opacity-40">
                         <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">
                             Kumail KMR Portfolio Engine v2.0

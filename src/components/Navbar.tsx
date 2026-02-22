@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useHireModal } from "@/context/HireModalContext";
 
 const navLinks = [
     { name: "About", href: "#about" },
@@ -19,6 +20,7 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState("");
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const { openModal } = useHireModal();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -92,7 +94,13 @@ export default function Navbar() {
                         return (
                             <Link
                                 key={link.name}
-                                href={link.href}
+                                href={link.isCTA ? "#" : link.href}
+                                onClick={(e) => {
+                                    if (link.isCTA) {
+                                        e.preventDefault();
+                                        openModal();
+                                    }
+                                }}
                                 onMouseEnter={() => setHoveredIndex(index)}
                                 onMouseLeave={() => setHoveredIndex(null)}
                                 className={`px-5 py-2 rounded-full text-[11px] font-medium tracking-[0.05em] transition-all relative z-10 hover:-translate-y-0.5
@@ -148,9 +156,15 @@ export default function Navbar() {
                                     transition={{ delay: i * 0.1 }}
                                 >
                                     <Link
-                                        href={link.href}
+                                        href={link.isCTA ? "#" : link.href}
                                         className={`text-2xl font-bold tracking-tight ${link.isCTA ? "text-blue-500 pt-4 border-t border-white/5 w-full block" : "text-gray-300"}`}
-                                        onClick={() => setIsOpen(false)}
+                                        onClick={(e) => {
+                                            if (link.isCTA) {
+                                                e.preventDefault();
+                                                openModal();
+                                            }
+                                            setIsOpen(false);
+                                        }}
                                     >
                                         {link.name}
                                     </Link>
