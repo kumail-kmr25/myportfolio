@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { BarChart3, Save, RefreshCw, Loader2, Info } from "lucide-react";
 
-interface SiteStats {
+export interface SiteStats {
     totalProjects: number;
     bugsFixed: number;
     caseStudiesWritten: number;

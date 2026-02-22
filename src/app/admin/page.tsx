@@ -18,7 +18,7 @@ import AdminProjects from "@/components/admin/AdminProjects";
 import AdminBlog from "@/components/admin/AdminBlog";
 import AdminCaseStudies from "../../components/admin/AdminCaseStudies";
 import AdminFeatureRequests from "../../components/admin/AdminFeatureRequests";
-import AdminStats from "../../components/admin/AdminStats";
+import AdminStats, { type SiteStats } from "@/components/admin/AdminStats";
 import AdminDiagnostics from "@/components/admin/AdminDiagnostics";
 import AdminCapacityManager from "@/components/admin/AdminCapacityManager";
 import AdminAnalytics from "@/components/admin/AdminAnalytics";
@@ -28,6 +28,14 @@ const fetcher = async (url: string) => {
     if (!res.ok) throw new Error("Fetch failed");
     return res.json();
 };
+
+interface AdminTestimonial { id: string; name: string; email: string; company?: string | null; relationship_type: string; intervention_type: string; message: string; rating: number; about_delivery_lead: string; approved: boolean; created_at: string; }
+interface AdminProject { id: string; title: string; description: string; tags: string[]; image: string; demo: string; deployment?: string | null; github: string; beforeImageUrl?: string | null; afterImageUrl?: string | null; improvementDetails?: string | null; metrics?: string[]; }
+interface AdminContactMessage { id: string; name: string; email: string; message: string; replied: boolean; created_at: string; inquiryType: string; company?: string | null; serviceRequired: string; budgetRange?: string | null; timeline?: string | null; }
+interface AdminHireRequest { id: string; name: string; email: string; company: string | null; description: string; selectedService: string; budgetRange: string; timeline: string; projectType: string; status: string; createdAt: string; }
+interface AdminBlogPost { id: string; title: string; excerpt: string; content: string; category: string; readTime: string; published: boolean; created_at: string; }
+interface AdminDiagnosticLog { id: string; description: string; techStack?: string; createdAt: string; matchedPatternId?: string; environment: string; errorMessage?: string; }
+interface AdminStats extends SiteStats { diagRuns: number; leadGenTotal: number; hireRequests: number; patternsMatched: number; }
 
 function AdminPageContent() {
     const [email, setEmail] = useState("");
@@ -49,57 +57,57 @@ function AdminPageContent() {
     }, [searchParams]);
 
     // Data Fetching
-    const { data: allTestimonials, mutate: mutateTestimonials } = useSWR(
+    const { data: allTestimonials, mutate: mutateTestimonials } = useSWR<AdminTestimonial[]>(
         isLoggedIn ? "/api/admin/testimonials" : null,
         fetcher
     );
 
-    const { data: projects, mutate: mutateProjects } = useSWR(
+    const { data: projects, mutate: mutateProjects } = useSWR<AdminProject[]>(
         isLoggedIn ? "/api/projects" : null,
         fetcher
     );
 
-    const { data: messages, mutate: mutateMessages } = useSWR(
+    const { data: messages, mutate: mutateMessages } = useSWR<AdminContactMessage[]>(
         isLoggedIn ? "/api/contact" : null,
         fetcher
     );
 
-    const { data: hireRequests, mutate: mutateHireRequests } = useSWR(
+    const { data: hireRequests, mutate: mutateHireRequests } = useSWR<AdminHireRequest[]>(
         isLoggedIn ? "/api/admin/hire" : null,
         fetcher
     );
 
-    const { data: blogPosts, mutate: mutateBlogPosts } = useSWR(
+    const { data: blogPosts, mutate: mutateBlogPosts } = useSWR<AdminBlogPost[]>(
         isLoggedIn ? "/api/blog" : null,
         fetcher
     );
 
-    const { data: caseStudies, mutate: mutateCaseStudies } = useSWR(
+    const { data: caseStudies, mutate: mutateCaseStudies } = useSWR<any[]>(
         isLoggedIn ? "/api/admin/case-studies" : null,
         fetcher
     );
 
-    const { data: featureRequests, mutate: mutateFeatureRequests } = useSWR(
+    const { data: featureRequests, mutate: mutateFeatureRequests } = useSWR<any[]>(
         isLoggedIn ? "/api/admin/feature-requests" : null,
         fetcher
     );
 
-    const { data: statsData, mutate: mutateStats } = useSWR(
+    const { data: statsData, mutate: mutateStats } = useSWR<AdminStats>(
         isLoggedIn ? "/api/stats" : null,
         fetcher
     );
 
-    const { data: diagPatterns, mutate: mutateDiagPatterns } = useSWR(
+    const { data: diagPatterns, mutate: mutateDiagPatterns } = useSWR<any[]>(
         isLoggedIn ? "/api/admin/diagnostic-patterns" : null,
         fetcher
     );
 
-    const { data: diagLogs, mutate: mutateDiagLogs } = useSWR(
+    const { data: diagLogs, mutate: mutateDiagLogs } = useSWR<AdminDiagnosticLog[]>(
         isLoggedIn ? "/api/admin/diagnostic-logs" : null,
         fetcher
     );
 
-    const { data: availabilityData, mutate: mutateAvailability } = useSWR(
+    const { data: availabilityData, mutate: mutateAvailability } = useSWR<any>(
         isLoggedIn ? "/api/availability" : null,
         fetcher
     );
@@ -385,6 +393,7 @@ function AdminPageContent() {
                 messageCount={messages?.filter((m: any) => !m.replied).length}
                 newHireCount={hireRequests?.filter((h: any) => h.status === "new").length}
                 pendingFeaturesCount={featureRequests?.filter((f: any) => f.status === "pending").length}
+                newLogsCount={diagLogs?.filter((l: any) => !l.matchedPatternId).length}
             />
 
             <main className="flex-grow lg:ml-72 p-8 lg:p-16">
@@ -401,13 +410,7 @@ function AdminPageContent() {
                                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                                 Live System Analytics
                             </div>
-                            <Link
-                                href="/"
-                                className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-2xl border border-white/10 text-[10px] font-black uppercase tracking-widest transition-all"
-                            >
-                                <LogOut size={14} className="rotate-180" />
-                                View Live Site
-                            </Link>
+                            <AdminStats stats={(statsData as any) || null} onUpdate={mutateStats} />
                         </div>
                     </div>
 
@@ -535,7 +538,7 @@ function AdminPageContent() {
 
                             {activeTab === "stats" && (
                                 <AdminStats
-                                    stats={statsData}
+                                    stats={statsData || null}
                                     onUpdate={handleStatsUpdate}
                                 />
                             )}

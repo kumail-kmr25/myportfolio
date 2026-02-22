@@ -25,9 +25,10 @@ interface SidebarProps {
     messageCount?: number;
     pendingFeaturesCount?: number;
     newHireCount?: number;
+    newLogsCount?: number;
 }
 
-export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCount, pendingFeaturesCount, newHireCount }: SidebarProps) {
+export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCount, pendingFeaturesCount, newHireCount, newLogsCount }: SidebarProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     const menuItems = [
@@ -39,7 +40,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
         { id: "case-studies", label: "Case Studies", icon: BookOpen },
         { id: "feature-requests", label: "Feature Requests", icon: CheckSquare, count: pendingFeaturesCount },
         { id: "stats", label: "Site Stats", icon: BarChart3 },
-        { id: "diagnostics", label: "Diagnostics", icon: Activity },
+        { id: "diagnostics", label: "Diagnostics", icon: Activity, count: newLogsCount },
         { id: "capacity", label: "Work Capacity", icon: Settings },
         { id: "blog", label: "Blog Posts", icon: PenLine },
     ];

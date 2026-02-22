@@ -87,8 +87,8 @@ export default function HireMeModal() {
         trigger,
         formState: { errors },
         reset
-    } = useForm<any>({
-        resolver: zodResolver(hireSchema),
+    } = useForm<HireFormData>({
+        resolver: zodResolver(hireSchema) as any,
         defaultValues: {
             name: "",
             email: "",
@@ -105,7 +105,7 @@ export default function HireMeModal() {
     const selectedService = watch("selectedService");
     const formData = watch();
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: HireFormData) => {
         setIsSubmitting(true);
         setError(null);
         try {
