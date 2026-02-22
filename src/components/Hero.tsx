@@ -12,16 +12,28 @@ export default function Hero() {
     const [roleIndex, setRoleIndex] = useState(0);
     const [text, setText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
-        // Delay typing start to prioritize critical rendering path
+        const handleMouseMove = (e: MouseEvent) => {
+            setMousePos({
+                x: (e.clientX / window.innerWidth - 0.5) * 20,
+                y: (e.clientY / window.innerHeight - 0.5) * 20,
+            });
+        };
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, []);
+
+    useEffect(() => {
+        // ... previous typing logic
         const startDelay = setTimeout(() => {
             const currentRole = roles[roleIndex];
-            const typeSpeed = isDeleting ? 40 : 100; // Slightly faster deletions, regular typing
+            const typeSpeed = isDeleting ? 40 : 100;
 
             const timer = setTimeout(() => {
                 if (!isDeleting && text === currentRole) {
-                    setTimeout(() => setIsDeleting(true), 2000); // Wait longer on full text
+                    setTimeout(() => setIsDeleting(true), 2000);
                 } else if (isDeleting && text === "") {
                     setIsDeleting(false);
                     setRoleIndex((prev) => (prev + 1) % roles.length);
@@ -31,45 +43,81 @@ export default function Hero() {
             }, typeSpeed);
 
             return () => clearTimeout(timer);
-        }, text === "" && !isDeleting ? 500 : 0); // 500ms initial delay
+        }, text === "" && !isDeleting ? 500 : 0);
 
         return () => clearTimeout(startDelay);
     }, [text, isDeleting, roleIndex]);
 
     return (
         <section id="home" aria-label="Hero section" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] selection:bg-purple-500/30">
-            {/* Dynamic Background */}
-            <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/50 to-[#050505] z-10" />
-                <div className="absolute top-0 left-0 right-0 h-[500px] bg-purple-600/20 blur-[150px] rounded-full mix-blend-screen opacity-30 animate-pulse" />
-                <div className="absolute bottom-0 right-0 h-[500px] w-[500px] bg-blue-600/20 blur-[150px] rounded-full mix-blend-screen opacity-30 animate-pulse delay-1000" />
-                <Image
-                    src="/hero_background.svg"
-                    alt=""
-                    fill
-                    priority
-                    aria-hidden="true"
-                    className="object-cover object-center opacity-20 pointer-events-none"
-                    fetchPriority="high"
+            {/* Dynamic Technical Grid Background */}
+            <div className="absolute inset-0 z-0 overflow-hidden">
+                <div
+                    className="absolute inset-0 opacity-[0.15]"
+                    style={{
+                        backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0)`,
+                        backgroundSize: '40px 40px',
+                        transform: `translate(${mousePos.x * 0.2}px, ${mousePos.y * 0.2}px)`
+                    }}
                 />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/80 to-[#050505] z-10" />
+
+                {/* Elite Light Sources */}
+                <motion.div
+                    animate={{
+                        scale: [1, 1.2, 1],
+                        opacity: [0.3, 0.4, 0.3]
+                    }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-[-10%] left-[-10%] h-[600px] w-[600px] bg-blue-600/20 blur-[120px] rounded-full mix-blend-screen"
+                />
+                <motion.div
+                    animate={{
+                        scale: [1.2, 1, 1.2],
+                        opacity: [0.2, 0.3, 0.2]
+                    }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute bottom-[-10%] right-[-10%] h-[600px] w-[600px] bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen"
+                />
+
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-[0.03] pointer-events-none">
+                    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+                                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="white" strokeWidth="0.5" />
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#grid)" />
+                    </svg>
+                </div>
             </div>
 
             <div className="section-container relative z-10 text-center">
                 <motion.div
+                    style={{
+                        x: mousePos.x * 0.5,
+                        y: mousePos.y * 0.5,
+                    }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <span className="inline-block py-1 px-3 rounded-full bg-white/5 border border-white/10 text-sm text-purple-400 mb-6 backdrop-blur-md">
+                    <span className="inline-block py-2 px-4 rounded-full bg-white/[0.03] border border-white/[0.08] text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 mb-8 backdrop-blur-md">
                         Available for Freelance & Hire
                     </span>
-                    <h1 className="text-5xl md:text-8xl font-bold font-display text-white mb-6 tracking-tighter">
+                    <h1 className="text-6xl md:text-[10rem] font-bold font-display text-white mb-8 tracking-[-0.04em] leading-[0.9]">
                         Kumail Kmr
                     </h1>
-                    <div className="h-10 mb-8 md:mb-10">
-                        <span className="text-xl md:text-3xl text-gray-400 font-light">
-                            I am a <span className="text-white font-medium">{text}</span>
-                            <span className="animate-pulse">|</span>
+                    <div className="h-10 mb-12">
+                        <span className="text-xl md:text-2xl text-gray-500 font-medium uppercase tracking-[0.2em]">
+                            I am a <span className="text-white">{text}</span>
+                            <motion.span
+                                animate={{ opacity: [1, 0] }}
+                                transition={{ duration: 0.8, repeat: Infinity }}
+                                className="text-blue-500 ml-1"
+                            >
+                                _
+                            </motion.span>
                         </span>
                     </div>
                 </motion.div>
@@ -78,19 +126,19 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="flex flex-col md:flex-row gap-4 justify-center items-center"
+                    className="flex flex-col md:flex-row gap-6 justify-center items-center"
                 >
-                    <Link href="#contact" prefetch={false} aria-label="Hire me - go to contact section" className="relative inline-flex group items-center justify-center px-8 py-4 bg-white text-black font-semibold rounded-full overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-105">
-                        <span className="z-10 flex items-center">
+                    <Link href="#contact" prefetch={false} className="group relative px-10 py-5 bg-blue-600 text-white rounded-2xl font-bold text-sm tracking-widest uppercase transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-blue-500/20 overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="relative z-10 flex items-center gap-3">
                             Hire Me
-                            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity" />
                     </Link>
 
-                    <Link href="#projects" prefetch={false} aria-label="View my work - go to projects section" className="inline-flex items-center justify-center px-8 py-4 bg-white/5 border border-white/10 text-white font-semibold rounded-full hover:bg-white/10 transition-all duration-300 backdrop-blur-md hover:scale-105">
-                        <span className="flex items-center">
-                            View Work
+                    <Link href="#projects" prefetch={false} className="group relative px-10 py-5 bg-white/[0.03] border border-white/[0.08] text-white rounded-2xl font-bold text-sm tracking-widest uppercase transition-all hover:bg-white/[0.06] hover:scale-[1.02] active:scale-[0.98] backdrop-blur-md">
+                        <span className="flex items-center gap-3">
+                            View Projects
                         </span>
                     </Link>
                 </motion.div>
@@ -99,11 +147,13 @@ export default function Hero() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, delay: 1 }}
-                    className="absolute bottom-10 left-0 right-0 mx-auto animate-bounce"
+                    className="absolute bottom-10 left-0 right-0 mx-auto"
                 >
-                    <div className="w-6 h-10 border-2 border-white/20 rounded-full mx-auto flex justify-center p-1">
-                        <div className="w-1 h-3 bg-white/50 rounded-full" />
-                    </div>
+                    <motion.div
+                        animate={{ y: [0, 10, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-px h-16 bg-gradient-to-b from-blue-500 to-transparent mx-auto"
+                    />
                 </motion.div>
             </div>
         </section>

@@ -12,7 +12,8 @@ export async function PATCH(
 
         const { id } = await params;
         const body = await req.json();
-        const pattern = await prisma.issuePattern.update({
+        const db = prisma as any;
+        const pattern = await db.issuePattern.update({
             where: { id },
             data: body
         });
@@ -31,7 +32,8 @@ export async function DELETE(
         if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
         const { id } = await params;
-        await prisma.issuePattern.delete({
+        const db = prisma as any;
+        await db.issuePattern.delete({
             where: { id }
         });
         return NextResponse.json({ success: true });
