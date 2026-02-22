@@ -28,8 +28,13 @@ h6 {
     @apply bg-black/60 backdrop-blur-xl border-b border-white/[0.08];
   }
 
+  .section {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+  }
+
   .section-container {
-    @apply max-w-6xl mx-auto px-6 py-4 md:py-8 lg:py-10;
+    @apply max-w-6xl mx-auto px-6;
   }
 
   .section-title {
@@ -63,5 +68,21 @@ h6 {
   select.input-field option {
     background-color: #0a0a0a;
     color: #ffffff;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-white/20;
   }
 }

@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const navLinks = [
     { name: "About", href: "#about" },
@@ -21,6 +24,9 @@ export default function Navbar() {
     const [activeSection, setActiveSection] = useState("");
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const { openModal } = useHireModal();
+    const { data: availability } = useSWR("/api/availability", fetcher);
+    const status = availability?.status || "Available";
+    const isAvailable = status === "Available";
 
     useEffect(() => {
         const handleScroll = () => {
@@ -78,10 +84,10 @@ export default function Navbar() {
                             <span className="text-lg font-bold leading-tight tracking-tight uppercase">Kumail KMR</span>
                             <div className="flex items-center gap-2">
                                 <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isAvailable ? 'bg-green-400' : 'bg-red-400'} opacity-75`}></span>
+                                    <span className={`relative inline-flex rounded-full h-2 w-2 ${isAvailable ? 'bg-green-500' : 'bg-red-500'}`}></span>
                                 </span>
-                                <span className="text-[10px] text-gray-500 font-black uppercase tracking-[0.3em]">Available</span>
+                                <span className="text-[10px] text-gray-500 font-black uppercase tracking-[0.3em]">{status}</span>
                             </div>
                         </div>
                     </Link>

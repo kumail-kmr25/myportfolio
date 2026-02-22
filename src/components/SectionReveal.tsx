@@ -20,7 +20,7 @@ export default function SectionReveal({ children, width = "full", delay = 0 }: S
                 delay,
                 ease: [0.21, 0.47, 0.32, 0.98]
             }}
-            className={width === "container" ? "section-container" : "w-full"}
+            className={`${width === "container" ? "section-container" : "w-full"} will-change-[transform,opacity]`}
         >
             {children}
         </motion.div>

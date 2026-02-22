@@ -6,8 +6,12 @@ import {
     Mail,
     FolderPlus,
     TrendingUp,
-    Clock
+    Clock,
+    Zap,
+    Briefcase
 } from "lucide-react";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 interface OverviewProps {
     stats: {
@@ -18,9 +22,22 @@ interface OverviewProps {
         blogPosts: number;
     };
     recentActivity: any[];
+    availabilityStatus: string;
+    onUpdateAvailability: (status: string) => Promise<void>;
 }
 
-export default function DashboardOverview({ stats, recentActivity }: OverviewProps) {
+export default function DashboardOverview({ stats, recentActivity, availabilityStatus, onUpdateAvailability }: OverviewProps) {
+    const [isUpdating, setIsUpdating] = useState(false);
+
+    const handleToggle = async () => {
+        setIsUpdating(true);
+        const nextStatus = availabilityStatus === "Available" ? "Busy" : "Available";
+        try {
+            await onUpdateAvailability(nextStatus);
+        } finally {
+            setIsUpdating(false);
+        }
+    };
     const cards = [
         { label: "Total Endorsements", value: stats.testimonials, icon: Users, color: "blue" },
         { label: "Hire Requests", value: stats.hireRequests, icon: Mail, color: "indigo" },
@@ -105,6 +122,26 @@ export default function DashboardOverview({ stats, recentActivity }: OverviewPro
                             <div className="flex justify-between text-xs py-3 border-b border-white/5">
                                 <span className="text-gray-500">Environment</span>
                                 <span className="text-blue-400 font-medium">Production</span>
+                            </div>
+                            <div className="pt-6">
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-4">Availability Status</p>
+                                <button
+                                    onClick={handleToggle}
+                                    disabled={isUpdating}
+                                    className={`w-full p-4 rounded-2xl border transition-all flex items-center justify-between group/btn ${availabilityStatus === "Available"
+                                        ? "bg-green-500/10 border-green-500/20 text-green-500 hover:bg-green-500 hover:text-white"
+                                        : "bg-red-500/10 border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white"
+                                        }`}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        {isUpdating ? <Loader2 size={16} className="animate-spin" /> : <Briefcase size={16} />}
+                                        <span className="text-xs font-bold uppercase tracking-widest">{availabilityStatus}</span>
+                                    </div>
+                                    <div className={`w-8 h-4 rounded-full relative transition-colors ${availabilityStatus === "Available" ? "bg-green-500/40" : "bg-red-500/40"}`}>
+                                        <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${availabilityStatus === "Available" ? "left-5" : "left-1"}`} />
+                                    </div>
+                                </button>
+                                <p className="text-[9px] text-gray-600 mt-3 text-center italic">Click to toggle your public availability badge.</p>
                             </div>
                         </div>
                     </div>

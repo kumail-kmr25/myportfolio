@@ -67,19 +67,19 @@ export default function Hero() {
                 {/* Elite Light Sources */}
                 <motion.div
                     animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.3, 0.4, 0.3]
-                    }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-[-10%] left-[-10%] h-[600px] w-[600px] bg-blue-600/20 blur-[120px] rounded-full mix-blend-screen"
-                />
-                <motion.div
-                    animate={{
-                        scale: [1.2, 1, 1.2],
+                        scale: [1, 1.1, 1],
                         opacity: [0.2, 0.3, 0.2]
                     }}
                     transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute bottom-[-10%] right-[-10%] h-[600px] w-[600px] bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen"
+                    className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] bg-blue-600/10 blur-[60px] rounded-full mix-blend-screen"
+                />
+                <motion.div
+                    animate={{
+                        scale: [1.1, 1, 1.1],
+                        opacity: [0.15, 0.2, 0.15]
+                    }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute bottom-[-10%] right-[-10%] h-[500px] w-[500px] bg-purple-600/10 blur-[60px] rounded-full mix-blend-screen"
                 />
 
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-[0.03] pointer-events-none">

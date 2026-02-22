@@ -66,6 +66,7 @@ export const metadata: Metadata = {
 
 import { HireModalProvider } from "@/context/HireModalContext";
 import HireMeModal from "@/components/HireMeModal";
+import CommandPalette from "@/components/CommandPalette";
 
 export default function RootLayout({
   children,
@@ -103,6 +104,7 @@ export default function RootLayout({
         <HireModalProvider>
           {children}
           <HireMeModal />
+          <CommandPalette />
         </HireModalProvider>
         <QuickNav />
       </body>

@@ -96,6 +96,11 @@ function AdminPageContent() {
         fetcher
     );
 
+    const { data: availabilityData, mutate: mutateAvailability } = useSWR(
+        isLoggedIn ? "/api/availability" : null,
+        fetcher
+    );
+
     const checkSession = async () => {
         try {
             const res = await fetch("/api/contact");
@@ -293,6 +298,21 @@ function AdminPageContent() {
         mutateDiagLogs();
     };
 
+    const handleUpdateAvailability = async (status: string) => {
+        try {
+            const res = await fetch("/api/admin/availability", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status })
+            });
+            if (res.ok) {
+                mutateAvailability();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     if (!isLoggedIn) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[#050505] p-6">
@@ -399,6 +419,8 @@ function AdminPageContent() {
                                     blogPosts: Array.isArray(blogPosts) ? blogPosts.length : 0
                                 }}
                                 recentActivity={[]}
+                                availabilityStatus={availabilityData?.status || "Available"}
+                                onUpdateAvailability={handleUpdateAvailability}
                             />
                         )}
 

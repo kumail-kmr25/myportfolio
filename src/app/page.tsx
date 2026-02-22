@@ -5,19 +5,19 @@ import ClientShell from "@/components/ClientShell";
 const Navbar = dynamic(() => import("@/components/Navbar"), { ssr: true });
 
 // Dynamic imports for below-the-fold components to improve TBT and initial load performance
-const Skills = dynamic(() => import("@/components/Skills"), { ssr: true });
-const Services = dynamic(() => import("@/components/Services"), { ssr: true });
-const StatsDashboard = dynamic(() => import("@/components/StatsDashboard"), { ssr: true });
-const Projects = dynamic(() => import("@/components/Projects"), { ssr: true });
-const CaseStudies = dynamic(() => import("@/components/CaseStudies"), { ssr: true });
-const Testimonials = dynamic(() => import("@/components/Testimonials"), { ssr: true });
-const FeatureSuggestion = dynamic(() => import("@/components/FeatureSuggestion"), { ssr: true });
-const DiagnosticTool = dynamic(() => import("@/components/DiagnosticTool"), { ssr: true });
-const Blog = dynamic(() => import("@/components/Blog"), { ssr: true });
-const About = dynamic(() => import("@/components/About"), { ssr: true });
-const HireMeCTA = dynamic(() => import("@/components/HireMeCTA"), { ssr: true });
-const Contact = dynamic(() => import("@/components/Contact"), { ssr: true });
-const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
+const Skills = dynamic(() => import("@/components/Skills"), { ssr: false });
+const Services = dynamic(() => import("@/components/Services"), { ssr: false });
+const StatsDashboard = dynamic(() => import("@/components/StatsDashboard"), { ssr: false });
+const Projects = dynamic(() => import("@/components/Projects"), { ssr: false });
+const CaseStudies = dynamic(() => import("@/components/CaseStudies"), { ssr: false });
+const Testimonials = dynamic(() => import("@/components/Testimonials"), { ssr: false });
+const FeatureSuggestion = dynamic(() => import("@/components/FeatureSuggestion"), { ssr: false });
+const DiagnosticTool = dynamic(() => import("@/components/DiagnosticTool"), { ssr: false });
+const Blog = dynamic(() => import("@/components/Blog"), { ssr: false });
+const About = dynamic(() => import("@/components/About"), { ssr: false });
+const HireMeCTA = dynamic(() => import("@/components/HireMeCTA"), { ssr: false });
+const Contact = dynamic(() => import("@/components/Contact"), { ssr: false });
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
 
 import SectionReveal from "@/components/SectionReveal";
 
