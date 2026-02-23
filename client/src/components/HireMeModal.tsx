@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     X,
@@ -13,15 +13,17 @@ import {
     Sparkles,
     Send,
     ArrowRight,
-    AlertCircle
+    AlertCircle,
+    ArrowLeftRight,
+    Activity
 } from "lucide-react";
 import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then(res => res.json());
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { hireSchema, type HireFormData } from "@portfolio/shared";
 import { useHireModal } from "@/context/HireModalContext";
+
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 type Step = "services" | "details" | "vision" | "contact" | "success";
 
