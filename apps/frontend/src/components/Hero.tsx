@@ -56,7 +56,7 @@ export default function Hero() {
     }, [text, isDeleting, roleIndex]);
 
     return (
-        <section id="home" aria-label="Hero section" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] selection:bg-purple-500/30 pt-40 md:pt-0">
+        <section id="home" aria-label="Hero section" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] selection:bg-purple-500/30 pt-48">
             {/* Dynamic Technical Grid Background */}
             <div className="absolute inset-0 z-0 overflow-hidden">
                 <div
@@ -109,7 +109,7 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="flex flex-col items-center gap-4 mb-8 mt-40 md:mt-0">
+                    <div className="flex flex-col items-center gap-4 mb-8 mt-40">
                         <span className="inline-block py-2 px-4 rounded-full bg-white/[0.03] border border-white/[0.08] text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 backdrop-blur-md">
                             Expert Technical Intervention
                         </span>
