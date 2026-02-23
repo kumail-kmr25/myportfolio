@@ -19,7 +19,7 @@ const skills = [
 ];
 
 // Duplicate for infinite scroll effect
-const allSkills = [...skills, ...skills, ...skills];
+const allSkills = [...skills, ...skills];
 
 export default function Skills() {
     return (

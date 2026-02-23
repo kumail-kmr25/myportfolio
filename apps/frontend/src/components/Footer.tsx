@@ -1,12 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Twitter, Linkedin, Instagram, ArrowUp, ShieldCheck } from "lucide-react";
+import { Github, Twitter, Linkedin, Instagram, ShieldCheck } from "lucide-react";
 
 export default function Footer() {
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
+
 
     return (
         <footer className="bg-[#050505] border-t border-white/10 py-12 relative">
@@ -46,14 +44,7 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* Back to Top Button */}
-            <button
-                onClick={scrollToTop}
-                className="absolute bottom-8 right-6 md:right-12 p-3 bg-white/10 hover:bg-white/20 rounded-full border border-white/10 transition-all hover:scale-110 group"
-                aria-label="Back to top"
-            >
-                <ArrowUp className="w-5 h-5 text-white group-hover:-translate-y-1 transition-transform" />
-            </button>
+
         </footer>
     );
 }
