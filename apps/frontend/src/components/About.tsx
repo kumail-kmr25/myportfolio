@@ -28,7 +28,7 @@ export default function About() {
 
                                 {/* Professional Badge */}
                                 <div className="absolute -bottom-2 -right-2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-2xl transform rotate-3 ring-4 ring-[#050505]">
-                                    2023 Starter
+                                    Technical Lead
                                 </div>
                             </div>
                         </div>
