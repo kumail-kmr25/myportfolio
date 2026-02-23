@@ -27,7 +27,7 @@ export const PATCH = async (req: Request, res: Response) => {
             },
         });
 
-        return res.status(400).json(stats);
+        return res.status(200).json(stats);
     } catch (error) {
         if (error instanceof Error && error.name === "ZodError") {
             return res.status(400).json({ error: (error as any).format() });

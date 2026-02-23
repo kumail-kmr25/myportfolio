@@ -28,7 +28,7 @@ export const GET = async (req: Request, res: Response) => {
             bugsFixed: siteStats?.bugsFixed || 0,
             caseStudiesWritten: caseStudyCount,
             featureRequestsCompleted: completedFeaturesCount,
-            yearsLearning: siteStats?.yearsLearning || 1,
+            yearsLearning: Math.max(siteStats?.yearsLearning || 0, 3),
             deploymentCount: siteStats?.deploymentCount || 0,
             diagRuns,
             leadGenTotal,
