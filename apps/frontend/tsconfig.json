@@ -26,9 +26,6 @@
       "@/*": [
         "./src/*"
       ],
-      "@portfolio/shared": [
-        "../../packages/shared/src/index"
-      ]
     }
   },
   "include": [
