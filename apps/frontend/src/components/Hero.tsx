@@ -109,7 +109,7 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="flex flex-col items-center gap-4 mb-8">
+                    <div className="flex flex-col items-center gap-4 mb-8 mt-24 md:mt-0">
                         <span className="inline-block py-2 px-4 rounded-full bg-white/[0.03] border border-white/[0.08] text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 backdrop-blur-md">
                             Expert Technical Intervention
                         </span>
