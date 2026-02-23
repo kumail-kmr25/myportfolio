@@ -32,10 +32,7 @@ export const POST = async (req: Request, res: Response) => {
         // Validation
         const result = contactSchema.safeParse(body);
         if (!result.success) {
-            return new Response(JSON.stringify({ success: false, error: "Validation failed", details: result.error.format() }), {
-                status: 400,
-                headers: { "Content-Type": "application/json" },
-            });
+            return res.status(400).json({ success: false, error: "Validation failed", details: result.error.format() });
         }
 
         const {
@@ -93,10 +90,7 @@ export const POST = async (req: Request, res: Response) => {
         return res.status(200).json({ success: true, message: "Your message has been sent successfully!" });
     } catch (error: any) {
         console.error("Contact API error:", error);
-        return new Response(JSON.stringify({ success: false, error: error.message || "Internal server error. Please try again later." }), {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-        });
+        return res.status(500).json({ success: false, error: error.message || "Internal server error. Please try again later." });
     }
 }
 

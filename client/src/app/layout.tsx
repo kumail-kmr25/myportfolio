@@ -1,7 +1,9 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import QuickNav from "@/components/QuickNav";
+import { HireModalProvider } from "@/context/HireModalContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -64,10 +66,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { HireModalProvider } from "@/context/HireModalContext";
-import HireMeModal from "@/components/HireMeModal";
-import CommandPalette from "@/components/CommandPalette";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -103,8 +101,6 @@ export default function RootLayout({
       >
         <HireModalProvider>
           {children}
-          <HireMeModal />
-          <CommandPalette />
         </HireModalProvider>
         <QuickNav />
       </body>

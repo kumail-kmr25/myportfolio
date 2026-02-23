@@ -4,13 +4,13 @@ import { prisma } from '@portfolio/database';
 
 export const GET = async (req: Request, res: Response) => {
     try {
-        const db = prisma as any;
-        const caseStudies = await db.caseStudy.findMany({
+        const caseStudies = await prisma.caseStudy.findMany({
             where: { isPublished: true },
             orderBy: { created_at: "desc" },
         });
-        return res.status(500).json(caseStudies);
+        return res.json(caseStudies);
     } catch (error) {
-        return res.json({ error: "Failed to fetch" });
+        console.error("Error fetching case studies:", error);
+        return res.status(500).json({ error: "Failed to fetch" });
     }
 }

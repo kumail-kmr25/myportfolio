@@ -5,15 +5,28 @@ import { projectSchema } from "@portfolio/shared";
 
 export const GET = async (req: Request, res: Response) => {
     try {
+        console.log("[API] Fetching projects...");
         const projects = await prisma.project.findMany({
             orderBy: {
                 created_at: "desc",
             },
         });
+        console.log(`[API] Successfully fetched ${projects.length} projects`);
         return res.json(projects);
     } catch (error) {
-        console.error("Error fetching projects:", error);
-        return res.status(500).json({ error: "Failed to fetch projects" });
+        console.error("[API] Error fetching projects:", error);
+        if (error instanceof Error) {
+            console.error("[API] Error details:", {
+                message: error.message,
+                stack: error.stack,
+                name: error.name
+            });
+        }
+        return res.status(500).json({
+            error: "Failed to fetch projects",
+            details: error instanceof Error ? error.message : "Unknown error",
+            hint: "Check if MongoDB is running and your connection string in .env is correct."
+        });
     }
 }
 

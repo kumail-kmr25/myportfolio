@@ -1,6 +1,10 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
+import dynamic from "next/dynamic";
+
+const HireMeModal = dynamic(() => import("@/components/HireMeModal"), { ssr: false });
+const CommandPalette = dynamic(() => import("@/components/CommandPalette"), { ssr: false });
 
 interface HireModalContextType {
     isOpen: boolean;
@@ -19,6 +23,8 @@ export function HireModalProvider({ children }: { children: React.ReactNode }) {
     return (
         <HireModalContext.Provider value={{ isOpen, openModal, closeModal }}>
             {children}
+            <HireMeModal />
+            <CommandPalette />
         </HireModalContext.Provider>
     );
 }

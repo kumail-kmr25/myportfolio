@@ -172,7 +172,7 @@ export default function FeatureSuggestion() {
                         </div>
 
                         <div className="space-y-4">
-                            {!completedSuggestions || completedSuggestions.length === 0 ? (
+                            {!Array.isArray(completedSuggestions) || completedSuggestions.length === 0 ? (
                                 <div className="p-8 rounded-3xl border border-dashed border-white/10 text-center text-gray-500">
                                     <Lightbulb className="w-8 h-8 mx-auto mb-4 opacity-20" />
                                     Be the first to suggest a feature that gets built!

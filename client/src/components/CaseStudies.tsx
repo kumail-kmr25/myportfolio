@@ -44,7 +44,7 @@ export default function CaseStudies() {
                     <div className="flex justify-center py-20">
                         <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
                     </div>
-                ) : !caseStudies || caseStudies.length === 0 ? (
+                ) : !Array.isArray(caseStudies) || caseStudies.length === 0 ? (
                     <div className="text-center py-20 text-gray-500 bg-white/[0.02] rounded-3xl border border-white/5">
                         No case studies published yet.
                     </div>

@@ -29,10 +29,7 @@ export const GET = async (req: Request, res: Response) => {
         return res.json(sanitizedTestimonials);
     } catch (error) {
         console.error("Error fetching testimonials:", error);
-        return new Response(JSON.stringify({ error: "Failed to fetch testimonials" }), {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-        });
+        return res.status(500).json({ error: "Failed to fetch testimonials" });
     }
 }
 
@@ -68,20 +65,19 @@ export const POST = async (req: Request, res: Response) => {
             },
         });
 
-        const { email, ...sanitizedTestimonial } = testimonial;
+        // Sanitize: remove email from response and convert created_at to ISO string
+        const { email, ...rest } = testimonial;
+        const sanitizedTestimonial = {
+            ...rest,
+            created_at: rest.created_at.toISOString(),
+        };
 
         return res.status(201).json(sanitizedTestimonial);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return new Response(JSON.stringify({ error: "Validation failed", details: error.format() }), {
-                status: 400,
-                headers: { "Content-Type": "application/json" },
-            });
+            return res.status(400).json({ error: "Validation failed", details: error.format() });
         }
         console.error("Error creating testimonial:", error);
-        return new Response(JSON.stringify({ error: "Failed to create testimonial" }), {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-        });
+        return res.status(500).json({ error: "Failed to create testimonial" });
     }
 }
