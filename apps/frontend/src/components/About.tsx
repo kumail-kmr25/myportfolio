@@ -18,7 +18,7 @@ export default function About() {
                             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full border-2 border-white/10 p-2 bg-[#0a0a0a] ring-1 ring-white/5 shadow-[0_0_50px_rgba(59,130,246,0.2)]">
                                 <div className="w-full h-full rounded-full overflow-hidden relative">
                                     <Image
-                                        src="https://github.com/kumailkmr.png"
+                                        src="https://github.com/kumail-kmr25.png"
                                         alt="Kumail Kmr"
                                         fill
                                         priority
