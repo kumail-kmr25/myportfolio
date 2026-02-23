@@ -3,7 +3,8 @@
     "version": "0.1.0",
     "main": "src/index.ts",
     "scripts": {
-        "build": "prisma generate"
+        "build": "prisma generate",
+        "lint": "tsc --noEmit"
     },
     "dependencies": {
         "@prisma/client": "^6.2.1"
