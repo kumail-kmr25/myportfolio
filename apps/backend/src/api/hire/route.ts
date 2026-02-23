@@ -1,0 +1,113 @@
+import { Request, Response } from 'express';
+import { prisma } from '@portfolio/database';
+import { hireSchema } from "@portfolio/shared";
+import { sendHireNotification, sendHireAutoReply } from "../../lib/mail";
+import xss from "xss";
+
+export const dynamic = 'force-dynamic';
+
+// In-memory rate limiting
+const rateLimit = new Map<string, { count: number; lastReset: number }>();
+const LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
+const MAX_REQUESTS = 3; // Stricter for hire requests
+
+export const POST = async (req: Request, res: Response) => {
+    try {
+        const ip = req.header("x-forwarded-for") || "anonymous";
+        const now = Date.now();
+
+        // Rate Limiting
+        const clientLimit = rateLimit.get(ip) || { count: 0, lastReset: now };
+        if (now - clientLimit.lastReset > LIMIT_WINDOW) {
+            clientLimit.count = 0;
+            clientLimit.lastReset = now;
+        }
+
+        if (clientLimit.count >= MAX_REQUESTS) {
+            return res.status(429).json({ success: false, error: "Too many requests. Please try again later." });
+        }
+
+        const body = req.body;
+        console.log("Hire request received:", body);
+
+        // Validation
+        const result = hireSchema.safeParse(body);
+        if (!result.success) {
+            console.error("Hire validation failed detailed:", JSON.stringify(result.error.format(), null, 2));
+            return res.status(400).json({
+                success: false,
+                error: "Validation failed",
+                details: result.error.format(),
+                received: body
+            });
+        }
+
+        const {
+            name,
+            email,
+            company,
+            selectedService,
+            budgetRange,
+            timeline,
+            projectType,
+            description,
+            source
+        } = result.data;
+
+        // Sanitization
+        const sanitizedDescription = xss(description);
+        const sanitizedName = xss(name);
+        const sanitizedCompany = company ? xss(company) : null;
+
+        // Save to Database
+        console.log("Attempting to create hireRequest in Prisma...");
+        const hireRequest = await prisma.hireRequest.create({
+            data: {
+                name: sanitizedName,
+                email,
+                company: sanitizedCompany,
+                description: sanitizedDescription,
+                selectedService,
+                budgetRange: budgetRange,
+                timeline: timeline,
+                projectType: projectType,
+                source: source || "hire_me",
+                status: "new"
+            },
+        });
+        console.log("HireRequest created successfully:", hireRequest.id);
+
+        // Update Rate Limit
+        clientLimit.count++;
+        rateLimit.set(ip, clientLimit);
+
+        // Send Email Notifications (Non-blocking)
+        sendHireNotification({
+            name: sanitizedName,
+            email,
+            company: sanitizedCompany,
+            selectedService,
+            budgetRange,
+            timeline,
+            projectType,
+            description: sanitizedDescription,
+        }).catch((err) => console.error("Hire notification email failed:", err));
+
+        sendHireAutoReply(email, sanitizedName)
+            .catch((err) => console.error("Hire auto-reply email failed:", err));
+
+        return res.status(201).json({ success: true, message: "Hire request submitted successfully!", id: hireRequest.id });
+    } catch (error: any) {
+        console.error("Hire API EXCEPTION:", error);
+        return res.status(500).json({
+            success: false,
+            error: "Internal server error",
+            message: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
+    }
+}
+
+export const GET = async (req: Request, res: Response) => {
+    return res.status(405).json({ error: "Method not allowed" });
+}

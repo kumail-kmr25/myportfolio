@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /api
-
-Sitemap: https://your-portfolio-url.com/sitemap.xml

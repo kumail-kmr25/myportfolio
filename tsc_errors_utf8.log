@@ -1,5 +1,0 @@
-﻿src/app/api/testimonials/route.ts(37,59): error TS7031: Binding element 'email' implicitly has an 'any' type.
-src/app/api/testimonials/route.ts(86,53): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
-src/components/TestimonialForm.tsx(66,23): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
-src/components/TestimonialForm.tsx(66,39): error TS7006: Parameter 'err' implicitly has an 'any' type.
-src/lib/prisma.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
