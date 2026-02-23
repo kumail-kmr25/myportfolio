@@ -39,8 +39,8 @@ export default function About() {
                         <div className="space-y-4">
                             <span className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-2 block">My Journey</span>
                             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-                                From Class 10th to <br />
-                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Engineering Excellence</span>
+                                From 10th Class to <br />
+                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Web Engineering Excellence</span>
                             </h2>
                         </div>
 

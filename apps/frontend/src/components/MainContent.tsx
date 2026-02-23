@@ -63,7 +63,6 @@ export default function MainContent() {
     return (
         <>
             <SectionReveal><Skills /></SectionReveal>
-            <SectionReveal><Services /></SectionReveal>
             <SectionReveal><StatsDashboard /></SectionReveal>
             <SectionReveal><Projects /></SectionReveal>
             <SectionReveal><CaseStudies /></SectionReveal>
@@ -71,6 +70,7 @@ export default function MainContent() {
             <SectionReveal><FeatureSuggestion /></SectionReveal>
             <SectionReveal><DiagnosticTool /></SectionReveal>
             <SectionReveal><Blog /></SectionReveal>
+            <SectionReveal><Services /></SectionReveal>
             <SectionReveal><About /></SectionReveal>
             <SectionReveal><HireMeCTA /></SectionReveal>
             <SectionReveal><Contact /></SectionReveal>

@@ -19,10 +19,10 @@ import useSWR from "swr";
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const navLinks = [
-    { name: "About", href: "#about" },
     { name: "Projects", href: "#projects" },
     { name: "Case Studies", href: "#case-studies" },
     { name: "Services", href: "#services" },
+    { name: "About", href: "#about" },
     { name: "Contact", href: "#contact" },
     { name: "Hire Me", href: "#contact", isCTA: true },
 ];
