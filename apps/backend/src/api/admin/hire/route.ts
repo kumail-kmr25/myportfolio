@@ -5,7 +5,7 @@ import { getSession } from "../../../lib/auth";
 // Admin: Fetch all hire requests
 export const GET = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) {
             return res.status(401).json({ error: "Unauthorized" });
         }
@@ -24,7 +24,7 @@ export const GET = async (req: Request, res: Response) => {
 // Admin: Update hire request status
 export const PATCH = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) {
             return res.status(401).json({ error: "Unauthorized" });
         }

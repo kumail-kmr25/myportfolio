@@ -4,11 +4,11 @@ import { getSession } from "../../../../lib/auth";
 
 export const PATCH = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) return res.status(401).json({ error: "Unauthorized" });
 
         const body = req.body;
-        const { id  } = req.params;
+        const { id } = req.params;
 
         const data: any = { ...body };
         if (data.startDate) data.startDate = new Date(data.startDate);
@@ -27,10 +27,10 @@ export const PATCH = async (req: Request, res: Response) => {
 
 export const DELETE = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) return res.status(401).json({ error: "Unauthorized" });
 
-        const { id  } = req.params;
+        const { id } = req.params;
         const db = prisma as any;
         await db.activeProject.delete({ where: { id } });
         return res.status(500).json({ success: true });

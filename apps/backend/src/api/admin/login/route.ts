@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { encrypt } from "../../../lib/auth";
 import { prisma } from '@portfolio/database';
 import bcrypt from "bcryptjs";
-import { cookies } from "next/headers";
 
 export const POST = async (req: Request, res: Response) => {
     try {
@@ -35,7 +34,7 @@ export const POST = async (req: Request, res: Response) => {
             expires,
         });
 
-        (await cookies()).set("admin_session", session, {
+        res.cookie("admin_session", session, {
             expires,
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",

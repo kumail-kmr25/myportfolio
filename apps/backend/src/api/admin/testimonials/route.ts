@@ -5,7 +5,7 @@ import { getSession } from "../../../lib/auth";
 // Admin endpoint: fetch ALL testimonials (including unapproved)
 export const GET = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) {
             return res.status(401).json({ error: "Unauthorized" });
         }
@@ -22,7 +22,7 @@ export const GET = async (req: Request, res: Response) => {
 }
 export const PATCH = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) {
             return res.status(401).json({ error: "Unauthorized" });
         }

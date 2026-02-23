@@ -5,7 +5,7 @@ import { caseStudySchema } from "@portfolio/shared";
 
 export const PATCH = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) {
             return res.status(401).json({ error: "Unauthorized" });
         }
@@ -33,7 +33,7 @@ export const PATCH = async (req: Request, res: Response) => {
 
 export const DELETE = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) {
             return res.status(401).json({ error: "Unauthorized" });
         }

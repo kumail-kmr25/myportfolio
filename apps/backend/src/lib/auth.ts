@@ -1,6 +1,4 @@
 import { SignJWT, jwtVerify } from "jose";
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
 
 const secretKey = "secret"; // In production, use a secure secret from env
 const key = new TextEncoder().encode(process.env.JWT_SECRET || secretKey);
@@ -20,29 +18,19 @@ export async function decrypt(input: string): Promise<any> {
     return payload;
 }
 
-export async function getSession() {
+export async function getSession(req: any) {
     try {
-        const session = (await cookies()).get("admin_session")?.value;
+        const cookieHeader = req.headers?.cookie || "";
+        const cookies = Object.fromEntries(
+            cookieHeader.split("; ").map((c: string) => {
+                const [key, ...value] = c.split("=");
+                return [key, value.join("=")];
+            })
+        );
+        const session = cookies["admin_session"];
         if (!session) return null;
         return await decrypt(session);
     } catch (error) {
         return null;
     }
-}
-
-export async function updateSession(request: NextRequest) {
-    const session = request.cookies.get("admin_session")?.value;
-    if (!session) return;
-
-    // Refresh the session so it doesn't expire
-    const parsed = await decrypt(session);
-    parsed.expires = new Date(Date.now() + 2 * 60 * 60 * 1000);
-    const res = NextResponse.next();
-    res.cookies.set({
-        name: "admin_session",
-        value: await encrypt(parsed),
-        httpOnly: true,
-        expires: parsed.expires,
-    });
-    return res;
 }

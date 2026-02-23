@@ -6,13 +6,13 @@ export const dynamic = 'force-dynamic';
 
 export const PATCH = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
         const { replied } = req.body;
-        const { id  } = req.params;
+        const { id } = req.params;
 
         const updated = await prisma.contactSubmission.update({
             where: { id },
@@ -28,12 +28,12 @@ export const PATCH = async (req: Request, res: Response) => {
 
 export const DELETE = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        const { id  } = req.params;
+        const { id } = req.params;
 
         // Verify message exists
         const existingMessage = await prisma.contactSubmission.findUnique({

@@ -4,7 +4,7 @@ import { getSession } from "../../../lib/auth";
 
 export const GET = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) return res.status(401).json({ error: "Unauthorized" });
 
         const db = prisma as any;
@@ -24,7 +24,7 @@ export const GET = async (req: Request, res: Response) => {
 
 export const PATCH = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) return res.status(401).json({ error: "Unauthorized" });
 
         const body = req.body;

@@ -4,12 +4,12 @@ import { getSession } from "../../../lib/auth";
 
 export const PATCH = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        const { id  } = req.params;
+        const { id } = req.params;
         const body = req.body;
         const { title, description, tags, image, demo, deployment, github, beforeImageUrl, afterImageUrl, improvementDetails, metrics } = body;
 
@@ -39,12 +39,12 @@ export const PATCH = async (req: Request, res: Response) => {
 
 export const DELETE = async (req: Request, res: Response) => {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        const { id  } = req.params;
+        const { id } = req.params;
 
         await prisma.project.delete({
             where: { id },
