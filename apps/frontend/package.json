@@ -19,7 +19,6 @@
         "react-hook-form": "^7.71.1",
         "swr": "^2.4.0",
         "xss": "^1.0.15",
-        "@portfolio/database": "*",
         "@portfolio/shared": "*"
     },
     "devDependencies": {
