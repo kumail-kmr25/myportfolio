@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "workspaces": [
-    "apps/*",
+    "client",
+    "server",
     "packages/*"
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev -w @portfolio/frontend\" \"npm run dev -w @portfolio/backend\"",
     "build": "npm run build --workspaces",
-    "lint": "npm run lint --workspaces"
+    "lint": "npm run lint --workspaces",
+    "db:push": "npx prisma db push --schema=packages/database/prisma/schema.prisma",
+    "db:seed": "node packages/database/prisma/seed.js"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
