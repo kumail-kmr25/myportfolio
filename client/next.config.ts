@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
   },
   transpilePackages: ["@portfolio/shared"],
   async rewrites() {
+    // In production (Vercel), vercel.json handles routing /api/* to the backend.
+    if (process.env.NODE_ENV === 'production') {
+      return [];
+    }
     return [
       {
         source: "/api/:path*",

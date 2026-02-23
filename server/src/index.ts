@@ -101,5 +101,9 @@ import * as route_testimonials__id__route_ts from './api/testimonials/[id]/route
 app.delete('/api/testimonials/:id', route_testimonials__id__route_ts.DELETE);
 app.patch('/api/testimonials/:id', route_testimonials__id__route_ts.PATCH);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log('Backend listening on port ' + PORT));
+export default app;
+
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log('Backend listening on port ' + PORT));
+}
