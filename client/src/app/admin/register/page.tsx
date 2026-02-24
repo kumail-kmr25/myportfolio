@@ -35,7 +35,7 @@ export default function RegisterPage() {
                         email: email || "",
                         phone: phone || "",
                     });
-                    const res = await fetch(`/api/admin/register?${params}`);
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/register?${params}`);
                     if (res.ok) {
                         const data = await res.json();
                         setMatchStatus({
@@ -101,7 +101,7 @@ export default function RegisterPage() {
         setError("");
 
         try {
-            const res = await fetch("/api/admin/register", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),

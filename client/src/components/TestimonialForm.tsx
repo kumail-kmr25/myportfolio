@@ -29,7 +29,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
         try {
             const validatedData = testimonialSchema.parse(formData);
 
-            const response = await fetch("/api/testimonials", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/testimonials", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(validatedData),

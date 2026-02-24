@@ -93,7 +93,7 @@ export default function Projects() {
     useEffect(() => {
         const checkSession = async () => {
             try {
-                const res = await fetch("/api/contact");
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/contact");
                 if (res.ok) setIsAdmin(true);
             } catch (err) { }
         };
@@ -103,7 +103,7 @@ export default function Projects() {
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure you want to delete this project?")) return;
         try {
-            await fetch(`/api/projects/${id}`, { method: "DELETE" });
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/projects/${id}`, { method: "DELETE" });
             mutate();
         } catch (err) {
             console.error(err);

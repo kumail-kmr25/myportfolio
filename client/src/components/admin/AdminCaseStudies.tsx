@@ -88,7 +88,7 @@ export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseS
         if (!confirm("Delete this case study?")) return;
         setLoading(id);
         try {
-            const res = await fetch(`/api/admin/case-studies/${id}`, { method: "DELETE" });
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/case-studies/${id}`, { method: "DELETE" });
             if (res.ok) onUpdate();
         } finally {
             setLoading(null);
@@ -98,7 +98,7 @@ export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseS
     const togglePublish = async (id: string, current: boolean) => {
         setLoading(id);
         try {
-            const res = await fetch(`/api/admin/case-studies/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/case-studies/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ isPublished: !current })

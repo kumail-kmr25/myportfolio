@@ -20,7 +20,7 @@ export default function AdminFeatureRequests({ requests, onUpdate }: { requests:
     const updateStatus = async (id: string, status: string) => {
         setLoading(id);
         try {
-            const res = await fetch(`/api/admin/feature-requests/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/feature-requests/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status })

@@ -33,7 +33,7 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await fetch("/api/admin/stats", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/stats", {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)

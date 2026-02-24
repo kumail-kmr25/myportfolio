@@ -21,7 +21,7 @@ export default function DiagnosticTool() {
         setResult(null);
 
         try {
-            const res = await fetch("/api/diagnose", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/diagnose", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)

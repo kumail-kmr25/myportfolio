@@ -109,7 +109,7 @@ export default function HireMeModal() {
         setIsSubmitting(true);
         setError(null);
         try {
-            const response = await fetch("/api/hire", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/hire", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),

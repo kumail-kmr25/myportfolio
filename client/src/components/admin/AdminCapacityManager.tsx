@@ -36,7 +36,7 @@ export default function AdminCapacityManager() {
         e.preventDefault();
         setIsSaving(true);
         try {
-            const res = await fetch("/api/admin/active-projects", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/active-projects", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newProject)
@@ -58,7 +58,7 @@ export default function AdminCapacityManager() {
     };
 
     const handleUpdateStatus = async (id: string, status: string) => {
-        await fetch(`/api/admin/active-projects/${id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/active-projects/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ status })
@@ -68,12 +68,12 @@ export default function AdminCapacityManager() {
 
     const handleDeleteProject = async (id: string) => {
         if (!confirm("Remove this project from records?")) return;
-        await fetch(`/api/admin/active-projects/${id}`, { method: "DELETE" });
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/active-projects/${id}`, { method: "DELETE" });
         mutateProjects();
     };
 
     const handleUpdateConfig = async (updates: any) => {
-        await fetch("/api/admin/system-config", {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/system-config", {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updates)

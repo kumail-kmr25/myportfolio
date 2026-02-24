@@ -37,7 +37,7 @@ export default function FeatureSuggestion() {
         try {
             const validatedData = featureRequestSchema.parse(formData);
 
-            const res = await fetch("/api/feature-requests", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/feature-requests", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(validatedData),

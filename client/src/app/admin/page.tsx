@@ -114,7 +114,7 @@ function AdminPageContent() {
 
     const checkSession = async () => {
         try {
-            const res = await fetch("/api/contact");
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/contact");
             if (res.ok) setIsLoggedIn(true);
         } catch (err) {
             console.error(err);
@@ -131,7 +131,7 @@ function AdminPageContent() {
         setAuthError("");
 
         try {
-            const res = await fetch("/api/admin/login", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
@@ -154,7 +154,7 @@ function AdminPageContent() {
 
     const handleLogout = async () => {
         try {
-            await fetch("/api/admin/logout", { method: "POST" });
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/logout", { method: "POST" });
             setIsLoggedIn(false);
             setEmail("");
             setPassword("");
@@ -167,7 +167,7 @@ function AdminPageContent() {
     // Action Handlers
     const handleTestimonialApproval = async (id: string, approved: boolean) => {
         try {
-            await fetch(`/api/admin/testimonials`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/testimonials`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, approved }),
@@ -181,7 +181,7 @@ function AdminPageContent() {
     const handleTestimonialDelete = async (id: string) => {
         if (!confirm("Delete this testimonial?")) return;
         try {
-            await fetch(`/api/testimonials/${id}`, { method: "DELETE" });
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/testimonials/${id}`, { method: "DELETE" });
             mutateTestimonials();
         } catch (err) {
             console.error(err);
@@ -191,7 +191,7 @@ function AdminPageContent() {
     const handleMessageDelete = async (id: string) => {
         if (!confirm("Delete this message?")) return;
         try {
-            const res = await fetch(`/api/admin/contact/${id}`, { method: "DELETE" });
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/contact/${id}`, { method: "DELETE" });
             if (!res.ok) {
                 const data = await res.json().catch(() => ({}));
                 alert(`Failed to delete message: ${data.error || res.statusText}`);
@@ -205,7 +205,7 @@ function AdminPageContent() {
 
     const handleToggleReplied = async (id: string, current: boolean) => {
         try {
-            await fetch(`/api/admin/contact/${id}`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/contact/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ replied: !current }),
@@ -218,7 +218,7 @@ function AdminPageContent() {
 
     const handleHireStatusUpdate = async (id: string, status: string) => {
         try {
-            await fetch(`/api/admin/hire`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/hire`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, status }),
@@ -231,7 +231,7 @@ function AdminPageContent() {
 
     const handleHireDelete = async (id: string) => {
         try {
-            const res = await fetch(`/api/admin/hire/${id}`, { method: "DELETE" });
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/hire/${id}`, { method: "DELETE" });
             if (res.ok) {
                 mutateHireRequests();
             } else {
@@ -245,7 +245,7 @@ function AdminPageContent() {
     };
 
     const handleAddProject = async (projectData: any) => {
-        const res = await fetch("/api/projects", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/projects", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(projectData),
@@ -254,7 +254,7 @@ function AdminPageContent() {
     };
 
     const handleProjectUpdate = async (id: string, projectData: any) => {
-        const res = await fetch(`/api/projects/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/projects/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(projectData),
@@ -264,12 +264,12 @@ function AdminPageContent() {
 
     const handleProjectDelete = async (id: string) => {
         if (!confirm("Delete this project?")) return;
-        await fetch(`/api/projects/${id}`, { method: "DELETE" });
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/projects/${id}`, { method: "DELETE" });
         mutateProjects();
     };
 
     const handleAddBlog = async (blogData: any) => {
-        const res = await fetch("/api/blog", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/blog", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(blogData),
@@ -278,7 +278,7 @@ function AdminPageContent() {
     };
 
     const handleBlogUpdate = async (id: string, blogData: any) => {
-        const res = await fetch(`/api/blog/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/blog/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(blogData),
@@ -288,7 +288,7 @@ function AdminPageContent() {
 
     const handleBlogDelete = async (id: string) => {
         if (!confirm("Delete this blog post?")) return;
-        await fetch(`/api/blog/${id}`, { method: "DELETE" });
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/blog/${id}`, { method: "DELETE" });
         mutateBlogPosts();
     };
 
@@ -311,7 +311,7 @@ function AdminPageContent() {
 
     const handleUpdateAvailability = async (status: string) => {
         try {
-            const res = await fetch("/api/admin/availability", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/availability", {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status })
@@ -478,7 +478,7 @@ function AdminPageContent() {
                                         ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 10)}
                                         availabilityStatus={availabilityData?.status || "Available"}
                                         onUpdateAvailability={async (status) => {
-                                            await fetch("/api/admin/system-config", {
+                                            await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/system-config", {
                                                 method: "PATCH",
                                                 headers: { "Content-Type": "application/json" },
                                                 body: JSON.stringify({ manualOverride: status.toLowerCase() })
