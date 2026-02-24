@@ -107,7 +107,6 @@ app.patch('/api/testimonials/:id', route_testimonials__id__route_ts.PATCH);
 
 export default app;
 
-if (process.env.NODE_ENV !== 'production') {
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => console.log('Backend listening on port ' + PORT));
-}
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log('Backend listening on port ' + PORT));
+
