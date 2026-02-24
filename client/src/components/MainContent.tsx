@@ -39,6 +39,9 @@ const About = dynamic(() => import("@/components/About"), {
 const HireMeCTA = dynamic(() => import("@/components/HireMeCTA"), {
     loading: () => <SectionSkeleton minHeight="300px" hasTitle={false} hasSubtitle={false} />
 });
+const MyJourney = dynamic(() => import("@/components/MyJourney"), {
+    loading: () => <SectionSkeleton minHeight="800px" />
+});
 const Contact = dynamic(() => import("@/components/Contact"), {
     loading: () => <SectionSkeleton minHeight="600px" />
 });
@@ -59,6 +62,7 @@ export default function MainContent() {
             <SectionReveal><Blog /></SectionReveal>
             <SectionReveal><Services /></SectionReveal>
             <SectionReveal><About /></SectionReveal>
+            <SectionReveal><MyJourney /></SectionReveal>
             <SectionReveal><HireMeCTA /></SectionReveal>
             <SectionReveal><Contact /></SectionReveal>
             <Footer />

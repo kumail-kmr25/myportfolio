@@ -56,7 +56,7 @@ export default function About() {
                             </p>
                         </div>
 
-                        <div className="flex gap-4 pt-4">
+                        <div className="flex flex-wrap gap-4 pt-4">
                             <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex-1">
                                 <div className="text-2xl font-bold text-white">3+</div>
                                 <div className="text-xs text-gray-500 uppercase tracking-wider">Years Learning</div>
@@ -65,6 +65,22 @@ export default function About() {
                                 <div className="text-2xl font-bold text-white">SaaS</div>
                                 <div className="text-xs text-gray-500 uppercase tracking-wider">Specialty</div>
                             </div>
+                        </div>
+
+                        {/* Dedicated CTA Button */}
+                        <div className="pt-8">
+                            <button
+                                onClick={() => document.getElementById('my-journey')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl font-bold text-white transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] active:scale-95 flex items-center gap-3 overflow-hidden shadow-2xl shadow-blue-500/20"
+                            >
+                                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <span className="relative z-10 text-lg">👉 View My Journey</span>
+                                <div className="relative z-10 p-1 bg-white/20 rounded-lg group-hover:translate-x-1 transition-transform">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </button>
                         </div>
                     </div>
                 </div>

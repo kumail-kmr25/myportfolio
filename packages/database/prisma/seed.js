@@ -92,6 +92,75 @@ async function main() {
             console.error(`❌ Blog Post "${b.title}" seed failed:`, error);
         }
     }
+
+    // 4. Create Journey Phases
+    const phases = [
+        {
+            phase: "Phase 1",
+            title: "Curiosity",
+            description: "First exposure to tech. Exploring how websites work and understanding the magic behind the browser.",
+            icon: "Brain",
+            color: "from-blue-500/20 to-indigo-500/20",
+            order: 1
+        },
+        {
+            phase: "Phase 2",
+            title: "Learning by Building",
+            description: "Built small projects. Learned frontend & backend fundamentals. Fixed real bugs and understood documentation.",
+            icon: "Code2",
+            color: "from-indigo-500/20 to-purple-500/20",
+            order: 2
+        },
+        {
+            phase: "Phase 3",
+            title: "Real Engineering",
+            description: "Built full-stack systems, authentication systems, and optimized database architecture for performance.",
+            icon: "Cpu",
+            color: "from-purple-500/20 to-pink-500/20",
+            order: 3
+        },
+        {
+            phase: "Phase 4",
+            title: "Now",
+            description: "Focused on real-world problem solving. Freelancing & internships. Shipping production-ready code for global users.",
+            icon: "Rocket",
+            color: "from-pink-500/20 to-blue-500/20",
+            order: 4
+        }
+    ];
+
+    for (const p of phases) {
+        try {
+            await prisma.journeyPhase.create({ data: p });
+            console.log(`✅ Journey Phase "${p.title}" seeded.`);
+        } catch (error) {
+            console.error(`❌ Journey Phase "${p.title}" seed failed:`, error);
+        }
+    }
+
+    // 5. Create Skills
+    const skills = [
+        { name: "React.js", status: "expert", order: 1 },
+        { name: "Next.js", status: "expert", order: 2 },
+        { name: "TypeScript", status: "expert", order: 3 },
+        { name: "Node.js", status: "expert", order: 4 },
+        { name: "Express", status: "expert", order: 5 },
+        { name: "JavaScript", status: "expert", order: 6 },
+        { name: "MongoDB / PostgreSQL", status: "expert", order: 7 },
+        { name: "JWT Auth", status: "expert", order: 8 },
+        { name: "Deployment", status: "expert", order: 9 },
+        { name: "DevOps", status: "learning", order: 10 },
+        { name: "Cloud", status: "learning", order: 11 }
+    ];
+
+    for (const s of skills) {
+        try {
+            await prisma.skill.create({ data: s });
+            console.log(`✅ Skill "${s.name}" seeded.`);
+        } catch (error) {
+            console.error(`❌ Skill "${s.name}" seed failed:`, error);
+        }
+    }
 }
 
 main()

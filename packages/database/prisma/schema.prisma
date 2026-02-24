@@ -168,3 +168,21 @@ model HireRequest {
   createdAt       DateTime @default(now())
 }
 
+model JourneyPhase {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  phase       String   // e.g., "Phase 1"
+  title       String
+  description String
+  icon        String   // Lucide icon name
+  color       String   // Tailwind gradient classes
+  order       Int
+  createdAt   DateTime @default(now())
+}
+
+model Skill {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  status    String   // expert / learning
+  order     Int
+  createdAt DateTime @default(now())
+}
