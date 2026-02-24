@@ -1,0 +1,11 @@
+# Exclude backend from Vercel build
+server/
+packages/database/prisma/seed.js
+
+# Local logs
+*.log
+build_output.txt
+dev_logs.txt
+dev_logs_2.txt
+frontend_build.txt
+backend_build.txt

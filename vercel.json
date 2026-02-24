@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "installCommand": "npm install",
+    "buildCommand": "npm run build:vercel",
+    "framework": "nextjs",
+    "regions": [
+        "arn1"
+    ],
+    "rewrites": [
+        {
+            "source": "/api/:path*",
+            "destination": "https://portfolio-backend-production.up.railway.app/api/:path*"
+        }
+    ]
+}
