@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev -w @portfolio/frontend\" \"npm run dev -w @portfolio/backend\"",
-    "build": "npx prisma generate --schema=packages/database/prisma/schema.prisma && npm run build -w @portfolio/shared && npm run build -w @portfolio/backend && npm run build -w @portfolio/frontend",
+    "build": "npx prisma generate --schema=packages/database/prisma/schema.prisma && npm run build -w @portfolio/shared && npm run build -w @portfolio/frontend",
+    "build:full": "npx prisma generate --schema=packages/database/prisma/schema.prisma && npm run build -w @portfolio/shared && npm run build -w @portfolio/backend && npm run build -w @portfolio/frontend",
     "build:vercel": "npx prisma generate --schema=packages/database/prisma/schema.prisma && npm run build -w @portfolio/shared && npm run build -w @portfolio/frontend",
     "lint": "npm run lint --workspaces",
     "db:push": "npx prisma db push --schema=packages/database/prisma/schema.prisma",
@@ -18,5 +19,8 @@
   "devDependencies": {
     "concurrently": "^9.2.1",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=22.13.0"
   }
 }
