@@ -8,8 +8,8 @@
   ],
   "scripts": {
     "postinstall": "npx prisma generate --schema=packages/database/prisma/schema.prisma",
-    "dev": "npm run dev -w @portfolio/frontend",
-    "build": "npm run build -w @portfolio/database && npm run build -w @portfolio/shared && npm run build -w @portfolio/frontend",
+    "build": "npm run build --workspaces --if-present",
+    "dev": "npm run dev --workspaces --parallel",
     "lint": "npm run lint --workspaces",
     "db:push": "npx prisma db push --schema=packages/database/prisma/schema.prisma",
     "db:seed": "node packages/database/prisma/seed.js"
