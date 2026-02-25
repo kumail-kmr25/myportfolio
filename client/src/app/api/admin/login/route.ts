@@ -61,9 +61,9 @@ export async function POST(request: Request) {
         return response;
     } catch (error: any) {
         console.error("Login error:", error);
-        return NextResponse.json({
-            error: "Internal server error",
-            details: error instanceof Error ? error.message : "Database connection or Prisma client error"
-        }, { status: 500 });
+        return new Response(
+            JSON.stringify({ message: "Login failed", error }),
+            { status: 500 }
+        );
     }
 }
