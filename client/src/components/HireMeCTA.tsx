@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Bug, Code2, Layout, Database, Zap, Cloud, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { LiveStatusBadge } from "@/components/LiveStatusBadge";
 
 const services = [
     { label: "Fix Bugs", icon: Bug, color: "text-red-500", bg: "bg-red-500/10", service: "Bug Fix / Error Optimisation" },
@@ -52,10 +53,7 @@ export default function HireMeCTA() {
                         >
                             Start Your Project <ArrowRight size={20} />
                         </Link>
-                        <div className="flex items-center gap-2 text-sm text-gray-500 font-medium">
-                            <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                            Available for new projects
-                        </div>
+                        <LiveStatusBadge variant="hero" />
                     </div>
                 </div>
             </div>

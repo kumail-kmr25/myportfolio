@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { z } from "zod";
@@ -29,14 +29,15 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
         try {
             const validatedData = testimonialSchema.parse(formData);
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/testimonials", {
+            const res = await fetch(`/api/testimonials`, {
+
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(validatedData),
             });
 
-            if (!response.ok) {
-                const data = await response.json();
+            if (!res.ok) {
+                const data = await res.json();
                 throw new Error(data.error || "Failed to submit testimonial");
             }
 
@@ -89,6 +90,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                         <label className="text-sm font-medium text-gray-400">Full Name <span className="text-red-500">*</span></label>
                         <input
                             type="text"
+                            autoComplete="name"
                             className={`input-field ${errors.name ? 'border-red-500/50' : ''}`}
                             placeholder="John Doe"
                             value={formData.name || ""}
@@ -100,6 +102,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                         <label className="text-sm font-medium text-gray-400">Email Address <span className="text-gray-600">(Private) *</span></label>
                         <input
                             type="email"
+                            autoComplete="email"
                             className={`input-field ${errors.email ? 'border-red-500/50' : ''}`}
                             placeholder="john@example.com"
                             value={formData.email || ""}
@@ -114,6 +117,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                         <label className="text-sm font-medium text-gray-400">Company / Organization <span className="text-gray-600">(Optional)</span></label>
                         <input
                             type="text"
+                            autoComplete="organization"
                             className="input-field"
                             placeholder="e.g. Google, Startup X"
                             value={formData.company || ""}
@@ -164,18 +168,18 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                     {errors.intervention_type && <p className="text-[10px] text-red-500">{errors.intervention_type}</p>}
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-4 mt-6">
                     <label className="text-sm font-medium text-gray-400 block">Overall Rating <span className="text-red-500">*</span></label>
-                    <div className="flex gap-3">
+                    <div className="flex gap-2 sm:gap-3 flex-wrap">
                         {[1, 2, 3, 4, 5, 6, 7].map((num) => (
                             <button
                                 key={num}
                                 type="button"
                                 onClick={() => handleRatingClick(num)}
-                                className="group relative p-1 focus:outline-none transition-transform active:scale-90"
+                                className="group relative p-2 md:p-1 focus:outline-none transition-transform active:scale-90"
                             >
                                 <Star
-                                    size={32}
+                                    size={36}
                                     className={`transition-all duration-300 ${formData.rating !== undefined && num <= formData.rating
                                         ? "text-yellow-500 fill-yellow-500 scale-110 drop-shadow-[0_0_10px_rgba(234,179,8,0.3)]"
                                         : "text-white/10 group-hover:text-yellow-500/50"
@@ -190,17 +194,17 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                             </button>
                         ))}
                     </div>
-                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2 px-1">
-                        {formData.rating === 7 ? "Exceptionalsly Professional" :
+                    <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-2 px-1">
+                        {formData.rating === 7 ? "Exceptionally Professional" :
                             formData.rating === 1 ? "Needs Improvement" :
                                 "Level of Excellence"}
                     </p>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2 mt-6">
                     <label className="text-sm font-medium text-gray-400">Testimonial Message <span className="text-red-500">*</span></label>
                     <textarea
-                        className={`input-field min-h-[120px] resize-none ${errors.message ? 'border-red-500/50' : ''}`}
+                        className={`input-field min-h-[160px] resize-y ${errors.message ? 'border-red-500/50' : ''}`}
                         placeholder="Share the impact, results, and your overall experience..."
                         value={formData.message || ""}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -213,7 +217,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                     </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2 mt-6 mb-6">
                     <label className="text-sm font-medium text-gray-400">How was communication & delivery? <span className="text-red-500">*</span></label>
                     <input
                         type="text"
@@ -226,8 +230,8 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                 </div>
             </div>
 
-            <div className="pt-4 border-t border-white/5 space-y-4">
-                <label className="flex items-start gap-3 cursor-pointer group">
+            <div className="pt-6 border-t border-white/5 space-y-6">
+                <label className="flex items-start gap-4 cursor-pointer group">
                     <div className="relative flex items-center mt-1">
                         <input
                             type="checkbox"
@@ -269,3 +273,4 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
         </form>
     );
 }
+

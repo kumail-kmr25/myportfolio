@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
-import useSWR from "swr";
+import { LiveStatusBadge } from "@/components/LiveStatusBadge";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
@@ -33,9 +33,6 @@ export default function Navbar() {
     const [activeSection, setActiveSection] = useState("");
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const { openModal } = useHireModal();
-    const { data: availability } = useSWR("/api/availability", fetcher);
-    const status = availability?.status || "Available";
-    const isAvailable = status === "Available";
 
     useEffect(() => {
         const handleScroll = () => {
@@ -91,19 +88,7 @@ export default function Navbar() {
                         </motion.span>
                         <div className="flex flex-col">
                             <span className="text-lg font-bold leading-tight tracking-tight uppercase">Kumail KMR</span>
-                            <motion.div
-                                animate={{ opacity: [0.5, 1, 0.5] }}
-                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                                className="flex items-center gap-2"
-                            >
-                                <span className={`relative flex h-2 w-2`}>
-                                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${status === 'booked' ? 'bg-red-400' : status === 'limited' ? 'bg-yellow-400' : 'bg-green-400'} opacity-75`}></span>
-                                    <span className={`relative inline-flex rounded-full h-2 w-2 ${status === 'booked' ? 'bg-red-500' : status === 'limited' ? 'bg-yellow-500' : 'bg-green-500'}`}></span>
-                                </span>
-                                <span className={`text-[10px] font-black uppercase tracking-[0.3em] transition-all ${status === 'booked' ? 'text-red-400/80' : status === 'limited' ? 'text-yellow-400/80' : 'text-green-400/80'}`}>
-                                    {status === 'booked' ? 'Fully Booked' : status === 'limited' ? 'Limited Capacity' : 'Available Now'}
-                                </span>
-                            </motion.div>
+                            <LiveStatusBadge variant="navbar" />
                         </div>
                     </Link>
                 </div>

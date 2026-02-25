@@ -7,7 +7,9 @@ import {
     Star,
     Clock,
     Building2,
-    User2
+    User2,
+    BadgeCheck,
+    Bookmark
 } from "lucide-react";
 
 interface Testimonial {
@@ -15,12 +17,15 @@ interface Testimonial {
     name: string;
     email: string;
     company?: string | null;
+    role?: string | null;
     relationship_type: string;
     intervention_type: string;
     message: string;
     rating: number;
     about_delivery_lead: string;
     approved: boolean;
+    featured: boolean;
+    verified: boolean;
     created_at: string;
 }
 
@@ -28,9 +33,11 @@ interface AdminTestimonialsProps {
     testimonials: Testimonial[];
     onApprove: (id: string, approved: boolean) => void;
     onDelete: (id: string) => void;
+    onVerify?: (id: string, verified: boolean) => void;
+    onFeature?: (id: string, featured: boolean) => void;
 }
 
-export default function AdminTestimonials({ testimonials, onApprove, onDelete }: AdminTestimonialsProps) {
+export default function AdminTestimonials({ testimonials, onApprove, onDelete, onVerify, onFeature }: AdminTestimonialsProps) {
     const pending = testimonials.filter(t => !t.approved);
     const approved = testimonials.filter(t => t.approved);
 
@@ -45,26 +52,44 @@ export default function AdminTestimonials({ testimonials, onApprove, onDelete }:
             </div>
 
             {/* Actions */}
-            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100">
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex flex-col sm:flex-row gap-2 sm:opacity-0 group-hover:opacity-100 transition-all sm:scale-95 group-hover:scale-100 z-10">
                 <button
                     onClick={() => onApprove(testimonial.id, !testimonial.approved)}
-                    className={`p-2 sm:p-2.5 rounded-xl transition-all ${testimonial.approved
-                        ? "bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500 hover:text-white"
-                        : "bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-white"
+                    className={`p-3 sm:p-2.5 rounded-xl transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center ${testimonial.approved
+                        ? "bg-[#0a0a0a]/80 sm:bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500 hover:text-white"
+                        : "bg-[#0a0a0a]/80 sm:bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-white"
                         }`}
                     title={testimonial.approved ? "Revoke" : "Approve"}
                 >
-                    {testimonial.approved ? <XCircle size={16} className="sm:size-[18px]" /> : <CheckCircle2 size={16} className="sm:size-[18px]" />}
+                    {testimonial.approved ? <XCircle size={18} className="sm:size-[18px]" /> : <CheckCircle2 size={18} className="sm:size-[18px]" />}
                 </button>
+                {onVerify && (
+                    <button
+                        onClick={() => onVerify(testimonial.id, !testimonial.verified)}
+                        className={`p-3 sm:p-2.5 rounded-xl transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center ${testimonial.verified ? "bg-[#0a0a0a]/80 sm:bg-blue-500/20 text-blue-400" : "bg-[#0a0a0a]/80 sm:bg-white/5 text-gray-400 sm:text-gray-500 hover:bg-blue-500/20 hover:text-blue-400"}`}
+                        title={testimonial.verified ? "Remove Verified" : "Mark Verified Client"}
+                    >
+                        <BadgeCheck size={18} className="sm:size-[18px]" />
+                    </button>
+                )}
+                {onFeature && (
+                    <button
+                        onClick={() => onFeature(testimonial.id, !testimonial.featured)}
+                        className={`p-3 sm:p-2.5 rounded-xl transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center ${testimonial.featured ? "bg-[#0a0a0a]/80 sm:bg-amber-500/20 text-amber-400" : "bg-[#0a0a0a]/80 sm:bg-white/5 text-gray-400 sm:text-gray-500 hover:bg-amber-500/20 hover:text-amber-400"}`}
+                        title={testimonial.featured ? "Unfeature" : "Feature this testimonial"}
+                    >
+                        <Bookmark size={18} className="sm:size-[18px]" />
+                    </button>
+                )}
                 <button
                     onClick={() => onDelete(testimonial.id)}
-                    className="p-2 sm:p-2.5 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all"
+                    className="p-3 sm:p-2.5 bg-[#0a0a0a]/80 sm:bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center"
                 >
-                    <Trash2 size={16} className="sm:size-[18px]" />
+                    <Trash2 size={18} className="sm:size-[18px]" />
                 </button>
             </div>
 
-            <div className="mt-10 sm:mt-12 space-y-4 sm:space-y-6 flex-grow">
+            <div className="mt-8 sm:mt-12 space-y-4 sm:space-y-6 flex-grow">
                 <div className="flex items-center justify-between">
                     <div className="flex gap-1">
                         {[1, 2, 3, 4, 5, 6, 7].map((s) => (

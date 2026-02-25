@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback } from "react";
 import { Loader2, ShieldCheck, CheckCircle2, Phone, AlertTriangle } from "lucide-react";
@@ -35,7 +35,7 @@ export default function RegisterPage() {
                         email: email || "",
                         phone: phone || "",
                     });
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/register?${params}`);
+                    const res = await fetch(`/api/admin/register?${params}`);
                     if (res.ok) {
                         const data = await res.json();
                         setMatchStatus({
@@ -101,7 +101,7 @@ export default function RegisterPage() {
         setError("");
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/register", {
+            const res = await fetch("/api/admin/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
@@ -139,7 +139,7 @@ export default function RegisterPage() {
                         <p className="text-gray-500 text-xs">Check your SMS for your User ID and Password.</p>
                     </div>
                     <Link href="/admin" className="btn-primary w-full inline-flex items-center justify-center">
-                        Go to Login →
+                        Go to Login â†’
                     </Link>
                 </div>
             </div>
@@ -230,3 +230,5 @@ export default function RegisterPage() {
         </div>
     );
 }
+
+

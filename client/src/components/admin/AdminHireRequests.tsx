@@ -28,6 +28,7 @@ interface HireRequest {
     timeline: string;
     projectType: string;
     status: string;
+    source?: string;
     createdAt: string;
 }
 
@@ -71,14 +72,14 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
                     <input
                         type="text"
                         placeholder="Search by name, email, or service..."
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3 text-sm text-white outline-none focus:border-blue-500 transition-colors"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl md:rounded-[2rem] pl-12 pr-4 py-3 md:py-4 text-sm min-h-[48px] text-white outline-none focus:border-blue-500 transition-colors"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-4 w-full md:w-auto mt-4 md:mt-0">
                     <select
-                        className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500 transition-colors"
+                        className="w-full md:w-auto bg-white/5 border border-white/10 rounded-2xl md:rounded-[2rem] px-4 py-3 md:py-4 min-h-[48px] text-sm text-white outline-none focus:border-blue-500 transition-colors"
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
                     >
@@ -111,7 +112,7 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
                                 <div className="flex items-start sm:items-center justify-between gap-4 mb-4">
                                     <div className="flex items-center gap-4">
                                         <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/5 rounded-xl sm:rounded-2xl flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
-                                            <Briefcase className="w-5 h-5 sm:w-6 s:h-6" />
+                                            <Briefcase className="w-5 h-5 sm:w-6 sm:h-6" />
                                         </div>
                                         <div className="min-w-0">
                                             <h3 className="text-white font-bold text-sm sm:text-base truncate">{req.name}</h3>
@@ -139,9 +140,21 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
                                 </div>
 
                                 <div className="mt-4 flex items-center justify-between">
-                                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
-                                        {req.selectedService}
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+                                            {req.selectedService}
+                                        </span>
+                                        {req.source && (
+                                            <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-tight border ${req.source === 'diagnostic' ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' : 'bg-blue-500/10 text-blue-500 border-blue-500/20'}`}>
+                                                {req.source}
+                                            </span>
+                                        )}
+                                        {req.status === 'new' && (
+                                            <span className="px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-tight bg-green-500/10 text-green-500 border border-green-500/20">
+                                                New
+                                            </span>
+                                        )}
+                                    </div>
                                     <span className="text-[10px] text-gray-600 font-mono">
                                         {format(new Date(req.createdAt), 'MMM dd, yyyy')}
                                     </span>
@@ -169,9 +182,9 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
                                                     setSelectedRequest(null);
                                                 }
                                             }}
-                                            className="p-3 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500/20 transition-all"
+                                            className="p-3 sm:p-4 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500/20 transition-all min-w-[48px] min-h-[48px] flex justify-center items-center"
                                         >
-                                            <Trash2 size={18} />
+                                            <Trash2 size={20} />
                                         </button>
                                     </div>
                                 </div>
@@ -223,7 +236,7 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
                                                 <button
                                                     key={status}
                                                     onClick={() => onUpdateStatus(selectedRequest.id, status)}
-                                                    className={`py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all ${selectedRequest.status === status
+                                                    className={`py-3 md:py-4 rounded-xl md:rounded-2xl text-[10px] md:text-xs min-h-[48px] font-black uppercase tracking-widest border transition-all ${selectedRequest.status === status
                                                         ? "bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/20"
                                                         : "bg-white/5 border-white/10 text-gray-500 hover:text-white"
                                                         }`}
@@ -236,7 +249,7 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
 
                                     <a
                                         href={`mailto:${selectedRequest.email}?subject=Regarding Your Hire Request: ${selectedRequest.selectedService}`}
-                                        className="w-full btn-primary flex items-center justify-center gap-3 py-5 text-sm font-black uppercase tracking-widest"
+                                        className="btn-primary w-full py-5 text-sm font-black uppercase tracking-[0.2em] shadow-xl shadow-blue-500/10 flex justify-center items-center gap-3 min-h-[48px]"
                                     >
                                         <Mail size={18} />
                                         Contact Client

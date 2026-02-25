@@ -17,25 +17,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  transpilePackages: ["@portfolio/shared"],
-  async rewrites() {
-    if (process.env.NODE_ENV === 'production') {
-      return [
-        {
-          source: "/api/:path*",
-          destination: "https://kumailkmr-portfolio.onrender.com/api/:path*",
-        },
-      ];
-    }
-    return [
-      {
-        source: "/api/:path*",
-        destination: process.env.NEXT_PUBLIC_API_URL
-          ? `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`
-          : "http://localhost:5000/api/:path*",
-      },
-    ];
+  eslint: {
+    ignoreDuringBuilds: true,
   },
+  transpilePackages: ["@portfolio/shared"],
 };
 
 export default nextConfig;

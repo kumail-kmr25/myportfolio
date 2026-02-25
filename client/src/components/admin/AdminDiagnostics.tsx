@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import {
@@ -23,7 +23,7 @@ export default function AdminDiagnostics({ patterns, logs, onUpdate }: { pattern
 
     const handleDeletePattern = async (id: string) => {
         if (!confirm("Delete this pattern?")) return;
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/diagnostic-patterns/${id}`, { method: "DELETE" });
+        const res = await fetch(`/api/admin/diagnostic-patterns/${id}`, { method: "DELETE" });
         if (res.ok) onUpdate();
     };
 
@@ -243,3 +243,4 @@ function PatternForm({ pattern, onClose, onUpdate }: { pattern?: any, onClose: (
         </form>
     );
 }
+

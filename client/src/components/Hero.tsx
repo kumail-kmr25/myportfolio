@@ -6,9 +6,7 @@ import { ArrowRight, Download } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useHireModal } from "@/context/HireModalContext";
-import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+import { LiveStatusBadge } from "@/components/LiveStatusBadge";
 
 const roles = ["Full Stack Developer", "DevOps Engineer", "UI/UX Designer"];
 
@@ -18,7 +16,6 @@ export default function Hero() {
     const [isDeleting, setIsDeleting] = useState(false);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const { openModal } = useHireModal();
-    const { data: availability } = useSWR("/api/availability", fetcher);
 
     useEffect(() => {
         let rafId: number;
@@ -113,33 +110,7 @@ export default function Hero() {
                         <span className="inline-block py-2 px-4 rounded-full bg-white/[0.03] border border-white/[0.08] text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 backdrop-blur-md">
                             Expert Technical Intervention
                         </span>
-
-                        {availability && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="glass-effect px-6 py-3 rounded-2xl border border-white/5 flex items-center gap-6 shadow-2xl"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div className={`w-3 h-3 rounded-full ${availability.status === 'booked' ? 'bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.5)]' :
-                                        availability.status === 'limited' ? 'bg-yellow-500 shadow-[0_0_12px_rgba(234,179,8,0.5)]' :
-                                            'bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.5)]'
-                                        }`} />
-                                    <span className="text-xs font-bold text-white uppercase tracking-widest">{availability.message}</span>
-                                </div>
-                                <div className="h-4 w-px bg-white/10" />
-                                <div className="text-left">
-                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">
-                                        {availability.status === 'booked' ? 'Next Slot' : 'Current Slots'}
-                                    </p>
-                                    <p className="text-xs text-white font-bold">
-                                        {availability.status === 'booked' ?
-                                            (availability.nextSlot ? new Date(availability.nextSlot).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) : 'Soon') :
-                                            `${availability.activeCount} / ${availability.maxProjects} Active`}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        )}
+                        <LiveStatusBadge variant="hero" />
                     </div>
                     <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-bold font-display text-white mb-8 tracking-[-0.04em] leading-[0.9]">
                         Kumail Kmr

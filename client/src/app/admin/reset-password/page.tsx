@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
@@ -37,7 +37,7 @@ function ResetPasswordForm() {
         setIsLoading(true);
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/reset-password", {
+            const res = await fetch("/api/admin/reset-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token, newPassword }),
@@ -67,7 +67,7 @@ function ResetPasswordForm() {
                 <h1 className="text-3xl font-bold text-white mb-2">Password Reset!</h1>
                 <p className="text-gray-400 mb-8">Your password has been updated successfully.</p>
                 <Link href="/admin" className="btn-primary inline-flex items-center justify-center px-8">
-                    Go to Login →
+                    Go to Login â†’
                 </Link>
             </div>
         );
@@ -159,3 +159,5 @@ export default function ResetPasswordPage() {
         </div>
     );
 }
+
+

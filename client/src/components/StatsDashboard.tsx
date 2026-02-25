@@ -4,8 +4,9 @@ import { useEffect, useState, useRef } from "react";
 import useSWR from "swr";
 import { motion, useInView, useSpring, useTransform } from "framer-motion";
 import { Loader2, Code2, Bug, BookOpen, Layers, CheckSquare, Calendar, Github, ExternalLink } from "lucide-react";
+import { getApiUrl } from "@/lib/api";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) => fetch(getApiUrl(url)).then((res) => res.json());
 
 function AnimatedCounter({ value, duration = 2 }: { value: number, duration?: number }) {
     const ref = useRef(null);
@@ -30,6 +31,7 @@ function AnimatedCounter({ value, duration = 2 }: { value: number, duration?: nu
 
 export default function StatsDashboard() {
     const { data: stats, isLoading } = useSWR("/api/stats", fetcher);
+    const { data: availability } = useSWR("/api/availability", fetcher);
 
     const statItems = [
         { label: "Total Projects", value: stats?.totalProjects || 0, icon: Layers, color: "text-blue-500", bg: "bg-blue-500/10" },

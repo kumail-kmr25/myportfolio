@@ -9,71 +9,101 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Admin {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  email     String   @unique
-  phone     String   @unique
-  userId    String   @unique
-  password  String
+  id               String              @id @default(uuid())
+  name             String
+  email            String              @unique
+  phone            String              @unique
+  userId           String              @unique
+  password         String
   resetToken       String?
   resetTokenExpiry DateTime?
-  created_at DateTime @default(now())
+  created_at       DateTime            @default(now())
+  updated_at       DateTime            @updatedAt
+  activityLogs     AdminActivityLog[]
+}
+
+model AdminActivityLog {
+  id        String   @id @default(uuid())
+  adminId   String
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  action    String   // login / logout
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+}
+
+model DeveloperStatus {
+  id                   String   @id @default(uuid())
+  status               String   @default("available") // available / deep_work / active_project / open_collaboration
+  capacityPercent      Int      @default(0)
+  nextAvailabilityDays Int      @default(0)
+  currentFocus         String   @default("Open to new projects")
+  customMessage        String?
+  updatedAt            DateTime @updatedAt
 }
 
 model ActiveProject {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  id              String   @id @default(uuid())
   clientName      String
   projectTitle    String
-  status          String   // active / completed / cancelled
+  status          String // active / completed / cancelled
   startDate       DateTime
   expectedEndDate DateTime
   createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model SystemConfig {
-  id                String   @id @default(auto()) @map("_id") @db.ObjectId
-  maxActiveProjects Int      @default(2)
-  manualOverride    String?  // available / limited / booked
+  id                String  @id @default(uuid())
+  maxActiveProjects Int     @default(2)
+  manualOverride    String? // available / limited / booked
   overrideMessage   String?
+  updatedAt         DateTime @updatedAt
 }
 
 model Testimonial {
-  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                  String   @id @default(uuid())
   name                String
   email               String
   company             String?
-  relationship_type   String   // Worked With Me As
-  intervention_type   String   // Service Provided
+  role                String?  // Job title / role
+  relationship_type   String
+  intervention_type   String
   message             String
-  rating              Int      // 1-7
-  about_delivery_lead String   // How was communication & delivery?
+  rating              Int      // 1-5
+  about_delivery_lead String
+  photoUrl            String?  // Uploaded profile photo
   permission          Boolean  @default(false)
   approved            Boolean  @default(false)
+  featured            Boolean  @default(false)
+  verified            Boolean  @default(false) // "Verified Client" badge
   created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
 }
 
 model ContactSubmission {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  id              String   @id @default(uuid())
   name            String
   email           String
   company         String?
-  inquiryType     String?  // Reason for Contact
-  serviceRequired String?  // Service Needed
+  inquiryType     String? // Reason for Contact
+  serviceRequired String? // Service Needed
   budgetRange     String?
   timeline        String?
-  message         String   // Project Details
-  foundBy         String?  // How Did You Find Me?
+  message         String // Project Details
+  foundBy         String? // How Did You Find Me?
   replied         Boolean  @default(false)
   created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
 }
 
 model Project {
-  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                 String   @id @default(uuid())
   title              String
   description        String
   tags               String[]
@@ -85,11 +115,13 @@ model Project {
   afterImageUrl      String?
   improvementDetails String?
   metrics            String[]
+  decisionLogs       String[] // Technical trade-offs and decisions
   created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
 }
 
 model CaseStudy {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(uuid())
   title        String
   errorMessage String
   rootCause    String
@@ -99,20 +131,22 @@ model CaseStudy {
   techStack    String[]
   isPublished  Boolean  @default(false)
   created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
 }
 
 model FeatureRequest {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(uuid())
   name       String
   email      String
   message    String
-  category   String   // UI / Performance / New Tool / Other
+  category   String // UI / Performance / New Tool / Other
   status     String   @default("pending") // pending / building / completed
   created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model SiteStats {
-  id                       String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String   @id @default(uuid())
   totalProjects            Int      @default(0)
   bugsFixed                Int      @default(0)
   caseStudiesWritten       Int      @default(0)
@@ -123,7 +157,7 @@ model SiteStats {
 }
 
 model BlogPost {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(uuid())
   title      String
   excerpt    String
   content    String
@@ -131,30 +165,33 @@ model BlogPost {
   readTime   String
   published  Boolean  @default(false)
   created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model IssuePattern {
-  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                 String   @id @default(uuid())
   keywords           String[]
   possibleCauses     String[]
   debugSteps         String[]
-  complexity         String   // Low / Medium / High
+  complexity         String // Low / Medium / High
   recommendedService String
   createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model DiagnosticLog {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  id               String   @id @default(uuid())
   description      String
   techStack        String?
   errorMessage     String?
-  environment      String   // Local / Production / Both
-  matchedPatternId String?  @db.ObjectId
+  environment      String // Local / Production / Both
+  matchedPatternId String?
   createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model HireRequest {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  id              String   @id @default(uuid())
   name            String
   email           String
   company         String?
@@ -166,23 +203,34 @@ model HireRequest {
   source          String   @default("hire_me")
   status          String   @default("new") // new / contacted / closed
   createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model JourneyPhase {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  phase       String   // e.g., "Phase 1"
+  id          String   @id @default(uuid())
+  phase       String // e.g., "Phase 1"
   title       String
   description String
-  icon        String   // Lucide icon name
-  color       String   // Tailwind gradient classes
+  icon        String // Lucide icon name
+  color       String // Tailwind gradient classes
   order       Int
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Skill {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid())
   name      String
-  status    String   // expert / learning
+  status    String // expert / learning
   order     Int
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Resume {
+  id        String   @id @default(uuid())
+  url       String
+  visible   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

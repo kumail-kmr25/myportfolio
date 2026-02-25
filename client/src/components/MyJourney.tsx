@@ -15,8 +15,9 @@ import {
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import useSWR from 'swr';
+import { getApiUrl } from "@/lib/api";
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = (url: string) => fetch(getApiUrl(url)).then(res => res.json());
 
 const IconMap: { [key: string]: React.ReactNode } = {
     "Brain": <Brain className="w-5 h-5 text-blue-400" />,
@@ -122,7 +123,7 @@ export default function MyJourney() {
 
                             {/* Phases */}
                             <div className="space-y-24">
-                                {phases.map((phase: any, index: number) => (
+                                {Array.isArray(phases) && phases.map((phase: any, index: number) => (
                                     <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
                                         {/* Timeline Dot */}
                                         <div className="absolute left-8 md:left-1/2 md:-translate-x-1/2 w-4 h-4 rounded-full bg-[#050505] border-2 border-white/20 z-20">
@@ -169,7 +170,7 @@ export default function MyJourney() {
                                 </div>
 
                                 <div className="flex flex-wrap justify-center gap-4">
-                                    {skills.sort((a: any, b: any) => a.order - b.order).map((skill: any, index: number) => (
+                                    {Array.isArray(skills) && [...skills].sort((a: any, b: any) => a.order - b.order).map((skill: any, index: number) => (
                                         <motion.div
                                             key={index}
                                             initial={{ opacity: 0, y: 20 }}

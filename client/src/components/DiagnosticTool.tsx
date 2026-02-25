@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Bug, Terminal, Globe, ChevronRight, Activity } from "lucide-react";
 import DiagnosticResult from "./DiagnosticResult";
+import { getApiUrl } from "@/lib/api";
 
 export default function DiagnosticTool() {
     const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +22,8 @@ export default function DiagnosticTool() {
         setResult(null);
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/diagnose", {
+            const res = await fetch(getApiUrl("/api/diagnose"), {
+
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)

@@ -94,7 +94,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             } else {
                 await onAdd(formData as ProjectFormData);
             }
-            setFormData({ tags: [], demo: "#", deployment: "", github: "#" });
+            setFormData({ tags: [], demo: "#", deployment: "", github: "#", decisionLogs: [] });
             setIsAdding(false);
             setEditingProject(null);
         } catch (err) {
@@ -107,7 +107,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
     const handleDiscard = () => {
         setIsAdding(false);
         setEditingProject(null);
-        setFormData({ tags: [], demo: "#", deployment: "", github: "#" });
+        setFormData({ tags: [], demo: "#", deployment: "", github: "#", decisionLogs: [] });
     };
 
     const addTag = () => {
@@ -229,6 +229,15 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                                         onChange={(e) => setFormData({ ...formData, metrics: e.target.value.split(",").map(m => m.trim()).filter(Boolean) })}
                                     />
                                 </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Engineering Decisions (one per line)</label>
+                                    <textarea
+                                        className="input-field min-h-[100px] text-sm"
+                                        placeholder="e.g. Optimized DB queries by adding composite indexes..."
+                                        value={formData.decisionLogs?.join("\n") || ""}
+                                        onChange={(e) => setFormData({ ...formData, decisionLogs: e.target.value.split("\n").filter(Boolean) })}
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -287,18 +296,20 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                             <Image src={project.image} alt={project.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover group-hover:scale-110 transition-transform duration-1000" />
                             <div className="absolute inset-0 bg-gradient-to-t from-[#080808] to-transparent opacity-80" />
 
-                            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex gap-2">
+                            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex flex-col sm:flex-row gap-2">
                                 <button
                                     onClick={() => handleEdit(project)}
-                                    className="p-2 sm:p-3 bg-blue-500/20 text-blue-500 rounded-xl sm:rounded-2xl hover:bg-blue-500 hover:text-white transition-all backdrop-blur-xl border border-blue-500/20 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100"
+                                    className="p-3 sm:p-3 bg-[#0a0a0a]/80 sm:bg-blue-500/20 text-white sm:text-blue-500 rounded-xl sm:rounded-2xl sm:hover:bg-blue-500 sm:hover:text-white transition-all backdrop-blur-xl border border-white/10 sm:border-blue-500/20 sm:opacity-0 group-hover:opacity-100 sm:scale-90 group-hover:scale-100 flex items-center justify-center min-w-[44px] min-h-[44px]"
+                                    aria-label="Edit project"
                                 >
-                                    <PenLine size={16} />
+                                    <PenLine size={18} />
                                 </button>
                                 <button
                                     onClick={() => onDelete(project.id)}
-                                    className="p-2 sm:p-3 bg-red-500/20 text-red-500 rounded-xl sm:rounded-2xl hover:bg-red-500 hover:text-white transition-all backdrop-blur-xl border border-red-500/20 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100"
+                                    className="p-3 sm:p-3 bg-[#0a0a0a]/80 sm:bg-red-500/20 text-red-500 sm:text-red-500 rounded-xl sm:rounded-2xl sm:hover:bg-red-500 sm:hover:text-white transition-all backdrop-blur-xl border border-white/10 sm:border-red-500/20 sm:opacity-0 group-hover:opacity-100 sm:scale-90 group-hover:scale-100 flex items-center justify-center min-w-[44px] min-h-[44px]"
+                                    aria-label="Delete project"
                                 >
-                                    <Trash2 size={16} />
+                                    <Trash2 size={18} />
                                 </button>
                             </div>
                         </div>

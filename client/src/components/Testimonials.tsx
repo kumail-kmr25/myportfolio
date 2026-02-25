@@ -1,159 +1,177 @@
 "use client";
 
-import { useState } from "react";
-import { Star, MessageSquare, Plus, Loader2 } from "lucide-react";
+import { useState, useRef } from "react";
+import Image from "next/image";
+import { Star, BadgeCheck, Plus, Loader2, Quote } from "lucide-react";
 import useSWR from "swr";
 import TestimonialModal from "./TestimonialModal";
 import { motion } from "framer-motion";
 
-const fetcher = async (url: string) => {
-    const res = await fetch(url);
-    const contentType = res.headers.get("content-type");
-    if (!res.ok) {
-        if (contentType && contentType.includes("application/json")) {
-            const error = await res.json();
-            throw new Error(error.error || "Failed to fetch");
-        }
-        throw new Error(`Server returned ${res.status}: ${res.statusText}`);
-    }
-    if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("Invalid response format: Expected JSON but received something else.");
-    }
-    return res.json();
-};
+const fetcher = (url: string) => fetch(url).then(r => {
+    if (!r.ok) throw new Error("Failed");
+    return r.json();
+});
 
 interface Testimonial {
     id: string;
     name: string;
     company?: string | null;
+    role?: string | null;
     relationship_type: string;
     intervention_type: string;
     message: string;
     rating: number;
-    about_delivery_lead: string;
+    photoUrl?: string | null;
+    verified?: boolean;
+    featured?: boolean;
     created_at: string;
+}
+
+function TestimonialCard({ t }: { t: Testimonial }) {
+    return (
+        <div className="flex-shrink-0 w-[340px] mx-3 p-6 rounded-3xl bg-white/[0.03] border border-white/8 hover:border-white/20 hover:scale-[1.03] hover:bg-white/[0.06] transition-all duration-300 group cursor-default select-none"
+            style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.4)" }}>
+
+            {/* Quote icon */}
+            <Quote size={22} className="text-blue-500/40 mb-4" />
+
+            {/* Stars */}
+            <div className="flex gap-1 mb-4">
+                {[1, 2, 3, 4, 5].map(n => (
+                    <Star key={n} size={13} className={n <= t.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-700"} />
+                ))}
+            </div>
+
+            {/* Message */}
+            <p className="text-gray-300 text-sm leading-relaxed line-clamp-4 mb-5 italic">
+                "{t.message}"
+            </p>
+
+            {/* Author */}
+            <div className="flex items-center gap-3 border-t border-white/5 pt-4">
+                {t.photoUrl ? (
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-white/10">
+                        <Image src={t.photoUrl} alt={t.name} fill className="object-cover" />
+                    </div>
+                ) : (
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-500/30 border border-white/10 flex items-center justify-center text-white font-black text-sm flex-shrink-0">
+                        {t.name[0]}
+                    </div>
+                )}
+                <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                        <span className="text-sm font-black text-white truncate">{t.name}</span>
+                        {t.verified && (
+                            <BadgeCheck size={14} className="text-blue-400 flex-shrink-0" aria-label="Verified Client" />
+                        )}
+                    </div>
+                    <div className="text-[10px] text-gray-500 truncate">
+                        {t.role && <span>{t.role}</span>}
+                        {t.role && t.company && <span> · </span>}
+                        {t.company && <span>{t.company}</span>}
+                        {!t.role && !t.company && <span className="text-blue-400/70">{t.intervention_type}</span>}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Marquee({ items, reverse = false }: { items: Testimonial[]; reverse?: boolean }) {
+    const duplicated = [...items, ...items, ...items];
+
+    return (
+        <div className="overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}>
+            <motion.div
+                className="flex"
+                animate={{ x: reverse ? ["0%", "33.33%"] : ["0%", "-33.33%"] }}
+                transition={{ duration: 35, ease: "linear", repeat: Infinity }}
+                style={{ width: "max-content" }}
+                whileHover={{ animationPlayState: "paused" } as any}
+            >
+                {duplicated.map((t, i) => <TestimonialCard key={`${t.id}-${i}`} t={t} />)}
+            </motion.div>
+        </div>
+    );
 }
 
 export default function Testimonials() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { data: testimonials, error, mutate, isLoading } = useSWR<Testimonial[]>("/api/testimonials", fetcher);
+    const { data: testimonials, mutate, isLoading, error } = useSWR<Testimonial[]>("/api/testimonials", fetcher);
 
-    const handleSuccess = () => {
-        mutate();
-        setTimeout(() => setIsModalOpen(false), 2000);
-    };
+    const handleSuccess = () => { mutate(); setTimeout(() => setIsModalOpen(false), 2500); };
+
+    const featured = testimonials?.filter(t => t.featured) ?? [];
+    const regular = testimonials?.filter(t => !t.featured) ?? [];
+    const row1 = testimonials ? testimonials.slice(0, Math.ceil(testimonials.length / 2)) : [];
+    const row2 = testimonials ? testimonials.slice(Math.ceil(testimonials.length / 2)) : [];
 
     return (
-        <section id="testimonials" className="py-12 bg-[#050505] relative">
-            <div className="section-container">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
-                    <div className="max-w-2xl">
-                        <h2 className="section-title">Client Feedback</h2>
-                        <p className="text-lg text-gray-400 mt-4 leading-relaxed">
-                            Real experiences from clients I&apos;ve collaborated with. Transparent, honest, and impactful.
+        <section id="testimonials" className="py-24 bg-[#050505] relative overflow-hidden">
+            {/* Background glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+
+            <div className="section-container mb-12">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 mb-3">Client Voices</div>
+                        <h2 className="section-title">What People Say</h2>
+                        <p className="text-gray-400 mt-3 leading-relaxed max-w-lg">
+                            Real feedback from clients, colleagues, and collaborators. Unfiltered. Honest. Verified.
                         </p>
                     </div>
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="btn-primary gap-2 group whitespace-nowrap"
-                    >
-                        <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
-                        Submit Testimonial
+                    <button onClick={() => setIsModalOpen(true)} className="btn-primary gap-2 group whitespace-nowrap flex-shrink-0">
+                        <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+                        Leave a Testimonial
                     </button>
                 </div>
-
-                {isLoading ? (
-                    <div className="flex items-center justify-center py-20">
-                        <Loader2 className="w-10 h-10 animate-spin text-white/20" />
-                    </div>
-                ) : error ? (
-                    <div className="text-center py-20 text-red-500 bg-red-500/5 rounded-3xl border border-red-500/10">
-                        <p className="font-medium">Error: {error.message}</p>
-                        <p className="text-sm text-gray-500 mt-2">Please check if the server is running and the database is connected.</p>
-                    </div>
-                ) : testimonials?.length === 0 ? (
-                    <div className="text-center py-20 border-2 border-dashed border-white/5 rounded-[3rem]">
-                        <p className="text-gray-500 mb-6">No feedback yet. Be the first to share your experience!</p>
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="btn-secondary"
-                        >
-                            Add Your Testimonial
-                        </button>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {Array.isArray(testimonials) && testimonials.map((testimonial) => (
-                            <motion.div
-                                key={testimonial.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                className="card group hover:-translate-y-2 transition-all duration-500 flex flex-col"
-                            >
-                                <div className="mb-6 flex items-center justify-between">
-                                    <div
-                                        className="flex gap-1"
-                                        aria-label={`Rated ${testimonial.rating} out of 7 stars`}
-                                    >
-                                        {[1, 2, 3, 4, 5, 6, 7].map((star) => (
-                                            <Star
-                                                key={star}
-                                                className={`w-4 h-4 ${star <= testimonial.rating
-                                                    ? "text-yellow-500 fill-yellow-500"
-                                                    : "text-gray-700"
-                                                    }`}
-                                                aria-hidden="true"
-                                            />
-                                        ))}
-                                    </div>
-                                    <span className="text-[10px] uppercase tracking-widest text-white/20 font-bold">
-                                        {new Date(testimonial.created_at).toLocaleDateString()}
-                                    </span>
-                                </div>
-
-                                <div className="mb-8 flex-grow">
-                                    <p className="text-gray-300 leading-relaxed italic">
-                                        &quot;{testimonial.message}&quot;
-                                    </p>
-                                </div>
-
-                                <div className="mt-auto pt-6 border-t border-white/5">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center text-white font-bold text-lg border border-white/10 group-hover:border-white/20 transition-colors">
-                                            {testimonial.name[0]}
-                                        </div>
-                                        <div>
-                                            <h3 className="font-bold text-white group-hover:text-blue-400 transition-colors">
-                                                {testimonial.name}
-                                                {testimonial.company && (
-                                                    <span className="text-gray-500 font-normal text-xs ml-2">
-                                                        @{testimonial.company}
-                                                    </span>
-                                                )}
-                                            </h3>
-                                            <div className="flex flex-col gap-0.5 mt-0.5">
-                                                <p className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">{testimonial.intervention_type}</p>
-                                                <p className="text-[9px] text-gray-500 font-medium uppercase tracking-tight italic">Works as {testimonial.relationship_type}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="mt-4 bg-white/5 rounded-2xl p-4 border border-white/5">
-                                        <p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1 font-bold">About Delivery Lead</p>
-                                        <p className="text-sm text-gray-300 line-clamp-2">{testimonial.about_delivery_lead}</p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                )}
             </div>
 
-            <TestimonialModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onSuccess={handleSuccess}
-            />
+            {isLoading ? (
+                <div className="flex justify-center py-16"><Loader2 className="animate-spin text-white/20 w-8 h-8" /></div>
+            ) : error ? (
+                <div className="text-center py-16 text-gray-500 text-sm">Error loading testimonials.</div>
+            ) : !testimonials || testimonials.length === 0 ? (
+                <div className="section-container text-center py-20 border-2 border-dashed border-white/5 rounded-3xl">
+                    <p className="text-gray-500 mb-4">No testimonials yet — be the first!</p>
+                    <button onClick={() => setIsModalOpen(true)} className="btn-secondary">Add Yours</button>
+                </div>
+            ) : (
+                <div className="space-y-6">
+                    {/* Row 1 — forward */}
+                    {row1.length > 0 && <Marquee items={row1} />}
+                    {/* Row 2 — reverse (only show if enough items) */}
+                    {row2.length > 0 && <Marquee items={row2.length >= 2 ? row2 : row1} reverse />}
+                </div>
+            )}
+
+            {/* Stats strip */}
+            {testimonials && testimonials.length > 0 && (
+                <div className="section-container mt-12">
+                    <div className="flex flex-wrap items-center justify-center gap-8 p-6 rounded-3xl bg-white/[0.02] border border-white/5">
+                        <div className="text-center">
+                            <div className="text-2xl font-black text-white">{testimonials.length}</div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Total Reviews</div>
+                        </div>
+                        <div className="w-px h-8 bg-white/10" />
+                        <div className="text-center">
+                            <div className="text-2xl font-black text-yellow-400">
+                                {(testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1)}
+                            </div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Avg Rating</div>
+                        </div>
+                        <div className="w-px h-8 bg-white/10" />
+                        <div className="text-center">
+                            <div className="text-2xl font-black text-blue-400">
+                                {testimonials.filter(t => t.verified).length}
+                            </div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Verified Clients</div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <TestimonialModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSuccess={handleSuccess} />
         </section>
     );
 }

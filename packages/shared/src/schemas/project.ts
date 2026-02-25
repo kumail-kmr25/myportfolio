@@ -12,6 +12,7 @@ export const projectSchema = z.object({
     afterImageUrl: z.string().url("Invalid image URL").optional().or(z.literal("")),
     improvementDetails: z.string().optional().or(z.literal("")),
     metrics: z.array(z.string()).optional().default([]),
+    decisionLogs: z.array(z.string()).optional().default([]),
 });
 
 export type ProjectFormData = z.infer<typeof projectSchema>;

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Loader2, Mail, CheckCircle2, ArrowLeft } from "lucide-react";
@@ -16,7 +16,7 @@ export default function ForgotPasswordPage() {
         setIsLoading(true);
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/forgot-password", {
+            const res = await fetch("/api/forgot-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
@@ -111,3 +111,5 @@ export default function ForgotPasswordPage() {
         </div>
     );
 }
+
+

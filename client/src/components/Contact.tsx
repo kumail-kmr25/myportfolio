@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Send, MessageCircle, Loader2, CheckCircle2, AlertC
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { contactSchema, type ContactFormData } from "@portfolio/shared";
+import { getApiUrl } from "@/lib/api";
 
 function ContactInner() {
     const [showPhone, setShowPhone] = useState(false);
@@ -54,7 +55,8 @@ function ContactInner() {
         setErrorMessage("");
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/contact", {
+            const response = await fetch(getApiUrl("/api/contact"), {
+
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
@@ -148,7 +150,7 @@ function ContactInner() {
                             </div>
                         ) : (
                             <form className="space-y-8 p-2 md:p-6" onSubmit={handleSubmit(onSubmit)}>
-                                <div className="space-y-4">
+                                <div className="space-y-6">
                                     <h3 className="text-xl font-semibold text-white/90 border-b border-white/5 pb-2">Basic Information</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
@@ -158,6 +160,7 @@ function ContactInner() {
                                                 type="text"
                                                 id="name"
                                                 placeholder="e.g. John Doe"
+                                                autoComplete="name"
                                                 className={`input-field ${errors.name ? 'border-red-500/50 focus:border-red-500' : ''}`}
                                             />
                                             {errors.name && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.name.message}</p>}
@@ -169,6 +172,7 @@ function ContactInner() {
                                                 type="email"
                                                 id="email"
                                                 placeholder="john@company.com"
+                                                autoComplete="email"
                                                 className={`input-field ${errors.email ? 'border-red-500/50 focus:border-red-500' : ''}`}
                                             />
                                             {errors.email && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.email.message}</p>}
@@ -181,12 +185,13 @@ function ContactInner() {
                                             type="text"
                                             id="company"
                                             placeholder="Where do you work?"
+                                            autoComplete="organization"
                                             className="input-field"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="space-y-4">
+                                <div className="space-y-6">
                                     <h3 className="text-xl font-semibold text-white/90 border-b border-white/5 pb-2">Project & Opportunity Details</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
@@ -272,9 +277,9 @@ function ContactInner() {
                                     <textarea
                                         {...register("message")}
                                         id="message"
-                                        rows={5}
+                                        rows={6}
                                         placeholder="Please provide a detailed explanation (min 20 characters)..."
-                                        className={`input-field resize-none bg-[#0a0a0a] focus:ring-1 focus:ring-blue-500/50 ${errors.message ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                                        className={`input-field resize-y bg-[#0a0a0a] focus:ring-1 focus:ring-blue-500/50 ${errors.message ? 'border-red-500/50 focus:border-red-500' : ''}`}
                                     />
                                     {errors.message && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {errors.message.message}</p>}
                                 </div>
@@ -306,7 +311,7 @@ function ContactInner() {
                                 <button
                                     type="submit"
                                     disabled={submitStatus === "loading"}
-                                    className="btn-primary w-full py-4 text-lg font-bold group disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.01] active:scale-[0.99] transition-all"
+                                    className="btn-primary w-full py-4 text-base md:text-lg font-bold group disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.01] active:scale-[0.99] transition-all"
                                 >
                                     {submitStatus === "loading" ? (
                                         <div className="flex items-center justify-center">

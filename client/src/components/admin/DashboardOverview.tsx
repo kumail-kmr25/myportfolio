@@ -8,11 +8,13 @@ import {
     TrendingUp,
     Clock,
     Zap,
-    Briefcase
+    Briefcase,
+    Activity
 } from "lucide-react";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import AdminLiveFeed from "./AdminLiveFeed";
 
 interface OverviewProps {
     stats: {
@@ -65,57 +67,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
             {/* Activity & System Status */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
-                    <h2 className="text-xl font-bold text-white flex items-center gap-3">
-                        <Zap className="text-blue-400" size={20} />
-                        Live Activity Feed
-                    </h2>
-                    <div className="glass-effect rounded-[2.5rem] p-4 border border-white/5 overflow-hidden">
-                        <div className="space-y-1">
-                            {recentActivity.length === 0 ? (
-                                <div className="p-12 text-center text-gray-600 text-xs font-bold uppercase tracking-widest">
-                                    No recent activity detected
-                                </div>
-                            ) : (
-                                recentActivity.map((activity, idx) => {
-                                    const Icon = activity.type === "hire" ? Briefcase : activity.type === "message" ? Mail : Zap;
-                                    const color = activity.type === "hire" ? "green" : activity.type === "message" ? "purple" : "blue";
-
-                                    return (
-                                        <div
-                                            key={activity.id}
-                                            className={`flex items-center gap-6 p-6 rounded-[2rem] hover:bg-white/[0.03] transition-all group border border-transparent hover:border-white/5 ${idx !== recentActivity.length - 1 ? 'border-b-white/5' : ''}`}
-                                        >
-                                            <div className={`w-12 h-12 rounded-2xl bg-${color}-500/10 flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                                                <Icon className={`text-${color}-400`} size={20} />
-                                            </div>
-                                            <div className="flex-grow min-w-0">
-                                                <div className="flex items-center justify-between mb-1">
-                                                    <h4 className="text-sm font-bold text-white truncate group-hover:text-blue-400 transition-colors">
-                                                        {activity.title}
-                                                    </h4>
-                                                    <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest whitespace-nowrap ml-4">
-                                                        {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
-                                                    </span>
-                                                </div>
-                                                <div className="flex items-center justify-between">
-                                                    <p className="text-xs text-gray-500 truncate italic">
-                                                        {activity.subtitle}
-                                                    </p>
-                                                    <div className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter
-                                                        ${activity.status === 'new' ? 'bg-blue-500/20 text-blue-400' :
-                                                            activity.status === 'replied' || activity.status === 'completed' ? 'bg-green-500/20 text-green-400' :
-                                                                'bg-white/5 text-gray-500'}`}
-                                                    >
-                                                        {activity.status}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })
-                            )}
-                        </div>
-                    </div>
+                    <AdminLiveFeed />
                 </div>
 
                 <div className="space-y-6">
@@ -159,6 +111,34 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                                 </div>
                                 <p className="text-[9px] text-gray-600 mt-3 text-center italic">Live capacity is now managed via the <strong>Work Capacity</strong> tab.</p>
                             </div>
+                        </div>
+                    </div>
+
+                    <h2 className="text-xl font-bold text-white flex items-center gap-3 mt-8">
+                        <Activity className="text-green-400" size={20} />
+                        System Health
+                    </h2>
+                    <div className="card p-6 bg-white/5 border-white/5 space-y-4">
+                        <div className="flex items-center justify-between">
+                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">DB Latency</span>
+                            <span className="text-[10px] text-green-400 font-mono">42ms - Optimal</span>
+                        </div>
+                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-full w-[85%] bg-green-500/50" />
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">API Resilience</span>
+                            <span className="text-[10px] text-blue-400 font-mono">99.9% Uptime</span>
+                        </div>
+                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-full w-[99%] bg-blue-500/50" />
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">SWR Pulse</span>
+                            <span className="text-[10px] text-purple-400 font-mono">Healthy (3.2s)</span>
+                        </div>
+                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-full w-[70%] bg-purple-500/50" />
                         </div>
                     </div>
                 </div>

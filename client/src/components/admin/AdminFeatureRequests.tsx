@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { CheckSquare, Clock, Hammer, CheckCircle2, Mail, User, MessageCircle, Loader2 } from "lucide-react";
@@ -20,7 +20,7 @@ export default function AdminFeatureRequests({ requests, onUpdate }: { requests:
     const updateStatus = async (id: string, status: string) => {
         setLoading(id);
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://kumailkmr-portfolio.onrender.com"}/api/admin/feature-requests/${id}`, {
+            const res = await fetch(`/api/admin/feature-requests/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status })
@@ -106,3 +106,4 @@ export default function AdminFeatureRequests({ requests, onUpdate }: { requests:
         </div>
     );
 }
+
