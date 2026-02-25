@@ -68,7 +68,7 @@ export default function AdminLiveFeed() {
                 )}
 
                 <AnimatePresence initial={false}>
-                    {activities?.map((activity: any) => {
+                    {Array.isArray(activities) && activities.map((activity: any) => {
                         const config = TYPE_CONFIG[activity.type] || TYPE_CONFIG.message;
                         return (
                             <motion.div
