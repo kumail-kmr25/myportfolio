@@ -9,7 +9,8 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "postinstall": "prisma generate --schema=../packages/database/prisma/schema.prisma"
     },
     "dependencies": {
         "@hookform/resolvers": "^3.10.0",

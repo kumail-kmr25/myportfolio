@@ -29,7 +29,10 @@ export async function GET() {
         return NextResponse.json(sanitizedTestimonials);
     } catch (error) {
         console.error("Error fetching testimonials:", error);
-        return NextResponse.json({ error: "Failed to fetch testimonials" }, { status: 500 });
+        return NextResponse.json({
+            error: "Failed to fetch testimonials",
+            details: error instanceof Error ? error.message : "Database connection error"
+        }, { status: 500 });
     }
 }
 
