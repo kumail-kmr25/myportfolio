@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  transpilePackages: ["@portfolio/shared"],
+  transpilePackages: ["@portfolio/shared", "@portfolio/database"],
 };
 
 export default nextConfig;

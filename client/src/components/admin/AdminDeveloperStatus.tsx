@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useSWR from "swr";
 import { Save, AlertCircle, Clock, Activity, RefreshCcw } from "lucide-react";
 
@@ -17,6 +17,28 @@ export default function AdminDeveloperStatus() {
     const { data, mutate } = useSWR("/api/developer-status", fetcher);
     const [isSaving, setIsSaving] = useState(false);
     const [isSyncing, setIsSyncing] = useState(false);
+
+    // Local state for optimistic UI updates
+    const [formData, setFormData] = useState({
+        status: "",
+        capacityPercent: 0,
+        nextAvailabilityDays: 0,
+        currentFocus: "",
+        customMessage: "",
+    });
+
+    // Populate form data once API data loads
+    useEffect(() => {
+        if (data && !formData.status) {
+            setFormData({
+                status: data.status || "available",
+                capacityPercent: data.capacityPercent || 0,
+                nextAvailabilityDays: data.nextAvailabilityDays || 0,
+                currentFocus: data.currentFocus || "",
+                customMessage: data.customMessage || "",
+            });
+        }
+    }, [data, formData.status]);
 
     const handleSync = async () => {
         setIsSyncing(true);
@@ -36,26 +58,6 @@ export default function AdminDeveloperStatus() {
             setIsSyncing(false);
         }
     };
-
-    // Local state for optimistic UI updates
-    const [formData, setFormData] = useState({
-        status: "",
-        capacityPercent: 0,
-        nextAvailabilityDays: 0,
-        currentFocus: "",
-        customMessage: "",
-    });
-
-    // Populate form data once API data loads
-    if (data && !formData.status) {
-        setFormData({
-            status: data.status || "available",
-            capacityPercent: data.capacityPercent || 0,
-            nextAvailabilityDays: data.nextAvailabilityDays || 0,
-            currentFocus: data.currentFocus || "",
-            customMessage: data.customMessage || "",
-        });
-    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
