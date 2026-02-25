@@ -23,6 +23,7 @@ import AdminDiagnostics from "@/components/admin/AdminDiagnostics";
 import AdminCapacityManager from "@/components/admin/AdminCapacityManager";
 import AdminDeveloperStatus from "@/components/admin/AdminDeveloperStatus";
 import AdminAnalytics from "@/components/admin/AdminAnalytics";
+import AdminResume from "@/components/admin/AdminResume";
 
 import { getApiUrl } from "@/lib/api";
 
@@ -46,14 +47,14 @@ function AdminPageContent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [authError, setAuthError] = useState("");
-    const [activeTab, setActiveTab] = useState<"overview" | "status" | "messages" | "hire" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics" | "capacity">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "status" | "messages" | "hire" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume">("overview");
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
     useEffect(() => {
         const tab = searchParams.get("tab");
-        const validTabs = ["overview", "status", "messages", "hire", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats", "diagnostics", "capacity"];
+        const validTabs = ["overview", "status", "messages", "hire", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats", "diagnostics", "capacity", "resume"];
         if (tab && validTabs.includes(tab as any)) {
             setActiveTab(tab as any);
         }
@@ -407,6 +408,8 @@ function AdminPageContent() {
                             )}
 
                             {activeTab === "status" && <AdminDeveloperStatus />}
+                            {activeTab === "capacity" && <AdminCapacityManager />}
+                            {activeTab === "resume" && <AdminResume />}
                             {activeTab === "messages" && <AdminContact messages={messages || []} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />}
                             {activeTab === "hire" && <AdminHireRequests requests={hireRequests || []} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />}
                             {activeTab === "testimonials" && <AdminTestimonials testimonials={allTestimonials || []} onApprove={handleTestimonialApproval} onDelete={handleTestimonialDelete} />}

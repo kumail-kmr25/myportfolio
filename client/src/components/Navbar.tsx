@@ -10,7 +10,8 @@ import {
     Menu,
     X,
     Briefcase,
-    Settings
+    Settings,
+    FileText
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
@@ -18,7 +19,14 @@ import { LiveStatusBadge } from "@/components/LiveStatusBadge";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
-const navLinks = [
+interface NavLink {
+    name: string;
+    href: string;
+    isCTA?: boolean;
+    isExternal?: boolean;
+}
+
+const navLinks: NavLink[] = [
     { name: "Projects", href: "#projects" },
     { name: "Case Studies", href: "#case-studies" },
     { name: "Services", href: "#services" },
@@ -32,7 +40,29 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState("");
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [resumeUrl, setResumeUrl] = useState<string | null>(null);
     const { openModal } = useHireModal();
+
+    useEffect(() => {
+        const fetchResume = async () => {
+            try {
+                const res = await fetch("/api/resume");
+                if (res.ok) {
+                    const data = await res.json();
+                    setResumeUrl(data.url);
+                }
+            } catch (err) {
+                // Silently ignore
+            }
+        };
+        fetchResume();
+    }, []);
+
+    const dynamicLinks: NavLink[] = [
+        ...navLinks.filter(l => !l.isCTA),
+        ...(resumeUrl ? [{ name: "Resume", href: resumeUrl, isExternal: true }] : []),
+        ...navLinks.filter(l => l.isCTA)
+    ];
 
     useEffect(() => {
         const handleScroll = () => {
@@ -93,10 +123,23 @@ export default function Navbar() {
                     </Link>
                 </div>
 
-                {/* Desktop Menu */}
                 <div className="hidden md:flex items-center relative bg-white/[0.03] border border-white/[0.05] p-1 rounded-full backdrop-blur-md">
-                    {navLinks.map((link, index) => {
+                    {dynamicLinks.map((link, index) => {
                         const isActive = activeSection === link.href.substring(1);
+                        if (link.isExternal) {
+                            return (
+                                <a
+                                    key={link.name}
+                                    href={link.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-5 py-2 rounded-full text-[11px] font-bold tracking-[0.05em] transition-all relative z-10 text-blue-400 hover:text-blue-300 flex items-center gap-2"
+                                >
+                                    <FileText size={12} />
+                                    {link.name}
+                                </a>
+                            );
+                        }
                         return (
                             <Link
                                 key={link.name}
@@ -154,28 +197,51 @@ export default function Navbar() {
                         className="md:hidden absolute top-full left-0 w-full glass-effect border-b border-white/5 overflow-hidden shadow-2xl"
                     >
                         <div className="flex flex-col p-8 space-y-6">
-                            {navLinks.map((link, i) => (
-                                <motion.div
-                                    key={link.name}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: i * 0.1 }}
-                                >
-                                    <Link
-                                        href={link.isCTA ? "#" : link.href}
-                                        className={`text-2xl font-bold tracking-tight ${link.isCTA ? "text-blue-500 pt-4 border-t border-white/5 w-full block" : "text-gray-300"}`}
-                                        onClick={(e) => {
-                                            if (link.isCTA) {
-                                                e.preventDefault();
-                                                openModal();
-                                            }
-                                            setIsOpen(false);
-                                        }}
+                            {dynamicLinks.map((link, i) => {
+                                if (link.isExternal) {
+                                    return (
+                                        <motion.div
+                                            key={link.name}
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: i * 0.1 }}
+                                        >
+                                            <a
+                                                href={link.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-2xl font-bold tracking-tight text-blue-500 flex items-center gap-2"
+                                                onClick={() => setIsOpen(false)}
+                                            >
+                                                <FileText size={20} />
+                                                {link.name}
+                                            </a>
+                                        </motion.div>
+                                    );
+                                }
+                                return (
+                                    <motion.div
+                                        key={link.name}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: i * 0.1 }}
                                     >
-                                        {link.name}
-                                    </Link>
-                                </motion.div>
-                            ))}
+                                        <Link
+                                            href={link.isCTA ? "#" : link.href}
+                                            className={`text-2xl font-bold tracking-tight ${link.isCTA ? "text-blue-500 pt-4 border-t border-white/5 w-full block" : "text-gray-300"}`}
+                                            onClick={(e) => {
+                                                if (link.isCTA) {
+                                                    e.preventDefault();
+                                                    openModal();
+                                                }
+                                                setIsOpen(false);
+                                            }}
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    </motion.div>
+                                );
+                            })}
                         </div>
                     </motion.div>
                 )}

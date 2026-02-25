@@ -34,6 +34,7 @@ export default function AdminBlog({ posts, onAdd, onUpdate, onDelete }: AdminBlo
     const [isAdding, setIsAdding] = useState(false);
     const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [previewMode, setPreviewMode] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
         excerpt: "",
@@ -135,15 +136,37 @@ export default function AdminBlog({ posts, onAdd, onUpdate, onDelete }: AdminBlo
                             />
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Main Content</label>
-                            <textarea
-                                className="input-field min-h-[300px] resize-none font-mono text-sm leading-relaxed"
-                                placeholder="Write your article in Markdown..."
-                                value={formData.content}
-                                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                                required
-                            />
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between ml-4">
+                                <label className="text-xs font-black uppercase tracking-widest text-gray-500">Main Content</label>
+                                <button
+                                    type="button"
+                                    onClick={() => setPreviewMode(!previewMode)}
+                                    className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border transition-all ${previewMode ? 'bg-purple-600 text-white border-purple-600' : 'bg-white/5 border-white/10 text-gray-500 hover:text-white'}`}
+                                >
+                                    {previewMode ? "Source Code" : "Studio Preview"}
+                                </button>
+                            </div>
+
+                            {previewMode ? (
+                                <div className="input-field min-h-[300px] bg-white/[0.01] border-purple-500/20 overflow-y-auto p-8">
+                                    <div className="prose prose-invert max-w-none">
+                                        <h1 className="text-3xl font-bold mb-4">{formData.title}</h1>
+                                        <p className="text-purple-400 text-sm mb-8 font-mono">{formData.category} • {formData.readTime}</p>
+                                        <div className="space-y-4 text-gray-300 leading-relaxed whitespace-pre-wrap font-sans">
+                                            {formData.content || <span className="opacity-30 italic">No content to preview...</span>}
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <textarea
+                                    className="input-field min-h-[400px] resize-none font-mono text-sm leading-relaxed focus:border-purple-500/50"
+                                    placeholder="Write your article in Markdown..."
+                                    value={formData.content}
+                                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                    required
+                                />
+                            )}
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

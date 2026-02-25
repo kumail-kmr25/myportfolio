@@ -4,7 +4,7 @@ import { getSession } from "@/lib/auth";
 
 export async function DELETE(
     request: Request,
-    { params }: { params: Promise<{ id: string }> }
+    { params }: { params: { id: string } }
 ) {
     try {
         const session = await getSession();
@@ -12,17 +12,17 @@ export async function DELETE(
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const { id } = await params;
+        const { id } = params;
 
         if (!id) {
             return NextResponse.json({ error: "ID is required" }, { status: 400 });
         }
 
         await prisma.hireRequest.delete({
-            where: { id },
+            where: { id }
         });
 
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ message: "Hire request deleted successfully" });
     } catch (error) {
         console.error("Admin hire DELETE error:", error);
         return NextResponse.json({ error: "Failed to delete hire request" }, { status: 500 });

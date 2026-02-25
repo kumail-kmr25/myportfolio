@@ -16,7 +16,8 @@ import {
     Briefcase,
     Settings,
     Zap,
-    History
+    History,
+    FileText
 } from "lucide-react";
 import { useState } from "react";
 
@@ -46,6 +47,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
         { id: "status", label: "Live Status", icon: Zap },
         { id: "capacity", label: "Work Capacity", icon: Settings },
         { id: "activity", label: "Login Activity", icon: History },
+        { id: "resume", label: "Resume Hub", icon: FileText },
         { id: "blog", label: "Blog Posts", icon: PenLine },
     ];
 

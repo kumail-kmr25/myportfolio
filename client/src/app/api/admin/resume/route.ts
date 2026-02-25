@@ -26,23 +26,36 @@ export async function POST(request: Request) {
         const session = await getSession();
         if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-        const formData = await request.formData();
-        const file = formData.get("file") as File;
+        const contentType = request.headers.get("content-type");
+        let url = "";
 
-        if (!file) {
-            return NextResponse.json({ error: "No file provided" }, { status: 400 });
+        if (contentType?.includes("application/json")) {
+            const body = await request.json();
+            url = body.url;
+            if (!url) return NextResponse.json({ error: "URL is required" }, { status: 400 });
+        } else {
+            const formData = await request.formData();
+            const file = formData.get("file") as File;
+
+            if (!file) {
+                return NextResponse.json({ error: "No file provided" }, { status: 400 });
+            }
+
+            const bytes = await file.arrayBuffer();
+            const buffer = Buffer.from(bytes);
+
+            // Create unique filename
+            const filename = `${randomUUID()}-${file.name.replace(/\s+/g, "_")}`;
+            const path = join(process.cwd(), "public", "resumes", filename);
+
+            try {
+                await writeFile(path, buffer);
+                url = `/resumes/${filename}`;
+            } catch (err) {
+                console.error("File write error:", err);
+                return NextResponse.json({ error: "Failed to save file locally. Use URL hydration instead." }, { status: 500 });
+            }
         }
-
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-
-        // Create unique filename
-        const filename = `${randomUUID()}-${file.name.replace(/\s+/g, "_")}`;
-        const path = join(process.cwd(), "public", "resumes", filename);
-
-        await writeFile(path, buffer);
-
-        const url = `/resumes/${filename}`;
 
         // Create resume record
         const resume = await prisma.resume.create({
