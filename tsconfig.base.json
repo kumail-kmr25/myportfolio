@@ -10,12 +10,12 @@
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
-        "composite": true,
+        "composite": false,
         "strict": true,
         "moduleResolution": "node",
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "incremental": true
+        "incremental": false
     }
 }
