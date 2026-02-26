@@ -43,7 +43,12 @@ interface AdminBlogPost { id: string; title: string; excerpt: string; content: s
 interface AdminDiagnosticLog { id: string; description: string; techStack?: string; createdAt: string; matchedPatternId?: string; environment: string; errorMessage?: string; }
 interface AdminStats extends SiteStats { diagRuns: number; leadGenTotal: number; hireRequests: number; patternsMatched: number; }
 
-export default function AdminDashboard() {
+interface AdminDashboardProps {
+    initialActivities?: any[];
+    initialAvailability?: any;
+}
+
+export default function AdminDashboard({ initialActivities = [], initialAvailability = null }: AdminDashboardProps) {
     const [activeTab, setActiveTab] = useState<"overview" | "status" | "messages" | "hire" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume">("overview");
 
     const router = useRouter();
@@ -68,7 +73,9 @@ export default function AdminDashboard() {
     const { data: statsData, mutate: mutateStats } = useSWR<AdminStats>("/api/stats", fetcher);
     const { data: diagPatterns, mutate: mutateDiagPatterns } = useSWR<any[]>("/api/admin/diagnostic-patterns", fetcher);
     const { data: diagLogs, mutate: mutateDiagLogs } = useSWR<AdminDiagnosticLog[]>("/api/admin/diagnostic-logs", fetcher);
-    const { data: availabilityData, mutate: mutateAvailability } = useSWR<any>("/api/availability", fetcher);
+    const { data: availabilityData, mutate: mutateAvailability } = useSWR<any>("/api/availability", fetcher, {
+        fallbackData: initialAvailability
+    });
 
     useEffect(() => {
         const handleUnauthorized = () => {

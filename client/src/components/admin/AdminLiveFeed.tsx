@@ -25,7 +25,17 @@ const fetcher = async (url: string) => {
     return res.json();
 };
 
-const TYPE_CONFIG: any = {
+interface Activity {
+    id: string;
+    type: "hire" | "message" | "diagnostic" | "system" | "security";
+    title: string;
+    subtitle: string;
+    timestamp: string;
+    status: string;
+    color: string;
+}
+
+const TYPE_CONFIG: Record<string, any> = {
     hire: { icon: Briefcase, color: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-500/20" },
     message: { icon: Mail, color: "text-indigo-400", bg: "bg-indigo-400/10", border: "border-indigo-500/20" },
     diagnostic: { icon: Zap, color: "text-purple-400", bg: "bg-purple-400/10", border: "border-purple-500/20" },
@@ -33,9 +43,14 @@ const TYPE_CONFIG: any = {
     security: { icon: ShieldCheck, color: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-500/20" },
 };
 
-export default function AdminLiveFeed() {
-    const { data: activities, error, isLoading } = useSWR("/api/admin/activity-feed", fetcher, {
-        refreshInterval: 10000 // Poll every 10 seconds
+interface AdminLiveFeedProps {
+    initialActivities?: Activity[];
+}
+
+export default function AdminLiveFeed({ initialActivities = [] }: AdminLiveFeedProps) {
+    const { data: activities, error, isLoading } = useSWR<Activity[]>("/api/admin/activity-feed", fetcher, {
+        refreshInterval: 10000,
+        fallbackData: initialActivities
     });
 
     return (

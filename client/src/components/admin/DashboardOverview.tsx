@@ -67,7 +67,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
             {/* Activity & System Status */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
-                    <AdminLiveFeed />
+                    <AdminLiveFeed initialActivities={recentActivity} />
                 </div>
 
                 <div className="space-y-6">
