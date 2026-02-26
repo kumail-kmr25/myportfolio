@@ -1,10 +1,13 @@
 ﻿"use client";
 
+import { getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
 import { useState, useEffect, useCallback } from "react";
 import { Loader2, ShieldCheck, CheckCircle2, Phone, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 
-export default function RegisterPage() {
+function RegisterPageContent() {
     const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -229,6 +232,16 @@ export default function RegisterPage() {
             </div>
         </div>
     );
+}
+
+export default async function RegisterPage() {
+    const session = await getSession();
+
+    if (session) {
+        redirect("/admin");
+    }
+
+    return <RegisterPageContent />;
 }
 
 

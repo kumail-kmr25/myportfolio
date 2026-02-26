@@ -1,104 +1,49 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getSession } from "@/lib/auth";
-import { writeFile } from "fs/promises";
-import { join } from "path";
-import { randomUUID } from "crypto";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
     try {
-        const session = await getSession();
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-        const resumes = await prisma.resume.findMany({
-            orderBy: { createdAt: "desc" }
+        const resume = await prisma.resume.findFirst({
+            orderBy: { updatedAt: 'desc' }
         });
 
-        return NextResponse.json(resumes);
+        if (!resume) {
+            return NextResponse.json({
+                url: null,
+                updatedAt: null,
+                visible: false
+            });
+        }
+
+        return NextResponse.json(resume);
     } catch (error) {
-        console.error("Admin Resume GET error:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        console.error("RESUME_GET_ERROR:", error);
+        return NextResponse.json({ error: "Failed to fetch resume" }, { status: 500 });
     }
 }
 
 export async function POST(request: Request) {
     try {
         const session = await getSession();
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-        const contentType = request.headers.get("content-type");
-        let url = "";
-
-        if (contentType?.includes("application/json")) {
-            const body = await request.json();
-            url = body.url;
-            if (!url) return NextResponse.json({ error: "URL is required" }, { status: 400 });
-        } else {
-            const formData = await request.formData();
-            const file = formData.get("file") as File;
-
-            if (!file) {
-                return NextResponse.json({ error: "No file provided" }, { status: 400 });
-            }
-
-            const bytes = await file.arrayBuffer();
-            const buffer = Buffer.from(bytes);
-
-            // Create unique filename
-            const filename = `${randomUUID()}-${file.name.replace(/\s+/g, "_")}`;
-            const path = join(process.cwd(), "public", "resumes", filename);
-
-            try {
-                await writeFile(path, buffer);
-                url = `/resumes/${filename}`;
-            } catch (err) {
-                console.error("File write error:", err);
-                return NextResponse.json({ error: "Failed to save file locally. Use URL hydration instead." }, { status: 500 });
-            }
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        // Create resume record
-        const resume = await prisma.resume.create({
-            data: {
-                url,
-                visible: true
-            }
-        });
+        const body = await request.json();
+        const { url, visible } = body;
 
-        // Optionally, hide previous resumes
-        await prisma.resume.updateMany({
-            where: {
-                id: { not: resume.id }
-            },
-            data: { visible: false }
-        });
-
-        return NextResponse.json(resume, { status: 201 });
-    } catch (error) {
-        console.error("Admin Resume POST error:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-    }
-}
-
-export async function PATCH(request: Request) {
-    try {
-        const session = await getSession();
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-        const { id, visible } = await request.json();
-
-        if (!id) {
-            return NextResponse.json({ error: "Resume ID is required" }, { status: 400 });
-        }
-
-        const resume = await prisma.resume.update({
-            where: { id },
-            data: { visible }
+        const resume = await prisma.resume.upsert({
+            where: { id: "current-resume" }, // Use a stable ID for simplicity or handle based on logic
+            update: { url, visible, updatedAt: new Date() },
+            create: { id: "current-resume", url, visible, updatedAt: new Date() }
         });
 
         return NextResponse.json(resume);
     } catch (error) {
-        console.error("Admin Resume PATCH error:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        console.error("RESUME_POST_ERROR:", error);
+        return NextResponse.json({ error: "Failed to update resume" }, { status: 500 });
     }
 }

@@ -112,7 +112,7 @@ export default function AdminResume() {
             )}
 
             <div className="grid grid-cols-1 gap-4">
-                {resumes?.map((resume) => (
+                {Array.isArray(resumes) && resumes.map((resume) => (
                     <div key={resume.id} className={`glass-effect rounded-[1.5rem] p-6 border transition-all flex items-center justify-between group ${resume.visible ? 'border-blue-500/30' : 'border-white/5'}`}>
                         <div className="flex items-center gap-6">
                             <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-colors ${resume.visible ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' : 'bg-white/5 text-gray-600 border-white/5'}`}>

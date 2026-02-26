@@ -8,7 +8,7 @@ export async function GET() {
     try {
         const payload = await getSession();
         if (!payload || !payload.id) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+            return NextResponse.json([], { status: 401 });
         }
 
         // Fetch recent items from multiple models
@@ -90,6 +90,7 @@ export async function GET() {
 
     } catch (error) {
         console.error("LIVE_FEED_API_ERROR:", error);
-        return NextResponse.json({ error: "Failed to fetch activity feed" }, { status: 500 });
+        return NextResponse.json([], { status: 500 });
     }
 }
+

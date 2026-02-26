@@ -16,6 +16,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
+import { getApiUrl } from "@/lib/api";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
@@ -46,7 +47,7 @@ export default function Navbar() {
     useEffect(() => {
         const fetchResume = async () => {
             try {
-                const res = await fetch("/api/resume");
+                const res = await fetch(getApiUrl("/api/resume"));
                 if (res.ok) {
                     const data = await res.json();
                     setResumeUrl(data.url);

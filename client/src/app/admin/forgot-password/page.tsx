@@ -1,10 +1,13 @@
 ﻿"use client";
 
+import { getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
 import { useState } from "react";
 import { Loader2, Mail, CheckCircle2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export default function ForgotPasswordPage() {
+function ForgotPasswordPageContent() {
     const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -110,6 +113,16 @@ export default function ForgotPasswordPage() {
             </div>
         </div>
     );
+}
+
+export default async function ForgotPasswordPage() {
+    const session = await getSession();
+
+    if (session) {
+        redirect("/admin");
+    }
+
+    return <ForgotPasswordPageContent />;
 }
 
 

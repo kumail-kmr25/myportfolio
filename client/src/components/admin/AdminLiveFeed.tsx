@@ -15,7 +15,14 @@ import {
 import useSWR from "swr";
 import { formatDistanceToNow } from "date-fns";
 
-const fetcher = (url: string) => fetch(url).then(r => r.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    if (!res.ok) {
+        if (res.status === 401) return { unauthorized: true };
+        throw new Error("Fetch failed");
+    }
+    return res.json();
+};
 
 const TYPE_CONFIG: any = {
     hire: { icon: Briefcase, color: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-500/20" },
@@ -64,6 +71,17 @@ export default function AdminLiveFeed() {
                 {error && (
                     <div className="p-4 rounded-2xl bg-red-500/5 border border-red-500/10 text-red-400 text-xs">
                         Error fetching activity stream.
+                    </div>
+                )}
+
+                {activities && (activities as any).unauthorized && (
+                    <div className="p-8 text-center space-y-4">
+                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                            <ShieldCheck size={20} />
+                        </div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+                            Session Expired. Please re-authenticate.
+                        </p>
                     </div>
                 )}
 

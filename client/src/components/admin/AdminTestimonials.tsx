@@ -38,8 +38,9 @@ interface AdminTestimonialsProps {
 }
 
 export default function AdminTestimonials({ testimonials, onApprove, onDelete, onVerify, onFeature }: AdminTestimonialsProps) {
-    const pending = testimonials.filter(t => !t.approved);
-    const approved = testimonials.filter(t => t.approved);
+    const safeTestimonials = Array.isArray(testimonials) ? testimonials : [];
+    const pending = safeTestimonials.filter(t => !t.approved);
+    const approved = safeTestimonials.filter(t => t.approved);
 
     const renderTestimonial = (testimonial: Testimonial) => (
         <div key={testimonial.id} className={`card p-6 sm:p-8 group relative flex flex-col border-white/5 transition-all ${testimonial.approved ? 'bg-green-500/5 hover:bg-green-500/[0.08]' : 'bg-white/5 hover:bg-white/[0.08]'}`}>

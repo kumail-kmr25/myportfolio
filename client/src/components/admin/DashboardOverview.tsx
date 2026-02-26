@@ -58,7 +58,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                         <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-${card.color}-500/10 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform`}>
                             <card.icon className={`text-${card.color}-400`} size={20} />
                         </div>
-                        <h3 className="text-2xl sm:text-3xl font-bold text-white mb-1">{card.value}</h3>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-white mb-1">{card.value || 0}</h3>
                         <p className="text-gray-500 text-[10px] uppercase tracking-widest font-bold">{card.label}</p>
                     </div>
                 ))}

@@ -1,5 +1,8 @@
 ﻿"use client";
 
+import { getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader2, KeyRound, CheckCircle2, AlertCircle } from "lucide-react";
@@ -146,7 +149,8 @@ function ResetPasswordForm() {
     );
 }
 
-export default function ResetPasswordPage() {
+
+function ResetPasswordPageContent() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#050505] p-6">
             <Suspense fallback={
@@ -158,6 +162,16 @@ export default function ResetPasswordPage() {
             </Suspense>
         </div>
     );
+}
+
+export default async function ResetPasswordPage() {
+    const session = await getSession();
+
+    if (session) {
+        redirect("/admin");
+    }
+
+    return <ResetPasswordPageContent />;
 }
 
 

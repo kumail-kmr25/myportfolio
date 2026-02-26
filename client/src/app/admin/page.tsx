@@ -7,6 +7,8 @@ import useSWR from "swr";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 // Admin Components
 import Sidebar from "@/components/admin/Sidebar";
@@ -24,11 +26,17 @@ import AdminCapacityManager from "@/components/admin/AdminCapacityManager";
 import AdminDeveloperStatus from "@/components/admin/AdminDeveloperStatus";
 import AdminAnalytics from "@/components/admin/AdminAnalytics";
 import AdminResume from "@/components/admin/AdminResume";
+import ErrorBoundary from "@/components/common/ErrorBoundary";
 
 import { getApiUrl } from "@/lib/api";
 
 const fetcher = async (url: string) => {
     const res = await fetch(getApiUrl(url));
+    if (res.status === 401) {
+        // Trigger a session check if we get a 401 after being "logged in"
+        window.dispatchEvent(new CustomEvent('auth-unauthorized'));
+        throw new Error("Unauthorized");
+    }
     if (!res.ok) throw new Error("Fetch failed");
     return res.json();
 };
@@ -128,6 +136,14 @@ function AdminPageContent() {
 
     useEffect(() => {
         checkSession();
+
+        const handleUnauthorized = () => {
+            setIsLoggedIn(false);
+            router.push("/admin");
+        };
+
+        window.addEventListener('auth-unauthorized', handleUnauthorized);
+        return () => window.removeEventListener('auth-unauthorized', handleUnauthorized);
     }, []);
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -352,10 +368,10 @@ function AdminPageContent() {
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 onLogout={handleLogout}
-                messageCount={messages?.filter((m) => !m.replied).length}
-                newHireCount={hireRequests?.filter((h) => h.status === "new").length}
-                pendingFeaturesCount={featureRequests?.filter((f) => f.status === "pending").length}
-                newLogsCount={diagLogs?.filter((l) => !l.matchedPatternId).length}
+                messageCount={Array.isArray(messages) ? messages.filter((m) => !m.replied).length : 0}
+                newHireCount={Array.isArray(hireRequests) ? hireRequests.filter((h) => h.status === "new").length : 0}
+                pendingFeaturesCount={Array.isArray(featureRequests) ? featureRequests.filter((f) => f.status === "pending").length : 0}
+                newLogsCount={Array.isArray(diagLogs) ? diagLogs.filter((l) => !l.matchedPatternId).length : 0}
             />
 
             <main className="flex-grow lg:ml-72 p-8 lg:p-16">
@@ -391,35 +407,37 @@ function AdminPageContent() {
                             transition={{ duration: 0.3, ease: "easeOut" }}
                             className="min-h-[60vh]"
                         >
-                            {activeTab === "overview" && (
-                                <div className="space-y-12">
-                                    <AdminAnalytics stats={{ diagRuns: statsData?.diagRuns || 0, leadGenTotal: statsData?.leadGenTotal || 0, hireRequests: statsData?.hireRequests || 0, patternsMatched: statsData?.patternsMatched || 0 }} />
-                                    <DashboardOverview
-                                        stats={{ testimonials: allTestimonials?.length || 0, messages: messages?.length || 0, hireRequests: hireRequests?.length || 0, projects: projects?.length || 0, blogPosts: blogPosts?.length || 0 }}
-                                        recentActivity={[
-                                            ...(hireRequests || []).map(h => ({ id: h.id, type: "hire", title: `Hire Request: ${h.name}`, subtitle: h.projectType, timestamp: h.createdAt, status: h.status })),
-                                            ...(messages || []).map(m => ({ id: m.id, type: "message", title: `Message: ${m.name}`, subtitle: m.inquiryType || "Inquiry", timestamp: m.created_at, status: m.replied ? "replied" : "new" })),
-                                            ...(diagLogs || []).map(l => ({ id: l.id, type: "diagnostic", title: "Diagnostic Run", subtitle: l.description, timestamp: l.createdAt, status: "completed" }))
-                                        ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 10)}
-                                        availabilityStatus={availabilityData?.status || "Available"}
-                                        onUpdateAvailability={handleUpdateAvailability}
-                                    />
-                                </div>
-                            )}
+                            <ErrorBoundary>
+                                {activeTab === "overview" && (
+                                    <div className="space-y-12">
+                                        <AdminAnalytics stats={{ diagRuns: statsData?.diagRuns || 0, leadGenTotal: statsData?.leadGenTotal || 0, hireRequests: statsData?.hireRequests || 0, patternsMatched: statsData?.patternsMatched || 0 }} />
+                                        <DashboardOverview
+                                            stats={{ testimonials: allTestimonials?.length || 0, messages: messages?.length || 0, hireRequests: hireRequests?.length || 0, projects: projects?.length || 0, blogPosts: blogPosts?.length || 0 }}
+                                            recentActivity={[
+                                                ...(Array.isArray(hireRequests) ? hireRequests : []).map(h => ({ id: h.id, type: "hire", title: `Hire Request: ${h.name}`, subtitle: h.projectType, timestamp: h.createdAt, status: h.status })),
+                                                ...(Array.isArray(messages) ? messages : []).map(m => ({ id: m.id, type: "message", title: `Message: ${m.name}`, subtitle: m.inquiryType || "Inquiry", timestamp: m.created_at, status: m.replied ? "replied" : "new" })),
+                                                ...(Array.isArray(diagLogs) ? diagLogs : []).map(l => ({ id: l.id, type: "diagnostic", title: "Diagnostic Run", subtitle: l.description, timestamp: l.createdAt, status: "completed" }))
+                                            ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 10)}
+                                            availabilityStatus={availabilityData?.status || "Available"}
+                                            onUpdateAvailability={handleUpdateAvailability}
+                                        />
+                                    </div>
+                                )}
 
-                            {activeTab === "status" && <AdminDeveloperStatus />}
-                            {activeTab === "capacity" && <AdminCapacityManager />}
-                            {activeTab === "resume" && <AdminResume />}
-                            {activeTab === "messages" && <AdminContact messages={messages || []} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />}
-                            {activeTab === "hire" && <AdminHireRequests requests={hireRequests || []} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />}
-                            {activeTab === "testimonials" && <AdminTestimonials testimonials={allTestimonials || []} onApprove={handleTestimonialApproval} onDelete={handleTestimonialDelete} />}
-                            {activeTab === "projects" && <AdminProjects projects={projects || []} onAdd={handleAddProject} onUpdate={handleProjectUpdate} onDelete={handleProjectDelete} />}
-                            {activeTab === "blog" && <AdminBlog posts={blogPosts || []} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />}
-                            {activeTab === "case-studies" && <AdminCaseStudies studies={caseStudies || []} onUpdate={handleCaseStudyAction} />}
-                            {activeTab === "feature-requests" && <AdminFeatureRequests requests={featureRequests || []} onUpdate={handleFeatureRequestAction} />}
-                            {activeTab === "stats" && <AdminStats stats={statsData || null} onUpdate={handleStatsUpdate} />}
-                            {activeTab === "diagnostics" && <AdminDiagnostics patterns={diagPatterns || []} logs={diagLogs || []} onUpdate={handleDiagAction} />}
-                            {activeTab === "capacity" && <AdminCapacityManager />}
+                                {activeTab === "status" && <AdminDeveloperStatus />}
+                                {activeTab === "capacity" && <AdminCapacityManager />}
+                                {activeTab === "resume" && <AdminResume />}
+                                {activeTab === "messages" && <AdminContact messages={messages || []} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />}
+                                {activeTab === "hire" && <AdminHireRequests requests={hireRequests || []} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />}
+                                {activeTab === "testimonials" && <AdminTestimonials testimonials={allTestimonials || []} onApprove={handleTestimonialApproval} onDelete={handleTestimonialDelete} />}
+                                {activeTab === "projects" && <AdminProjects projects={projects || []} onAdd={handleAddProject} onUpdate={handleProjectUpdate} onDelete={handleProjectDelete} />}
+                                {activeTab === "blog" && <AdminBlog posts={blogPosts || []} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />}
+                                {activeTab === "case-studies" && <AdminCaseStudies studies={caseStudies || []} onUpdate={handleCaseStudyAction} />}
+                                {activeTab === "feature-requests" && <AdminFeatureRequests requests={featureRequests || []} onUpdate={handleFeatureRequestAction} />}
+                                {activeTab === "stats" && <AdminStats stats={statsData || null} onUpdate={handleStatsUpdate} />}
+                                {activeTab === "diagnostics" && <AdminDiagnostics patterns={diagPatterns || []} logs={diagLogs || []} onUpdate={handleDiagAction} />}
+                                {activeTab === "capacity" && <AdminCapacityManager />}
+                            </ErrorBoundary>
                         </motion.div>
                     </AnimatePresence>
 
@@ -436,7 +454,13 @@ function AdminPageContent() {
     );
 }
 
-export default function AdminPage() {
+export default async function AdminPage() {
+    const session = await getSession();
+
+    if (!session) {
+        redirect("/admin/login");
+    }
+
     return (
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#050505] p-6 text-white text-xs tracking-widest uppercase font-black"><Loader2 className="w-5 h-5 animate-spin mr-2" /> Loading Portal...</div>}>
             <AdminPageContent />
