@@ -17,10 +17,11 @@ import { formatDistanceToNow } from "date-fns";
 
 const fetcher = async (url: string) => {
     const res = await fetch(url);
-    if (!res.ok) {
-        if (res.status === 401) return { unauthorized: true };
-        throw new Error("Fetch failed");
+    if (res.status === 401) {
+        window.dispatchEvent(new CustomEvent('auth-unauthorized'));
+        throw new Error("Unauthorized");
     }
+    if (!res.ok) throw new Error("Fetch failed");
     return res.json();
 };
 
@@ -74,16 +75,6 @@ export default function AdminLiveFeed() {
                     </div>
                 )}
 
-                {activities && (activities as any).unauthorized && (
-                    <div className="p-8 text-center space-y-4">
-                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-500 border border-amber-500/20">
-                            <ShieldCheck size={20} />
-                        </div>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">
-                            Session Expired. Please re-authenticate.
-                        </p>
-                    </div>
-                )}
 
                 <AnimatePresence initial={false}>
                     {Array.isArray(activities) && activities.map((activity: any) => {

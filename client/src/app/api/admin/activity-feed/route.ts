@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
     try {
         const payload = await getSession();
-        if (!payload || !payload.id) {
+        if (!payload || !payload.userId) {
             return NextResponse.json([], { status: 401 });
         }
 
