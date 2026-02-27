@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import { Star, BadgeCheck, Quote } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 // Static dummy testimonials for showcase
 const dummyTestimonials = [
@@ -142,24 +142,65 @@ export default function Testimonials() {
     const row1 = testimonials.slice(0, Math.ceil(testimonials.length / 2));
     const row2 = testimonials.slice(Math.ceil(testimonials.length / 2));
 
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+            }
+        }
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, scale: 0.95 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+        }
+    };
+
     return (
         <section id="testimonials" className="py-24 bg-[#050505] relative overflow-hidden">
-            {/* Background glow */}
+            {/* Background glow and subtle dots */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-6xl h-px bg-gradient-to-r from-transparent via-blue-500/10 to-transparent" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-            <div className="section-container mb-12">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                    <div>
-                        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 mb-3">Client Voices</div>
-                        <h2 className="section-title">What People Say</h2>
-                        <p className="text-gray-400 mt-3 leading-relaxed max-w-lg">
-                            Real feedback from clients, colleagues, and collaborators. Unfiltered. Honest. Verified.
-                        </p>
+            <div className="section-container mb-24">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                    <div className="max-w-2xl">
+                        <motion.span
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-blue-500 font-mono text-[10px] font-black uppercase tracking-[0.3em] mb-4 block"
+                        >
+                            Social Proof
+                        </motion.span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4"
+                        >
+                            What People <span className="text-gray-500 italic">Say</span>
+                        </motion.h2>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="text-gray-400 text-lg leading-relaxed"
+                        >
+                            Real-world feedback from engineering partners and institutional clients. Unfiltered technical validation.
+                        </motion.p>
                     </div>
                 </div>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-12">
                 {/* Row 1 — forward */}
                 {row1.length > 0 && <Marquee items={row1} />}
                 {/* Row 2 — reverse (only show if enough items) */}
@@ -168,27 +209,36 @@ export default function Testimonials() {
 
             {/* Stats strip */}
             {testimonials.length > 0 && (
-                <div className="section-container mt-12">
-                    <div className="flex flex-wrap items-center justify-center gap-8 p-6 rounded-3xl bg-white/[0.02] border border-white/5">
-                        <div className="text-center">
-                            <div className="text-2xl font-black text-white">{testimonials.length}</div>
-                            <div className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Total Reviews</div>
-                        </div>
-                        <div className="w-px h-8 bg-white/10" />
-                        <div className="text-center">
-                            <div className="text-2xl font-black text-yellow-400">
+                <div className="section-container mt-24">
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        className="flex flex-wrap items-center justify-center gap-12 p-10 rounded-[3rem] bg-white/[0.02] border border-white/5 backdrop-blur-md relative overflow-hidden"
+                    >
+                        <motion.div variants={itemVariants} className="text-center group">
+                            <div className="text-3xl font-black text-white group-hover:text-blue-400 transition-colors">{testimonials.length}</div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Total Insights</div>
+                        </motion.div>
+                        <div className="hidden md:block w-px h-12 bg-white/10" />
+                        <motion.div variants={itemVariants} className="text-center group">
+                            <div className="text-3xl font-black text-yellow-400 group-hover:scale-110 transition-transform">
                                 {(testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1)}
                             </div>
-                            <div className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Avg Rating</div>
-                        </div>
-                        <div className="w-px h-8 bg-white/10" />
-                        <div className="text-center">
-                            <div className="text-2xl font-black text-blue-400">
+                            <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Avg Rating</div>
+                        </motion.div>
+                        <div className="hidden md:block w-px h-12 bg-white/10" />
+                        <motion.div variants={itemVariants} className="text-center group">
+                            <div className="text-3xl font-black text-blue-400 group-hover:text-white transition-colors">
                                 {testimonials.filter(t => t.verified).length}
                             </div>
-                            <div className="text-[10px] text-gray-500 uppercase tracking-widest font-black">Verified Clients</div>
-                        </div>
-                    </div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Verified Nodes</div>
+                        </motion.div>
+
+                        {/* Decorative background glow */}
+                        <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-blue-500/10 blur-[60px] rounded-full pointer-events-none" />
+                    </motion.div>
                 </div>
             )}
         </section>

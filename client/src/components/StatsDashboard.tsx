@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import useSWR from "swr";
-import { motion, useInView, useSpring, useTransform } from "framer-motion";
+import { motion, useInView, useSpring, useTransform, Variants } from "framer-motion";
 import { Loader2, Code2, Bug, BookOpen, Layers, CheckSquare, Calendar, Github, ExternalLink } from "lucide-react";
 import { getApiUrl } from "@/lib/api";
 
@@ -42,14 +42,59 @@ export default function StatsDashboard() {
         { label: "Deployments", value: stats?.deploymentCount || 0, icon: Rocket, color: "text-orange-500", bg: "bg-orange-500/10" },
     ];
 
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.3
+            }
+        }
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 30, scale: 0.95 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+        }
+    };
+
     return (
-        <section id="stats" className="py-12 bg-[#050505]">
-            <div className="section-container">
-                <div className="flex flex-col items-center text-center mb-16">
-                    <h2 className="section-title !mb-4">Live Developer Stats</h2>
-                    <p className="text-gray-400 max-w-xl">
-                        Real-time metrics reflecting my engineering output, community contributions, and continuous learning journey.
-                    </p>
+        <section id="stats" className="py-24 bg-[#050505] relative overflow-hidden">
+            {/* Background decorative elements */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-px bg-gradient-to-r from-transparent via-blue-500/10 to-transparent" />
+
+            <div className="section-container relative z-10">
+                <div className="flex flex-col items-center text-center mb-20">
+                    <motion.span
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-blue-500 font-mono text-[10px] font-black uppercase tracking-[0.3em] mb-4 block"
+                    >
+                        Real-time Analytics
+                    </motion.span>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-4xl md:text-5xl font-bold tracking-tight text-white !mb-4"
+                    >
+                        Live Developer <span className="text-gray-500 italic">Stats</span>
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="text-gray-400 max-w-xl text-lg"
+                    >
+                        Quantitative metrics reflecting technical output, architectural contributions, and continuous learning iteration.
+                    </motion.p>
                 </div>
 
                 {isLoading ? (
@@ -57,67 +102,83 @@ export default function StatsDashboard() {
                         <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-100px" }}
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6"
+                    >
                         {statItems.map((item, index) => (
                             <motion.div
                                 key={item.label}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: index * 0.05 }}
-                                viewport={{ once: true }}
-                                className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group relative overflow-hidden flex flex-col items-center justify-center text-center"
+                                variants={itemVariants}
+                                whileHover={{ y: -10, backgroundColor: "rgba(255,255,255,0.04)" }}
+                                className="p-8 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group relative overflow-hidden flex flex-col items-center justify-center text-center backdrop-blur-sm"
                             >
-                                <div className={`w-12 h-12 rounded-2xl ${item.bg} ${item.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500`}>
-                                    <item.icon size={24} />
+                                <div className={`w-14 h-14 rounded-2xl ${item.bg} ${item.color} flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
+                                    <item.icon size={26} />
                                 </div>
-                                <div className="text-3xl font-black text-white mb-1">
+                                <div className="text-4xl font-black text-white mb-2 tracking-tighter">
                                     <AnimatedCounter value={item.value} />
-                                    {item.label === "Years Learning" && <span className="text-lg ml-0.5">+</span>}
+                                    {item.label === "Years Learning" && <span className="text-xl ml-0.5 text-blue-500">+</span>}
                                 </div>
-                                <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 group-hover:text-gray-300 transition-colors">
                                     {item.label}
                                 </div>
 
                                 {/* Decorative background glow */}
-                                <div className={`absolute -bottom-8 -right-8 w-24 h-24 ${item.bg} blur-3xl opacity-0 group-hover:opacity-30 transition-opacity`}></div>
+                                <div className={`absolute -bottom-10 -right-10 w-24 h-24 ${item.bg} blur-[60px] opacity-0 group-hover:opacity-40 transition-opacity`}></div>
                             </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 )}
 
-                <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-gray-900 to-black border border-white/5 flex flex-col md:flex-row items-center gap-8 group">
-                        <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-blue-500/50 transition-colors">
-                            <Github className="w-10 h-10 text-white" />
+                <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="p-10 rounded-[3rem] bg-gradient-to-br from-gray-900/50 to-black border border-white/5 flex flex-col md:flex-row items-center gap-10 group hover:border-white/10 transition-all backdrop-blur-md"
+                    >
+                        <div className="w-24 h-24 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-blue-500/50 group-hover:scale-110 transition-all duration-500">
+                            <Github className="w-12 h-12 text-white" />
                         </div>
                         <div>
-                            <h4 className="text-lg font-bold text-white mb-1">GitHub Statistics</h4>
-                            <p className="text-sm text-gray-400 mb-4">Tracking commits, pull requests, and open source contributions daily.</p>
-                            <a href="https://github.com" target="_blank" className="text-xs font-black uppercase tracking-widest text-blue-400 hover:text-blue-300 flex items-center gap-2 transition-colors">
-                                View Profile <ExternalLink size={14} />
+                            <h4 className="text-xl font-bold text-white mb-2">GitHub Architecture</h4>
+                            <p className="text-gray-400 mb-6 leading-relaxed">Systematically tracking commits, branch merges, and technical contributions in real-time.</p>
+                            <a href="https://github.com/kumail-kmr25" target="_blank" className="inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.2em] text-blue-400 hover:text-blue-300 transition-colors group/link">
+                                Expand Intelligence <ExternalLink size={16} className="group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" />
                             </a>
                         </div>
-                    </div>
+                    </motion.div>
 
-                    <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-blue-950/20 to-black border border-white/5 flex flex-col md:flex-row items-center gap-8 group">
-                        <div className="w-20 h-20 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center group-hover:border-blue-500/50 transition-colors">
-                            <Code2 className="w-10 h-10 text-blue-400" />
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="p-10 rounded-[3rem] bg-gradient-to-br from-blue-950/20 to-black border border-white/5 flex flex-col md:flex-row items-center gap-10 group hover:border-white/10 transition-all backdrop-blur-md"
+                    >
+                        <div className="w-24 h-24 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center group-hover:border-blue-500/50 group-hover:scale-110 transition-all duration-500">
+                            <Code2 className="w-12 h-12 text-blue-400" />
                         </div>
                         <div>
-                            <h4 className="text-lg font-bold text-white mb-1">System Monitoring</h4>
-                            <p className="text-sm text-gray-400 mb-4">Maintaining 99.9% uptime for all personal deployments and client projects.</p>
-                            <div className="flex gap-4">
-                                <div className="flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Core API: UP</span>
+                            <h4 className="text-xl font-bold text-white mb-2">System Operations</h4>
+                            <p className="text-gray-400 mb-6 leading-relaxed">Infrastructure monitoring maintaining critical uptime for deployments and client-side assets.</p>
+                            <div className="flex gap-6">
+                                <div className="flex items-center gap-3">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Core Engine: OPTIMAL</span>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">DB: Connected</span>
+                                <div className="flex items-center gap-3">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">DB Node: ACTIVE</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>
