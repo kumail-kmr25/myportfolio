@@ -46,7 +46,7 @@ export default function AdminContact({ messages, onToggleReplied, onDelete }: Ad
             </div>
 
             <div className="grid grid-cols-1 gap-6">
-                {messages.map((msg) => (
+                {Array.isArray(messages) && messages.map((msg) => (
                     <div key={msg.id} className={`group relative glass-effect rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 border transition-all ${msg.replied ? 'border-white/5 bg-white/[0.02] opacity-70' : 'border-blue-500/20 bg-blue-500/[0.03] shadow-lg shadow-blue-500/5'}`}>
                         {/* Status Label */}
                         <div className={`hidden sm:block absolute top-8 right-32 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${msg.replied

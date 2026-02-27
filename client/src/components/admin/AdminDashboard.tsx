@@ -291,15 +291,15 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "status" && <AdminDeveloperStatus />}
                                 {activeTab === "capacity" && <AdminCapacityManager />}
                                 {activeTab === "resume" && <AdminResume />}
-                                {activeTab === "messages" && <AdminContact messages={messages || []} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />}
-                                {activeTab === "hire" && <AdminHireRequests requests={hireRequests || []} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />}
-                                {activeTab === "testimonials" && <AdminTestimonials testimonials={allTestimonials || []} onApprove={handleTestimonialApproval} onDelete={handleTestimonialDelete} />}
-                                {activeTab === "projects" && <AdminProjects projects={projects || []} onAdd={handleAddProject} onUpdate={handleProjectUpdate} onDelete={handleProjectDelete} />}
-                                {activeTab === "blog" && <AdminBlog posts={blogPosts || []} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />}
-                                {activeTab === "case-studies" && <AdminCaseStudies studies={caseStudies || []} onUpdate={handleCaseStudyAction} />}
-                                {activeTab === "feature-requests" && <AdminFeatureRequests requests={featureRequests || []} onUpdate={handleFeatureRequestAction} />}
+                                {activeTab === "messages" && <AdminContact messages={Array.isArray(messages) ? messages : []} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />}
+                                {activeTab === "hire" && <AdminHireRequests requests={Array.isArray(hireRequests) ? hireRequests : []} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />}
+                                {activeTab === "testimonials" && <AdminTestimonials testimonials={Array.isArray(allTestimonials) ? allTestimonials : []} onApprove={handleTestimonialApproval} onDelete={handleTestimonialDelete} />}
+                                {activeTab === "projects" && <AdminProjects projects={Array.isArray(projects) ? projects : []} onAdd={handleAddProject} onUpdate={handleProjectUpdate} onDelete={handleProjectDelete} />}
+                                {activeTab === "blog" && <AdminBlog posts={Array.isArray(blogPosts) ? blogPosts : []} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />}
+                                {activeTab === "case-studies" && <AdminCaseStudies studies={Array.isArray(caseStudies) ? caseStudies : []} onUpdate={handleCaseStudyAction} />}
+                                {activeTab === "feature-requests" && <AdminFeatureRequests requests={Array.isArray(featureRequests) ? featureRequests : []} onUpdate={handleFeatureRequestAction} />}
                                 {activeTab === "stats" && <AdminStats stats={statsData || null} onUpdate={handleStatsUpdate} />}
-                                {activeTab === "diagnostics" && <AdminDiagnostics patterns={diagPatterns || []} logs={diagLogs || []} onUpdate={handleDiagAction} />}
+                                {activeTab === "diagnostics" && <AdminDiagnostics patterns={Array.isArray(diagPatterns) ? diagPatterns : []} logs={Array.isArray(diagLogs) ? diagLogs : []} onUpdate={handleDiagAction} />}
                             </ErrorBoundary>
                         </motion.div>
                     </AnimatePresence>

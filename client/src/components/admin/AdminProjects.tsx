@@ -290,7 +290,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {projects.map((project) => (
+                {Array.isArray(projects) && projects.map((project) => (
                     <div key={project.id} className="group relative glass-effect rounded-[2.5rem] overflow-hidden border border-white/5 hover:border-blue-500/30 transition-all duration-500 flex flex-col">
                         <div className="h-56 relative overflow-hidden">
                             <Image src={project.image} alt={project.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover group-hover:scale-110 transition-transform duration-1000" />

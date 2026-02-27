@@ -199,7 +199,7 @@ export default function AdminBlog({ posts, onAdd, onUpdate, onDelete }: AdminBlo
             )}
 
             <div className="grid grid-cols-1 gap-6">
-                {posts.map((post) => (
+                {Array.isArray(posts) && posts.map((post) => (
                     <div key={post.id} className="group glass-effect rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 border border-white/5 hover:border-purple-500/30 transition-all flex flex-col md:flex-row gap-6 sm:gap-8 items-center">
                         <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-400 border border-purple-500/20 shrink-0">
                             <PenLine size={20} className="sm:size-24" />

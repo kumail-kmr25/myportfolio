@@ -62,7 +62,7 @@ export default function AdminDiagnostics({ patterns, logs, onUpdate }: { pattern
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {patterns.map((pattern) => (
+                        {Array.isArray(patterns) && patterns.map((pattern) => (
                             <div key={pattern.id} className="glass-effect p-8 rounded-[2rem] border border-white/5 space-y-4 hover:border-white/10 transition-all group">
                                 <div className="flex justify-between items-start">
                                     <div className="flex flex-wrap gap-2">
@@ -99,7 +99,7 @@ export default function AdminDiagnostics({ patterns, logs, onUpdate }: { pattern
                     </div>
 
                     <div className="space-y-4">
-                        {logs.map((log) => (
+                        {Array.isArray(logs) && logs.map((log) => (
                             <AdminDiagnosticLog
                                 key={log.id}
                                 log={log}
