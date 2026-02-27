@@ -94,35 +94,42 @@ async function main() {
     }
 
     // 4. Create Journey Phases
+    try {
+        await prisma.journeyPhase.deleteMany();
+        console.log("🧹 Cleared existing Journey Phases.");
+    } catch (error) {
+        console.error("❌ Failed to clear Journey Phases:", error);
+    }
+
     const phases = [
         {
-            phase: "Phase 1",
-            title: "Curiosity",
-            description: "First exposure to tech. Exploring how websites work and understanding the magic behind the browser.",
+            phase: "Step 1",
+            title: "Foundation & Core Engineering",
+            description: "Established a robust engineering foundation, mastering modern web architectures and production-ready system designs.",
             icon: "Brain",
             color: "from-blue-500/20 to-indigo-500/20",
             order: 1
         },
         {
-            phase: "Phase 2",
-            title: "Learning by Building",
-            description: "Built small projects. Learned frontend & backend fundamentals. Fixed real bugs and understood documentation.",
+            phase: "Step 2",
+            title: "Full-Stack Orchestration",
+            description: "Developed deep expertise in full-stack orchestration, integrating advanced database systems and secure authentication layers.",
             icon: "Code2",
             color: "from-indigo-500/20 to-purple-500/20",
             order: 2
         },
         {
-            phase: "Phase 3",
-            title: "Real Engineering",
-            description: "Built full-stack systems, authentication systems, and optimized database architecture for performance.",
+            phase: "Step 3",
+            title: "Architectural Scalability",
+            description: "Architected high-performance applications with a focus on scalability, cloud infrastructure, and automated delivery pipelines.",
             icon: "Cpu",
             color: "from-purple-500/20 to-pink-500/20",
             order: 3
         },
         {
-            phase: "Phase 4",
-            title: "Now",
-            description: "Focused on real-world problem solving. Freelancing & internships. Shipping production-ready code for global users.",
+            phase: "Step 4",
+            title: "Strategic Innovation",
+            description: "Leading next-gen digital initiatives with hyper-optimized system flows and strategic technical direction.",
             icon: "Rocket",
             color: "from-pink-500/20 to-blue-500/20",
             order: 4

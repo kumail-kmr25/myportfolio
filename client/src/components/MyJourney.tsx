@@ -11,7 +11,9 @@ import {
     ShieldCheck,
     Layers,
     CheckCircle2,
-    Circle
+    Circle,
+    Sparkles,
+    Cloud
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import useSWR from 'swr';
@@ -24,6 +26,12 @@ const IconMap: { [key: string]: React.ReactNode } = {
     "Code2": <Code2 className="w-5 h-5 text-indigo-400" />,
     "Cpu": <Cpu className="w-5 h-5 text-purple-400" />,
     "Rocket": <Rocket className="w-5 h-5 text-pink-400" />,
+    "ShieldCheck": <ShieldCheck className="w-5 h-5 text-emerald-400" />,
+    "Layers": <Layers className="w-5 h-5 text-cyan-400" />,
+    "Globe": <Globe className="w-5 h-5 text-blue-500" />,
+    "Database": <Database className="w-5 h-5 text-purple-400" />,
+    "Sparkles": <Sparkles className="w-5 h-5 text-yellow-400" />,
+    "Cloud": <Cloud className="w-5 h-5 text-sky-400" />,
 };
 
 export default function MyJourney() {
@@ -91,15 +99,10 @@ export default function MyJourney() {
                             <input
                                 type="checkbox"
                                 checked={isVisible}
-                                onChange={() => {
-                                    if (isVisible) {
-                                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                                    }
-                                    setIsVisible(!isVisible);
-                                }}
+                                onChange={() => setIsVisible(!isVisible)}
                                 className="sr-only peer"
                             />
-                            <div className="w-20 h-10 bg-white/[0.03] border border-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[6px] after:bg-white after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500 after:ease-[0.16, 1, 0.3, 1] peer-checked:bg-blue-600/20 peer-checked:border-blue-500/50 shadow-2xl group-hover:border-white/20 transition-all"></div>
+                            <div className="w-20 h-10 bg-white/[0.03] border border-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-10 peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[6px] after:bg-white after:rounded-full after:h-7 after:w-7 after:transition-all after:duration-500 after:ease-[0.16, 1, 0.3, 1] peer-checked:bg-blue-600/20 peer-checked:border-blue-500/50 shadow-2xl group-hover:border-white/20 transition-all"></div>
                             <span className="ml-6 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-hover:text-blue-400 transition-colors">
                                 {isVisible ? 'Node Online' : 'Node Standby'}
                             </span>
@@ -159,7 +162,7 @@ export default function MyJourney() {
                                                         <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
                                                             {IconMap[phase.icon] || <Code2 className="w-5 h-5 text-blue-400" />}
                                                         </div>
-                                                        <span className="text-sm font-mono text-blue-400">{phase.phase}</span>
+                                                        {/* <span className="text-sm font-mono text-blue-400">{phase.phase}</span> */}
                                                     </div>
                                                     <h3 className="text-2xl font-bold text-white mb-3">{phase.title}</h3>
                                                     <p className="text-gray-400 leading-relaxed">{phase.description}</p>
