@@ -15,7 +15,11 @@ import {
 import useSWR from "swr";
 import { format } from "date-fns";
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+};
 
 export default function AdminCapacityManager() {
     const { data: projects, mutate: mutateProjects } = useSWR("/api/admin/active-projects", fetcher);
@@ -148,14 +152,13 @@ export default function AdminCapacityManager() {
                 <div className="glass-effect p-8 rounded-[2.5rem] border border-white/5 flex flex-col items-center justify-center text-center">
                     <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Live Status Preview</p>
                     <div className="text-4xl mb-4">
-                        {config?.manualOverride === "booked" || (!config?.manualOverride && projects?.filter((p: any) => p.status === "active").length >= (config?.maxActiveProjects || 2)) ? "🔴" :
-                            config?.manualOverride === "limited" || (!config?.manualOverride && projects?.filter((p: any) => p.status === "active").length > 0) ? "🟡" : "🟢"}
+                        {(() => { const p = Array.isArray(projects) ? projects : []; const active = p.filter((p: any) => p.status === "active").length; return config?.manualOverride === "booked" || (!config?.manualOverride && active >= (config?.maxActiveProjects || 2)) ? "🔴" : config?.manualOverride === "limited" || (!config?.manualOverride && active > 0) ? "🟡" : "🟢"; })()}
                     </div>
                     <h4 className="text-xl font-bold text-white capitalize">
-                        {config?.manualOverride || (projects?.filter((p: any) => p.status === "active").length >= (config?.maxActiveProjects || 2) ? "Booked" : "Available")}
+                        {(() => { const p = Array.isArray(projects) ? projects : []; const active = p.filter((pr: any) => pr.status === "active").length; return config?.manualOverride || (active >= (config?.maxActiveProjects || 2) ? "Booked" : "Available"); })()}
                     </h4>
                     <p className="text-sm text-gray-500 mt-2">
-                        {projects?.filter((p: any) => p.status === "active").length} / {config?.maxActiveProjects || 2} active slots
+                        {Array.isArray(projects) ? projects.filter((p: any) => p.status === "active").length : 0} / {config?.maxActiveProjects || 2} active slots
                     </p>
                 </div>
             </div>
@@ -176,11 +179,11 @@ export default function AdminCapacityManager() {
                 </div>
 
                 <div className="p-0">
-                    {projects?.length === 0 ? (
+                    {!Array.isArray(projects) || projects.length === 0 ? (
                         <div className="p-20 text-center text-gray-500 italic">No project history found.</div>
                     ) : (
                         <div className="divide-y divide-white/5">
-                            {projects?.map((project: any) => (
+                            {projects.map((project: any) => (
                                 <div key={project.id} className="p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6 hover:bg-white/[0.02] transition-colors group">
                                     <div className="flex gap-6 items-start">
                                         <div className={`w-12 h-12 rounded-2xl flex-shrink-0 flex items-center justify-center ${project.status === "active" ? "bg-green-500/10 text-green-500" :

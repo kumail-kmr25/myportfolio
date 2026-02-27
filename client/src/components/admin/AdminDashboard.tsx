@@ -5,6 +5,7 @@ import { Loader2, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { getApiUrl } from "@/lib/api";
 
 // Admin Components
@@ -53,6 +54,8 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { status: sessionStatus } = useSession();
+    const isAuthenticated = sessionStatus === "authenticated";
 
     useEffect(() => {
         const tab = searchParams.get("tab");
@@ -62,20 +65,21 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
         }
     }, [searchParams]);
 
-    // Data Fetching
-    const { data: allTestimonials, mutate: mutateTestimonials } = useSWR<AdminTestimonial[]>("/api/admin/testimonials", fetcher);
-    const { data: projects, mutate: mutateProjects } = useSWR<AdminProject[]>("/api/projects", fetcher);
-    const { data: messages, mutate: mutateMessages } = useSWR<AdminContactMessage[]>("/api/contact", fetcher);
-    const { data: hireRequests, mutate: mutateHireRequests } = useSWR<AdminHireRequest[]>("/api/admin/hire", fetcher);
-    const { data: blogPosts, mutate: mutateBlogPosts } = useSWR<AdminBlogPost[]>("/api/blog", fetcher);
-    const { data: caseStudies, mutate: mutateCaseStudies } = useSWR<any[]>("/api/admin/case-studies", fetcher);
-    const { data: featureRequests, mutate: mutateFeatureRequests } = useSWR<any[]>("/api/admin/feature-requests", fetcher);
-    const { data: statsData, mutate: mutateStats } = useSWR<AdminStats>("/api/stats", fetcher);
-    const { data: diagPatterns, mutate: mutateDiagPatterns } = useSWR<any[]>("/api/admin/diagnostic-patterns", fetcher);
-    const { data: diagLogs, mutate: mutateDiagLogs } = useSWR<AdminDiagnosticLog[]>("/api/admin/diagnostic-logs", fetcher);
-    const { data: availabilityData, mutate: mutateAvailability } = useSWR<any>("/api/availability", fetcher, {
+    // Data Fetching — keys are null until session is confirmed to prevent 401 flood
+    const { data: allTestimonials, mutate: mutateTestimonials } = useSWR<AdminTestimonial[]>(isAuthenticated ? "/api/admin/testimonials" : null, fetcher);
+    const { data: projects, mutate: mutateProjects } = useSWR<AdminProject[]>(isAuthenticated ? "/api/projects" : null, fetcher);
+    const { data: messages, mutate: mutateMessages } = useSWR<AdminContactMessage[]>(isAuthenticated ? "/api/contact" : null, fetcher);
+    const { data: hireRequests, mutate: mutateHireRequests } = useSWR<AdminHireRequest[]>(isAuthenticated ? "/api/admin/hire" : null, fetcher);
+    const { data: blogPosts, mutate: mutateBlogPosts } = useSWR<AdminBlogPost[]>(isAuthenticated ? "/api/blog" : null, fetcher);
+    const { data: caseStudies, mutate: mutateCaseStudies } = useSWR<any[]>(isAuthenticated ? "/api/admin/case-studies" : null, fetcher);
+    const { data: featureRequests, mutate: mutateFeatureRequests } = useSWR<any[]>(isAuthenticated ? "/api/admin/feature-requests" : null, fetcher);
+    const { data: statsData, mutate: mutateStats } = useSWR<AdminStats>(isAuthenticated ? "/api/stats" : null, fetcher);
+    const { data: diagPatterns, mutate: mutateDiagPatterns } = useSWR<any[]>(isAuthenticated ? "/api/admin/diagnostic-patterns" : null, fetcher);
+    const { data: diagLogs, mutate: mutateDiagLogs } = useSWR<AdminDiagnosticLog[]>(isAuthenticated ? "/api/admin/diagnostic-logs" : null, fetcher);
+    const { data: availabilityData, mutate: mutateAvailability } = useSWR<any>(isAuthenticated ? "/api/availability" : null, fetcher, {
         fallbackData: initialAvailability
     });
+
 
     useEffect(() => {
         const handleUnauthorized = () => {
@@ -225,6 +229,14 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
             if (res.ok) mutateAvailability();
         } catch (err) { console.error(err); }
     };
+
+    if (sessionStatus === "loading") {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-[#050505]">
+                <Loader2 className="w-6 h-6 animate-spin text-white/30" />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#050505] flex font-[family-name:var(--font-outfit)]">
