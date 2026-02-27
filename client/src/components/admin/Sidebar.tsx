@@ -17,7 +17,8 @@ import {
     Settings,
     Zap,
     History,
-    FileText
+    FileText,
+    Milestone
 } from "lucide-react";
 import { useState } from "react";
 
@@ -36,6 +37,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
 
     const menuItems = [
         { id: "overview", label: "Overview", icon: LayoutDashboard },
+        { id: "journey", label: "Journey", icon: Milestone },
         { id: "messages", label: "Messages", icon: Mail, count: messageCount },
         { id: "hire", label: "Hire Requests", icon: Briefcase, count: newHireCount },
         { id: "testimonials", label: "Testimonials", icon: MessageSquare },

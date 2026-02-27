@@ -24,6 +24,7 @@ import AdminCapacityManager from "@/components/admin/AdminCapacityManager";
 import AdminDeveloperStatus from "@/components/admin/AdminDeveloperStatus";
 import AdminAnalytics from "@/components/admin/AdminAnalytics";
 import AdminResume from "@/components/admin/AdminResume";
+import AdminJourney from "@/components/admin/AdminJourney";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
 
 const fetcher = async (url: string) => {
@@ -50,7 +51,7 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ initialActivities = [], initialAvailability = null }: AdminDashboardProps) {
-    const [activeTab, setActiveTab] = useState<"overview" | "status" | "messages" | "hire" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "status" | "messages" | "hire" | "testimonials" | "projects" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey">("overview");
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -59,7 +60,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     useEffect(() => {
         const tab = searchParams.get("tab");
-        const validTabs = ["overview", "status", "messages", "hire", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats", "diagnostics", "capacity", "resume"];
+        const validTabs = ["overview", "status", "messages", "hire", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey"];
         if (tab && validTabs.includes(tab as any)) {
             setActiveTab(tab as any);
         }
@@ -79,6 +80,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
     const { data: availabilityData, mutate: mutateAvailability } = useSWR<any>(isAuthenticated ? "/api/availability" : null, fetcher, {
         fallbackData: initialAvailability
     });
+    const { data: journeyPhases, mutate: mutateJourney } = useSWR<any[]>(isAuthenticated ? "/api/admin/journey" : null, fetcher);
 
 
     useEffect(() => {
@@ -219,6 +221,30 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
         mutateDiagLogs();
     };
 
+    const handleAddJourney = async (data: any) => {
+        const res = await fetch("/api/admin/journey", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+        if (res.ok) mutateJourney();
+    };
+
+    const handleJourneyUpdate = async (id: string, data: any) => {
+        const res = await fetch(`/api/admin/journey/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+        if (res.ok) mutateJourney();
+    };
+
+    const handleJourneyDelete = async (id: string) => {
+        if (!confirm("Delete this journey phase?")) return;
+        const res = await fetch(`/api/admin/journey/${id}`, { method: "DELETE" });
+        if (res.ok) mutateJourney();
+    };
+
     const handleUpdateAvailability = async (status: string) => {
         try {
             const res = await fetch("/api/admin/availability", {
@@ -312,6 +338,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "feature-requests" && <AdminFeatureRequests requests={Array.isArray(featureRequests) ? featureRequests : []} onUpdate={handleFeatureRequestAction} />}
                                 {activeTab === "stats" && <AdminStats stats={statsData || null} onUpdate={handleStatsUpdate} />}
                                 {activeTab === "diagnostics" && <AdminDiagnostics patterns={Array.isArray(diagPatterns) ? diagPatterns : []} logs={Array.isArray(diagLogs) ? diagLogs : []} onUpdate={handleDiagAction} />}
+                                {activeTab === "journey" && <AdminJourney phases={Array.isArray(journeyPhases) ? journeyPhases : []} onAdd={handleAddJourney} onUpdate={handleJourneyUpdate} onDelete={handleJourneyDelete} />}
                             </ErrorBoundary>
                         </motion.div>
                     </AnimatePresence>
