@@ -2,8 +2,10 @@
 
 
 import Image from "next/image";
-import { Star, BadgeCheck, Quote } from "lucide-react";
+import { Star, BadgeCheck, Quote, Plus } from "lucide-react";
 import { motion, Variants } from "framer-motion";
+import { useState } from "react";
+import TestimonialModal from "./TestimonialModal";
 
 // Static dummy testimonials for showcase
 const dummyTestimonials = [
@@ -137,6 +139,7 @@ function Marquee({ items, reverse = false }: { items: Testimonial[]; reverse?: b
 }
 
 export default function Testimonials() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const testimonials = dummyTestimonials;
 
     const row1 = testimonials.slice(0, Math.ceil(testimonials.length / 2));
@@ -197,14 +200,28 @@ export default function Testimonials() {
                             Real-world feedback from engineering partners and institutional clients. Unfiltered technical validation.
                         </motion.p>
                     </div>
+
+                    <motion.button
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        onClick={() => setIsModalOpen(true)}
+                        className="group relative px-8 py-4 bg-white/[0.03] border border-white/[0.08] text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-white/[0.06] hover:border-blue-500/30 hover:scale-[1.05] active:scale-[0.95] backdrop-blur-3xl overflow-hidden"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="relative z-10 flex items-center gap-3">
+                            <Plus size={16} className="text-blue-500" />
+                            Add Yours
+                        </span>
+                    </motion.button>
                 </div>
             </div>
 
+            <TestimonialModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSuccess={() => { }} />
+
             <div className="space-y-12">
-                {/* Row 1 — forward */}
-                {row1.length > 0 && <Marquee items={row1} />}
-                {/* Row 2 — reverse (only show if enough items) */}
-                {row2.length > 0 && <Marquee items={row2.length >= 2 ? row2 : row1} reverse />}
+                {/* Single Row — all testimonials */}
+                {testimonials.length > 0 && <Marquee items={testimonials} />}
             </div>
 
             {/* Stats strip */}
