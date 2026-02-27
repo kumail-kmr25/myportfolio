@@ -53,7 +53,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
         <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                {cards.map((card, i) => (
+                {Array.isArray(cards) && cards.map((card, i) => (
                     <div key={i} className="card p-6 sm:p-8 bg-white/5 border-white/5 group hover:bg-white/10 transition-all">
                         <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-${card.color}-500/10 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform`}>
                             <card.icon className={`text-${card.color}-400`} size={20} />

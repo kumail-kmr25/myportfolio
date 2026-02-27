@@ -100,67 +100,68 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
                             <p className="text-gray-500 font-bold uppercase tracking-widest text-xs">No hire requests found</p>
                         </div>
                     ) : (
-                        filteredRequests.map((req) => (
-                            <div
-                                key={req.id}
-                                onClick={() => setSelectedRequest(req)}
-                                className={`p-4 sm:p-6 glass-effect rounded-[1.5rem] sm:rounded-[2rem] border transition-all cursor-pointer group ${selectedRequest?.id === req.id
-                                    ? "border-blue-500 bg-blue-500/5"
-                                    : "border-white/5 hover:border-white/10"
-                                    }`}
-                            >
-                                <div className="flex items-start sm:items-center justify-between gap-4 mb-4">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/5 rounded-xl sm:rounded-2xl flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
-                                            <Briefcase className="w-5 h-5 sm:w-6 sm:h-6" />
+                        {
+                            Array.isArray(filteredRequests) && filteredRequests.map((req) => (
+                                <div
+                                    key={req.id}
+                                    onClick={() => setSelectedRequest(req)}
+                                    className={`p-4 sm:p-6 glass-effect rounded-[1.5rem] sm:rounded-[2rem] border transition-all cursor-pointer group ${selectedRequest?.id === req.id
+                                        ? "border-blue-500 bg-blue-500/5"
+                                        : "border-white/5 hover:border-white/10"
+                                        }`}
+                                >
+                                    <div className="flex items-start sm:items-center justify-between gap-4 mb-4">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/5 rounded-xl sm:rounded-2xl flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
+                                                <Briefcase className="w-5 h-5 sm:w-6 sm:h-6" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <h3 className="text-white font-bold text-sm sm:text-base truncate">{req.name}</h3>
+                                                <p className="text-[10px] sm:text-xs text-gray-500 truncate">{req.email}</p>
+                                            </div>
                                         </div>
-                                        <div className="min-w-0">
-                                            <h3 className="text-white font-bold text-sm sm:text-base truncate">{req.name}</h3>
-                                            <p className="text-[10px] sm:text-xs text-gray-500 truncate">{req.email}</p>
-                                        </div>
-                                    </div>
-                                    <span className={`px-2 sm:px-4 py-1 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest border shrink-0 ${getStatusColor(req.status)}`}>
-                                        {req.status}
-                                    </span>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-white/5">
-                                    <div className="flex items-center gap-2">
-                                        <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500">
-                                            <IndianRupee size={12} />
-                                        </div>
-                                        <span className="text-[10px] text-gray-400 font-medium">{req.budgetRange}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="p-2 bg-purple-500/10 rounded-lg text-purple-500">
-                                            <Clock size={12} />
-                                        </div>
-                                        <span className="text-[10px] text-gray-400 font-medium">{req.timeline}</span>
-                                    </div>
-                                </div>
-
-                                <div className="mt-4 flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
-                                            {req.selectedService}
+                                        <span className={`px-2 sm:px-4 py-1 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest border shrink-0 ${getStatusColor(req.status)}`}>
+                                            {req.status}
                                         </span>
-                                        {req.source && (
-                                            <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-tight border ${req.source === 'diagnostic' ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' : 'bg-blue-500/10 text-blue-500 border-blue-500/20'}`}>
-                                                {req.source}
-                                            </span>
-                                        )}
-                                        {req.status === 'new' && (
-                                            <span className="px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-tight bg-green-500/10 text-green-500 border border-green-500/20">
-                                                New
-                                            </span>
-                                        )}
                                     </div>
-                                    <span className="text-[10px] text-gray-600 font-mono">
-                                        {format(new Date(req.createdAt), 'MMM dd, yyyy')}
-                                    </span>
+
+                                    <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-white/5">
+                                        <div className="flex items-center gap-2">
+                                            <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500">
+                                                <IndianRupee size={12} />
+                                            </div>
+                                            <span className="text-[10px] text-gray-400 font-medium">{req.budgetRange}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="p-2 bg-purple-500/10 rounded-lg text-purple-500">
+                                                <Clock size={12} />
+                                            </div>
+                                            <span className="text-[10px] text-gray-400 font-medium">{req.timeline}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-4 flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+                                                {req.selectedService}
+                                            </span>
+                                            {req.source && (
+                                                <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-tight border ${req.source === 'diagnostic' ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' : 'bg-blue-500/10 text-blue-500 border-blue-500/20'}`}>
+                                                    {req.source}
+                                                </span>
+                                            )}
+                                            {req.status === 'new' && (
+                                                <span className="px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-tight bg-green-500/10 text-green-500 border border-green-500/20">
+                                                    New
+                                                </span>
+                                            )}
+                                        </div>
+                                        <span className="text-[10px] text-gray-600 font-mono">
+                                            {format(new Date(req.createdAt), 'MMM dd, yyyy')}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            ))
                     )}
                 </div>
 
