@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import useSWR from "swr";
 import {
     ExternalLink, Github, Globe, ChevronRight, Layers, Zap,
@@ -669,24 +669,54 @@ export default function Projects() {
 
     return (
         <section id="projects" className="bg-[#050505] py-24">
-            <div className="section-container">
+            <motion.div
+                className="section-container relative z-10"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+            >
                 {/* Header */}
-                <div className="mb-16">
-                    <div className="flex items-center gap-3 mb-3">
-                        <div className="h-px flex-1 bg-gradient-to-r from-transparent to-blue-500/30" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400">Project Lab</span>
-                        <div className="h-px flex-1 bg-gradient-to-l from-transparent to-blue-500/30" />
-                    </div>
-                    <h2 className="section-title text-center">Project Intelligence View</h2>
-                    <p className="section-subtitle text-center">
-                        Not just what I built — but how I think. Select a project to explore its architecture, decisions, and real-world impact.
-                    </p>
-                    <p className="text-center text-[10px] text-gray-600 uppercase tracking-widest font-bold mt-2">
-                        ↑↓ keyboard navigable
-                    </p>
-                    <div className="flex justify-center mt-8">
+                <div className="mb-20">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="flex items-center gap-4 mb-6"
+                    >
+                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-500">System Lab</span>
+                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
+                    </motion.div>
+
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-8 text-center"
+                    >
+                        Project <span className="text-gray-500 italic">Intelligence</span>
+                    </motion.h2>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="text-gray-400 text-lg max-w-3xl mx-auto text-center leading-relaxed"
+                    >
+                        Exploring the nexus of architecture, challenge, and resolution. Each project represents a unique technical narrative built on principles of scalability and design excellence.
+                    </motion.p>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                        className="flex justify-center mt-12"
+                    >
                         <LiveStatusBadge variant="hero" />
-                    </div>
+                    </motion.div>
                 </div>
 
                 {/* Mobile selector toggle */}
@@ -865,7 +895,7 @@ export default function Projects() {
                         </AnimatePresence>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* Comparison Modal */}
             <AnimatePresence>

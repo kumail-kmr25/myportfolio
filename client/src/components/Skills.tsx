@@ -24,17 +24,34 @@ const allSkills = [...skills, ...skills];
 export default function Skills() {
     return (
         <section className="py-12 bg-[#050505] overflow-hidden relative">
-            <div className="section-container mb-16 text-center">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    <h2 className="section-title">Tech Stack</h2>
-                    <p className="section-subtitle mx-auto">
-                        Technologies I work with to build high-performance applications.
-                    </p>
-                </motion.div>
+            <div className="section-container mb-24 relative z-10">
+                <div className="text-center">
+                    <motion.span
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-4 block"
+                    >
+                        Infrastructure
+                    </motion.span>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6"
+                    >
+                        Core <span className="text-gray-500 italic">Technology</span>
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="text-gray-400 text-lg max-w-2xl mx-auto"
+                    >
+                        A specialized toolkit for modern software engineering, focused on speed, reliability, and developer experience.
+                    </motion.p>
+                </div>
             </div>
 
             <div className="relative flex overflow-x-hidden group">

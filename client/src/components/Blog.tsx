@@ -3,7 +3,7 @@
 import { ArrowRight, Calendar, Clock, Sparkles } from "lucide-react";
 import Link from "next/link";
 import useSWR from "swr";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -40,72 +40,123 @@ export default function Blog() {
 
     const posts = blogPosts && Array.isArray(blogPosts) && blogPosts.length > 0 ? blogPosts : fallbackPosts;
 
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+            }
+        }
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+        }
+    };
+
     return (
-        <section id="blog" className="py-12 bg-[#050505]">
-            <div className="section-container">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+        <section id="blog" className="py-24 bg-[#050505] relative overflow-hidden">
+            <div className="section-container relative z-10">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-16">
                     <div>
-                        <h2 className="section-title">Latest Insights</h2>
-                        <p className="section-subtitle mb-0">
-                            Thoughts on technology, design, and freelance strategy.
-                        </p>
+                        <motion.span
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-4 block"
+                        >
+                            Journal
+                        </motion.span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6"
+                        >
+                            Latest <span className="text-gray-500">Insights</span>
+                        </motion.h2>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="text-gray-400 text-lg max-w-2xl"
+                        >
+                            Thoughts on technology, engineering design, and sustainable development.
+                        </motion.p>
                     </div>
-                    <Link href="#blog" aria-label="Read all blog articles" className="hidden md:flex items-center text-white hover:text-blue-400 font-medium transition-colors mt-4 md:mt-0">
-                        Read all articles <ArrowRight className="ml-2 w-4 h-4" aria-hidden="true" />
-                    </Link>
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        <Link href="#blog" aria-label="Read all blog articles" className="hidden md:flex items-center text-white hover:text-blue-400 font-bold text-sm uppercase tracking-widest transition-colors">
+                            Read all articles <ArrowRight className="ml-3 w-4 h-4" aria-hidden="true" />
+                        </Link>
+                    </motion.div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {posts.map((post: any, index: number) => (
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={containerVariants}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                >
+                    {posts.map((post: any) => (
                         <motion.div
                             key={post.id}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            variants={itemVariants}
                             className="group"
                         >
-                            <div className="card h-full flex flex-col bg-white/[0.02] backdrop-blur-3xl border-white/5 group-hover:border-blue-500/40 group-hover:bg-blue-500/[0.02] transition-all duration-500 p-8 rounded-[2rem] relative overflow-hidden">
+                            <div className="h-full flex flex-col bg-white/[0.02] border border-white/5 group-hover:bg-white/[0.04] group-hover:border-white/10 transition-all duration-500 p-8 rounded-[2.5rem] relative overflow-hidden">
                                 {/* Glow Effect */}
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
-                                <div className="flex justify-between items-center mb-6">
-                                    <div className="flex items-center gap-2 px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full">
-                                        <Sparkles size={10} className="text-blue-400" />
+                                <div className="flex justify-between items-center mb-10">
+                                    <div className="flex items-center gap-2 px-3 py-1 bg-blue-500/5 border border-blue-500/20 rounded-full">
+                                        <Sparkles size={10} className="text-blue-500" />
                                         <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">{post.category}</span>
                                     </div>
-                                    <div className="flex items-center text-[10px] text-gray-500 font-bold uppercase tracking-tighter">
-                                        <Clock className="w-3 h-3 mr-1 text-blue-400/50" />
+                                    <div className="flex items-center text-[10px] text-gray-500 font-black uppercase tracking-widest">
+                                        <Clock className="w-3 h-3 mr-2 text-blue-500" />
                                         {post.readTime}
                                     </div>
                                 </div>
 
-                                <h3 className="text-2xl font-black text-white mb-4 group-hover:text-blue-400 transition-colors line-clamp-2 leading-tight tracking-tight">
+                                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors line-clamp-2 leading-tight tracking-tight">
                                     {post.title}
                                 </h3>
 
-                                <p className="text-gray-400 mb-8 line-clamp-3 text-sm leading-relaxed font-medium">
+                                <p className="text-gray-400 mb-10 line-clamp-3 text-sm leading-relaxed">
                                     {post.excerpt}
                                 </p>
 
-                                <div className="mt-auto flex items-center justify-between pt-6 border-t border-white/5">
-                                    <div className="flex items-center text-[10px] font-black uppercase tracking-wider text-gray-500">
+                                <div className="mt-auto flex items-center justify-between pt-8 border-t border-white/5">
+                                    <div className="flex items-center text-[10px] font-black uppercase tracking-widest text-gray-500">
                                         <Calendar className="w-3 h-3 mr-2" />
                                         {new Date(post.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                                     </div>
 
-                                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white group-hover:bg-blue-500 group-hover:text-white transition-all transform group-hover:translate-x-1">
-                                        <ArrowRight size={18} />
+                                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white group-hover:bg-blue-600 transition-all transform group-hover:-translate-y-1">
+                                        <ArrowRight size={20} />
                                     </div>
                                 </div>
                             </div>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
 
-                <div className="mt-8 text-center md:hidden">
-                    <Link href="#" className="inline-flex items-center text-white hover:text-blue-400 font-medium transition-colors">
-                        Read all articles <ArrowRight className="ml-2 w-4 h-4" />
+                <div className="mt-12 text-center md:hidden">
+                    <Link href="#" className="inline-flex items-center text-white hover:text-blue-400 font-bold text-sm uppercase tracking-widest transition-colors py-4 px-8 border border-white/10 rounded-2xl bg-white/5">
+                        Read all articles <ArrowRight className="ml-3 w-4 h-4" />
                     </Link>
                 </div>
             </div>
