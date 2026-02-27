@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import useSWR from "swr";
 import { formatDistanceToNow } from "date-fns";
+import { useState, useEffect } from "react";
 
 const fetcher = async (url: string) => {
     const res = await fetch(url);
@@ -48,6 +49,14 @@ interface AdminLiveFeedProps {
 }
 
 export default function AdminLiveFeed({ initialActivities = [] }: AdminLiveFeedProps) {
+    const [mounted, setMounted] = useState(false);
+    const [sessionId, setSessionId] = useState("");
+
+    useEffect(() => {
+        setMounted(true);
+        setSessionId(Math.random().toString(36).substring(7).toUpperCase());
+    }, []);
+
     const { data: activities, error, isLoading } = useSWR<Activity[]>("/api/admin/activity-feed", fetcher, {
         refreshInterval: 10000,
         fallbackData: initialActivities
@@ -109,7 +118,7 @@ export default function AdminLiveFeed({ initialActivities = [] }: AdminLiveFeedP
                                         <h4 className="text-[11px] font-bold text-white truncate uppercase tracking-tight">{activity.title}</h4>
                                         <span className="text-[9px] text-gray-600 shrink-0 flex items-center gap-1.5">
                                             <Clock size={10} />
-                                            {formatDistanceToNow(new Date(activity.timestamp))} ago
+                                            {mounted ? formatDistanceToNow(new Date(activity.timestamp)) : "Just now"} ago
                                         </span>
                                     </div>
                                     <p className="text-[10px] text-gray-500 truncate leading-relaxed">{activity.subtitle}</p>
@@ -135,7 +144,7 @@ export default function AdminLiveFeed({ initialActivities = [] }: AdminLiveFeedP
                     Showing last 20 system interactions
                 </p>
                 <p className="text-[9px] text-gray-700 font-mono">
-                    Session_ID: {Math.random().toString(36).substring(7).toUpperCase()}
+                    Session_ID: {sessionId || "INITIALIZING..."}
                 </p>
             </div>
         </div>

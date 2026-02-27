@@ -31,6 +31,7 @@ export default function LoginForm() {
                 router.refresh();
             }
         } catch (error) {
+            console.error("[Login Error]:", error);
             setAuthError("Something went wrong.");
         } finally {
             setIsLoading(false);
