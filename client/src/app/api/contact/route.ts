@@ -3,13 +3,13 @@ import { prisma } from "@portfolio/database";
 import { contactSchema } from "@portfolio/shared";
 import { sendContactNotification, sendAutoReplyToClient } from "@/lib/mail";
 import xss from "xss";
-import { getSession } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export const dynamic = 'force-dynamic';
 
-// In-memory rate limiting (Note: This is per-instance, not global in serverless)
 const rateLimit = new Map<string, { count: number; lastReset: number }>();
-const LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
+const LIMIT_WINDOW = 60 * 60 * 1000;
 const MAX_REQUESTS = 5;
 
 export async function POST(request: Request) {
@@ -17,7 +17,6 @@ export async function POST(request: Request) {
         const ip = request.headers.get("x-forwarded-for") || "anonymous";
         const now = Date.now();
 
-        // Rate Limiting Logic
         const clientLimit = rateLimit.get(ip) || { count: 0, lastReset: now };
         if (now - clientLimit.lastReset > LIMIT_WINDOW) {
             clientLimit.count = 0;
@@ -29,8 +28,6 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-
-        // Validation
         const result = contactSchema.safeParse(body);
         if (!result.success) {
             return NextResponse.json({ success: false, error: "Validation failed", details: result.error.format() }, { status: 400 });
@@ -48,12 +45,10 @@ export async function POST(request: Request) {
             foundBy
         } = result.data;
 
-        // Sanitization
         const sanitizedMessage = xss(message);
         const sanitizedName = xss(name);
         const sanitizedCompany = company ? xss(company) : null;
 
-        // Save to Database
         const submission = await prisma.contactSubmission.create({
             data: {
                 name: sanitizedName,
@@ -68,11 +63,9 @@ export async function POST(request: Request) {
             },
         });
 
-        // Update Rate Limit
         clientLimit.count++;
         rateLimit.set(ip, clientLimit);
 
-        // Send Email (Non-blocking)
         sendContactNotification({
             name: sanitizedName,
             email,
@@ -84,7 +77,6 @@ export async function POST(request: Request) {
             message: sanitizedMessage,
         }).catch((err) => console.error("Email notification failed:", err));
 
-        // Auto-reply to Client (Non-blocking)
         sendAutoReplyToClient(email, sanitizedName)
             .catch((err) => console.error("Auto-reply failed:", err));
 
@@ -97,7 +89,7 @@ export async function POST(request: Request) {
 
 export async function GET() {
     try {
-        const session = await getSession();
+        const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

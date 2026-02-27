@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { decrypt } from "@/lib/auth";
+import { getToken } from "next-auth/jwt";
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
@@ -12,21 +12,16 @@ export async function middleware(request: NextRequest) {
             return NextResponse.next();
         }
 
-        const session = request.cookies.get("admin_session")?.value;
+        const token = await getToken({
+            req: request,
+            secret: process.env.NEXTAUTH_SECRET,
+        });
 
-        if (!session) {
+        if (!token) {
             return NextResponse.redirect(new URL("/admin/login", request.url));
         }
 
-        try {
-            const payload = await decrypt(session);
-            if (!payload || !payload.userId) {
-                return NextResponse.redirect(new URL("/admin/login", request.url));
-            }
-            return NextResponse.next();
-        } catch (error) {
-            return NextResponse.redirect(new URL("/admin/login", request.url));
-        }
+        return NextResponse.next();
     }
 
     return NextResponse.next();

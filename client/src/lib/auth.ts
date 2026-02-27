@@ -1,34 +1,64 @@
-import { SignJWT, jwtVerify } from "jose";
-import { cookies } from "next/headers";
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { prisma } from "@portfolio/database";
+import bcrypt from "bcryptjs";
 
-const secretKey = process.env.JWT_SECRET;
-if (!secretKey) {
-    throw new Error("JWT_SECRET environment variable is missing");
-}
-const key = new TextEncoder().encode(secretKey);
+export const authOptions: NextAuthOptions = {
+    providers: [
+        CredentialsProvider({
+            name: "Credentials",
+            credentials: {
+                email: { label: "Email", type: "email" },
+                password: { label: "Password", type: "password" }
+            },
+            async authorize(credentials) {
+                if (!credentials?.email || !credentials?.password) {
+                    return null;
+                }
 
-export async function encrypt(payload: any) {
-    return await new SignJWT(payload)
-        .setProtectedHeader({ alg: "HS256" })
-        .setIssuedAt()
-        .setExpirationTime("2h")
-        .sign(key);
-}
+                const admin = await prisma.admin.findFirst({
+                    where: { email: credentials.email.toLowerCase() },
+                });
 
-export async function decrypt(input: string): Promise<any> {
-    try {
-        const { payload } = await jwtVerify(input, key, {
-            algorithms: ["HS256"],
-        });
-        return payload;
-    } catch (error) {
-        return null;
-    }
-}
+                if (!admin) {
+                    return null;
+                }
 
-export async function getSession() {
-    const cookieStore = await cookies();
-    const session = cookieStore.get("admin_session")?.value;
-    if (!session) return null;
-    return await decrypt(session);
-}
+                const isPasswordValid = await bcrypt.compare(credentials.password, admin.password);
+
+                if (!isPasswordValid) {
+                    return null;
+                }
+
+                return {
+                    id: admin.id,
+                    name: admin.name,
+                    email: admin.email,
+                    userId: admin.userId,
+                };
+            }
+        })
+    ],
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt",
+        maxAge: 2 * 60 * 60, // 2 hours to match existing session length
+    },
+    callbacks: {
+        async jwt({ token, user }: { token: any, user: any }) {
+            if (user) {
+                token.userId = user.userId;
+            }
+            return token;
+        },
+        async session({ session, token }: { session: any, token: any }) {
+            if (token && session.user) {
+                session.user.userId = token.userId;
+            }
+            return session;
+        },
+    },
+    pages: {
+        signIn: "/admin/login",
+    },
+};

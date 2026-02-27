@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
-import { getSession } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +12,6 @@ export async function GET() {
         });
 
         if (!status) {
-            // Seed default
             status = await (prisma as any).developerStatus.create({
                 data: {
                     status: "available",
@@ -31,8 +31,8 @@ export async function GET() {
 
 export async function PATCH(request: Request) {
     try {
-        const payload = await getSession();
-        if (!payload || !payload.id) {
+        const session = await getServerSession(authOptions);
+        if (!session) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 

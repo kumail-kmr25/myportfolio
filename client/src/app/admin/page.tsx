@@ -1,9 +1,10 @@
 import { Suspense } from "react";
-import { getSession } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import { Loader2 } from "lucide-react";
-import { fetchActivities } from "@/app/api/admin/activity-feed/route";
+import { fetchActivities } from "@/lib/admin-helpers";
 import { prisma } from "@portfolio/database";
 
 async function getInitialAvailability() {
@@ -19,7 +20,7 @@ async function getInitialAvailability() {
 }
 
 export default async function AdminPage() {
-    const session = await getSession();
+    const session = await getServerSession(authOptions);
 
     if (!session) {
         redirect("/admin/login");

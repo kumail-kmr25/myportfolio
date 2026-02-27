@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { getApiUrl } from "@/lib/api";
+import { signIn } from "next-auth/react";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
@@ -18,21 +18,19 @@ export default function LoginForm() {
         setAuthError("");
 
         try {
-            const res = await fetch(getApiUrl("/api/admin/login"), {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
+            const result = await signIn("credentials", {
+                email,
+                password,
+                redirect: false,
             });
 
-            const data = await res.json();
-
-            if (res.ok) {
+            if (result?.error) {
+                setAuthError("Invalid credentials.");
+            } else {
                 router.push("/admin");
                 router.refresh();
-            } else {
-                setAuthError(data.error || "Login failed");
             }
-        } catch {
+        } catch (error) {
             setAuthError("Something went wrong.");
         } finally {
             setIsLoading(false);

@@ -1,21 +1,22 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
-import { getSession } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function PATCH(request: Request) {
     try {
-        const session = await getSession();
+        const session = await getServerSession(authOptions);
         if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
         const body = await request.json();
         const { status, capacityPercent, nextAvailabilityDays, currentFocus, customMessage } = body;
 
         // Upsert — only one row
-        const existing = await (prisma as any).developerStatus.findFirst();
+        const existing = await prisma.developerStatus.findFirst();
 
         let result;
         if (existing) {
-            result = await (prisma as any).developerStatus.update({
+            result = await prisma.developerStatus.update({
                 where: { id: existing.id },
                 data: {
                     ...(status !== undefined && { status }),
@@ -26,7 +27,7 @@ export async function PATCH(request: Request) {
                 }
             });
         } else {
-            result = await (prisma as any).developerStatus.create({
+            result = await prisma.developerStatus.create({
                 data: { status: status || "available", capacityPercent: capacityPercent || 0, nextAvailabilityDays: nextAvailabilityDays || 0, currentFocus: currentFocus || "Open to new projects", customMessage }
             });
         }

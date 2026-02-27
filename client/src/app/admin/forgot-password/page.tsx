@@ -1,9 +1,10 @@
-﻿import { getSession } from "@/lib/auth";
+﻿import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import ForgotPasswordForm from "@/components/admin/ForgotPasswordForm";
 
 export default async function ForgotPasswordPage() {
-    const session = await getSession();
+    const session = await getServerSession(authOptions);
 
     if (session) {
         redirect("/admin");

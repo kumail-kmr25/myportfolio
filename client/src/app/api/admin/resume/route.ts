@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
-import { getSession } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
-        const session = await getSession();
+        const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -36,7 +37,7 @@ export async function POST(request: Request) {
         const { url, visible } = body;
 
         const resume = await prisma.resume.upsert({
-            where: { id: "current-resume" }, // Use a stable ID for simplicity or handle based on logic
+            where: { id: "current-resume" },
             update: { url, visible, updatedAt: new Date() },
             create: { id: "current-resume", url, visible, updatedAt: new Date() }
         });
