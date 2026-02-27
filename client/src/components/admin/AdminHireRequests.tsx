@@ -161,7 +161,7 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
                                 </div>
                             </div>
                         ))
-                    )
+                    )}
                 </div>
 
                 {/* Detail View */}
