@@ -1,15 +1,44 @@
 import Image from "next/image";
+import { motion, Variants } from "framer-motion";
 
 export default function About() {
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+        }
+    };
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2,
+                delayChildren: 0.1
+            }
+        }
+    };
+
     return (
         <section id="about" className="py-24 bg-[#050505] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-blue-600/5 blur-[120px] rounded-full" />
             <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-purple-600/5 blur-[120px] rounded-full" />
 
-            <div className="section-container relative z-10">
+            <motion.div
+                className="section-container relative z-10"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+            >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     {/* Left: Premium Profile Visual */}
-                    <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+                    <motion.div
+                        variants={itemVariants}
+                        className="flex justify-center lg:justify-start order-2 lg:order-1"
+                    >
                         <div className="relative group">
                             {/* Decorative Outer Ring */}
                             <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700 animate-pulse" />
@@ -32,19 +61,30 @@ export default function About() {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Right: Technical Narrative */}
                     <div className="space-y-8 order-1 lg:order-2">
                         <div className="space-y-4">
-                            <span className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-2 block">My Journey</span>
-                            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
+                            <motion.span
+                                variants={itemVariants}
+                                className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-2 block"
+                            >
+                                My Journey
+                            </motion.span>
+                            <motion.h2
+                                variants={itemVariants}
+                                className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight"
+                            >
                                 From 10th Class to <br />
                                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Web Engineering Excellence</span>
-                            </h2>
+                            </motion.h2>
                         </div>
 
-                        <div className="space-y-6 text-gray-400 text-lg leading-relaxed max-w-2xl">
+                        <motion.div
+                            variants={itemVariants}
+                            className="space-y-6 text-gray-400 text-lg leading-relaxed max-w-2xl"
+                        >
                             <p>
                                 My journey in the tech world began in <span className="text-blue-400 font-semibold">2023</span>, right after I passed my <span className="text-white font-medium">class 10th exams</span>.
                                 What started as a curiosity quickly evolved into a deep passion for building software that solves real-world problems.
@@ -54,21 +94,27 @@ export default function About() {
                                 With a focus on <span className="text-white font-medium">Full-Stack Scalability</span> and <span className="text-white font-medium">Clean Design Systems</span>,
                                 I lead technical projects from inception to production-hardened deployments.
                             </p>
-                        </div>
+                        </motion.div>
 
-                        <div className="flex flex-wrap gap-4 pt-4">
-                            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex-1">
+                        <motion.div
+                            variants={itemVariants}
+                            className="flex flex-wrap gap-4 pt-4"
+                        >
+                            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex-1 hover:bg-white/10 transition-colors">
                                 <div className="text-2xl font-bold text-white">3+</div>
                                 <div className="text-xs text-gray-500 uppercase tracking-wider">Years Learning</div>
                             </div>
-                            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex-1">
+                            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex-1 hover:bg-white/10 transition-colors">
                                 <div className="text-2xl font-bold text-white">SaaS</div>
                                 <div className="text-xs text-gray-500 uppercase tracking-wider">Specialty</div>
                             </div>
-                        </div>
+                        </motion.div>
 
                         {/* Dedicated CTA Button */}
-                        <div className="pt-8">
+                        <motion.div
+                            variants={itemVariants}
+                            className="pt-8"
+                        >
                             <button
                                 onClick={() => document.getElementById('my-journey')?.scrollIntoView({ behavior: 'smooth' })}
                                 className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl font-bold text-white transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] active:scale-95 flex items-center gap-3 overflow-hidden shadow-2xl shadow-blue-500/20"
@@ -81,10 +127,10 @@ export default function About() {
                                     </svg>
                                 </div>
                             </button>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 }

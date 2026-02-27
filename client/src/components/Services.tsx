@@ -1,7 +1,7 @@
 "use client";
 
 import { Code, Layout, Smartphone, Server, Globe, Rocket, Terminal } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const services = [
     {
@@ -43,54 +43,85 @@ const services = [
 ];
 
 export default function Services() {
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+            }
+        }
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+        }
+    };
+
     return (
-        <section id="services" className="py-12 bg-[#050505] relative overflow-hidden">
+        <section id="services" className="py-24 bg-[#050505] relative overflow-hidden">
             {/* Background blobs */}
-            <div className="absolute top-1/4 left-0 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute top-1/4 left-0 w-96 h-96 bg-purple-600/5 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="section-container relative z-10">
-                <div className="text-center mb-10">
+                <div className="text-center mb-16">
+                    <motion.span
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-4 block"
+                    >
+                        Expertise
+                    </motion.span>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="section-title"
+                        className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6"
                     >
-                        Services I Offer
+                        Services <span className="text-gray-500">I Offer</span>
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="section-subtitle mx-auto"
+                        className="text-gray-400 text-lg max-w-2xl mx-auto"
                     >
-                        Specialized solutions for startups and businesses looking to scale.
+                        Specialized solutions for startups and businesses looking to scale through technical excellence.
                     </motion.p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={containerVariants}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
                     {services.map((service, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: service.delay, duration: 0.5 }}
-                            whileHover={{ y: -10, transition: { duration: 0.3 } }}
-                            className="card group hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] border-white/5 hover:border-white/20"
+                            variants={itemVariants}
+                            whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                            className="group p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300"
                         >
-                            <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 group-hover:bg-white/10 transition-colors">
-                                <service.icon className="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300" />
+                            <div className="w-14 h-14 rounded-2xl bg-blue-600/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
+                                <service.icon className="w-7 h-7 text-blue-500" />
                             </div>
-                            <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
-                            <p className="text-gray-400 group-hover:text-gray-300 transition-colors">
+                            <h3 className="text-xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">{service.title}</h3>
+                            <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
                                 {service.description}
                             </p>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );
