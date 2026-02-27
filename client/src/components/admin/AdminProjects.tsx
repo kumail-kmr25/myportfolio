@@ -319,7 +319,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                             <p className="text-gray-400 text-sm line-clamp-2 leading-relaxed">{project.description}</p>
 
                             <div className="flex flex-wrap gap-2 pt-2">
-                                {project.tags.map((tag, i) => (
+                                {Array.isArray(project.tags) && project.tags.map((tag, i) => (
                                     <span key={i} className="px-3 py-1 bg-white/5 text-gray-500 rounded-lg text-[9px] font-black uppercase tracking-widest">
                                         {tag}
                                     </span>

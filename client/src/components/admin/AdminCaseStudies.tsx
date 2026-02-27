@@ -156,7 +156,7 @@ export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseS
                         </p>
 
                         <div className="mt-auto pt-6 border-t border-white/5 flex flex-wrap gap-2 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-                            {study.techStack.map(tech => (
+                            {Array.isArray(study.techStack) && study.techStack.map(tech => (
                                 <span key={tech} className="px-2 py-1 bg-white/5 rounded-md">{tech}</span>
                             ))}
                         </div>
@@ -237,7 +237,7 @@ export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseS
                                         required
                                         className="input-field min-h-[100px] py-4"
                                         placeholder="Step 1: Analyzed logs...&#10;Step 2: Isolated module..."
-                                        value={formData.steps.join("\n")}
+                                        value={Array.isArray(formData.steps) ? formData.steps.join("\n") : ""}
                                         onChange={(e) => setFormData({ ...formData, steps: e.target.value.split("\n") })}
                                     />
                                 </div>

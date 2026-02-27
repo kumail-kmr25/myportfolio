@@ -66,7 +66,7 @@ export default function AdminDiagnostics({ patterns, logs, onUpdate }: { pattern
                             <div key={pattern.id} className="glass-effect p-8 rounded-[2rem] border border-white/5 space-y-4 hover:border-white/10 transition-all group">
                                 <div className="flex justify-between items-start">
                                     <div className="flex flex-wrap gap-2">
-                                        {pattern.keywords.map((kw: string) => (
+                                        {Array.isArray(pattern.keywords) && pattern.keywords.map((kw: string) => (
                                             <span key={kw} className="px-2 py-1 bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase rounded-lg border border-blue-500/20">
                                                 {kw}
                                             </span>
@@ -84,7 +84,7 @@ export default function AdminDiagnostics({ patterns, logs, onUpdate }: { pattern
                                 <div className="space-y-2">
                                     <p className="text-[10px] text-gray-400 font-black uppercase">Causes:</p>
                                     <ul className="text-xs text-gray-500 list-disc pl-4 space-y-1">
-                                        {pattern.possibleCauses.slice(0, 2).map((c: string, i: number) => <li key={i}>{c}</li>)}
+                                        {Array.isArray(pattern.possibleCauses) && pattern.possibleCauses.slice(0, 2).map((c: string, i: number) => <li key={i}>{c}</li>)}
                                     </ul>
                                 </div>
                             </div>
