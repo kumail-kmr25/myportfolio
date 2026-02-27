@@ -41,7 +41,7 @@ export default function ForgotPasswordForm() {
                         <CheckCircle2 className="w-10 h-10 text-blue-500" />
                     </div>
                     <h1 className="text-3xl font-bold text-white mb-3">Check your email!</h1>
-                    <p className="text-gray-400 mb-8 leading-relaxed">We've sent a password reset link to <span className="text-white font-medium">{email}</span>.</p>
+                    <p className="text-gray-400 mb-8 leading-relaxed">We&apos;ve sent a password reset link to <span className="text-white font-medium">{email}</span>.</p>
                     <Link href="/admin" className="text-white hover:text-blue-400 transition-colors inline-flex items-center gap-2 text-sm font-semibold">
                         <ArrowLeft className="w-4 h-4" /> Back to Login
                     </Link>
@@ -58,7 +58,7 @@ export default function ForgotPasswordForm() {
                         <Mail className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-3xl font-bold text-white">Reset Password</h1>
-                    <p className="text-gray-400 mt-2 leading-relaxed">Enter your email and we'll send you a recovery link.</p>
+                    <p className="text-gray-400 mt-2 leading-relaxed">Enter your email and we&apos;ll send you a recovery link.</p>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="space-y-2">

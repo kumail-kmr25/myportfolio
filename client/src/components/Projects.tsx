@@ -269,7 +269,7 @@ function TabContent({ tab, project }: { tab: Tab; project: Project }) {
             >
                 <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/20">
                     <p className="text-blue-300 text-sm leading-relaxed">
-                        This is not just about what was built — it's about <strong>how</strong> it was designed. The architecture below reflects real engineering decisions: auth flow, data access patterns, caching strategy, and role control.
+                        This is not just about what was built — it&apos;s about <strong>how</strong> it was designed. The architecture below reflects real engineering decisions: auth flow, data access patterns, caching strategy, and role control.
                     </p>
                 </div>
                 <ArchitectureDiagram />
@@ -894,7 +894,7 @@ export default function Projects() {
                             <p className="text-xs text-gray-500 uppercase tracking-widest font-black mb-6">Before / After — Drag to compare</p>
                             <ComparisonSlider before={active.beforeImageUrl} after={active.afterImageUrl} />
                             {active.improvementDetails && (
-                                <p className="mt-4 text-sm text-gray-400 italic">"{active.improvementDetails}"</p>
+                                <p className="mt-4 text-sm text-gray-400 italic">&quot;{active.improvementDetails}&quot;</p>
                             )}
                         </motion.div>
                     </div>

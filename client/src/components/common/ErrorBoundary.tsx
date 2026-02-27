@@ -35,7 +35,7 @@ class ErrorBoundary extends Component<Props, State> {
                     <div>
                         <h3 className="text-xl font-bold text-white mb-2">Something went wrong</h3>
                         <p className="text-sm text-gray-500 max-w-md mx-auto">
-                            The component crashed while rendering. This has been logged and we're looking into it.
+                            The component crashed while rendering. This has been logged and we&apos;re looking into it.
                         </p>
                     </div>
                     <button

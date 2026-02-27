@@ -96,16 +96,13 @@ export default function IntroAnimation() {
                                 variants={titleVariants}
                                 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-2"
                             >
-                                Kumail KMR
+                                Kumail Kmr
                             </motion.h1>
-
                             <motion.div
                                 variants={subtitleVariants}
                                 className="flex items-center gap-4 text-[10px] md:text-xs font-black uppercase tracking-[0.4em] text-blue-400"
                             >
-                                <span>Full-Stack Engineer</span>
-                                <span className="w-1 h-1 bg-white/20 rounded-full" />
-                                <span>System Builder</span>
+                                <span>Full Stack Developer • DevOps • Bug Fixing &lt; 1s</span>
                             </motion.div>
                         </div>
 

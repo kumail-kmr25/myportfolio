@@ -85,7 +85,7 @@ function TestimonialCard({ t }: { t: Testimonial }) {
 
             {/* Message */}
             <p className="text-gray-300 text-sm leading-relaxed line-clamp-4 mb-5 italic">
-                "{t.message}"
+                &quot;{t.message}&quot;
             </p>
 
             {/* Author */}

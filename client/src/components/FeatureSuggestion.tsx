@@ -125,7 +125,7 @@ export default function FeatureSuggestion() {
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-widest pl-1">Feature Idea</label>
                                     <textarea
                                         className={`input-field min-h-[120px] resize-none ${errors.message ? 'border-red-500/50' : ''}`}
-                                        placeholder="Tell me what you'd like to see..."
+                                        placeholder="Tell me what you&apos;d like to see..."
                                         value={formData.message}
                                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                     />

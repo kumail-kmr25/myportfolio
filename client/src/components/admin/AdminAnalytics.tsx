@@ -14,13 +14,13 @@ interface AnalyticsProps {
 
 export default function AdminAnalytics({ stats }: AnalyticsProps) {
     const conversionRate = stats.diagRuns > 0 ? ((stats.leadGenTotal / stats.diagRuns) * 100).toFixed(1) : 0;
-    const hireConversion = stats.leadGenTotal > 0 ? ((stats.hireRequests / stats.leadGenTotal) * 100).toFixed(1) : 0;
+    const hireChannelMix = stats.hireRequests > 0 ? ((stats.leadGenTotal / stats.hireRequests) * 100).toFixed(1) : 0;
 
     const data = [
-        { label: "Diagnostic Conversion", value: `${conversionRate}%`, subtitle: "Runs to Contact Prefills", icon: Zap, color: "blue" },
-        { label: "Hire Efficiency", value: `${hireConversion}%`, subtitle: "Prefills to Submissions", icon: Briefcase, color: "indigo" },
-        { label: "Knowledge Depth", value: stats.patternsMatched, subtitle: "Total Matched Issues", icon: MousePointer2, color: "purple" },
-        { label: "Network Growth", value: stats.leadGenTotal, subtitle: "Bridge-generated Leads", icon: Users, color: "green" },
+        { label: "Diagnostic Conversion", value: `${conversionRate}%`, subtitle: "Runs to Contact Prefills", icon: Zap, bg: "bg-blue-500/10", text: "text-blue-400" },
+        { label: "Hire Efficiency", value: `${hireChannelMix}%`, subtitle: "Bridge Contribution to Hires", icon: Briefcase, bg: "bg-indigo-500/10", text: "text-indigo-400" },
+        { label: "Knowledge Depth", value: stats.patternsMatched, subtitle: "Total Matched Issues", icon: MousePointer2, bg: "bg-purple-500/10", text: "text-purple-400" },
+        { label: "Network Growth", value: stats.leadGenTotal, subtitle: "Bridge-generated Leads", icon: Users, bg: "bg-green-500/10", text: "text-green-400" },
     ];
 
     return (
@@ -44,8 +44,8 @@ export default function AdminAnalytics({ stats }: AnalyticsProps) {
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-${item.color}-500/10 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform relative z-10`}>
-                            <item.icon className={`text-${item.color}-400`} size={18} />
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl ${item.bg} flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform relative z-10`}>
+                            <item.icon className={item.text} size={18} />
                         </div>
                         <h3 className="text-2xl sm:text-3xl font-black text-white mb-1 relative z-10">{item.value}</h3>
                         <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest relative z-10">{item.label}</p>

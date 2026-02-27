@@ -88,7 +88,7 @@ export function LiveStatusBadge({ variant = "navbar" }: { variant?: "navbar" | "
 
                 {data.customMessage && (
                     <div className="p-3 rounded-2xl bg-blue-500/5 border border-blue-500/20">
-                        <p className="text-xs text-blue-300 italic">"{data.customMessage}"</p>
+                        <p className="text-xs text-blue-300 italic">&quot;{data.customMessage}&quot;</p>
                     </div>
                 )}
             </div>

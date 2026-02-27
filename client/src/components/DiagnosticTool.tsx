@@ -50,10 +50,10 @@ export default function DiagnosticTool() {
                         <Activity size={14} className="animate-pulse" /> Diagnostic Engine v1.0
                     </motion.div>
                     <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase mb-6">
-                        Got a Bug? <span className="text-blue-500">Let’s Break It Down.</span>
+                        Got a Bug? <span className="text-blue-500">Let&apos;s Break It Down.</span>
                     </h2>
                     <p className="text-gray-500 text-lg max-w-2xl mx-auto font-medium">
-                        Describe your technical issue and I’ll provide a structured engineering analysis with causes, steps, and recommendations.
+                        Describe your technical issue and I&apos;ll provide a structured engineering analysis with causes, steps, and recommendations.
                     </p>
                 </div>
 
@@ -70,7 +70,7 @@ export default function DiagnosticTool() {
                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Issue Description*</label>
                                 <textarea
                                     className="input-field min-h-[150px] resize-none"
-                                    placeholder="Describe the behavior, what you've tried, and what's failing..."
+                                    placeholder="Describe the behavior, what you&apos;ve tried, and what&apos;s failing..."
                                     required
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}

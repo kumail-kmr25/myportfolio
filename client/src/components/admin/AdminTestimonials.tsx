@@ -93,7 +93,7 @@ export default function AdminTestimonials({ testimonials, onApprove, onDelete, o
             <div className="mt-8 sm:mt-12 space-y-4 sm:space-y-6 flex-grow">
                 <div className="flex items-center justify-between">
                     <div className="flex gap-1">
-                        {[1, 2, 3, 4, 5, 6, 7].map((s) => (
+                        {[1, 2, 3, 4, 5].map((s) => (
                             <Star
                                 key={s}
                                 size={14}
