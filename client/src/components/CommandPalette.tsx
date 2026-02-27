@@ -131,24 +131,26 @@ export default function CommandPalette() {
                     />
 
                     <motion.div
-                        initial={{ scale: 0.95, opacity: 0, y: -20 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.95, opacity: 0, y: -20 }}
-                        className="relative w-full max-w-2xl bg-[#0a0a0a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden"
+                        initial={{ scale: 0.95, opacity: 0, y: -20, filter: "blur(10px)" }}
+                        animate={{ scale: 1, opacity: 1, y: 0, filter: "blur(0px)" }}
+                        exit={{ scale: 0.95, opacity: 0, y: -20, filter: "blur(10px)" }}
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="relative w-full max-w-2xl bg-black/40 border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden backdrop-blur-3xl"
                     >
-                        <div className="flex items-center p-6 border-b border-white/5">
-                            <Search className="w-5 h-5 text-gray-500 mr-4" />
+                        <div className="flex items-center p-8 border-b border-white/5 relative">
+                            <div className="absolute inset-0 bg-blue-500/[0.02] pointer-events-none" />
+                            <Search className="w-5 h-5 text-blue-500 mr-4" />
                             <input
                                 ref={inputRef}
                                 type="text"
-                                className="w-full bg-transparent text-white text-lg placeholder:text-gray-600 focus:outline-none"
+                                className="w-full bg-transparent text-white text-lg placeholder:text-gray-600 focus:outline-none font-medium"
                                 placeholder="Search commands, sections, or actions..."
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 onKeyDown={onKeyDown}
                             />
                             <div className="flex items-center gap-1.5 ml-4">
-                                <kbd className="px-2 py-1 bg-white/5 rounded border border-white/10 text-[10px] text-gray-400 font-sans">ESC</kbd>
+                                <kbd className="px-2.5 py-1 bg-white/5 rounded-lg border border-white/10 text-[9px] font-black tracking-widest text-gray-400 font-sans">ESC</kbd>
                             </div>
                         </div>
 

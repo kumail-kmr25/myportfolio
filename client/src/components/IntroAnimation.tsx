@@ -22,42 +22,43 @@ export default function IntroAnimation() {
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.1,
+                staggerChildren: 0.12,
                 delayChildren: 0.1,
             },
         },
         exit: {
             opacity: 0,
-            scale: 1.02,
-            filter: "blur(10px)",
+            scale: 1.05,
+            filter: "blur(20px)",
             transition: {
-                duration: 0.4,
-                ease: [0.4, 0, 0.2, 1] as any,
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1] as any,
             },
         },
     };
 
     const titleVariants = {
-        hidden: { opacity: 0, y: 10, filter: "blur(5px)" },
+        hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
         visible: {
             opacity: 1,
             y: 0,
             filter: "blur(0px)",
             transition: {
-                duration: 0.6,
-                ease: [0.21, 0.45, 0.32, 0.9] as any,
+                duration: 1,
+                ease: [0.16, 1, 0.3, 1] as any,
             },
         },
     };
 
     const subtitleVariants = {
-        hidden: { opacity: 0, x: -10 },
+        hidden: { opacity: 0, scale: 0.9, letterSpacing: "0.2em" },
         visible: {
-            opacity: 0.5,
-            x: 0,
+            opacity: 0.6,
+            scale: 1,
+            letterSpacing: "0.4em",
             transition: {
-                duration: 0.6,
-                ease: "easeOut" as any,
+                duration: 1.2,
+                ease: [0.16, 1, 0.3, 1] as any,
             },
         },
     };
@@ -88,8 +89,15 @@ export default function IntroAnimation() {
                     </div>
 
                     <div className="relative flex flex-col items-center gap-6">
-                        {/* Core Light Hub */}
-                        <div className="absolute inset-0 bg-blue-500/10 blur-[100px] rounded-full scale-150 animate-pulse" />
+                        {/* Radiating System Pulse */}
+                        <motion.div
+                            initial={{ scale: 0.5, opacity: 0 }}
+                            animate={{ scale: [0.5, 1.2, 1], opacity: [0, 0.2, 0.1] }}
+                            transition={{ duration: 2, ease: "easeOut", repeat: Infinity }}
+                            className="absolute inset-0 bg-blue-500/20 blur-[120px] rounded-full"
+                        />
+
+                        <div className="absolute inset-0 bg-blue-500/10 blur-[100px] rounded-full scale-150" />
 
                         <div className="relative z-10 flex flex-col items-center">
                             <motion.h1
@@ -102,7 +110,7 @@ export default function IntroAnimation() {
                                 variants={subtitleVariants}
                                 className="flex items-center gap-4 text-[10px] md:text-xs font-black uppercase tracking-[0.4em] text-blue-400"
                             >
-                                <span>Full Stack Developer • DevOps • Bug Fixing &lt; 1s</span>
+                                <span>Full Stack Developer • DevOps • High Performance Engineering</span>
                             </motion.div>
                         </div>
 
@@ -110,8 +118,8 @@ export default function IntroAnimation() {
                         <motion.div
                             initial={{ width: 0, opacity: 0 }}
                             animate={{ width: "100%", opacity: 1 }}
-                            transition={{ delay: 0.4, duration: 0.8, ease: "circOut" }}
-                            className="h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent w-full max-w-[300px]"
+                            transition={{ delay: 0.6, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                            className="h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent w-full max-w-[400px]"
                         />
                     </div>
 

@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import React, { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import {
     X,
     ChevronRight,
@@ -144,6 +144,27 @@ export default function HireMeModal() {
         }
     };
 
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.08,
+                delayChildren: 0.1
+            }
+        }
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 15, filter: "blur(4px)" },
+        visible: {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+        }
+    };
+
     const nextStep = async () => {
         if (step === "services") {
             setStep("details");
@@ -260,52 +281,62 @@ export default function HireMeModal() {
                                         {isSuccess ? (
                                             <motion.div
                                                 key="success"
-                                                initial={{ opacity: 0, scale: 0.9 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                className="flex-grow flex flex-col items-center justify-center text-center space-y-6 max-w-2xl mx-auto py-12"
+                                                initial="hidden"
+                                                animate="visible"
+                                                variants={containerVariants}
+                                                className="flex-grow flex flex-col items-center justify-center text-center space-y-8 max-w-2xl mx-auto py-12"
                                             >
-                                                <div className="w-24 h-24 bg-green-500/10 rounded-[2rem] flex items-center justify-center text-green-500 mb-8 border border-green-500/20 shadow-lg shadow-green-500/5">
-                                                    <CheckCircle2 size={48} className="animate-in zoom-in duration-500" />
-                                                </div>
+                                                <motion.div variants={itemVariants} className="w-24 h-24 bg-green-500/10 rounded-[2.5rem] flex items-center justify-center text-green-500 mb-4 border border-green-500/20 shadow-[0_0_30px_rgba(34,197,94,0.1)]">
+                                                    <CheckCircle2 size={48} />
+                                                </motion.div>
+
                                                 <div className="space-y-4">
-                                                    <h2 className="text-4xl font-black text-white uppercase tracking-tight">Project Brief Received</h2>
-                                                    <div className="h-1 w-20 bg-blue-500 mx-auto rounded-full" />
+                                                    <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight leading-none">
+                                                        Transmission <span className="text-green-500">Confirmed</span>
+                                                    </motion.h2>
+                                                    <motion.div variants={itemVariants} className="h-1 w-24 bg-gradient-to-r from-green-500 to-transparent mx-auto rounded-full" />
                                                 </div>
-                                                <p className="text-gray-400 leading-relaxed text-lg">
-                                                    Thank you for sharing your vision, <span className="text-white font-bold">{formData.name}</span>.
-                                                    I&apos;ve successfully received your brief for <span className="text-blue-400 font-bold">{formData.selectedService}</span>.
-                                                </p>
-                                                <div className="bg-white/5 border border-white/10 rounded-3xl p-8 w-full mt-8 space-y-4">
-                                                    <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Next Steps</p>
+
+                                                <motion.p variants={itemVariants} className="text-gray-400 leading-relaxed text-lg font-medium">
+                                                    Your brief for <span className="text-white">{formData.selectedService}</span> has been securely routed. I&apos;ll analyze the requirements and initialize contact within 24 hours.
+                                                </motion.p>
+
+                                                <motion.div variants={itemVariants} className="bg-white/[0.02] border border-white/5 rounded-[2.5rem] p-8 w-full mt-8 space-y-6 backdrop-blur-3xl shadow-2xl">
+                                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.3em]">Protocol Breakdown</p>
                                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-                                                        <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                                                            <p className="text-white font-bold text-sm mb-1">Brief Review</p>
-                                                            <p className="text-[10px] text-gray-500 leading-normal">I&apos;ll analyze your requirements and prepare a preliminary strategy within 12-24 hours.</p>
+                                                        <div className="p-5 bg-white/[0.03] rounded-2xl border border-white/5 group hover:border-green-500/30 transition-colors">
+                                                            <p className="text-white font-black text-xs uppercase tracking-widest mb-2 group-hover:text-green-400 transition-colors">Strategic Review</p>
+                                                            <p className="text-[10px] text-gray-500 leading-relaxed">Technical analysis of goals and complexity mapping for your specific project needs.</p>
                                                         </div>
-                                                        <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                                                            <p className="text-white font-bold text-sm mb-1">Direct Contact</p>
-                                                            <p className="text-[10px] text-gray-500 leading-normal">You&apos;ll receive a confirmation email shortly. I&apos;ll reach out via <span className="text-blue-400">{formData.email}</span> to discuss the next steps.</p>
+                                                        <div className="p-5 bg-white/[0.03] rounded-2xl border border-white/5 group hover:border-blue-500/30 transition-colors">
+                                                            <p className="text-white font-black text-xs uppercase tracking-widest mb-2 group-hover:text-blue-400 transition-colors">Direct Outreach</p>
+                                                            <p className="text-[10px] text-gray-500 leading-relaxed">A formal proposal will be dispatched to <span className="text-blue-400">{formData.email}</span> with next steps.</p>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <button
+                                                </motion.div>
+
+                                                <motion.button
+                                                    variants={itemVariants}
                                                     type="button"
                                                     onClick={closeModal}
-                                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-white transition-colors pt-8"
+                                                    className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-600 hover:text-white transition-all pt-8 flex items-center gap-4"
                                                 >
-                                                    Click anywhere to close
-                                                </button>
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                                    Session Finalized • Click to close
+                                                </motion.button>
                                             </motion.div>
                                         ) : (
                                             <div key={step} className="flex-grow flex flex-col">
                                                 {step === "services" && (
                                                     <motion.div
-                                                        initial={{ opacity: 0, x: 20 }}
-                                                        animate={{ opacity: 1, x: 0 }}
+                                                        key="services"
+                                                        initial="hidden"
+                                                        animate="visible"
                                                         exit={{ opacity: 0, x: -20 }}
+                                                        variants={containerVariants}
                                                         className="space-y-10"
                                                     >
-                                                        <div>
+                                                        <motion.div variants={itemVariants}>
                                                             <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Let&apos;s build something <span className="text-blue-500 italic block mt-2">extraordinary</span></h2>
                                                             {status === 'booked' && (
                                                                 <div className="mb-8 p-6 bg-red-500/10 border border-red-500/20 rounded-[2rem] flex items-center gap-4 animate-in fade-in slide-in-from-top-4">
@@ -320,10 +351,10 @@ export default function HireMeModal() {
                                                                     </div>
                                                                 </div>
                                                             )}
-                                                            <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Step 1: Select Your Service</p>
-                                                        </div>
+                                                            <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 1: Select Your Service</p>
+                                                        </motion.div>
 
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             {services.map((service) => (
                                                                 <div
                                                                     key={service.id}
@@ -337,24 +368,26 @@ export default function HireMeModal() {
                                                                     <p className="text-xs text-gray-500 leading-relaxed">{service.description}</p>
                                                                 </div>
                                                             ))}
-                                                        </div>
+                                                        </motion.div>
                                                     </motion.div>
                                                 )}
 
                                                 {step === "details" && (
                                                     <motion.div
-                                                        initial={{ opacity: 0, x: 20 }}
-                                                        animate={{ opacity: 1, x: 0 }}
+                                                        key="details"
+                                                        initial="hidden"
+                                                        animate="visible"
                                                         exit={{ opacity: 0, x: -20 }}
+                                                        variants={containerVariants}
                                                         className="space-y-10"
                                                     >
-                                                        <div>
+                                                        <motion.div variants={itemVariants}>
                                                             <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Setting the <span className="text-blue-500 italic block mt-2">stage</span></h2>
-                                                            <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Step 2: Budget & Timeline</p>
-                                                        </div>
+                                                            <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 2: Budget & Timeline</p>
+                                                        </motion.div>
 
                                                         <div className="space-y-8">
-                                                            <div className="space-y-4">
+                                                            <motion.div variants={itemVariants} className="space-y-4">
                                                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Budget Range (Expected)</label>
                                                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                                                     {["₹10,000 – ₹25,000", "₹25,000 – ₹50,000", "₹50,000 – ₹1,00,000", "₹1,00,000+", "Flexible / To be discussed"].map((range) => (
@@ -368,9 +401,9 @@ export default function HireMeModal() {
                                                                         </button>
                                                                     ))}
                                                                 </div>
-                                                            </div>
+                                                            </motion.div>
 
-                                                            <div className="space-y-4">
+                                                            <motion.div variants={itemVariants} className="space-y-4">
                                                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Estimated Timeline</label>
                                                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                                                     {["Urgent (less than 1 week)", "1–2 weeks", "1 month", "2–3 months", "Flexible"].map((time) => (
@@ -384,9 +417,9 @@ export default function HireMeModal() {
                                                                         </button>
                                                                     ))}
                                                                 </div>
-                                                            </div>
+                                                            </motion.div>
 
-                                                            <div className="space-y-4">
+                                                            <motion.div variants={itemVariants} className="space-y-4">
                                                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">What are we starting?</label>
                                                                 <select
                                                                     {...register("projectType")}
@@ -398,136 +431,143 @@ export default function HireMeModal() {
                                                                     <option value="Consulting" className="bg-[#0f0f0f]">Consulting</option>
                                                                     <option value="Other" className="bg-[#0f0f0f]">Other</option>
                                                                 </select>
-                                                            </div>
+                                                            </motion.div>
                                                         </div>
                                                     </motion.div>
                                                 )}
 
                                                 {step === "vision" && (
                                                     <motion.div
-                                                        initial={{ opacity: 0, x: 20 }}
-                                                        animate={{ opacity: 1, x: 0 }}
+                                                        key="vision"
+                                                        initial="hidden"
+                                                        animate="visible"
                                                         exit={{ opacity: 0, x: -20 }}
+                                                        variants={containerVariants}
                                                         className="space-y-10"
                                                     >
-                                                        <div>
-                                                            <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Share your <span className="text-blue-500 italic block mt-2">vision</span></h2>
-                                                            <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Step 3: Project Requirements</p>
-                                                        </div>
+                                                        <motion.div variants={itemVariants}>
+                                                            <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Sharing the <span className="text-blue-500 italic block mt-2">vision</span></h2>
+                                                            <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 3: Project Details</p>
+                                                        </motion.div>
 
-                                                        <div className="space-y-6">
-                                                            <div className="space-y-2">
-                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Describe what you want to achieve</label>
+                                                        <div className="space-y-8">
+                                                            <motion.div variants={itemVariants} className="space-y-4">
+                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Tell me about your project goals</label>
                                                                 <textarea
                                                                     {...register("description")}
-                                                                    placeholder="Goals, features, target audience..."
-                                                                    className="w-full min-h-[160px] bg-white/5 border border-white/10 rounded-2xl md:rounded-[2rem] p-6 md:p-8 text-sm md:text-base text-white focus:border-blue-500 outline-none transition-all resize-none"
+                                                                    className="w-full bg-white/5 border border-white/10 rounded-[2rem] px-8 py-6 text-sm text-white focus:border-blue-500 outline-none transition-all min-h-[200px] resize-none leading-relaxed"
+                                                                    placeholder="What are we building? What problems are we solving?"
                                                                 />
-                                                                {errors.description?.message && <p className="text-red-500 text-[10px] font-bold uppercase mt-2 ml-2 tracking-widest">{errors.description.message as string}</p>}
-                                                            </div>
+                                                                {errors.description && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.description.message as string}</p>}
+                                                            </motion.div>
                                                         </div>
                                                     </motion.div>
                                                 )}
 
                                                 {step === "contact" && (
                                                     <motion.div
-                                                        initial={{ opacity: 0, x: 20 }}
-                                                        animate={{ opacity: 1, x: 0 }}
+                                                        key="contact"
+                                                        initial="hidden"
+                                                        animate="visible"
                                                         exit={{ opacity: 0, x: -20 }}
+                                                        variants={containerVariants}
                                                         className="space-y-10"
                                                     >
-                                                        <div>
-                                                            <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Let&apos;s stay in <span className="text-blue-500 italic block mt-2">touch</span></h2>
-                                                            <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Step 4: Contact Information</p>
-                                                        </div>
+                                                        <motion.div variants={itemVariants}>
+                                                            <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Final <span className="text-blue-500 italic block mt-2">handshake</span></h2>
+                                                            <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 4: Contact Information</p>
+                                                        </motion.div>
 
                                                         <div className="space-y-8">
-                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                            <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <div className="space-y-2">
-                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Full Name</label>
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Full Name</label>
                                                                     <input
                                                                         {...register("name")}
-                                                                        type="text"
-                                                                        autoComplete="name"
+                                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
                                                                         placeholder="John Doe"
-                                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm md:text-base min-h-[48px] text-white focus:border-blue-500 outline-none transition-all"
                                                                     />
-                                                                    {errors.name?.message && <p className="text-red-500 text-[10px] font-bold uppercase mt-2 ml-2 tracking-widest">{errors.name.message as string}</p>}
+                                                                    {errors.name && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.name.message as string}</p>}
                                                                 </div>
                                                                 <div className="space-y-2">
-                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Work Email</label>
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Work Email</label>
                                                                     <input
                                                                         {...register("email")}
-                                                                        type="email"
-                                                                        autoComplete="email"
+                                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
                                                                         placeholder="john@company.com"
-                                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm md:text-base min-h-[48px] text-white focus:border-blue-500 outline-none transition-all"
                                                                     />
-                                                                    {errors.email?.message && <p className="text-red-500 text-[10px] font-bold uppercase mt-2 ml-2 tracking-widest">{errors.email.message as string}</p>}
+                                                                    {errors.email && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.email.message as string}</p>}
                                                                 </div>
-                                                            </div>
-                                                            <div className="space-y-2">
-                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Company Name (Optional)</label>
+                                                            </motion.div>
+
+                                                            <motion.div variants={itemVariants} className="space-y-2">
+                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Company Name (Optional)</label>
                                                                 <input
                                                                     {...register("company")}
-                                                                    type="text"
-                                                                    autoComplete="organization"
+                                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
                                                                     placeholder="Company Inc."
-                                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm md:text-base min-h-[48px] text-white focus:border-blue-500 outline-none transition-all"
                                                                 />
-                                                            </div>
+                                                            </motion.div>
+
+                                                            <motion.div variants={itemVariants} className="p-8 bg-blue-500/5 rounded-[2rem] border border-blue-500/10 backdrop-blur-3xl">
+                                                                <p className="text-[10px] text-gray-400 leading-relaxed font-medium">
+                                                                    By submitting this brief, you initialize a technical request. I will analyze the parameters and respond via <span className="text-blue-400">{formData.email || 'provided email'}</span> within one business cycle.
+                                                                </p>
+                                                            </motion.div>
                                                         </div>
                                                     </motion.div>
                                                 )}
-
-                                                {error && (
-                                                    <div className="mt-8 p-6 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500 text-[10px] font-bold uppercase tracking-widest text-center animate-in fade-in zoom-in duration-300">
-                                                        {error}
-                                                    </div>
-                                                )}
-
-                                                {/* Actions */}
-                                                <div className="mt-auto pt-12 flex flex-col-reverse md:flex-row md:items-center justify-between shrink-0 gap-4">
-                                                    {step !== "services" ? (
-                                                        <button
-                                                            type="button"
-                                                            onClick={prevStep}
-                                                            className="flex items-center justify-center gap-3 text-gray-500 hover:text-white transition-colors w-full md:w-auto py-3 md:py-0"
-                                                        >
-                                                            <ChevronLeft size={20} />
-                                                            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Previous</span>
-                                                        </button>
-                                                    ) : <div className="hidden md:block" />}
-
-                                                    <div className="flex gap-4 w-full md:w-auto">
-                                                        {step === "contact" ? (
-                                                            <button
-                                                                type="submit"
-                                                                disabled={isSubmitting}
-                                                                className="w-full md:w-auto px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl md:min-w-[200px] flex items-center justify-center gap-3 text-sm font-black uppercase tracking-widest group shadow-2xl shadow-blue-500/20 transition-all disabled:opacity-50 min-h-[48px]"
-                                                            >
-                                                                {isSubmitting ? <span className="animate-pulse">Submitting...</span> : (
-                                                                    <>
-                                                                        Send Brief
-                                                                        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                                                                    </>
-                                                                )}
-                                                            </button>
-                                                        ) : (
-                                                            <button
-                                                                type="button"
-                                                                onClick={nextStep}
-                                                                className="w-full md:w-auto px-10 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-[10px] uppercase tracking-widest group min-h-[48px]"
-                                                            >
-                                                                Continue
-                                                                <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                </div>
                                             </div>
                                         )}
                                     </AnimatePresence>
+
+                                    {error && (
+                                        <div className="mt-8 p-6 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500 text-[10px] font-bold uppercase tracking-widest text-center animate-in fade-in zoom-in duration-300">
+                                            {error}
+                                        </div>
+                                    )}
+
+                                    {/* Actions */}
+                                    {!isSuccess && (
+                                        <div className="mt-auto pt-12 flex flex-col-reverse md:flex-row md:items-center justify-between shrink-0 gap-4">
+                                            {step !== "services" ? (
+                                                <button
+                                                    type="button"
+                                                    onClick={prevStep}
+                                                    className="flex items-center justify-center gap-3 text-gray-500 hover:text-white transition-colors w-full md:w-auto py-3 md:py-0"
+                                                >
+                                                    <ChevronLeft size={20} />
+                                                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">Previous</span>
+                                                </button>
+                                            ) : <div className="hidden md:block" />}
+
+                                            <div className="flex gap-4 w-full md:w-auto">
+                                                {step === "contact" ? (
+                                                    <button
+                                                        type="submit"
+                                                        disabled={isSubmitting}
+                                                        className="w-full md:w-auto px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl md:min-w-[200px] flex items-center justify-center gap-3 text-sm font-black uppercase tracking-widest group shadow-2xl shadow-blue-500/20 transition-all disabled:opacity-50 min-h-[48px]"
+                                                    >
+                                                        {isSubmitting ? <span className="animate-pulse">Submitting...</span> : (
+                                                            <>
+                                                                Send Brief
+                                                                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                                            </>
+                                                        )}
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        type="button"
+                                                        onClick={nextStep}
+                                                        className="w-full md:w-auto px-10 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-[10px] uppercase tracking-widest group min-h-[48px]"
+                                                    >
+                                                        Continue
+                                                        <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
                                 </form>
                             </div>
                         </div>

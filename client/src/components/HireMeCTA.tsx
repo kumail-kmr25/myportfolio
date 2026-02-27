@@ -1,6 +1,4 @@
-"use client";
-
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Bug, Code2, Layout, Database, Zap, Cloud, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
@@ -15,48 +13,76 @@ const services = [
 ];
 
 export default function HireMeCTA() {
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+            }
+        }
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+        }
+    };
+
     return (
-        <section className="py-12 bg-[#050505] relative overflow-hidden">
+        <section className="py-24 bg-[#050505] relative overflow-hidden">
             {/* Background Decorative Element */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none"></div>
 
-            <div className="section-container relative z-10">
-                <div className="max-w-4xl mx-auto p-12 md:p-16 rounded-[3rem] bg-white/[0.02] border border-white/5 backdrop-blur-3xl text-center">
-                    <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">
-                        Ready to Build Something <span className="text-blue-500">Legendary?</span>
-                    </h2>
-                    <p className="text-gray-400 mb-12 text-lg max-w-2xl mx-auto leading-relaxed">
+            <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={containerVariants}
+                className="section-container relative z-10"
+            >
+                <div className="max-w-5xl mx-auto p-12 md:p-20 rounded-[3.5rem] bg-white/[0.02] border border-white/5 backdrop-blur-3xl text-center shadow-2xl">
+                    <motion.h2 variants={itemVariants} className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight">
+                        Ready to Build Something <span className="text-blue-500 italic">Legendary?</span>
+                    </motion.h2>
+                    <motion.p variants={itemVariants} className="text-gray-400 mb-16 text-xl max-w-2xl mx-auto leading-relaxed">
                         Whether you need a full-scale application or a critical performance boost, I&apos;m here to deliver high-performance engineering.
-                    </p>
+                    </motion.p>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-12">
-                        {services.map((item, index) => (
+                    <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-16">
+                        {services.map((item) => (
                             <Link
                                 key={item.label}
                                 href={`#contact?service=${encodeURIComponent(item.service)}`}
-                                className="group flex flex-col items-center justify-center p-6 rounded-[2rem] bg-white/5 border border-white/5 hover:border-blue-500/30 transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
+                                className="group flex flex-col items-center justify-center p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/5 hover:border-blue-500/30 transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] hover:bg-blue-500/[0.02]"
                             >
-                                <div className={`w-12 h-12 rounded-2xl ${item.bg} ${item.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                                    <item.icon size={24} />
+                                <div className={`w-14 h-14 rounded-2xl ${item.bg} ${item.color} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.15)]`}>
+                                    <item.icon size={28} />
                                 </div>
-                                <span className="text-xs font-bold text-gray-400 group-hover:text-white transition-colors uppercase tracking-widest text-center">
+                                <span className="text-[10px] font-black text-gray-500 group-hover:text-blue-400 transition-colors uppercase tracking-[0.2em] text-center">
                                     {item.label}
                                 </span>
                             </Link>
                         ))}
-                    </div>
+                    </motion.div>
 
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+                    <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-center justify-center gap-8">
                         <Link
                             href="#contact"
-                            className="btn-primary px-12 py-5 text-lg font-bold flex items-center gap-3 w-full md:w-auto"
+                            className="group relative px-12 py-6 bg-blue-600 rounded-[2rem] font-black text-white text-lg uppercase tracking-widest transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.5)] active:scale-95 flex items-center gap-4 overflow-hidden"
                         >
-                            Start Your Project <ArrowRight size={20} />
+                            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <span className="relative z-10">Start Your Project</span>
+                            <ArrowRight size={22} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                         </Link>
                         <LiveStatusBadge variant="hero" />
-                    </div>
+                    </motion.div>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 }
