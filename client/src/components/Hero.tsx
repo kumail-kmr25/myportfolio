@@ -102,20 +102,51 @@ export default function Hero() {
                         x: mousePos.x * 0.5,
                         y: mousePos.y * 0.5,
                     }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                        hidden: { opacity: 0, y: 30 },
+                        visible: {
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                                duration: 1,
+                                ease: [0.16, 1, 0.3, 1],
+                                staggerChildren: 0.2
+                            }
+                        }
+                    }}
                 >
-                    <div className="flex flex-col items-center gap-4 mb-8 mt-6">
+                    <motion.div
+                        variants={{
+                            hidden: { opacity: 0, y: 20 },
+                            visible: { opacity: 1, y: 0 }
+                        }}
+                        className="flex flex-col items-center gap-4 mb-8 mt-6"
+                    >
                         <span className="inline-block py-2 px-4 rounded-full bg-white/[0.03] border border-white/[0.08] text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 backdrop-blur-md">
                             Expert Technical Intervention
                         </span>
                         <LiveStatusBadge variant="hero" />
-                    </div>
-                    <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-bold font-display text-white mb-8 tracking-[-0.04em] leading-[0.9]">
+                    </motion.div>
+
+                    <motion.h1
+                        variants={{
+                            hidden: { opacity: 0, y: 20 },
+                            visible: { opacity: 1, y: 0 }
+                        }}
+                        className="text-6xl md:text-8xl lg:text-[10rem] font-bold font-display text-white mb-8 tracking-[-0.04em] leading-[0.9]"
+                    >
                         Kumail Kmr
-                    </h1>
-                    <div className="h-10 mb-12">
+                    </motion.h1>
+
+                    <motion.div
+                        variants={{
+                            hidden: { opacity: 0, y: 20 },
+                            visible: { opacity: 1, y: 0 }
+                        }}
+                        className="h-10 mb-12"
+                    >
                         <span className="text-xl md:text-2xl text-gray-500 font-medium uppercase tracking-[0.2em]">
                             I am a <span className="text-white">{text}</span>
                             <motion.span
@@ -126,13 +157,13 @@ export default function Hero() {
                                 _
                             </motion.span>
                         </span>
-                    </div>
+                    </motion.div>
                 </motion.div>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
+                    transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     className="flex flex-col md:flex-row gap-6 justify-center items-center"
                 >
                     <button

@@ -1,16 +1,57 @@
 "use client";
 
-import { useState, useRef } from "react";
+
 import Image from "next/image";
-import { Star, BadgeCheck, Plus, Loader2, Quote } from "lucide-react";
-import useSWR from "swr";
-import TestimonialModal from "./TestimonialModal";
+import { Star, BadgeCheck, Quote } from "lucide-react";
 import { motion } from "framer-motion";
 
-const fetcher = (url: string) => fetch(url).then(r => {
-    if (!r.ok) throw new Error("Failed");
-    return r.json();
-});
+// Static dummy testimonials for showcase
+const dummyTestimonials = [
+    {
+        id: "1",
+        name: "Alice Johnson",
+        company: "Acme Corp",
+        role: "CTO",
+        relationship_type: "client",
+        intervention_type: "consulting",
+        message: "Kumail delivered exceptional full‑stack solutions in record time.",
+        rating: 5,
+        photoUrl: null,
+        verified: true,
+        featured: true,
+        created_at: "2024-01-01",
+    },
+    {
+        id: "2",
+        name: "Bob Smith",
+        company: "Beta Ltd",
+        role: "Founder",
+        relationship_type: "client",
+        intervention_type: "devops",
+        message: "The deployment pipeline he set up runs under a second.",
+        rating: 5,
+        photoUrl: null,
+        verified: true,
+        featured: false,
+        created_at: "2024-02-15",
+    },
+    {
+        id: "3",
+        name: "Carol Lee",
+        company: "Gamma Inc",
+        role: "Product Manager",
+        relationship_type: "client",
+        intervention_type: "full‑stack",
+        message: "Bug fixing under 1 s – truly impressive!",
+        rating: 5,
+        photoUrl: null,
+        verified: false,
+        featured: false,
+        created_at: "2024-03-10",
+    },
+];
+
+// No fetcher needed – using static dummy data
 
 interface Testimonial {
     id: string;
@@ -96,15 +137,10 @@ function Marquee({ items, reverse = false }: { items: Testimonial[]; reverse?: b
 }
 
 export default function Testimonials() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const { data: testimonials, mutate, isLoading, error } = useSWR<Testimonial[]>("/api/testimonials", fetcher);
+    const testimonials = dummyTestimonials;
 
-    const handleSuccess = () => { mutate(); setTimeout(() => setIsModalOpen(false), 2500); };
-
-    const featured = testimonials?.filter(t => t.featured) ?? [];
-    const regular = testimonials?.filter(t => !t.featured) ?? [];
-    const row1 = testimonials ? testimonials.slice(0, Math.ceil(testimonials.length / 2)) : [];
-    const row2 = testimonials ? testimonials.slice(Math.ceil(testimonials.length / 2)) : [];
+    const row1 = testimonials.slice(0, Math.ceil(testimonials.length / 2));
+    const row2 = testimonials.slice(Math.ceil(testimonials.length / 2));
 
     return (
         <section id="testimonials" className="py-24 bg-[#050505] relative overflow-hidden">
@@ -120,33 +156,18 @@ export default function Testimonials() {
                             Real feedback from clients, colleagues, and collaborators. Unfiltered. Honest. Verified.
                         </p>
                     </div>
-                    <button onClick={() => setIsModalOpen(true)} className="btn-primary gap-2 group whitespace-nowrap flex-shrink-0">
-                        <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
-                        Leave a Testimonial
-                    </button>
                 </div>
             </div>
 
-            {isLoading ? (
-                <div className="flex justify-center py-16"><Loader2 className="animate-spin text-white/20 w-8 h-8" /></div>
-            ) : error ? (
-                <div className="text-center py-16 text-gray-500 text-sm">Error loading testimonials.</div>
-            ) : !testimonials || testimonials.length === 0 ? (
-                <div className="section-container text-center py-20 border-2 border-dashed border-white/5 rounded-3xl">
-                    <p className="text-gray-500 mb-4">No testimonials yet — be the first!</p>
-                    <button onClick={() => setIsModalOpen(true)} className="btn-secondary">Add Yours</button>
-                </div>
-            ) : (
-                <div className="space-y-6">
-                    {/* Row 1 — forward */}
-                    {row1.length > 0 && <Marquee items={row1} />}
-                    {/* Row 2 — reverse (only show if enough items) */}
-                    {row2.length > 0 && <Marquee items={row2.length >= 2 ? row2 : row1} reverse />}
-                </div>
-            )}
+            <div className="space-y-6">
+                {/* Row 1 — forward */}
+                {row1.length > 0 && <Marquee items={row1} />}
+                {/* Row 2 — reverse (only show if enough items) */}
+                {row2.length > 0 && <Marquee items={row2.length >= 2 ? row2 : row1} reverse />}
+            </div>
 
             {/* Stats strip */}
-            {testimonials && testimonials.length > 0 && (
+            {testimonials.length > 0 && (
                 <div className="section-container mt-12">
                     <div className="flex flex-wrap items-center justify-center gap-8 p-6 rounded-3xl bg-white/[0.02] border border-white/5">
                         <div className="text-center">
@@ -170,8 +191,6 @@ export default function Testimonials() {
                     </div>
                 </div>
             )}
-
-            <TestimonialModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSuccess={handleSuccess} />
         </section>
     );
 }
