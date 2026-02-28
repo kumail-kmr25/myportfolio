@@ -403,28 +403,7 @@ async function main() {
         }
     }
 
-    // 6. Create Skills
-    try {
-        await prisma.skill.deleteMany();
-        console.log("🧹 Cleared existing skills.");
-    } catch (error) {
-        console.error("❌ Failed to clear skills:", error);
-    }
-
-    const skills = [
-        { name: "React.js", status: "expert", order: 1 },
-        { name: "Next.js", status: "expert", order: 2 },
-        { name: "TypeScript", status: "expert", order: 3 },
-        { name: "Node.js", status: "expert", order: 4 },
-        { name: "Express", status: "expert", order: 5 },
-        { name: "JavaScript", status: "expert", order: 6 },
-        { name: "MongoDB / PostgreSQL", status: "expert", order: 7 },
-        { name: "JWT Auth", status: "expert", order: 8 },
-        { name: "Deployment", status: "expert", order: 9 },
-        { name: "DevOps", status: "learning", order: 10 },
-        { name: "Cloud", status: "learning", order: 11 }
-    ];
-
+    // 6. Create Skills ...
     for (const s of skills) {
         try {
             await prisma.skill.create({ data: s });
@@ -432,6 +411,112 @@ async function main() {
         } catch (error) {
             console.error(`❌ Skill "${s.name}" seed failed:`, error);
         }
+    }
+
+    // 7. Forensic Case Studies (Debugging)
+    try {
+        await prisma.caseStudy.deleteMany();
+        console.log("🧹 Cleared existing Case Studies.");
+    } catch (error) {
+        console.error("❌ Failed to clear Case Studies:", error);
+    }
+
+    const forensicCases = [
+        {
+            title: "Memory Leak in Real-time Inventory",
+            errorMessage: "FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory",
+            rootCause: "Unbounded event listener accumulation in a long-running WebSocket subscription during frequent reconnections.",
+            steps: [
+                "Captured heap snapshots using Chrome DevTools during local stress testing.",
+                "Identified thousands of abandoned AbortController instances.",
+                "Isolated the leak to the useEventListener hook's cleanup logic."
+            ],
+            solution: "Implemented a defensive cleanup pattern using WeakMap to track active controllers and enforced manual disposal on socket disconnect.",
+            impact: "Stable memory footprint (60MB) sustained over 48 hours of continuous operation under load.",
+            techStack: ["Node.js", "Socket.io", "React", "Chrome DevTools"],
+            isPublished: true
+        },
+        {
+            title: "Race Condition in Fin-Transaction Engine",
+            errorMessage: "SQL Error: deadlock detected. Detail: Process 12345 waits for ShareLock on transaction 6789...",
+            rootCause: "Inconsistent lock ordering across multiple microservices attempting to update the same ledger entry simultaneously.",
+            steps: [
+                "Map out all SQL update paths to identify intersecting ledger IDs.",
+                "Enabled exhaustive Postgres logging to capture the exact deadlock sequence.",
+                "Designed a deterministic locking order based on account UUIDs."
+            ],
+            solution: "Applied a 'Locking Hierarchy' where resources are always acquired in alphabetical order of their identifiers, preventing circular wait conditions.",
+            impact: "Zero deadlock occurrences recorded in production over 1M+ transactions.",
+            techStack: ["PostgreSQL", "Prisma", "TypeScript", "Microservices"],
+            isPublished: true
+        }
+    ];
+
+    for (const c of forensicCases) {
+        try {
+            await prisma.caseStudy.create({ data: c });
+            console.log(`✅ Case Study "${c.title}" seeded.`);
+        } catch (error) {
+            console.error(`❌ Case Study "${c.title}" seed failed:`, error);
+        }
+    }
+
+    // 8. Issue Patterns (Diagnostic Engine)
+    try {
+        await prisma.issuePattern.deleteMany();
+        console.log("🧹 Cleared existing Issue Patterns.");
+    } catch (error) {
+        console.error("❌ Failed to clear Issue Patterns:", error);
+    }
+
+    const patterns = [
+        {
+            keywords: ["cors", "access-control-allow-origin", "blocked"],
+            possibleCauses: ["Missing CORS middleware in Express", "Incorrect origin whitelist", "Preflight request (OPTIONS) not handled"],
+            debugSteps: ["Verify the 'Origin' header in the request", "Check if the server matches the exact protocol and port", "Ensure 'credentials: include' is set if using cookies"],
+            complexity: "Low",
+            recommendedService: "Backend Debugging"
+        },
+        {
+            keywords: ["hydration", "mismatch", "server-side", "client-side"],
+            possibleCauses: ["Accessing window/document in a Server Component", "Timezone/Date discrepancies between server and browser", "Browser extensions injecting HTML"],
+            debugSteps: ["Wrap browser-only code in useEffect", "Use 'suppressHydrationWarning' for unavoidable text mismatches", "Disable extensions and check again"],
+            complexity: "Medium",
+            recommendedService: "Next.js Optimization"
+        }
+    ];
+
+    for (const p of patterns) {
+        try {
+            await prisma.issuePattern.create({ data: p });
+            console.log(`✅ Issue Pattern seeded.`);
+        } catch (error) {
+            console.error(`❌ Issue Pattern seed failed:`, error);
+        }
+    }
+
+    // 9. Initial Site Stats
+    try {
+        await prisma.siteStats.deleteMany();
+        console.log("🧹 Cleared existing Site Stats.");
+    } catch (error) {
+        console.error("❌ Failed to clear Site Stats:", error);
+    }
+
+    try {
+        await prisma.siteStats.create({
+            data: {
+                totalProjects: 6,
+                bugsFixed: 142,
+                caseStudiesWritten: 2,
+                featureRequestsCompleted: 18,
+                yearsLearning: 4,
+                deploymentCount: 856
+            }
+        });
+        console.log("✅ Site Stats seeded.");
+    } catch (error) {
+        console.error("❌ Site Stats seed failed:", error);
     }
 }
 

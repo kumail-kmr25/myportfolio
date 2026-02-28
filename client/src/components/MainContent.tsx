@@ -18,6 +18,9 @@ const StatsDashboard = dynamic(() => import("@/components/StatsDashboard"), {
 const Projects = dynamic(() => import("@/components/Projects"), {
     loading: () => <SectionSkeleton minHeight="600px" />
 });
+const CaseStudies = dynamic(() => import("@/components/CaseStudies"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
 const Testimonials = dynamic(() => import("@/components/Testimonials"), {
     loading: () => <SectionSkeleton minHeight="500px" />
 });
@@ -52,6 +55,7 @@ export default function MainContent() {
             <SectionReveal><Skills /></SectionReveal>
             <SectionReveal><StatsDashboard /></SectionReveal>
             <SectionReveal><Projects /></SectionReveal>
+            <SectionReveal><CaseStudies /></SectionReveal>
             <SectionReveal><Testimonials /></SectionReveal>
             <SectionReveal><FeatureSuggestion /></SectionReveal>
             <SectionReveal><DiagnosticTool /></SectionReveal>
