@@ -55,7 +55,10 @@ export default function LoginForm() {
                         <input type="email" autoComplete="email" className="input-field min-h-[48px]" placeholder="Admin Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Access Secret</label>
+                        <div className="flex items-center justify-between ml-4">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">Access Secret</label>
+                            <Link href="/admin/forgot-password" title="Recover access secret" className="text-[9px] font-black uppercase tracking-widest text-gray-600 hover:text-white transition-colors">Forgot?</Link>
+                        </div>
                         <input type="password" title="password" autoComplete="current-password" className="input-field min-h-[48px]" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
                     {authError && <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-[10px] font-bold text-red-500 uppercase tracking-widest text-center">{authError}</div>}

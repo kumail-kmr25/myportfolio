@@ -27,12 +27,18 @@ async function main() {
         console.error("❌ Admin seed failed:", error);
     }
 
-    // 2. Clear existing projects to avoid duplicates
+    // 2. Clear existing data
     try {
         await prisma.project.deleteMany();
-        console.log("🧹 Cleared existing projects.");
+        await prisma.blogPost.deleteMany();
+        await prisma.journeyPhase.deleteMany();
+        await prisma.skill.deleteMany();
+        await prisma.caseStudy.deleteMany();
+        await prisma.issuePattern.deleteMany();
+        await prisma.siteStats.deleteMany();
+        console.log("🧹 Cleared existing data.");
     } catch (error) {
-        console.error("❌ Failed to clear projects:", error);
+        console.error("❌ Failed to clear data:", error);
     }
 
     // 3. Create Flagship Projects
@@ -325,20 +331,28 @@ async function main() {
     // 4. Create Blog Posts
     const blogPosts = [
         {
-            title: "The Art of Scalable Web Architecture",
-            excerpt: "How to design systems that handle growth without breaking.",
-            content: "Full content would go here...",
-            category: "Architecture",
-            readTime: "10 min read",
-            published: true,
+            title: "Architecting for Scale: Lessons from 1M+ Transactions",
+            excerpt: "Exploring the distributed locking patterns and cache-aside strategies used to build the FinFlow AI engine.",
+            content: "Full technical breakdown of the transaction engine architecture...",
+            category: "Engineering",
+            readTime: "12 min read",
+            published: true
         },
         {
-            title: "Design Systems in the Modern Web",
-            excerpt: "Building consistent, high-performance UIs using Tailwind CSS and Framer Motion.",
-            content: "Full content would go here...",
-            category: "Design",
+            title: "The Forensic Developer: Debugging as a Science",
+            excerpt: "How to use heap snapshots, flame graphs, and trace logs to isolate intermittent production failures.",
+            content: "Detailed guide on forensic debugging methodologies...",
+            category: "Methodology",
             readTime: "8 min read",
-            published: true,
+            published: true
+        },
+        {
+            title: "Next.js 15: Pushing the Limits of Hybrid Rendering",
+            excerpt: "A deep dive into PPR (Partial Prerendering) and the evolution of the App Router for enterprise applications.",
+            content: "Analysis of the latest Next.js features and their impact on performance...",
+            category: "Development",
+            readTime: "10 min read",
+            published: true
         }
     ];
 
@@ -352,13 +366,6 @@ async function main() {
     }
 
     // 5. Create Journey Phases
-    try {
-        await prisma.journeyPhase.deleteMany();
-        console.log("🧹 Cleared existing Journey Phases.");
-    } catch (error) {
-        console.error("❌ Failed to clear Journey Phases:", error);
-    }
-
     const phases = [
         {
             phase: "Step 1",
@@ -403,7 +410,20 @@ async function main() {
         }
     }
 
-    // 6. Create Skills ...
+    // 6. Create Skills
+    const skills = [
+        { name: "TypeScript", status: "expert", order: 1 },
+        { name: "Next.js", status: "expert", order: 2 },
+        { name: "Node.js", status: "expert", order: 3 },
+        { name: "PostgreSQL", status: "expert", order: 4 },
+        { name: "MongoDB", status: "expert", order: 5 },
+        { name: "Prisma", status: "expert", order: 6 },
+        { name: "React", status: "expert", order: 7 },
+        { name: "Tailwind CSS", status: "expert", order: 8 },
+        { name: "Framer Motion", status: "expert", order: 9 },
+        { name: "Redis", status: "expert", order: 12 }
+    ];
+
     for (const s of skills) {
         try {
             await prisma.skill.create({ data: s });
@@ -414,13 +434,6 @@ async function main() {
     }
 
     // 7. Forensic Case Studies (Debugging)
-    try {
-        await prisma.caseStudy.deleteMany();
-        console.log("🧹 Cleared existing Case Studies.");
-    } catch (error) {
-        console.error("❌ Failed to clear Case Studies:", error);
-    }
-
     const forensicCases = [
         {
             title: "Memory Leak in Real-time Inventory",
@@ -462,13 +475,6 @@ async function main() {
     }
 
     // 8. Issue Patterns (Diagnostic Engine)
-    try {
-        await prisma.issuePattern.deleteMany();
-        console.log("🧹 Cleared existing Issue Patterns.");
-    } catch (error) {
-        console.error("❌ Failed to clear Issue Patterns:", error);
-    }
-
     const patterns = [
         {
             keywords: ["cors", "access-control-allow-origin", "blocked"],
@@ -496,13 +502,6 @@ async function main() {
     }
 
     // 9. Initial Site Stats
-    try {
-        await prisma.siteStats.deleteMany();
-        console.log("🧹 Cleared existing Site Stats.");
-    } catch (error) {
-        console.error("❌ Failed to clear Site Stats:", error);
-    }
-
     try {
         await prisma.siteStats.create({
             data: {

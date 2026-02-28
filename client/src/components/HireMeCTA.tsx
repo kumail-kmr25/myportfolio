@@ -38,6 +38,18 @@ export default function HireMeCTA() {
             {/* Background Decorative Element */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none"></div>
 
+            {/* Technical Grid Accent */}
+            <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
+                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="cta-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                            <circle cx="2" cy="2" r="1" fill="white" />
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#cta-grid)" />
+                </svg>
+            </div>
+
             <motion.div
                 initial="hidden"
                 whileInView="visible"
@@ -45,9 +57,13 @@ export default function HireMeCTA() {
                 variants={containerVariants}
                 className="section-container relative z-10"
             >
-                <div className="max-w-5xl mx-auto p-12 md:p-20 rounded-[3.5rem] bg-white/[0.02] border border-white/5 backdrop-blur-3xl text-center shadow-2xl">
-                    <motion.h2 variants={itemVariants} className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight">
-                        Ready to Build Something <span className="text-blue-500 italic">Legendary?</span>
+                <div className="max-w-5xl mx-auto p-12 md:p-20 rounded-[3.5rem] bg-white/[0.02] border border-white/5 backdrop-blur-3xl text-center shadow-2xl relative overflow-hidden group/cta">
+                    {/* Inner pulsing glow */}
+                    <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/10 blur-[80px] rounded-full group-hover/cta:scale-150 transition-transform duration-1000" />
+                    <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-purple-500/10 blur-[80px] rounded-full group-hover/cta:scale-150 transition-transform duration-1000 delay-150" />
+
+                    <motion.h2 variants={itemVariants} className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight relative z-10">
+                        Ready to Build Something <span className="text-blue-500 italic drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]">Legendary?</span>
                     </motion.h2>
                     <motion.p variants={itemVariants} className="text-gray-400 mb-16 text-xl max-w-2xl mx-auto leading-relaxed">
                         Whether you need a full-scale application or a critical performance boost, I&apos;m here to deliver high-performance engineering.

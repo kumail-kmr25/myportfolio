@@ -114,31 +114,56 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                         </div>
                     </div>
 
-                    <h2 className="text-xl font-bold text-white flex items-center gap-3 mt-8">
-                        <Activity className="text-green-400" size={20} />
-                        System Health
+                    <h2 className="text-xl font-bold text-white flex items-center justify-between mt-8">
+                        <div className="flex items-center gap-3">
+                            <Activity className="text-green-400" size={20} />
+                            System Health
+                        </div>
+                        <div className="flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
+                            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                            <span className="text-[10px] font-black text-green-500 uppercase tracking-widest">Security Enforced</span>
+                        </div>
                     </h2>
-                    <div className="card p-6 bg-white/5 border-white/5 space-y-4">
-                        <div className="flex items-center justify-between">
+                    <div className="card p-6 bg-white/5 border-white/5 space-y-4 relative overflow-hidden group/health">
+                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover/health:opacity-100 transition-opacity" />
+
+                        <div className="flex items-center justify-between relative z-10">
                             <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">DB Latency</span>
                             <span className="text-[10px] text-green-400 font-mono">42ms - Optimal</span>
                         </div>
-                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                            <div className="h-full w-[85%] bg-green-500/50" />
+                        <div className="h-1 bg-white/5 rounded-full overflow-hidden relative z-10">
+                            <motion.div
+                                initial={{ width: "0%" }}
+                                animate={{ width: "85%" }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                className="h-full bg-green-500/50 shadow-[0_0_10px_rgba(34,197,94,0.3)]"
+                            />
                         </div>
-                        <div className="flex items-center justify-between">
+
+                        <div className="flex items-center justify-between relative z-10 pt-2">
                             <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">API Resilience</span>
                             <span className="text-[10px] text-blue-400 font-mono">99.9% Uptime</span>
                         </div>
-                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                            <div className="h-full w-[99%] bg-blue-500/50" />
+                        <div className="h-1 bg-white/5 rounded-full overflow-hidden relative z-10">
+                            <motion.div
+                                initial={{ width: "0%" }}
+                                animate={{ width: "99.9%" }}
+                                transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
+                                className="h-full bg-blue-500/50 shadow-[0_0_10px_rgba(59,130,246,0.3)]"
+                            />
                         </div>
-                        <div className="flex items-center justify-between">
-                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">SWR Pulse</span>
-                            <span className="text-[10px] text-purple-400 font-mono">Healthy (3.2s)</span>
+
+                        <div className="flex items-center justify-between relative z-10 pt-2">
+                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">Protocol Integrity</span>
+                            <span className="text-[10px] text-purple-400 font-mono">Verified - v2.4</span>
                         </div>
-                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                            <div className="h-full w-[70%] bg-purple-500/50" />
+                        <div className="h-1 bg-white/5 rounded-full overflow-hidden relative z-10">
+                            <motion.div
+                                initial={{ width: "0%" }}
+                                animate={{ width: "95%" }}
+                                transition={{ duration: 1.5, ease: "easeOut", delay: 0.4 }}
+                                className="h-full bg-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                            />
                         </div>
                     </div>
                 </div>
