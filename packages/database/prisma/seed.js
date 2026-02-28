@@ -149,6 +149,15 @@ async function main() {
             scalability: "Designed for microservices split as the transaction volume grows.",
             security: "Hardware security module (HSM) integration simulated for key management.",
             lessons: "Financial systems require a 'failure-first' mindset—everything must be reversible and logged.",
+            beforeImageUrl: "https://images.unsplash.com/photo-1621417646639-23454eb686a1?auto=format&fit=crop&q=80&w=1200",
+            afterImageUrl: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1200",
+            improvementDetails: "Implemented a custom double-entry bookkeeping ledger with transactional integrity, ensuring 100% data consistency even during network partitions.",
+            metrics: ["0% Double Spend", "1ms Ledger Latency", "99.9% Security Audit"],
+            decisionLogs: [
+                "Utilized Prisma's $transaction for all ledger movements",
+                "Implemented optimistic concurrency control for wallet updates",
+                "Added mTLS for internal microservice communication"
+            ],
             uiDepth: 75,
             backendDepth: 98,
             securityDepth: 98,
