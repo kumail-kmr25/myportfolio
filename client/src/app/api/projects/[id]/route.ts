@@ -15,24 +15,14 @@ export async function PATCH(
 
         const { id } = await params;
         const body = await request.json();
-        const { title, description, tags, image, demo, deployment, github, beforeImageUrl, afterImageUrl, improvementDetails, metrics, decisionLogs } = body;
+
+        // Use partial schema for updates
+        const { projectSchema } = await import("@portfolio/shared");
+        const validatedData = projectSchema.partial().parse(body);
 
         const project = await prisma.project.update({
             where: { id },
-            data: {
-                title,
-                description,
-                tags,
-                image,
-                demo,
-                deployment,
-                github,
-                beforeImageUrl,
-                afterImageUrl,
-                improvementDetails,
-                metrics,
-                decisionLogs,
-            },
+            data: validatedData,
         });
 
         return NextResponse.json(project);

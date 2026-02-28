@@ -19,16 +19,40 @@ import Image from "next/image";
 interface Project {
     id: string;
     title: string;
+    summary?: string;
     description: string;
+    status: "Production" | "Beta" | "Concept";
+    role?: string;
     tags: string[];
     image: string;
     demo: string;
-    deployment?: string | null;
     github: string;
+
+    // Case Study
+    problem?: string;
+    solution?: string;
+    targetAudience?: string;
+    valueProp?: string;
+    architecture?: any;
+    challenges?: string;
+    engineering?: string;
+    performance?: string;
+    scalability?: string;
+    security?: string;
+    lessons?: string;
+
+    // Depth
+    uiDepth: number;
+    backendDepth: number;
+    securityDepth: number;
+    scalabilityDepth: number;
+
+    // Compatibility
     beforeImageUrl?: string | null;
     afterImageUrl?: string | null;
     improvementDetails?: string | null;
     metrics?: string[];
+    decisionLogs?: string[];
 }
 
 interface AdminProjectsProps {
@@ -47,8 +71,14 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
     const [formData, setFormData] = useState<Partial<ProjectFormData>>({
         tags: [],
         demo: "#",
-        deployment: "",
         github: "#",
+        status: "Production",
+        uiDepth: 0,
+        backendDepth: 0,
+        securityDepth: 0,
+        scalabilityDepth: 0,
+        metrics: [],
+        decisionLogs: [],
     });
     const [tagInput, setTagInput] = useState("");
 
@@ -71,16 +101,37 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
         setEditingProject(project);
         setFormData({
             title: project.title,
+            summary: project.summary || "",
             description: project.description,
+            status: project.status,
+            role: project.role || "",
             image: project.image,
             tags: project.tags,
             demo: project.demo,
-            deployment: project.deployment || "",
             github: project.github,
+
+            problem: project.problem || "",
+            solution: project.solution || "",
+            targetAudience: project.targetAudience || "",
+            valueProp: project.valueProp || "",
+            architecture: project.architecture || null,
+            challenges: project.challenges || "",
+            engineering: project.engineering || "",
+            performance: project.performance || "",
+            scalability: project.scalability || "",
+            security: project.security || "",
+            lessons: project.lessons || "",
+
+            uiDepth: project.uiDepth || 0,
+            backendDepth: project.backendDepth || 0,
+            securityDepth: project.securityDepth || 0,
+            scalabilityDepth: project.scalabilityDepth || 0,
+
             beforeImageUrl: project.beforeImageUrl || "",
             afterImageUrl: project.afterImageUrl || "",
             improvementDetails: project.improvementDetails || "",
             metrics: project.metrics || [],
+            decisionLogs: project.decisionLogs || [],
         });
         setIsAdding(true);
     };
@@ -94,7 +145,18 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             } else {
                 await onAdd(formData as ProjectFormData);
             }
-            setFormData({ tags: [], demo: "#", deployment: "", github: "#", decisionLogs: [] });
+            setFormData({
+                tags: [],
+                demo: "#",
+                github: "#",
+                status: "Production",
+                uiDepth: 0,
+                backendDepth: 0,
+                securityDepth: 0,
+                scalabilityDepth: 0,
+                metrics: [],
+                decisionLogs: []
+            });
             setIsAdding(false);
             setEditingProject(null);
         } catch (err) {
@@ -107,7 +169,18 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
     const handleDiscard = () => {
         setIsAdding(false);
         setEditingProject(null);
-        setFormData({ tags: [], demo: "#", deployment: "", github: "#", decisionLogs: [] });
+        setFormData({
+            tags: [],
+            demo: "#",
+            github: "#",
+            status: "Production",
+            uiDepth: 0,
+            backendDepth: 0,
+            securityDepth: 0,
+            scalabilityDepth: 0,
+            metrics: [],
+            decisionLogs: []
+        });
     };
 
     const addTag = () => {
@@ -145,7 +218,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             {isAdding && (
                 <div className="glass-effect rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 border border-blue-500/20 bg-blue-500/[0.02] animate-in zoom-in duration-300">
                     <form onSubmit={handleSubmit} className="space-y-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             <div className="space-y-2">
                                 <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Project Title</label>
                                 <input
@@ -156,6 +229,18 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                     required
                                 />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Status</label>
+                                <select
+                                    className="input-field"
+                                    value={formData.status || "Production"}
+                                    onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
+                                >
+                                    <option value="Production">Production</option>
+                                    <option value="Beta">Beta</option>
+                                    <option value="Concept">Concept</option>
+                                </select>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Featured Image URL</label>
@@ -173,6 +258,29 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                             </div>
                         </div>
 
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="space-y-2">
+                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Role</label>
+                                <input
+                                    type="text"
+                                    className="input-field"
+                                    placeholder="e.g. Lead Architect / Full Stack"
+                                    value={formData.role || ""}
+                                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">One-Line Summary</label>
+                                <input
+                                    type="text"
+                                    className="input-field"
+                                    placeholder="Powerful product summary..."
+                                    value={formData.summary || ""}
+                                    onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
+                                />
+                            </div>
+                        </div>
+
                         <div className="space-y-2">
                             <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Description</label>
                             <textarea
@@ -186,30 +294,157 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-white/5">
                             <div className="space-y-4">
-                                <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-500 ml-4">Transformation (Optional)</h4>
+                                <h4 className="text-[10px] font-black uppercase tracking-widest text-amber-500 ml-4">Product Deep Dive</h4>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Before Image URL</label>
-                                    <input
-                                        type="text"
-                                        className="input-field"
-                                        placeholder="Internal/Legacy screenshot..."
-                                        value={formData.beforeImageUrl || ""}
-                                        onChange={(e) => setFormData({ ...formData, beforeImageUrl: e.target.value })}
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Problem</label>
+                                    <textarea
+                                        className="input-field min-h-[80px] text-sm"
+                                        placeholder="What problem does this solve?"
+                                        value={formData.problem || ""}
+                                        onChange={(e) => setFormData({ ...formData, problem: e.target.value })}
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">After Image URL</label>
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Solution</label>
+                                    <textarea
+                                        className="input-field min-h-[80px] text-sm"
+                                        placeholder="How was it solved?"
+                                        value={formData.solution || ""}
+                                        onChange={(e) => setFormData({ ...formData, solution: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Target Audience</label>
                                     <input
                                         type="text"
                                         className="input-field"
-                                        placeholder="Optimized/Final screenshot..."
-                                        value={formData.afterImageUrl || ""}
-                                        onChange={(e) => setFormData({ ...formData, afterImageUrl: e.target.value })}
+                                        placeholder="Who is this for?"
+                                        value={formData.targetAudience || ""}
+                                        onChange={(e) => setFormData({ ...formData, targetAudience: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Value Prop</label>
+                                    <input
+                                        type="text"
+                                        className="input-field"
+                                        placeholder="Key benefit..."
+                                        value={formData.valueProp || ""}
+                                        onChange={(e) => setFormData({ ...formData, valueProp: e.target.value })}
                                     />
                                 </div>
                             </div>
+
                             <div className="space-y-4">
-                                <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-500 ml-4">Metrics & Details</h4>
+                                <h4 className="text-[10px] font-black uppercase tracking-widest text-purple-500 ml-4">Engineering & Systems</h4>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Architecture (JSON)</label>
+                                    <textarea
+                                        className="input-field min-h-[120px] font-mono text-[10px]"
+                                        placeholder='{ "nodes": [...], "edges": [...] }'
+                                        value={formData.architecture ? JSON.stringify(formData.architecture, null, 2) : ""}
+                                        onChange={(e) => {
+                                            try {
+                                                const parsed = JSON.parse(e.target.value);
+                                                setFormData({ ...formData, architecture: parsed });
+                                            } catch (err) {
+                                                // Handle invalid JSON while typing? Maybe just store string and parse on submit
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Crucial Challenges</label>
+                                    <textarea
+                                        className="input-field min-h-[80px] text-sm"
+                                        placeholder="Internal/System obstacles..."
+                                        value={formData.challenges || ""}
+                                        onChange={(e) => setFormData({ ...formData, challenges: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Engineering Approach</label>
+                                    <textarea
+                                        className="input-field min-h-[80px] text-sm"
+                                        placeholder="Architecture decisions..."
+                                        value={formData.engineering || ""}
+                                        onChange={(e) => setFormData({ ...formData, engineering: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-white/5">
+                            <div className="space-y-4">
+                                <h4 className="text-[10px] font-black uppercase tracking-widest text-cyan-500 ml-4">Operational Depth</h4>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">UI Depth %</label>
+                                        <input type="number" className="input-field" value={formData.uiDepth || 0} onChange={(e) => setFormData({ ...formData, uiDepth: parseInt(e.target.value) })} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Backend %</label>
+                                        <input type="number" className="input-field" value={formData.backendDepth || 0} onChange={(e) => setFormData({ ...formData, backendDepth: parseInt(e.target.value) })} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Security %</label>
+                                        <input type="number" className="input-field" value={formData.securityDepth || 0} onChange={(e) => setFormData({ ...formData, securityDepth: parseInt(e.target.value) })} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Scalability %</label>
+                                        <input type="number" className="input-field" value={formData.scalabilityDepth || 0} onChange={(e) => setFormData({ ...formData, scalabilityDepth: parseInt(e.target.value) })} />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Optimizations</label>
+                                    <textarea
+                                        className="input-field min-h-[80px] text-sm"
+                                        placeholder="Performance tweaks..."
+                                        value={formData.performance || ""}
+                                        onChange={(e) => setFormData({ ...formData, performance: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Scalability Readiness</label>
+                                    <textarea
+                                        className="input-field min-h-[80px] text-sm"
+                                        placeholder="Load handling..."
+                                        value={formData.scalability || ""}
+                                        onChange={(e) => setFormData({ ...formData, scalability: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Security Layer</label>
+                                    <textarea
+                                        className="input-field min-h-[80px] text-sm"
+                                        placeholder="Data protection..."
+                                        value={formData.security || ""}
+                                        onChange={(e) => setFormData({ ...formData, security: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Core Insights / Lessons</label>
+                                    <textarea
+                                        className="input-field min-h-[80px] text-sm"
+                                        placeholder="What did you learn?"
+                                        value={formData.lessons || ""}
+                                        onChange={(e) => setFormData({ ...formData, lessons: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
+                                <h4 className="text-[10px] font-black uppercase tracking-widest text-rose-500 ml-4">Legacy & Metrics</h4>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Before Image</label>
+                                        <input type="text" className="input-field" value={formData.beforeImageUrl || ""} onChange={(e) => setFormData({ ...formData, beforeImageUrl: e.target.value })} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">After Image</label>
+                                        <input type="text" className="input-field" value={formData.afterImageUrl || ""} onChange={(e) => setFormData({ ...formData, afterImageUrl: e.target.value })} />
+                                    </div>
+                                </div>
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Improvement Details</label>
                                     <textarea
@@ -233,7 +468,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                                     <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Engineering Decisions (one per line)</label>
                                     <textarea
                                         className="input-field min-h-[100px] text-sm"
-                                        placeholder="e.g. Optimized DB queries by adding composite indexes..."
+                                        placeholder="e.g. Optimized DB queries..."
                                         value={formData.decisionLogs?.join("\n") || ""}
                                         onChange={(e) => setFormData({ ...formData, decisionLogs: e.target.value.split("\n").filter(Boolean) })}
                                     />

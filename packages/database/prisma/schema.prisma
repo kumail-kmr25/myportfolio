@@ -105,17 +105,44 @@ model ContactSubmission {
 model Project {
   id                 String   @id @default(uuid())
   title              String
-  description        String
+  summary            String?   // One-line powerful product summary
+  description        String   // Detailed description
+  status             String   @default("Production") // Production / Beta / Concept
+  role               String?   // Full Stack / Backend / Architect
   tags               String[]
-  image              String
-  demo               String
-  deployment         String?
-  github             String
+  image              String   // Featured image
+  demo               String?  // Live link
+  github             String?
+  
+  // Case Study Sections
+  problem            String?
+  solution           String?
+  targetAudience     String?
+  valueProp          String?
+  
+  architecture       Json?    // System flow nodes and connections
+  
+  challenges         String?
+  engineering        String?
+  performance        String? 
+  scalability        String?
+  security           String?
+  lessons            String?
+  
+  // Depth Indicators (0-100)
+  uiDepth            Int      @default(0)
+  backendDepth       Int      @default(0)
+  securityDepth      Int      @default(0)
+  scalabilityDepth   Int      @default(0)
+
+  // Original fields for backward compatibility
   beforeImageUrl     String?
   afterImageUrl      String?
   improvementDetails String?
   metrics            String[]
-  decisionLogs       String[] // Technical trade-offs and decisions
+  decisionLogs       String[] 
+
+  isVisible          Boolean  @default(true)
   created_at         DateTime @default(now())
   updated_at         DateTime @updatedAt
 }

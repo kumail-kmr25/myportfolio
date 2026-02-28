@@ -38,7 +38,44 @@ const fetcher = async (url: string) => {
 };
 
 interface AdminTestimonial { id: string; name: string; email: string; company?: string | null; relationship_type: string; intervention_type: string; message: string; rating: number; about_delivery_lead: string; approved: boolean; featured: boolean; verified: boolean; created_at: string; }
-interface AdminProject { id: string; title: string; description: string; tags: string[]; image: string; demo: string; deployment?: string | null; github: string; beforeImageUrl?: string | null; afterImageUrl?: string | null; improvementDetails?: string | null; metrics?: string[]; }
+interface AdminProject {
+    id: string;
+    title: string;
+    summary?: string;
+    description: string;
+    status: "Production" | "Beta" | "Concept";
+    role?: string;
+    tags: string[];
+    image: string;
+    demo: string;
+    github: string;
+
+    // Case Study
+    problem?: string;
+    solution?: string;
+    targetAudience?: string;
+    valueProp?: string;
+    architecture?: any;
+    challenges?: string;
+    engineering?: string;
+    performance?: string;
+    scalability?: string;
+    security?: string;
+    lessons?: string;
+
+    // Depth
+    uiDepth: number;
+    backendDepth: number;
+    securityDepth: number;
+    scalabilityDepth: number;
+
+    // Compatibility
+    beforeImageUrl?: string | null;
+    afterImageUrl?: string | null;
+    improvementDetails?: string | null;
+    metrics?: string[];
+    decisionLogs?: string[];
+}
 interface AdminContactMessage { id: string; name: string; email: string; message: string; replied: boolean; created_at: string; inquiryType: string; company?: string | null; serviceRequired: string; budgetRange?: string | null; timeline?: string | null; }
 interface AdminHireRequest { id: string; name: string; email: string; company: string | null; description: string; selectedService: string; budgetRange: string; timeline: string; projectType: string; status: string; source?: string; createdAt: string; }
 interface AdminBlogPost { id: string; title: string; excerpt: string; content: string; category: string; readTime: string; published: boolean; created_at: string; }
