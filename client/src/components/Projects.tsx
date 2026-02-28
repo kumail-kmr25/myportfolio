@@ -387,6 +387,36 @@ function TabContent({ tab, project }: { tab: Tab; project: Project }) {
                             <p className="text-gray-400 leading-relaxed text-sm sm:text-base">{project.scalability}</p>
                         </section>
                     </div>
+
+                    {/* Transformation & Metrics */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/5">
+                        <div className="md:col-span-2 flex flex-wrap gap-3">
+                            {project.metrics?.map((metric, i) => (
+                                <div key={i} className="px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col group hover:border-blue-500/30 transition-all">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1">Measured Impact</span>
+                                    <span className="text-sm font-black text-blue-400 group-hover:text-blue-300 transition-colors uppercase">{metric}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        {project.beforeImageUrl && project.afterImageUrl && (
+                            <button
+                                onClick={() => (window as any).toggleComparison?.()}
+                                className="w-full p-6 rounded-[2rem] bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/10 flex flex-col items-center justify-center gap-2 group hover:from-blue-500/30 hover:to-purple-500/30 transition-all"
+                            >
+                                <ArrowLeftRight size={20} className="text-blue-400 group-hover:scale-110 transition-transform" />
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white">Visual Evolution</span>
+                                <span className="text-[8px] font-bold text-gray-500 uppercase">View Transformation</span>
+                            </button>
+                        )}
+                    </div>
+
+                    {project.improvementDetails && (
+                        <div className="p-6 rounded-3xl bg-blue-500/[0.02] border border-blue-500/10">
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-500 mb-2">Technical Decompression</h4>
+                            <p className="text-sm text-gray-400 leading-relaxed">{project.improvementDetails}</p>
+                        </div>
+                    )}
                 </motion.div>
             );
 
@@ -462,6 +492,11 @@ export default function Projects() {
     useEffect(() => {
         setActiveTab("snapshot");
     }, [activeIndex]);
+
+    useEffect(() => {
+        (window as any).toggleComparison = () => setShowComparison(true);
+        return () => { delete (window as any).toggleComparison; };
+    }, []);
 
     if (error) return null;
     if (isLoading || !projects) return (

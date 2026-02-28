@@ -91,22 +91,31 @@ async function main() {
             valueProp: "Increases patient throughput by streamlining the documentation process.",
             challenges: "Handling complex, nested medical histories while maintaining search speed across millions of records.",
             engineering: "Built a custom aggregation pipeline in MongoDB to generate real-time patient health trends.",
-            performance: "Implemented client-side optimistic UI updates for a zero-lag user experience.",
-            scalability: "Database sharding prepared for multi-regional deployment.",
-            security: "End-to-end encryption for patient PII (Personally Identifiable Information).",
+            performance: "Implemented client-side optimistic UI updates for a zero-lag user experience, reducing perceived latency by 200%.",
+            scalability: "Database sharding prepared for multi-regional deployment with automated failover.",
+            security: "End-to-end encryption for patient PII (Personally Identifiable Information) with strict audit logging.",
             lessons: "The importance of UX in technical products—if doctors can't use it quickly, the tech doesn't matter.",
+            beforeImageUrl: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200",
+            afterImageUrl: "https://images.unsplash.com/photo-1576091160550-2173599211d0?auto=format&fit=crop&q=80&w=1200",
+            improvementDetails: "Refactored the data ingestion layer to use bulk-insert operations and added composite indexes, resulting in a 4x increase in write throughput.",
+            metrics: ["-85% DB Latency", "99.9% Data Integrity", "4x Data Entry Speed"],
+            decisionLogs: [
+                "Migrated from normalized to denormalized medical records for faster reads",
+                "Implemented custom Zod validation for complex health schemas",
+                "Switched to Redis for session and temporary scan caching"
+            ],
             uiDepth: 80,
             backendDepth: 90,
             securityDepth: 95,
             scalabilityDepth: 85,
             architecture: {
                 nodes: [
-                    { id: "ui", label: "Frontend", sub: "React / Vite", icon: "Monitor", color: "cyan", x: 10, y: 35 },
-                    { id: "api", label: "Backend", sub: "Node / Express", icon: "Server", color: "purple", x: 40, y: 35 },
-                    { id: "db", label: "Storage", sub: "MongoDB Atlas", icon: "Database", color: "green", x: 70, y: 35 }
+                    { id: "ui", label: "Frontend", sub: "React / Vite / Tailwind", icon: "Monitor", color: "cyan", x: 10, y: 35 },
+                    { id: "api", label: "Backend", sub: "Node / Express / PM2", icon: "Server", color: "purple", x: 40, y: 35 },
+                    { id: "db", label: "Storage", sub: "MongoDB Atlas Cluster", icon: "Database", color: "green", x: 70, y: 35 }
                 ],
                 edges: [
-                    { from: "ui", to: "api", label: "RESTful API" },
+                    { from: "ui", to: "api", label: "REST / Socket.io" },
                     { from: "api", to: "db", label: "Mongoose ODM" }
                 ]
             }
@@ -163,10 +172,19 @@ async function main() {
             valueProp: "Provides 95% accurate cash-flow predictions 3 months in advance.",
             challenges: "Cleaning and normalizing messy transaction data from multiple bank sources.",
             engineering: "Built a background worker system to process AI tasks without blocking the main event loop.",
-            performance: "Reduced frontend render time for data-heavy charts by 60% using virtualization.",
-            scalability: "Stateless API ensures it can handle rapid increases in data volume.",
+            performance: "Reduced frontend render time for data-heavy charts by 60% using virtualization and memoization.",
+            scalability: "Stateless API ensures it can handle rapid increases in data volume through elastic scaling.",
             security: "Strict data isolation policies ensure no company can see another's private financial records.",
             lessons: "AI is only as good as the data cleaning pipeline before it.",
+            beforeImageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
+            afterImageUrl: "https://images.unsplash.com/photo-1551288049-bbbda5366a7a?auto=format&fit=crop&q=80&w=1200",
+            improvementDetails: "Optimized the AI inference pipeline by implementing a request queue and caching frequent classification patterns.",
+            metrics: ["95% Prediction Accuracy", "60% Render Speedup", "30% Lower API Costs"],
+            decisionLogs: [
+                "Utilized OpenAI function calling for consistent data extraction",
+                "Implemented React Virtual for data-heavy transaction lists",
+                "Added a staging layer for AI data normalization"
+            ],
             uiDepth: 90,
             backendDepth: 85,
             securityDepth: 88,
@@ -174,14 +192,14 @@ async function main() {
             architecture: {
                 nodes: [
                     { id: "ui", label: "Frontend", sub: "React / Shadcn UI", icon: "Monitor", color: "blue", x: 10, y: 35 },
-                    { id: "api", label: "API", sub: "Node.js Core", icon: "Server", color: "purple", x: 40, y: 35 },
-                    { id: "ai", label: "AI Engine", sub: "OpenAI / Python", icon: "Cpu", color: "amber", x: 40, y: 70 },
-                    { id: "db", label: "Insights", sub: "MongoDB", icon: "Database", color: "green", x: 70, y: 35 }
+                    { id: "api", label: "API", sub: "Node.js Core / Fastify", icon: "Server", color: "purple", x: 40, y: 35 },
+                    { id: "ai", label: "AI Engine", sub: "OpenAI / Python Workers", icon: "Cpu", color: "amber", x: 40, y: 70 },
+                    { id: "db", label: "Insights", sub: "MongoDB / Redis", icon: "Database", color: "green", x: 70, y: 35 }
                 ],
                 edges: [
-                    { from: "ui", to: "api", label: "JSON API" },
-                    { from: "api", to: "ai", label: "Prompt Engineering" },
-                    { from: "api", to: "db", label: "Insight Storage" }
+                    { from: "ui", to: "api", label: "Standard JSON API" },
+                    { from: "api", to: "ai", label: "Prompt Orchestration" },
+                    { from: "api", to: "db", label: "Context Retrieval" }
                 ]
             }
         },
