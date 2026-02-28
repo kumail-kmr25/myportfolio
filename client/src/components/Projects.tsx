@@ -165,15 +165,25 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
                             ${hovered === node.id ? `shadow-lg ${glowMap[node.color] || glowMap.blue}` : ""}
                             transition-all duration-300 min-w-[80px]
                         `}>
-                            <div className="flex justify-center mb-1">{iconMap[node.icon] || <Server size={18} />}</div>
-                            <div className="text-[10px] font-black uppercase tracking-wider leading-tight">{node.label}</div>
+                            {hovered === node.id && (
+                                <motion.div
+                                    layoutId="pulse"
+                                    className="absolute inset-0 rounded-2xl bg-current opacity-20 blur-md"
+                                    animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
+                                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                />
+                            )}
+                            <div className="relative z-20">
+                                <div className="flex justify-center mb-1">{iconMap[node.icon] || <Server size={18} />}</div>
+                                <div className="text-[10px] font-black uppercase tracking-wider leading-tight">{node.label}</div>
+                            </div>
                             <AnimatePresence>
                                 {hovered === node.id && (
                                     <motion.div
                                         initial={{ opacity: 0, y: 4, scale: 0.9 }}
                                         animate={{ opacity: 1, y: -4, scale: 1 }}
                                         exit={{ opacity: 0, y: 4, scale: 0.9 }}
-                                        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap bg-black/90 border border-white/10 rounded-xl px-3 py-1.5 text-[10px] text-gray-300 font-medium backdrop-blur-md z-10"
+                                        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap bg-black/90 border border-white/10 rounded-xl px-3 py-1.5 text-[10px] text-gray-300 font-medium backdrop-blur-md z-30"
                                     >
                                         {node.sub}
                                     </motion.div>
@@ -650,25 +660,39 @@ export default function Projects() {
                                     </div>
 
                                     {/* Dynamic Content Display */}
-                                    <div className="p-8 sm:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/5 min-h-[500px]">
+                                    <motion.div
+                                        layout
+                                        initial={false}
+                                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                        className="p-8 sm:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/5 min-h-[500px] overflow-hidden"
+                                    >
                                         <AnimatePresence mode="wait">
                                             <TabContent key={`${active.id}-${activeTab}`} tab={activeTab} project={active} />
                                         </AnimatePresence>
-                                    </div>
+                                    </motion.div>
 
                                     {/* Bottom Nudge - Next Case Study */}
                                     <button
                                         onClick={() => {
                                             const next = (activeIndex + 1) % projects.length;
                                             setActiveIndex(next);
+                                            window.scrollTo({ top: document.getElementById('projects')?.offsetTop ? document.getElementById('projects')!.offsetTop - 100 : 0, behavior: 'smooth' });
                                         }}
-                                        className="group w-full py-20 rounded-[2.5rem] border-2 border-dashed border-white/5 hover:border-blue-500/20 hover:bg-blue-500/[0.01] transition-all flex flex-col items-center justify-center gap-4 text-gray-600 hover:text-blue-500"
+                                        className="group relative w-full h-48 rounded-[2.5rem] border-2 border-dashed border-white/5 hover:border-blue-500/20 overflow-hidden transition-all flex flex-col items-center justify-center gap-2 text-gray-600"
                                     >
-                                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">Initialize Next Discovery</span>
-                                        <h4 className="text-2xl font-black text-white group-hover:text-blue-400 transition-colors">
-                                            {projects[(activeIndex + 1) % projects.length].title}
-                                        </h4>
-                                        <ArrowRight size={24} className="mt-2 group-hover:translate-x-2 transition-transform" />
+                                        <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700">
+                                            <Image src={projects[(activeIndex + 1) % projects.length].image} alt="" fill className="object-cover" />
+                                        </div>
+                                        <motion.div
+                                            className="relative z-10 flex flex-col items-center gap-3"
+                                            whileHover={{ y: -5 }}
+                                        >
+                                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 group-hover:text-blue-500 transition-colors">Initialize Next Discovery</span>
+                                            <h4 className="text-2xl font-black text-white group-hover:text-blue-400 transition-colors">
+                                                {projects[(activeIndex + 1) % projects.length].title}
+                                            </h4>
+                                            <ArrowRight size={24} className="mt-2 group-hover:translate-x-2 transition-transform text-blue-500" />
+                                        </motion.div>
                                     </button>
                                 </motion.div>
                             )}
