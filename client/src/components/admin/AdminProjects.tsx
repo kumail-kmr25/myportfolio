@@ -81,6 +81,8 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
         decisionLogs: [],
     });
     const [tagInput, setTagInput] = useState("");
+    const [rawArchitecture, setRawArchitecture] = useState("");
+    const [jsonError, setJsonError] = useState<string | null>(null);
 
     useEffect(() => {
         const editId = searchParams?.get("edit");
@@ -133,6 +135,8 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             metrics: project.metrics || [],
             decisionLogs: project.decisionLogs || [],
         });
+        setRawArchitecture(project.architecture ? JSON.stringify(project.architecture, null, 2) : "");
+        setJsonError(null);
         setIsAdding(true);
     };
 
@@ -157,6 +161,8 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                 metrics: [],
                 decisionLogs: []
             });
+            setRawArchitecture("");
+            setJsonError(null);
             setIsAdding(false);
             setEditingProject(null);
         } catch (err) {
@@ -181,6 +187,8 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             metrics: [],
             decisionLogs: []
         });
+        setRawArchitecture("");
+        setJsonError(null);
     };
 
     const addTag = () => {
@@ -338,20 +346,34 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                             <div className="space-y-4">
                                 <h4 className="text-[10px] font-black uppercase tracking-widest text-purple-500 ml-4">Engineering & Systems</h4>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Architecture (JSON)</label>
+                                    <div className="flex justify-between items-center ml-4">
+                                        <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Architecture (JSON)</label>
+                                        {jsonError && <span className="text-[9px] text-red-500 font-bold uppercase">{jsonError}</span>}
+                                    </div>
                                     <textarea
-                                        className="input-field min-h-[120px] font-mono text-[10px]"
+                                        className={`input-field min-h-[160px] font-mono text-[10px] ${jsonError ? 'border-red-500/50 bg-red-500/5' : ''}`}
                                         placeholder='{ "nodes": [...], "edges": [...] }'
-                                        value={formData.architecture ? JSON.stringify(formData.architecture, null, 2) : ""}
+                                        value={rawArchitecture}
                                         onChange={(e) => {
+                                            const val = e.target.value;
+                                            setRawArchitecture(val);
                                             try {
-                                                const parsed = JSON.parse(e.target.value);
-                                                setFormData({ ...formData, architecture: parsed });
+                                                if (val.trim()) {
+                                                    const parsed = JSON.parse(val);
+                                                    setFormData({ ...formData, architecture: parsed });
+                                                    setJsonError(null);
+                                                } else {
+                                                    setFormData({ ...formData, architecture: null });
+                                                    setJsonError(null);
+                                                }
                                             } catch (err) {
-                                                // Handle invalid JSON while typing? Maybe just store string and parse on submit
+                                                setJsonError("Invalid JSON");
                                             }
                                         }}
                                     />
+                                    <div className="text-[9px] text-gray-600 px-4 leading-relaxed">
+                                        Must include `nodes` (id, label, sub, icon, color, x, y) and `edges` (from, to, label).
+                                    </div>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Crucial Challenges</label>

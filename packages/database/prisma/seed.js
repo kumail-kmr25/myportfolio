@@ -57,6 +57,15 @@ async function main() {
             scalability: "Stateless architecture allows horizontal scaling across Vercel's global edge network.",
             security: "Multi-factor authentication (MFA) and granular Role-Based Access Control (RBAC) ensure data integrity.",
             lessons: "Learned that database schema design is the most critical part of long-term project stability.",
+            beforeImageUrl: "https://images.unsplash.com/photo-1546410531-bb4daee2014c?auto=format&fit=crop&q=80&w=1200",
+            afterImageUrl: "https://images.unsplash.com/photo-1501503060800-3fa87a55ffb8?auto=format&fit=crop&q=80&w=1200",
+            improvementDetails: "Refactored legacy Monolith into a modular Next.js architecture, utilizing ISR for static snapshots of institutional data while maintaining real-time updates for active sessions.",
+            metrics: ["-90% Server Load", "450ms -> 42ms TTFB", "40% Admin Efficiency"],
+            decisionLogs: [
+                "Moved from Client-Side Fetching to Server Components with ISR",
+                "Implemented Redis for session-based notification caching",
+                "Strict PostgreSQL indexing on student_id and classroom_locks"
+            ],
             uiDepth: 85,
             backendDepth: 95,
             securityDepth: 90,
@@ -223,6 +232,15 @@ async function main() {
             scalability: "Serverless functions used for non-critical paths to reduce main server load.",
             security: "PCI-compliant payment integration using secure stripe-connect architecture.",
             lessons: "Performance is a feature—every 100ms of delay costs real revenue.",
+            beforeImageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200",
+            afterImageUrl: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80&w=1200",
+            improvementDetails: "Optimized the checkout funnel by implementing edge-side pre-rendering (ESR) and persistent cart state, increasing conversion by 15%.",
+            metrics: ["100/100 Lighthouse", "15% Conversion Boost", "70% Payload Reduction"],
+            decisionLogs: [
+                "Implemented Next.js 15 Partial Prerendering (PPR)",
+                "Switched to Redis for real-time inventory locking",
+                "Automated SVG icon sprite generation for zero-layout shift"
+            ],
             uiDepth: 95,
             backendDepth: 88,
             securityDepth: 85,
@@ -259,6 +277,15 @@ async function main() {
             scalability: "Designed to handle versioned documentation for hundreds of independent modules.",
             security: "GitHub OAuth integration for secure team-based access control.",
             lessons: "Technical users value speed and searchability over fancy visuals.",
+            beforeImageUrl: "https://images.unsplash.com/photo-1517842645767-c639fd477b8d?auto=format&fit=crop&q=80&w=1200",
+            afterImageUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200",
+            improvementDetails: "Built a custom MDX-to-HTML parser with AST modifications to automatically inject interactive Mermaid.js diagrams into technical specs.",
+            metrics: ["0ms Navigation Delay", "100% SEO Score", "50+ Microservices Configured"],
+            decisionLogs: [
+                "Utilized unified/remark ecosystems for markdown parsing",
+                "Implemented incremental static regeneration (ISR)",
+                "Built a custom search index using WebWorkers"
+            ],
             uiDepth: 85,
             backendDepth: 85,
             securityDepth: 80,
