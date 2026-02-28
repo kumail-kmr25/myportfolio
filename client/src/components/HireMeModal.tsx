@@ -212,11 +212,15 @@ export default function HireMeModal() {
                         className="relative w-full max-w-6xl h-full max-h-[850px] bg-[#0a0a0a] border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col md:flex-row"
                     >
                         {/* Left Sidebar - Progress */}
-                        <div className="hidden md:flex w-80 bg-blue-600 p-12 flex-col justify-between relative overflow-hidden shrink-0">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+                        <div className="hidden md:flex w-80 bg-[#070707] border-r border-white/5 p-12 flex-col justify-between relative overflow-hidden shrink-0">
+                            {/* Premium Background Accents */}
+                            <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-[100px]" />
+                                <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-600/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-[80px]" />
+                            </div>
 
                             <div className="relative z-10">
-                                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-blue-600 mb-12 shadow-xl shrink-0">
+                                <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white mb-12 shadow-[0_0_20px_rgba(37,99,235,0.3)] shrink-0 border border-blue-400/30">
                                     <Sparkles size={24} />
                                 </div>
 
@@ -228,13 +232,15 @@ export default function HireMeModal() {
                                         { id: "contact", label: "Your Info", step: 4 }
                                     ].map((s, i) => (
                                         <div key={s.id} className="flex items-center gap-4 group">
-                                            <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-[10px] font-bold transition-all
-                                                ${step === s.id ? "bg-white border-white text-blue-600" : "border-white/30 text-white/50"}`}
+                                            <div className={`w-8 h-8 rounded-full border flex items-center justify-center text-[10px] font-bold transition-all duration-300
+                                                ${step === s.id
+                                                    ? "bg-blue-600 border-blue-500 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+                                                    : "border-white/10 text-gray-600 bg-white/[0.02]"}`}
                                             >
                                                 {s.step}
                                             </div>
-                                            <span className={`text-[11px] font-bold uppercase tracking-widest transition-all
-                                                ${step === s.id ? "text-white" : "text-white/40"}`}
+                                            <span className={`text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-300
+                                                ${step === s.id ? "text-white" : "text-gray-600"}`}
                                             >
                                                 {s.label}
                                             </span>

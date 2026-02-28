@@ -8,7 +8,12 @@ import { useState, useEffect } from "react";
 import { useHireModal } from "@/context/HireModalContext";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
 
-const roles = ["Full Stack Developer", "DevOps Engineer", "UI/UX Designer"];
+const roles = [
+    "Full Stack Developer",
+    "DevOps Engineer",
+    "UI/UX Designer",
+    "Critical Bug Fix Expert"
+];
 
 export default function Hero() {
     const [roleIndex, setRoleIndex] = useState(0);
@@ -179,7 +184,7 @@ export default function Hero() {
                         className="h-12 mb-16"
                     >
                         <span className="text-xl md:text-3xl text-gray-500 font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4">
-                            Protocol <span className="text-white bg-white/5 px-4 py-1 rounded-lg border border-white/10">{text}</span>
+                            <span className="text-white bg-white/5 px-4 py-1 rounded-lg border border-white/10">{text}</span>
                             <motion.span
                                 animate={{ opacity: [1, 0] }}
                                 transition={{ duration: 0.8, repeat: Infinity }}
@@ -223,21 +228,6 @@ export default function Hero() {
                     </motion.div>
                 </motion.div>
 
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1.5, delay: 1.5, ease: premiumEase as any }}
-                    className="absolute bottom-12 left-0 right-0 mx-auto pointer-events-none"
-                >
-                    <div className="flex flex-col items-center gap-4">
-                        <span className="text-[9px] font-black uppercase tracking-[0.5em] text-gray-600 animate-pulse">Scroll to explore</span>
-                        <motion.div
-                            animate={{ y: [0, 15, 0] }}
-                            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                            className="w-px h-24 bg-gradient-to-b from-blue-500 via-blue-500/20 to-transparent mx-auto"
-                        />
-                    </div>
-                </motion.div>
             </div>
         </section>
     );
