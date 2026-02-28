@@ -116,18 +116,25 @@ export default function IntroAnimation() {
 
                         {/* Scanner Line Effect */}
                         <motion.div
-                            initial={{ width: 0, opacity: 0 }}
-                            animate={{ width: "100%", opacity: 1 }}
-                            transition={{ delay: 0.6, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                            className="h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent w-full max-w-[400px]"
+                            initial={{ top: -100, opacity: 0 }}
+                            animate={{ top: ['0%', '100%'], opacity: [0, 1, 0] }}
+                            transition={{ duration: 1.2, ease: "linear", repeat: Infinity }}
+                            className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent z-0 pointer-events-none"
                         />
                     </div>
 
                     {/* Terminal Stub */}
-                    <div className="absolute bottom-10 left-10 opacity-20 hidden md:block">
-                        <p className="text-[10px] font-mono text-white tracking-widest uppercase">
-                            Status: INITIALIZING_CORE_SYSTEM
-                        </p>
+                    <div className="absolute bottom-10 left-10 md:left-20 opacity-40 hidden md:block font-mono text-[9px] uppercase tracking-widest space-y-1">
+                        <p className="text-blue-500">System: Active</p>
+                        <p className="text-white/40">Core: v2.0.48-stable</p>
+                        <p className="text-white/40">Auth: Secure_Handshake_OK</p>
+                        <motion.p
+                            animate={{ opacity: [0.4, 1, 0.4] }}
+                            transition={{ duration: 1, repeat: Infinity }}
+                            className="text-emerald-500"
+                        >
+                            {">"} Status: INITIALIZING_CORE_SYSTEM_INTERFACE
+                        </motion.p>
                     </div>
                 </motion.div>
             )}
