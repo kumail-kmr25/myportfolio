@@ -326,7 +326,7 @@ async function main() {
         },
         {
             title: "Cue AI",
-            isVisible: false,
+            isVisible: true,
             summary: "Intelligent AI assistant platform for context-aware conversations and workflow automation.",
             description: "A sophisticated AI-powered assistant that leverages large language models to provide context-aware responses, automate repetitive tasks, and integrate with existing workflows.",
             status: "Beta",
