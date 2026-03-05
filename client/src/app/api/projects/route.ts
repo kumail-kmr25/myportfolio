@@ -3,6 +3,7 @@ import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { projectSchema } from "@portfolio/shared";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
     try {
