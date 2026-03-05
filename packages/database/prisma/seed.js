@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
 
 async function main() {
+    console.log("!!! DEBUG: EXECUTING REFINED SEED VERSION 2.0 !!!");
     console.log("Starting seed process...");
 
     // 1. Create Admin

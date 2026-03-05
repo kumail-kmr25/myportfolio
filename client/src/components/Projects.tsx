@@ -623,16 +623,24 @@ export default function Projects() {
                                                         {active.title}
                                                     </h3>
                                                 </div>
-                                                <div className="flex gap-3">
-                                                    {active.demo && active.demo !== "#" && (
+                                                <div className="flex gap-3 flex-wrap">
+                                                    {active.demo && active.demo !== "#" ? (
                                                         <Link href={active.demo} target="_blank" className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-blue-500 text-[11px] font-black uppercase tracking-widest text-white hover:bg-blue-600 transition-all shadow-xl shadow-blue-500/20">
-                                                            <ExternalLink size={14} /> Live System
+                                                            <ExternalLink size={14} /> Live Preview
                                                         </Link>
+                                                    ) : (
+                                                        <span className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/[0.03] border border-white/5 text-[11px] font-black uppercase tracking-widest text-gray-600 cursor-not-allowed select-none">
+                                                            <Lock size={13} /> Live Preview
+                                                        </span>
                                                     )}
-                                                    {active.github && active.github !== "#" && (
-                                                        <Link href={active.github} target="_blank" className="p-3 rounded-2xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-all">
-                                                            <Github size={20} />
+                                                    {active.github && active.github !== "#" ? (
+                                                        <Link href={active.github} target="_blank" className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/5 border border-white/10 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/10 transition-all">
+                                                            <Github size={16} /> View Repository
                                                         </Link>
+                                                    ) : (
+                                                        <span className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/5 text-[11px] font-black uppercase tracking-widest text-gray-600 cursor-not-allowed select-none">
+                                                            <Lock size={13} /> Private Repo
+                                                        </span>
                                                     )}
                                                 </div>
                                             </div>
