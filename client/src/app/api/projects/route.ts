@@ -7,6 +7,9 @@ import { projectSchema } from "@portfolio/shared";
 export async function GET() {
     try {
         const projects = await prisma.project.findMany({
+            where: {
+                isVisible: true,
+            },
             orderBy: {
                 created_at: "desc",
             },

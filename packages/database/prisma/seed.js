@@ -45,6 +45,7 @@ async function main() {
     const projects = [
         {
             title: "Edunova",
+            isVisible: true,
             summary: "Enterprise-grade SaaS for academic orchestration and real-time institutional management.",
             description: "A comprehensive School Management System with 2FA, RBAC, and real-time notifications. Designed to handle thousands of concurrent users with zero-latency overhead.",
             status: "Production",
@@ -91,7 +92,8 @@ async function main() {
             }
         },
         {
-            title: "MedCipher",
+            title: "Que-med",
+            isVisible: true,
             summary: "Next-gen healthcare data management with strictly audited clinical workflows.",
             description: "A secure medical record system (EMR) focusing on data privacy and rapid clinical data entry. Built for performance in high-stakes environments.",
             status: "Beta",
@@ -137,6 +139,7 @@ async function main() {
         },
         {
             title: "ValeKash",
+            isVisible: true,
             summary: "High-velocity fintech solution for seamless digital asset transactions and escrow.",
             description: "A secure payment processing and digital wallet platform. Focused on transaction atomicity and financial security standards.",
             status: "Concept",
@@ -182,6 +185,7 @@ async function main() {
         },
         {
             title: "FinFlow AI",
+            isVisible: false,
             summary: "AI-driven financial analytics engine for predictive budgeting and treasury management.",
             description: "An intelligent platform that uses machine learning to categorize expenses and predict future cash flow trends. Built for precision.",
             status: "Production",
@@ -229,6 +233,7 @@ async function main() {
         },
         {
             title: "Clinkart",
+            isVisible: false,
             summary: "High-performance E-commerce engine for modern retail and rapid scaling.",
             description: "A headless e-commerce solution with extreme focus on SEO, core web vitals, and conversion optimization. Built for high-traffic sales.",
             status: "Production",
@@ -274,6 +279,7 @@ async function main() {
         },
         {
             title: "Quebook",
+            isVisible: false,
             summary: "Collaborative technical documentation platform for engineering-heavy teams.",
             description: "A documentation engine that supports markdown, live code samples, and complex system diagrams. Built for clarity and speed.",
             status: "Beta",
@@ -314,6 +320,52 @@ async function main() {
                 edges: [
                     { from: "ui", to: "api", label: "Markdown fetch" },
                     { from: "api", to: "db", label: "AST caching" }
+                ]
+            }
+        },
+        {
+            title: "Cue AI",
+            isVisible: false,
+            summary: "Intelligent AI assistant platform for context-aware conversations and workflow automation.",
+            description: "A sophisticated AI-powered assistant that leverages large language models to provide context-aware responses, automate repetitive tasks, and integrate with existing workflows.",
+            status: "Beta",
+            role: "Full Stack Developer",
+            tags: ["TypeScript", "Next.js", "OpenAI", "PostgreSQL", "Vercel AI SDK"],
+            image: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&q=80&w=1200",
+            demo: "#",
+            github: "#",
+            problem: "Teams waste hours on repetitive information lookup and context-switching between multiple tools.",
+            solution: "Built a unified AI assistant that integrates with team workflows and learns from organizational context to provide relevant, accurate answers.",
+            targetAudience: "Technology teams, product managers, and knowledge workers.",
+            valueProp: "Reduces context-switching by 60% through intelligent workflow integration.",
+            challenges: "Maintaining conversation context across long sessions while keeping token usage efficient.",
+            engineering: "Implemented a sliding context window with semantic compression using embeddings to retain relevant context.",
+            performance: "Response streaming reduces perceived latency by 80% using Vercel AI SDK.",
+            scalability: "Stateless serverless architecture supports thousands of concurrent conversations.",
+            security: "End-to-end encryption for all conversation data with user-controlled retention policies.",
+            lessons: "The quality of the system prompt is 80% of the AI product's success.",
+            beforeImageUrl: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=1200",
+            afterImageUrl: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&q=80&w=1200",
+            improvementDetails: "Replaced naive message history with semantic chunking and embedding-based retrieval, reducing token costs by 70% while improving response relevance.",
+            metrics: ["80% Faster Responses", "70% Token Reduction", "60% Less Context Switching"],
+            decisionLogs: [
+                "Used Vercel AI SDK for unified streaming across providers",
+                "Implemented pgvector for semantic similarity search",
+                "Built custom rate limiting per user to control API costs"
+            ],
+            uiDepth: 88,
+            backendDepth: 85,
+            securityDepth: 90,
+            scalabilityDepth: 92,
+            architecture: {
+                nodes: [
+                    { id: "ui", label: "Chat UI", sub: "Next.js / Vercel AI SDK", icon: "Monitor", color: "blue", x: 10, y: 35 },
+                    { id: "api", label: "AI Gateway", sub: "Node / OpenAI API", icon: "Cpu", color: "purple", x: 40, y: 35 },
+                    { id: "db", label: "Context", sub: "PostgreSQL / pgvector", icon: "Database", color: "green", x: 70, y: 35 }
+                ],
+                edges: [
+                    { from: "ui", to: "api", label: "Streaming SSE" },
+                    { from: "api", to: "db", label: "Vector Retrieval" }
                 ]
             }
         }

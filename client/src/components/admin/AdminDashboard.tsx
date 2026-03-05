@@ -131,9 +131,10 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
     const handleLogout = async () => {
         try {
             await fetch("/api/admin/logout", { method: "POST" });
-            router.push("/admin/login");
+            router.push("/");
         } catch (err) {
             console.error("Logout error:", err);
+            router.push("/");
         }
     };
 
