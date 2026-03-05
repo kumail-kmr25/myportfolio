@@ -12,19 +12,15 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
-                    return null;
-                }
-
                 const admin = await prisma.admin.findFirst({
-                    where: { email: credentials.email.toLowerCase() },
+                    where: { email: credentials?.email?.toLowerCase() || "" },
                 });
 
                 if (!admin) {
                     return null;
                 }
 
-                const isPasswordValid = await bcrypt.compare(credentials.password, admin.password);
+                const isPasswordValid = await bcrypt.compare(credentials?.password || "", admin.password);
 
                 if (!isPasswordValid) {
                     return null;

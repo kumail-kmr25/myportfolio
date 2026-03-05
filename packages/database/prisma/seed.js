@@ -508,9 +508,9 @@ async function main() {
                 totalProjects: 6,
                 bugsFixed: 142,
                 caseStudiesWritten: 2,
-                featureRequestsCompleted: 18,
-                yearsLearning: 4,
-                deploymentCount: 856
+                featureRequestsCompleted: 0,
+                yearsLearning: 2,
+                deploymentCount: 102
             }
         });
         console.log("✅ Site Stats seeded.");

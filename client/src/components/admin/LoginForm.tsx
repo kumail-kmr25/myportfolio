@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");

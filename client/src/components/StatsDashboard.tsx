@@ -38,7 +38,7 @@ export default function StatsDashboard() {
         { label: "Bugs Fixed", value: stats?.bugsFixed || 0, icon: Bug, color: "text-red-500", bg: "bg-red-500/10" },
         { label: "Case Studies", value: stats?.caseStudiesWritten || 0, icon: BookOpen, color: "text-purple-500", bg: "bg-purple-500/10" },
         { label: "Features Built", value: stats?.featureRequestsCompleted || 0, icon: CheckSquare, color: "text-green-500", bg: "bg-green-500/10" },
-        { label: "Years Learning", value: Math.max(stats?.yearsLearning || 0, 3), icon: Calendar, color: "text-yellow-500", bg: "bg-yellow-500/10" },
+        { label: "Years in Learning", value: stats?.yearsLearning || 0, icon: Calendar, color: "text-yellow-500", bg: "bg-yellow-500/10" },
         { label: "Deployments", value: stats?.deploymentCount || 0, icon: Rocket, color: "text-orange-500", bg: "bg-orange-500/10" },
     ];
 
@@ -121,7 +121,7 @@ export default function StatsDashboard() {
                                 </div>
                                 <div className="text-4xl font-black text-white mb-2 tracking-tighter">
                                     <AnimatedCounter value={item.value} />
-                                    {item.label === "Years Learning" && <span className="text-xl ml-0.5 text-blue-500">+</span>}
+                                    {item.label === "Years in Learning" && <span className="text-xl ml-0.5 text-blue-500">+</span>}
                                 </div>
                                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 group-hover:text-gray-300 transition-colors">
                                     {item.label}

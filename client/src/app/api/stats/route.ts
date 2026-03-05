@@ -30,7 +30,7 @@ export async function GET() {
             bugsFixed: siteStats?.bugsFixed || 0,
             caseStudiesWritten: caseStudyCount,
             featureRequestsCompleted: completedFeaturesCount,
-            yearsLearning: Math.max(siteStats?.yearsLearning || 0, 3),
+            yearsLearning: siteStats?.yearsLearning || 0,
             deploymentCount: siteStats?.deploymentCount || 0,
             diagRuns,
             leadGenTotal,
