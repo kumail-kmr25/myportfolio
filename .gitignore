@@ -50,3 +50,5 @@ packages/database/src/generated/
 dist/
 .next/
 node_modules/
+
+.vercel
