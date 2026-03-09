@@ -3,6 +3,7 @@ import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { siteStatsSchema } from "@portfolio/shared";
+import { revalidatePath } from "next/cache";
 
 export async function PATCH(request: Request) {
     try {
@@ -28,6 +29,9 @@ export async function PATCH(request: Request) {
                 lastUpdated: new Date(),
             },
         });
+
+        revalidatePath("/", "layout");
+        revalidatePath("/api/stats");
 
         return NextResponse.json(stats);
     } catch (error) {
