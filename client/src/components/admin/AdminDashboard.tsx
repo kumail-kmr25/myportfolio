@@ -5,7 +5,7 @@ import { Loader2, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { getApiUrl } from "@/lib/api";
 
 // Admin Components
@@ -130,12 +130,20 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     const handleLogout = async () => {
         try {
+            // Clear any legacy custom cookies
             await fetch("/api/admin/logout", { method: "POST" });
-            router.push("/");
-        } catch (err) {
-            console.error("Logout error:", err);
-            router.push("/");
+        } catch {
+            // Ignore errors from legacy cleanup
         }
+        // Clear any client-side storage
+        try {
+            localStorage.clear();
+            sessionStorage.clear();
+        } catch {
+            // Ignore storage errors in SSR context
+        }
+        // This is the critical step: invalidate the NextAuth JWT session cookie
+        await signOut({ callbackUrl: "/", redirect: true });
     };
 
     const handleTestimonialApproval = async (id: string, approved: boolean) => {
