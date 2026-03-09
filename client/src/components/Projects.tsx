@@ -77,6 +77,98 @@ const fetcher = async (url: string) => {
 };
 
 // ─────────────────────────────────────────
+// Standardized Project Card (Step 3)
+// ─────────────────────────────────────────
+function ProjectCard({ project }: { project: Project }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -10 }}
+            className="group relative flex flex-col h-full bg-white/[0.02] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-blue-500/30 transition-all duration-500 backdrop-blur-sm"
+        >
+            {/* Image Container with Fixed Aspect Ratio */}
+            <div className="relative aspect-video overflow-hidden">
+                <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
+
+                {/* Status Badge */}
+                <div className="absolute top-6 right-6">
+                    <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border backdrop-blur-md ${project.status === 'Production' ? 'border-green-500/50 text-green-400 bg-green-500/10' : 'border-amber-500/50 text-amber-400 bg-amber-500/10'}`}>
+                        {project.status}
+                    </span>
+                </div>
+            </div>
+
+            {/* Content Container */}
+            <div className="flex flex-col flex-grow p-8 sm:p-10">
+                <div className="mb-4">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500/80 mb-2 block">{project.role}</span>
+                    <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tighter group-hover:text-blue-400 transition-colors">
+                        {project.title}
+                    </h3>
+                </div>
+
+                <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-8 line-clamp-3">
+                    {project.summary || project.description}
+                </p>
+
+                {/* Tech Stack Tags */}
+                <div className="flex flex-wrap gap-2 mb-10 mt-auto">
+                    {project.tags.slice(0, 4).map((tag) => (
+                        <span key={tag} className="px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/5 text-[9px] font-bold text-gray-500 uppercase tracking-widest group-hover:border-blue-500/20 group-hover:text-blue-400/80 transition-all">
+                            {tag}
+                        </span>
+                    ))}
+                    {project.tags.length > 4 && (
+                        <span className="px-3 py-1.5 rounded-xl bg-white/[0.01] border border-white/5 text-[9px] font-bold text-gray-700 uppercase tracking-widest">
+                            +{project.tags.length - 4}
+                        </span>
+                    )}
+                </div>
+
+                {/* Buttons Container */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-white/5">
+                    {project.demo && project.demo !== "#" ? (
+                        <Link
+                            href={project.demo}
+                            target="_blank"
+                            className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-blue-600 text-[10px] font-black uppercase tracking-widest text-white hover:bg-blue-500 transition-all shadow-xl shadow-blue-500/10 active:scale-[0.98]"
+                        >
+                            <Globe size={14} /> Live Demo
+                        </Link>
+                    ) : (
+                        <div className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.03] border border-white/5 text-[10px] font-black uppercase tracking-widest text-gray-600 cursor-not-allowed">
+                            <Lock size={12} /> Private App
+                        </div>
+                    )}
+
+                    {project.github && project.github !== "#" ? (
+                        <Link
+                            href={project.github}
+                            target="_blank"
+                            className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.03] border border-white/10 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/[0.06] transition-all active:scale-[0.98]"
+                        >
+                            <Github size={14} /> Repository
+                        </Link>
+                    ) : (
+                        <div className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.03] border border-white/5 text-[10px] font-black uppercase tracking-widest text-gray-600 cursor-not-allowed">
+                            <Lock size={12} /> Restricted
+                        </div>
+                    )}
+                </div>
+            </div>
+        </motion.div>
+    );
+}
+
+// ─────────────────────────────────────────
 // Architecture Flow Diagram
 // ─────────────────────────────────────────
 const iconMap: Record<string, React.ReactNode> = {
@@ -537,7 +629,20 @@ export default function Projects() {
                     </p>
                 </div>
 
-                {/* Mobile Selector Dropdown */}
+                {/* Standardized Project Grid (Step 3) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
+                    {projects.map((project) => (
+                        <ProjectCard key={project.id} project={project} />
+                    ))}
+                </div>
+
+                {/* Console Deep-Dive Divider */}
+                <div className="relative py-24 mb-16">
+                    <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-8 bg-[#050505] text-[10px] font-black uppercase tracking-[0.5em] text-gray-500 whitespace-nowrap">
+                        Technical Deep-Dive Console
+                    </div>
+                </div>
                 <div className="lg:hidden mb-12">
                     <div className="p-4 rounded-3xl bg-white/[0.02] border border-white/10">
                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 block">Select Product</label>

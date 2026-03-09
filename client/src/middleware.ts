@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith("/admin")) {
         // Public admin pages that do NOT require auth
         const publicAdminPaths = ["/admin/login", "/admin/register", "/admin/reset-password", "/admin/forgot-password"];
-        if (publicAdminPaths.includes(pathname)) {
+        if (publicAdminPaths.some(path => pathname === path)) {
             return NextResponse.next();
         }
 

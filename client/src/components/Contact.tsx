@@ -141,7 +141,7 @@ function ContactInner() {
                     </motion.p>
                 </div>
 
-                <div className="max-w-4xl mx-auto">
+                <div className="section-container">
                     {/* Contact Form HERO - Professional & High-Converting */}
                     <motion.div
                         variants={itemVariants}
