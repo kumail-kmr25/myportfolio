@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import SectionReveal from "@/components/SectionReveal";
+
 
 import SectionSkeleton from "@/components/SectionSkeleton";
 
@@ -52,19 +52,19 @@ const Footer = dynamic(() => import("@/components/Footer"), {
 export default function MainContent() {
     return (
         <>
-            <SectionReveal><Skills /></SectionReveal>
-            <SectionReveal><StatsDashboard /></SectionReveal>
-            <SectionReveal><Projects /></SectionReveal>
-            <SectionReveal><CaseStudies /></SectionReveal>
-            <SectionReveal><Testimonials /></SectionReveal>
-            <SectionReveal><FeatureSuggestion /></SectionReveal>
-            <SectionReveal><DiagnosticTool /></SectionReveal>
-            <SectionReveal><Blog /></SectionReveal>
-            <SectionReveal><Services /></SectionReveal>
-            <SectionReveal><About /></SectionReveal>
-            <SectionReveal><MyJourney /></SectionReveal>
-            <SectionReveal><HireMeCTA /></SectionReveal>
-            <SectionReveal><Contact /></SectionReveal>
+            <Skills />
+            <StatsDashboard />
+            <Projects />
+            <CaseStudies />
+            <Testimonials />
+            <FeatureSuggestion />
+            <DiagnosticTool />
+            <Blog />
+            <Services />
+            <About />
+            <MyJourney />
+            <HireMeCTA />
+            <Contact />
             <Footer />
         </>
     )

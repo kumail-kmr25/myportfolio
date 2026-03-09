@@ -128,10 +128,10 @@ export default function Hero() {
                         x: mousePos.x * 0.4,
                         y: mousePos.y * 0.4,
                     }}
-                    initial="hidden"
+                    initial="visible"
                     animate="visible"
                     variants={{
-                        hidden: { opacity: 0, y: 40 },
+                        hidden: { opacity: 1, y: 0 },
                         visible: {
                             opacity: 1,
                             y: 0,
@@ -145,7 +145,7 @@ export default function Hero() {
                 >
                     <motion.div
                         variants={{
-                            hidden: { opacity: 0, y: 20 },
+                            hidden: { opacity: 1, y: 0 },
                             visible: { opacity: 1, y: 0, transition: { ease: premiumEase as any } }
                         }}
                         className="flex flex-col items-center gap-6 mb-12"
@@ -168,17 +168,17 @@ export default function Hero() {
 
                     <motion.h1
                         variants={{
-                            hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
+                            hidden: { opacity: 1, y: 0, filter: "blur(0px)" },
                             visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1.2, ease: premiumEase as any } }
                         }}
-                        className="text-7xl md:text-9xl lg:text-[11rem] font-black font-display text-white mb-10 tracking-tighter leading-[0.85] select-none"
+                        className="text-5xl sm:text-9xl lg:text-[11rem] font-black font-display text-white mb-10 tracking-tighter leading-[0.85] select-none"
                     >
                         Kumail <span className="text-blue-500 italic">Kmr</span>
                     </motion.h1>
 
                     <motion.div
                         variants={{
-                            hidden: { opacity: 0, y: 20 },
+                            hidden: { opacity: 1, y: 0 },
                             visible: { opacity: 1, y: 0, transition: { ease: premiumEase as any } }
                         }}
                         className="h-12 mb-16"
@@ -197,7 +197,7 @@ export default function Hero() {
 
                     <motion.div
                         variants={{
-                            hidden: { opacity: 0, y: 30 },
+                            hidden: { opacity: 1, y: 0 },
                             visible: { opacity: 1, y: 0, transition: { delay: 0.4, ease: premiumEase as any } }
                         }}
                         className="flex flex-col md:flex-row gap-6 justify-center items-center"

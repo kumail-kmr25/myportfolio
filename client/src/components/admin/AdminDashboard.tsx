@@ -130,19 +130,31 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     const handleLogout = async () => {
         try {
-            // Clear any legacy custom cookies
+            // 1. Terminate server-side session and clear cookies via API
             await fetch("/api/admin/logout", { method: "POST" });
-        } catch {
-            // Ignore errors from legacy cleanup
+        } catch (err) {
+            console.error("Logout API failed:", err);
         }
-        // Clear any client-side storage
+
         try {
+            // 2. Clear all client-side storage
             localStorage.clear();
             sessionStorage.clear();
-        } catch {
-            // Ignore storage errors in SSR context
+
+            // 3. Clear all potential cookies on the client side
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i];
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/admin`;
+            }
+        } catch (err) {
+            console.error("Storage cleanup failed:", err);
         }
-        // This is the critical step: invalidate the NextAuth JWT session cookie
+
+        // 4. Finalize with NextAuth signOut
         await signOut({ callbackUrl: "/", redirect: true });
     };
 

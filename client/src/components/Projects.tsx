@@ -544,7 +544,7 @@ export default function Projects() {
                         <select
                             value={activeIndex}
                             onChange={(e) => setActiveIndex(Number(e.target.value))}
-                            className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-4 text-white font-bold appearance-none outline-none focus:border-blue-500/50"
+                            className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3.5 text-sm font-bold appearance-none outline-none focus:border-blue-500/50"
                         >
                             {projects.map((p, i) => (
                                 <option key={p.id} value={i}>{p.title}</option>
@@ -619,7 +619,7 @@ export default function Projects() {
                                                             Role: {active.role}
                                                         </span>
                                                     </div>
-                                                    <h3 className="text-4xl sm:text-6xl font-black text-white tracking-tighter leading-none">
+                                                    <h3 className="text-3xl sm:text-6xl font-black text-white tracking-tighter leading-tight sm:leading-none">
                                                         {active.title}
                                                     </h3>
                                                 </div>

@@ -9,16 +9,19 @@ export async function POST() {
         path: "/",
     });
 
-    // Clear NextAuth JWT session cookies (belt-and-suspenders server-side cleanup)
-    response.cookies.set("next-auth.session-token", "", {
+    // Clear NextAuth JWT session cookies with robust attributes
+    const cookieOptions = {
         expires: new Date(0),
         path: "/",
-    });
-    response.cookies.set("__Secure-next-auth.session-token", "", {
-        expires: new Date(0),
-        path: "/",
-        secure: true,
-    });
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        sameSite: "lax" as const,
+    };
+
+    response.cookies.set("next-auth.session-token", "", cookieOptions);
+    response.cookies.set("__Secure-next-auth.session-token", "", { ...cookieOptions, secure: true });
+    response.cookies.set("next-auth.callback-url", "", cookieOptions);
+    response.cookies.set("next-auth.csrf-token", "", cookieOptions);
 
     return response;
 }

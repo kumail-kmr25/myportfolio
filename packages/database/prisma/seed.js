@@ -93,7 +93,7 @@ async function main() {
             }
         },
         {
-            title: "Que-med",
+            title: "MedQ AI",
             isVisible: true,
             summary: "Next-gen healthcare data management with strictly audited clinical workflows.",
             description: "A secure medical record system (EMR) focusing on data privacy and rapid clinical data entry. Built for performance in high-stakes environments.",
@@ -101,8 +101,8 @@ async function main() {
             role: "Backend Lead",
             tags: ["JavaScript", "React.js", "MongoDB", "Express", "Node.js"],
             image: "https://images.unsplash.com/photo-1576091160550-2173599211d0?auto=format&fit=crop&q=80&w=1200",
-            demo: "#",
-            github: "#",
+            demo: "https://gemini-med.vercel.app/",
+            github: "https://github.com/kumail-kmr25/Que-med.git",
             problem: "Clinicians spend 30% of their day on data entry, leading to burnout and potential errors in patient records.",
             solution: "Developed an intuitive UI with predictive data entry and a robust MongoDB backend for flexible medical schemas.",
             targetAudience: "Private clinics and diagnostic laboratories.",
@@ -147,8 +147,8 @@ async function main() {
             role: "System Architect",
             tags: ["TypeScript", "Next.js", "PostgreSQL", "Tailwind CSS"],
             image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1200",
-            demo: "#",
-            github: "#",
+            demo: "https://valekash.vercel.app/",
+            github: "https://github.com/kumail-kmr25/ValeKash-Final.git",
             problem: "Trust issues in peer-to-peer digital transactions and lack of transparent escrow mechanisms.",
             solution: "Architecture of an automated escrow system that holds funds until technical verification of delivery.",
             targetAudience: "Freelancers and digital product marketplaces.",
@@ -186,7 +186,7 @@ async function main() {
         },
         {
             title: "FinFlow AI",
-            isVisible: false,
+            isVisible: true,
             summary: "AI-driven financial analytics engine for predictive budgeting and treasury management.",
             description: "An intelligent platform that uses machine learning to categorize expenses and predict future cash flow trends. Built for precision.",
             status: "Production",
@@ -233,8 +233,8 @@ async function main() {
             }
         },
         {
-            title: "Clinkart",
-            isVisible: false,
+            title: "ClinkArt",
+            isVisible: true,
             summary: "High-performance E-commerce engine for modern retail and rapid scaling.",
             description: "A headless e-commerce solution with extreme focus on SEO, core web vitals, and conversion optimization. Built for high-traffic sales.",
             status: "Production",
@@ -279,8 +279,8 @@ async function main() {
             }
         },
         {
-            title: "Quebook",
-            isVisible: false,
+            title: "QueBook",
+            isVisible: true,
             summary: "Collaborative technical documentation platform for engineering-heavy teams.",
             description: "A documentation engine that supports markdown, live code samples, and complex system diagrams. Built for clarity and speed.",
             status: "Beta",
