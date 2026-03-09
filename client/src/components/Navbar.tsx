@@ -158,7 +158,6 @@ export default function Navbar() {
                                     {link.name}
                                     {isActive && !link.isCTA && (
                                         <motion.span
-                                            layoutId="active-dot"
                                             className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-1 h-1 bg-blue-500 rounded-full"
                                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                         />
@@ -166,7 +165,6 @@ export default function Navbar() {
                                 </span>
                                 {hoveredIndex === index && !link.isCTA && (
                                     <motion.div
-                                        layoutId="nav-pill"
                                         className="absolute inset-0 bg-white/5 rounded-full -z-10"
                                         transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                                     />

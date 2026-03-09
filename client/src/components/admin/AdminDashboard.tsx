@@ -96,7 +96,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
     const isAuthenticated = sessionStatus === "authenticated";
 
     useEffect(() => {
-        const tab = searchParams.get("tab");
+        const tab = searchParams?.get("tab");
         const validTabs = ["overview", "status", "messages", "hire", "testimonials", "projects", "blog", "case-studies", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey"];
         if (tab && validTabs.includes(tab as any)) {
             setActiveTab(tab as any);

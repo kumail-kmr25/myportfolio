@@ -92,7 +92,7 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                 handleEdit(projectToEdit);
 
                 // Optional: Clean up URL after loading edit state so it doesn't persist
-                const newParams = new URLSearchParams(searchParams.toString());
+                const newParams = new URLSearchParams(searchParams?.toString() ?? "");
                 newParams.delete("edit");
                 router.replace(`/admin?${newParams.toString()}`);
             }

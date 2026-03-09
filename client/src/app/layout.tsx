@@ -2,9 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
-import QuickNav from "@/components/QuickNav";
-import { HireModalProvider } from "@/context/HireModalContext";
-import SessionProvider from "@/components/common/SessionProvider";
+import ClientProviders from "@/components/ClientProviders";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -100,12 +98,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${outfit.variable} antialiased`}
       >
-        <SessionProvider>
-          <HireModalProvider>
-            {children}
-          </HireModalProvider>
-        </SessionProvider>
-        <QuickNav />
+        <ClientProviders>
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );

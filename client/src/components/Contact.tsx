@@ -29,8 +29,8 @@ function ContactInner() {
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        const service = searchParams.get("service");
-        const inquiry = searchParams.get("inquiry");
+        const service = searchParams?.get("service");
+        const inquiry = searchParams?.get("inquiry");
 
         if (service) {
             setValue("serviceRequired", service as any);

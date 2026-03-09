@@ -26,7 +26,7 @@ export default function ForgotPasswordForm() {
                 return;
             }
             setSuccess(true);
-        } catch {
+        } catch (err) {
             setError("Something went wrong. Please try again.");
         } finally {
             setIsLoading(false);
