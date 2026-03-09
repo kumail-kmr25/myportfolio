@@ -14,7 +14,9 @@ export const contactSchema = z.object({
         "API Integration",
         "Collaboration",
         "Other"
-    ]),
+    ], {
+        errorMap: () => ({ message: "Please select a reason for contact" })
+    }),
     serviceRequired: z.enum([
         "UI/UX Design",
         "Frontend Development",
@@ -25,7 +27,9 @@ export const contactSchema = z.object({
         "Bug Fix / Error Optimisation",
         "Performance Tuning",
         "Other"
-    ]),
+    ], {
+        errorMap: () => ({ message: "Please select a service" })
+    }),
     budgetRange: z.enum([
         "Below ₹10,000",
         "₹10,000 – ₹50,000",
