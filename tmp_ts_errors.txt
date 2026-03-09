@@ -1,4 +1,0 @@
-﻿src/components/admin/AdminProjects.tsx(95,55): error TS18047: 'searchParams' is possibly 'null'.
-src/components/admin/ResetPasswordForm.tsx(10,19): error TS18047: 'searchParams' is possibly 'null'.
-src/components/Contact.tsx(32,25): error TS18047: 'searchParams' is possibly 'null'.
-src/components/Contact.tsx(33,25): error TS18047: 'searchParams' is possibly 'null'.
