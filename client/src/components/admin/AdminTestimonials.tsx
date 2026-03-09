@@ -117,7 +117,9 @@ export default function AdminTestimonials({ testimonials, onApprove, onDelete, o
                         </div>
                         <div>
                             <h4 className="font-bold text-white text-sm">{testimonial.name}</h4>
-                            <p className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">{testimonial.intervention_type}</p>
+                            <p className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">
+                                {testimonial.role ? `${testimonial.role} @ ` : ""}{testimonial.intervention_type}
+                            </p>
                         </div>
                     </div>
 

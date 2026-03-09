@@ -167,7 +167,7 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
                                         </div>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                             <div>
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Role / Title</label>
+                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Role / Title *</label>
                                                 <input className="input-field text-sm min-h-[48px]" value={form.role} onChange={e => set("role", e.target.value)} placeholder="Senior Engineer" />
                                                 {errors.role && <p className="text-[10px] text-red-400 mt-0.5">{errors.role}</p>}
                                             </div>

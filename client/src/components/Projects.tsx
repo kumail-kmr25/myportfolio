@@ -57,6 +57,11 @@ interface Project {
     improvementDetails?: string | null;
     metrics?: string[];
     decisionLogs?: string[];
+
+    category?: string | null;
+    isFeatured: boolean;
+    valuePoints: string[];
+    results?: string | null;
 }
 
 type Tab = "snapshot" | "overview" | "architecture" | "engineering" | "performance" | "lessons";
@@ -86,20 +91,30 @@ function ProjectCard({ project }: { project: Project }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -10 }}
-            className="group relative flex flex-col h-full bg-white/[0.02] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-blue-500/30 transition-all duration-500 backdrop-blur-sm"
+            className={`group relative flex flex-col h-full bg-white/[0.02] border rounded-[2.5rem] overflow-hidden transition-all duration-500 backdrop-blur-sm ${project.isFeatured ? 'border-blue-500/30' : 'border-white/5 hover:border-blue-500/30'}`}
         >
-            {/* Image Container with Fixed Aspect Ratio */}
+            {/* Featured Badge */}
+            {project.isFeatured && (
+                <div className="absolute top-6 left-6 z-20">
+                    <span className="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-blue-500/50 text-blue-400 bg-blue-500/10 backdrop-blur-md">
+                        Featured Product
+                    </span>
+                </div>
+            )}
+
+            {/* Image Container */}
             <div className="relative aspect-video overflow-hidden">
                 <Image
                     src={project.image}
                     alt={project.title}
                     fill
-                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
 
                 {/* Status Badge */}
-                <div className="absolute top-6 right-6">
+                <div className="absolute top-6 right-6 z-20">
                     <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border backdrop-blur-md ${project.status === 'Production' ? 'border-green-500/50 text-green-400 bg-green-500/10' : 'border-amber-500/50 text-amber-400 bg-amber-500/10'}`}>
                         {project.status}
                     </span>
@@ -108,58 +123,71 @@ function ProjectCard({ project }: { project: Project }) {
 
             {/* Content Container */}
             <div className="flex flex-col flex-grow p-8 sm:p-10">
-                <div className="mb-4">
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500/80 mb-2 block">{project.role}</span>
+                <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500/80">{project.category || "General"}</span>
+                        {project.role && (
+                            <>
+                                <span className="w-1 h-1 rounded-full bg-white/20" />
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">{project.role}</span>
+                            </>
+                        )}
+                    </div>
                     <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tighter group-hover:text-blue-400 transition-colors">
                         {project.title}
                     </h3>
                 </div>
 
-                <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-8 line-clamp-3">
+                <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-8 font-medium">
                     {project.summary || project.description}
                 </p>
 
-                {/* Tech Stack Tags */}
-                <div className="flex flex-wrap gap-2 mb-10 mt-auto">
-                    {project.tags.slice(0, 4).map((tag) => (
-                        <span key={tag} className="px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/5 text-[9px] font-bold text-gray-500 uppercase tracking-widest group-hover:border-blue-500/20 group-hover:text-blue-400/80 transition-all">
-                            {tag}
-                        </span>
-                    ))}
-                    {project.tags.length > 4 && (
-                        <span className="px-3 py-1.5 rounded-xl bg-white/[0.01] border border-white/5 text-[9px] font-bold text-gray-700 uppercase tracking-widest">
-                            +{project.tags.length - 4}
-                        </span>
-                    )}
-                </div>
+                {/* Value Points - The core "Client Focused" change */}
+                {project.valuePoints && project.valuePoints.length > 0 ? (
+                    <div className="space-y-3 mb-10 mt-auto">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-gray-600 block mb-4">Value Proposition</span>
+                        {project.valuePoints.slice(0, 3).map((point, i) => (
+                            <div key={i} className="flex items-start gap-3 group/point">
+                                <div className="mt-1 p-0.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400">
+                                    <CheckCircle size={10} />
+                                </div>
+                                <span className="text-xs text-gray-300 font-medium group-hover/point:text-white transition-colors leading-snug">
+                                    {point}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    /* Fallback to tech tags if no value points */
+                    <div className="flex flex-wrap gap-2 mb-10 mt-auto">
+                        {project.tags.slice(0, 4).map((tag) => (
+                            <span key={tag} className="px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/5 text-[9px] font-bold text-gray-500 uppercase tracking-widest group-hover:border-blue-500/20 group-hover:text-blue-400/80 transition-all">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                )}
 
                 {/* Buttons Container */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-white/5">
+                    <button
+                        onClick={() => (window as any).openCaseStudy?.(project)}
+                        className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.03] border border-white/10 text-[10px] font-black uppercase tracking-widest text-white hover:bg-white/[0.08] transition-all active:scale-[0.98]"
+                    >
+                        <Layers size={14} /> Case Study
+                    </button>
+
                     {project.demo && project.demo !== "#" ? (
                         <Link
                             href={project.demo}
                             target="_blank"
-                            className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-blue-600 text-[10px] font-black uppercase tracking-widest text-white hover:bg-blue-500 transition-all shadow-xl shadow-blue-500/10 active:scale-[0.98]"
+                            className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-blue-600 text-[10px] font-black uppercase tracking-widest text-white hover:bg-blue-500 transition-all shadow-xl shadow-blue-500/20 active:scale-[0.98]"
                         >
                             <Globe size={14} /> Live Demo
                         </Link>
                     ) : (
                         <div className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.03] border border-white/5 text-[10px] font-black uppercase tracking-widest text-gray-600 cursor-not-allowed">
-                            <Lock size={12} /> Private App
-                        </div>
-                    )}
-
-                    {project.github && project.github !== "#" ? (
-                        <Link
-                            href={project.github}
-                            target="_blank"
-                            className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.03] border border-white/10 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/[0.06] transition-all active:scale-[0.98]"
-                        >
-                            <Github size={14} /> Repository
-                        </Link>
-                    ) : (
-                        <div className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.03] border border-white/5 text-[10px] font-black uppercase tracking-widest text-gray-600 cursor-not-allowed">
-                            <Lock size={12} /> Restricted
+                            <Lock size={12} /> Protected
                         </div>
                     )}
                 </div>
@@ -589,7 +617,15 @@ export default function Projects() {
     const [activeTab, setActiveTab] = useState<Tab>("snapshot");
     const [showComparison, setShowComparison] = useState(false);
 
+    const [selectedCategory, setSelectedCategory] = useState<string>("All");
+
     const active = projects?.[activeIndex];
+
+    const categories = ["All", ...Array.from(new Set(projects?.map(p => p.category).filter(Boolean)))];
+
+    const filteredProjects = projects?.filter(p =>
+        selectedCategory === "All" || p.category === selectedCategory
+    );
 
     useEffect(() => {
         setActiveTab("snapshot");
@@ -597,8 +633,19 @@ export default function Projects() {
 
     useEffect(() => {
         (window as any).toggleComparison = () => setShowComparison(true);
-        return () => { delete (window as any).toggleComparison; };
-    }, []);
+        (window as any).openCaseStudy = (project: Project) => {
+            const index = projects?.findIndex(p => p.id === project.id);
+            if (index !== undefined && index !== -1) {
+                setActiveIndex(index);
+                const element = document.getElementById("deep-dive-console");
+                element?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        };
+        return () => {
+            delete (window as any).toggleComparison;
+            delete (window as any).openCaseStudy;
+        };
+    }, [projects]);
 
     if (error) return null;
     if (isLoading || !projects) return (
@@ -611,33 +658,65 @@ export default function Projects() {
         <section id="projects" className="relative py-24 sm:py-32 bg-[#050505] overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
                 {/* Section Header */}
-                <div className="mb-16 sm:mb-24 text-center sm:text-left">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="flex items-center justify-center sm:justify-start gap-3 mb-4"
-                    >
-                        <div className="w-12 h-[1px] bg-blue-500/50" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500">Portfolio</span>
-                    </motion.div>
-                    <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tighter sm:max-w-3xl leading-[0.9]">
-                        Product Case <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Studies.</span>
-                    </h2>
-                    <p className="mt-6 text-gray-500 text-sm sm:text-lg max-w-2xl font-medium leading-relaxed">
-                        Deep-dives into architecture, technical challenges, and optimized workflows of my flagship projects.
-                    </p>
+                <div className="mb-16 sm:mb-24 flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+                    <div>
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="flex items-center gap-3 mb-4"
+                        >
+                            <div className="w-12 h-[1px] bg-blue-500/50" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500">Portfolio Showcase</span>
+                        </motion.div>
+                        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[0.9]">
+                            Product Case <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Studies.</span>
+                        </h2>
+                        <p className="mt-6 text-gray-500 text-sm sm:text-lg max-w-2xl font-medium leading-relaxed">
+                            Deep-dives into architecture, technical challenges, and high-impact results of my flagship engineering products.
+                        </p>
+                    </div>
+
+                    {/* Category Filter Tabs */}
+                    <div className="flex flex-wrap gap-2 p-1.5 rounded-[1.5rem] bg-white/[0.02] border border-white/5 backdrop-blur-sm self-start lg:self-end">
+                        {categories.map((cat: any) => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`
+                                    px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all
+                                    ${selectedCategory === cat
+                                        ? "bg-white text-black shadow-xl shadow-white/5"
+                                        : "text-gray-500 hover:text-white hover:bg-white/[0.03]"
+                                    }
+                                `}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Standardized Project Grid (Step 3) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
-                    {projects.map((project) => (
-                        <ProjectCard key={project.id} project={project} />
-                    ))}
+                    <AnimatePresence mode="popLayout">
+                        {filteredProjects?.map((project) => (
+                            <motion.div
+                                key={project.id}
+                                layout
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.9 }}
+                                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                            >
+                                <ProjectCard project={project} />
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
                 </div>
 
                 {/* Console Deep-Dive Divider */}
-                <div className="relative py-24 mb-16">
+                <div id="deep-dive-console" className="relative py-24 mb-16">
                     <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-8 bg-[#050505] text-[10px] font-black uppercase tracking-[0.5em] text-gray-500 whitespace-nowrap">
                         Technical Deep-Dive Console

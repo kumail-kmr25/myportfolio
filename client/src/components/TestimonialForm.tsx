@@ -13,8 +13,8 @@ interface TestimonialFormProps {
 
 export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
     const [formData, setFormData] = useState<Partial<TestimonialFormData>>({
-        rating: 7,
-        intervention_type: "Full Stack Development",
+        rating: 5,
+        intervention_type: "Full-Stack Development",
         permission: false,
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -114,6 +114,17 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-400">Role / Title <span className="text-red-500">*</span></label>
+                        <input
+                            type="text"
+                            className={`input-field ${errors.role ? 'border-red-500/50' : ''}`}
+                            placeholder="e.g. Senior Software Engineer"
+                            value={formData.role || ""}
+                            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                        />
+                        {errors.role && <p className="text-[10px] text-red-500">{errors.role}</p>}
+                    </div>
+                    <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-400">Company / Organization <span className="text-gray-600">(Optional)</span></label>
                         <input
                             type="text"
@@ -124,6 +135,9 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                             onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                         />
                     </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-400">Worked With Me As <span className="text-red-500">*</span></label>
                         <select
@@ -132,6 +146,11 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                             onChange={(e) => setFormData({ ...formData, relationship_type: e.target.value as any })}
                         >
                             <option value="" className="bg-[#0a0a0a] text-white">Select relationship...</option>
+                            <option value="Colleague" className="bg-[#0a0a0a] text-white">Colleague</option>
+                            <option value="Client" className="bg-[#0a0a0a] text-white">Client</option>
+                            <option value="Collaborator" className="bg-[#0a0a0a] text-white">Collaborator</option>
+                            <option value="Mentor" className="bg-[#0a0a0a] text-white">Mentor</option>
+                            <option value="Employer" className="bg-[#0a0a0a] text-white">Employer</option>
                             <option value="Freelance Client" className="bg-[#0a0a0a] text-white">Freelance Client</option>
                             <option value="Internship Mentor" className="bg-[#0a0a0a] text-white">Internship Mentor</option>
                             <option value="Hackathon Teammate" className="bg-[#0a0a0a] text-white">Hackathon Teammate</option>
@@ -141,37 +160,36 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                         </select>
                         {errors.relationship_type && <p className="text-[10px] text-red-500">{errors.relationship_type}</p>}
                     </div>
-                </div>
-            </div>
-
-            <div className="space-y-4">
-                <h3 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Project Feedback</h3>
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-400">Service Provided <span className="text-red-500">*</span></label>
-                    <select
-                        className={`input-field appearance-none bg-[#0a0a0a] text-white ${errors.intervention_type ? 'border-red-500/50' : ''}`}
-                        value={formData.intervention_type || ""}
-                        onChange={(e) => setFormData({ ...formData, intervention_type: e.target.value as any })}
-                    >
-                        <option value="" className="bg-[#0a0a0a] text-white">Select service...</option>
-                        <option value="UI/UX Design" className="bg-[#0a0a0a] text-white">UI/UX Design</option>
-                        <option value="Frontend Development" className="bg-[#0a0a0a] text-white">Frontend Development</option>
-                        <option value="Backend Development" className="bg-[#0a0a0a] text-white">Backend Development</option>
-                        <option value="Full Stack Development" className="bg-[#0a0a0a] text-white">Full Stack Development</option>
-                        <option value="DevOps / Cloud" className="bg-[#0a0a0a] text-white">DevOps / Cloud</option>
-                        <option value="Database Design" className="bg-[#0a0a0a] text-white">Database Design</option>
-                        <option value="Bug Fix / Error Optimisation" className="bg-[#0a0a0a] text-white">Bug Fix / Error Optimisation</option>
-                        <option value="Performance Optimization" className="bg-[#0a0a0a] text-white">Performance Optimization</option>
-                        <option value="API Integration" className="bg-[#0a0a0a] text-white">API Integration</option>
-                        <option value="Other" className="bg-[#0a0a0a] text-white">Other</option>
-                    </select>
-                    {errors.intervention_type && <p className="text-[10px] text-red-500">{errors.intervention_type}</p>}
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-400">Service Provided <span className="text-red-500">*</span></label>
+                        <select
+                            className={`input-field appearance-none bg-[#0a0a0a] text-white ${errors.intervention_type ? 'border-red-500/50' : ''}`}
+                            value={formData.intervention_type || ""}
+                            onChange={(e) => setFormData({ ...formData, intervention_type: e.target.value as any })}
+                        >
+                            <option value="" className="bg-[#0a0a0a] text-white">Select service...</option>
+                            <option value="Full-Stack Development" className="bg-[#0a0a0a] text-white">Full-Stack Development</option>
+                            <option value="Frontend Development" className="bg-[#0a0a0a] text-white">Frontend Development</option>
+                            <option value="Backend Development" className="bg-[#0a0a0a] text-white">Backend Development</option>
+                            <option value="API Integration" className="bg-[#0a0a0a] text-white">API Integration</option>
+                            <option value="UI/UX Implementation" className="bg-[#0a0a0a] text-white">UI/UX Implementation</option>
+                            <option value="Database Design" className="bg-[#0a0a0a] text-white">Database Design</option>
+                            <option value="Consulting" className="bg-[#0a0a0a] text-white">Consulting</option>
+                            <option value="Code Review" className="bg-[#0a0a0a] text-white">Code Review</option>
+                            <option value="UI/UX Design" className="bg-[#0a0a0a] text-white">UI/UX Design</option>
+                            <option value="DevOps / Cloud" className="bg-[#0a0a0a] text-white">DevOps / Cloud</option>
+                            <option value="Bug Fix / Error Optimisation" className="bg-[#0a0a0a] text-white">Bug Fix / Error Optimisation</option>
+                            <option value="Performance Optimization" className="bg-[#0a0a0a] text-white">Performance Optimization</option>
+                            <option value="Other" className="bg-[#0a0a0a] text-white">Other</option>
+                        </select>
+                        {errors.intervention_type && <p className="text-[10px] text-red-500">{errors.intervention_type}</p>}
+                    </div>
                 </div>
 
                 <div className="space-y-4 mt-6">
                     <label className="text-sm font-medium text-gray-400 block">Overall Rating <span className="text-red-500">*</span></label>
                     <div className="flex gap-2 sm:gap-3 flex-wrap">
-                        {[1, 2, 3, 4, 5, 6, 7].map((num) => (
+                        {[1, 2, 3, 4, 5].map((num) => (
                             <button
                                 key={num}
                                 type="button"
@@ -195,7 +213,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                         ))}
                     </div>
                     <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-2 px-1">
-                        {formData.rating === 7 ? "Exceptionally Professional" :
+                        {formData.rating === 5 ? "Exceptionally Professional" :
                             formData.rating === 1 ? "Needs Improvement" :
                                 "Level of Excellence"}
                     </p>

@@ -4,7 +4,13 @@ export const testimonialSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email format"),
     company: z.string().max(100, "Company name too long").optional().nullable(),
+    role: z.string().max(100, "Role too long").optional().nullable(),
     relationship_type: z.enum([
+        "Colleague",
+        "Client",
+        "Collaborator",
+        "Mentor",
+        "Employer",
         "Freelance Client",
         "Internship Mentor",
         "Hackathon Teammate",
@@ -13,22 +19,26 @@ export const testimonialSchema = z.object({
         "Other"
     ]),
     intervention_type: z.enum([
-        "UI/UX Design",
+        "Full-Stack Development",
         "Frontend Development",
         "Backend Development",
-        "Full Stack Development",
-        "DevOps / Cloud",
+        "API Integration",
+        "UI/UX Implementation",
         "Database Design",
+        "Consulting",
+        "Code Review",
+        "UI/UX Design",
+        "DevOps / Cloud",
         "Bug Fix / Error Optimisation",
         "Performance Optimization",
-        "API Integration",
         "Other"
     ]),
-    rating: z.number().min(1).max(7, "Rating must be between 1 and 7"),
+    rating: z.number().min(1).max(5, "Rating must be between 1 and 5"),
     message: z.string()
         .min(20, "Testimonial must be at least 20 characters")
         .max(500, "Testimonial must be less than 500 characters"),
     about_delivery_lead: z.string().min(2, "Please provide feedback on communication/delivery"),
+    photoUrl: z.string().optional().nullable(),
     permission: z.boolean().refine(val => val === true, {
         message: "Permission to display publicly is required"
     })

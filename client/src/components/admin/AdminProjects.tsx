@@ -53,6 +53,11 @@ interface Project {
     improvementDetails?: string | null;
     metrics?: string[];
     decisionLogs?: string[];
+
+    category?: string | null;
+    isFeatured: boolean;
+    valuePoints: string[];
+    results?: string | null;
 }
 
 interface AdminProjectsProps {
@@ -79,10 +84,25 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
         scalabilityDepth: 0,
         metrics: [],
         decisionLogs: [],
+        category: "",
+        isFeatured: false,
+        valuePoints: [],
+        results: "",
     });
     const [tagInput, setTagInput] = useState("");
+    const [valuePointInput, setValuePointInput] = useState("");
     const [rawArchitecture, setRawArchitecture] = useState("");
     const [jsonError, setJsonError] = useState<string | null>(null);
+
+    const categories = [
+        "AI & Data Products",
+        "Healthcare Tech",
+        "Education Platforms",
+        "Finance Platforms",
+        "Creative & Digital Tools",
+        "Productivity Tools",
+        "Other"
+    ];
 
     useEffect(() => {
         const editId = searchParams?.get("edit");
@@ -134,6 +154,11 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             improvementDetails: project.improvementDetails || "",
             metrics: project.metrics || [],
             decisionLogs: project.decisionLogs || [],
+
+            category: project.category || "",
+            isFeatured: project.isFeatured || false,
+            valuePoints: project.valuePoints || [],
+            results: project.results || "",
         });
         setRawArchitecture(project.architecture ? JSON.stringify(project.architecture, null, 2) : "");
         setJsonError(null);
@@ -159,7 +184,11 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                 securityDepth: 0,
                 scalabilityDepth: 0,
                 metrics: [],
-                decisionLogs: []
+                decisionLogs: [],
+                category: "",
+                isFeatured: false,
+                valuePoints: [],
+                results: ""
             });
             setRawArchitecture("");
             setJsonError(null);
@@ -185,7 +214,11 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
             securityDepth: 0,
             scalabilityDepth: 0,
             metrics: [],
-            decisionLogs: []
+            decisionLogs: [],
+            category: "",
+            isFeatured: false,
+            valuePoints: [],
+            results: ""
         });
         setRawArchitecture("");
         setJsonError(null);
@@ -266,7 +299,30 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div className="space-y-2">
+                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Category</label>
+                                <select
+                                    className="input-field"
+                                    value={formData.category || ""}
+                                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                >
+                                    <option value="">Select Category</option>
+                                    {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                                </select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Featured Project?</label>
+                                <div className="flex items-center gap-4 h-14 px-6 bg-white/[0.03] border border-white/10 rounded-2xl">
+                                    <input
+                                        type="checkbox"
+                                        className="w-5 h-5 accent-blue-500"
+                                        checked={formData.isFeatured || false}
+                                        onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
+                                    />
+                                    <span className="text-sm text-gray-400">Highlight in Showcase</span>
+                                </div>
+                            </div>
                             <div className="space-y-2">
                                 <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Role</label>
                                 <input
@@ -277,16 +333,16 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">One-Line Summary</label>
-                                <input
-                                    type="text"
-                                    className="input-field"
-                                    placeholder="Powerful product summary..."
-                                    value={formData.summary || ""}
-                                    onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
-                                />
-                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">One-Line Summary</label>
+                            <input
+                                type="text"
+                                className="input-field"
+                                placeholder="Powerful product summary..."
+                                value={formData.summary || ""}
+                                onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
+                            />
                         </div>
 
                         <div className="space-y-2">
@@ -339,6 +395,15 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                                         placeholder="Key benefit..."
                                         value={formData.valueProp || ""}
                                         onChange={(e) => setFormData({ ...formData, valueProp: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Results Delivered</label>
+                                    <textarea
+                                        className="input-field min-h-[80px] text-sm"
+                                        placeholder="What results did it deliver?"
+                                        value={formData.results || ""}
+                                        onChange={(e) => setFormData({ ...formData, results: e.target.value })}
                                     />
                                 </div>
                             </div>
@@ -396,7 +461,52 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-white/5">
+                        <div className="space-y-6 pt-4 border-t border-white/5">
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-green-500 ml-4">Client Value Points (Value Props)</h4>
+                            <div className="flex flex-wrap gap-2 mb-2">
+                                {formData.valuePoints?.map((vp, i) => (
+                                    <span key={i} className="flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-400 rounded-xl text-[10px] font-bold border border-green-500/20">
+                                        ✔ {vp}
+                                        <button type="button" onClick={() => {
+                                            const newVP = [...(formData.valuePoints || [])];
+                                            newVP.splice(i, 1);
+                                            setFormData({ ...formData, valuePoints: newVP });
+                                        }} className="text-green-500 hover:text-white transition-colors">
+                                            <X size={12} />
+                                        </button>
+                                    </span>
+                                ))}
+                            </div>
+                            <div className="flex gap-3">
+                                <input
+                                    type="text"
+                                    className="input-field"
+                                    placeholder="Add value point (e.g. 50% faster checkout)"
+                                    value={valuePointInput}
+                                    onChange={(e) => setValuePointInput(e.target.value)}
+                                    onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), (() => {
+                                        if (valuePointInput.trim()) {
+                                            setFormData({ ...formData, valuePoints: [...(formData.valuePoints || []), valuePointInput.trim()] });
+                                            setValuePointInput("");
+                                        }
+                                    })())}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (valuePointInput.trim()) {
+                                            setFormData({ ...formData, valuePoints: [...(formData.valuePoints || []), valuePointInput.trim()] });
+                                            setValuePointInput("");
+                                        }
+                                    }}
+                                    className="px-6 bg-green-500/10 hover:bg-green-500/20 text-green-400 rounded-2xl border border-green-500/10 transition-all font-bold text-xs uppercase tracking-widest"
+                                >
+                                    Add Point
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4 pt-4 border-t border-white/5">
                             <div className="space-y-4">
                                 <h4 className="text-[10px] font-black uppercase tracking-widest text-cyan-500 ml-4">Operational Depth</h4>
                                 <div className="grid grid-cols-2 gap-4">
@@ -543,8 +653,10 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                             )}
                         </button>
                     </form>
-                </div>
-            )}
+                </div >
+            )
+            }
+
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {Array.isArray(projects) && projects.map((project) => (
@@ -597,6 +709,6 @@ export default function AdminProjects({ projects, onAdd, onUpdate, onDelete }: A
                     </div>
                 ))}
             </div>
-        </div>
+        </div >
     );
 }

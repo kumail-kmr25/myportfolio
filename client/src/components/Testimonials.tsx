@@ -4,56 +4,8 @@
 import Image from "next/image";
 import { Star, BadgeCheck, Quote, Plus } from "lucide-react";
 import { motion, Variants } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TestimonialModal from "./TestimonialModal";
-
-// Static dummy testimonials for showcase
-const dummyTestimonials = [
-    {
-        id: "1",
-        name: "Alice Johnson",
-        company: "Acme Corp",
-        role: "CTO",
-        relationship_type: "client",
-        intervention_type: "consulting",
-        message: "Kumail delivered exceptional full‑stack solutions in record time.",
-        rating: 5,
-        photoUrl: null,
-        verified: true,
-        featured: true,
-        created_at: "2024-01-01",
-    },
-    {
-        id: "2",
-        name: "Bob Smith",
-        company: "Beta Ltd",
-        role: "Founder",
-        relationship_type: "client",
-        intervention_type: "devops",
-        message: "The deployment pipeline he set up runs under a second.",
-        rating: 5,
-        photoUrl: null,
-        verified: true,
-        featured: false,
-        created_at: "2024-02-15",
-    },
-    {
-        id: "3",
-        name: "Carol Lee",
-        company: "Gamma Inc",
-        role: "Product Manager",
-        relationship_type: "client",
-        intervention_type: "full‑stack",
-        message: "Bug fixing under 1 s – truly impressive!",
-        rating: 5,
-        photoUrl: null,
-        verified: false,
-        featured: false,
-        created_at: "2024-03-10",
-    },
-];
-
-// No fetcher needed – using static dummy data
 
 interface Testimonial {
     id: string;
@@ -71,6 +23,7 @@ interface Testimonial {
 }
 
 function TestimonialCard({ t }: { t: Testimonial }) {
+    // ... (rest of TestimonialCard unchanged)
     return (
         <div className="flex-shrink-0 w-[340px] mx-3 p-6 rounded-3xl bg-white/[0.03] border border-white/8 hover:border-white/20 hover:scale-[1.03] hover:bg-white/[0.06] transition-all duration-300 group cursor-default select-none"
             style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.4)" }}>
@@ -140,10 +93,26 @@ function Marquee({ items, reverse = false }: { items: Testimonial[]; reverse?: b
 
 export default function Testimonials() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const testimonials = dummyTestimonials;
+    const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const row1 = testimonials.slice(0, Math.ceil(testimonials.length / 2));
-    const row2 = testimonials.slice(Math.ceil(testimonials.length / 2));
+    const fetchTestimonials = async () => {
+        try {
+            const res = await fetch("/api/testimonials");
+            if (res.ok) {
+                const data = await res.json();
+                setTestimonials(data);
+            }
+        } catch (error) {
+            console.error("Error fetching testimonials:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchTestimonials();
+    }, []);
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -217,11 +186,17 @@ export default function Testimonials() {
                 </div>
             </div>
 
-            <TestimonialModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSuccess={() => { }} />
+            <TestimonialModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSuccess={fetchTestimonials} />
 
             <div className="space-y-12">
                 {/* Single Row — all testimonials */}
-                {testimonials.length > 0 && <Marquee items={testimonials} />}
+                {testimonials.length > 0 ? (
+                    <Marquee items={testimonials} />
+                ) : !isLoading && (
+                    <div className="text-center py-12 text-gray-500 font-mono text-xs uppercase tracking-widest">
+                        Awaiting professional endorsements...
+                    </div>
+                )}
             </div>
 
             {/* Stats strip */}
@@ -241,14 +216,14 @@ export default function Testimonials() {
                         <div className="hidden md:block w-px h-12 bg-white/10" />
                         <motion.div variants={itemVariants} className="text-center group">
                             <div className="text-3xl font-black text-yellow-400 group-hover:scale-110 transition-transform">
-                                {(testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1)}
+                                {(testimonials.reduce((sum: number, t: Testimonial) => sum + t.rating, 0) / testimonials.length).toFixed(1)}
                             </div>
                             <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Avg Rating</div>
                         </motion.div>
                         <div className="hidden md:block w-px h-12 bg-white/10" />
                         <motion.div variants={itemVariants} className="text-center group">
                             <div className="text-3xl font-black text-blue-400 group-hover:text-white transition-colors">
-                                {testimonials.filter(t => t.verified).length}
+                                {testimonials.filter((t: Testimonial) => t.verified).length}
                             </div>
                             <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Verified Nodes</div>
                         </motion.div>

@@ -38,6 +38,12 @@ export const projectSchema = z.object({
     improvementDetails: z.string().optional().or(z.literal("")),
     metrics: z.array(z.string()).optional().default([]),
     decisionLogs: z.array(z.string()).optional().default([]),
+
+    category: z.string().optional().or(z.literal("")),
+    isFeatured: z.boolean().default(false),
+    valuePoints: z.array(z.string()).optional().default([]),
+    results: z.string().optional().or(z.literal("")),
+
     isVisible: z.boolean().default(true),
 });
 

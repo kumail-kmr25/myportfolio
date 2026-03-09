@@ -76,7 +76,7 @@ export default function About() {
                                 variants={itemVariants}
                                 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight"
                             >
-                                From 10th Class to <br />
+                                From Class 12th to <br />
                                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Web Engineering Excellence</span>
                             </motion.h2>
                         </div>
@@ -86,8 +86,8 @@ export default function About() {
                             className="space-y-6 text-gray-400 text-lg leading-relaxed max-w-2xl"
                         >
                             <p>
-                                My journey in the tech world began in <span className="text-blue-400 font-semibold">2023</span>, right after I passed my <span className="text-white font-medium">class 10th exams</span>.
-                                What started as a curiosity quickly evolved into a deep passion for building software that solves real-world problems.
+                                My journey in the tech world began in <span className="text-blue-400 font-semibold">2023</span>, right in the middle of my <span className="text-white font-medium">Class 12th session</span>.
+                                What started as a curiosity quickly evolved into an obsessive passion for learning by building and solving complex architectural puzzles.
                             </p>
                             <p>
                                 I specialize in transforming complex business requirements into high-performance SaaS architectures.

@@ -143,6 +143,11 @@ model Project {
   metrics            String[]
   decisionLogs       String[] 
 
+  category           String?  // e.g., AI & Data Products, Healthcare Tech
+  isFeatured         Boolean  @default(false)
+  valuePoints        String[] // Displayed as checkmarks in the card
+  results            String?  // What results it delivers
+  
   isVisible          Boolean  @default(true)
   created_at         DateTime @default(now())
   updated_at         DateTime @updatedAt

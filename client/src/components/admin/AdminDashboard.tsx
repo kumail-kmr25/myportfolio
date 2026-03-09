@@ -75,6 +75,11 @@ interface AdminProject {
     improvementDetails?: string | null;
     metrics?: string[];
     decisionLogs?: string[];
+
+    category?: string | null;
+    isFeatured: boolean;
+    valuePoints: string[];
+    results?: string | null;
 }
 interface AdminContactMessage { id: string; name: string; email: string; message: string; replied: boolean; created_at: string; inquiryType: string; company?: string | null; serviceRequired: string; budgetRange?: string | null; timeline?: string | null; }
 interface AdminHireRequest { id: string; name: string; email: string; company: string | null; description: string; selectedService: string; budgetRange: string; timeline: string; projectType: string; status: string; source?: string; createdAt: string; }
