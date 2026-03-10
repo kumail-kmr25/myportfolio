@@ -1,3 +1,4 @@
+// v2.0.1 - Triggering redeploy with synced environment variables
 import { PrismaClient } from '@prisma/client';
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
