@@ -382,7 +382,7 @@ function ContactInner() {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <span>Submit Engineering Request</span>
+                                                    <span>Submit</span>
                                                     <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                                 </>
                                             )}
