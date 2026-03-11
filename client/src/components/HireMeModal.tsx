@@ -126,8 +126,7 @@ export default function HireMeModal() {
         setIsSubmitting(true);
         setError(null);
         try {
-            const apiUrl = "";
-            const response = await fetch(`/api/hire`, {
+            const response = await fetch('/api/hire', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
