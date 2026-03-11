@@ -18,13 +18,14 @@ import {
 import useSWR from "swr";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { hireSchema, type HireFormData } from "@portfolio/shared";
 import { useHireModal } from "@/context/HireModalContext";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
-type Step = "services" | "details" | "vision" | "contact" | "success";
+type Step = "services" | "details" | "success";
 
 const services = [
     {
@@ -108,6 +109,7 @@ const services = [
 
 export default function HireMeModal() {
     const { isOpen, closeModal, initialData } = useHireModal();
+    const router = useRouter();
     const [step, setStep] = useState<Step>("services");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -169,14 +171,16 @@ export default function HireMeModal() {
 
             if (response.ok) {
                 setIsSuccess(true);
+                // Redirect to admin after a short delay
                 setTimeout(() => {
                     closeModal();
+                    router.push("/admin");
                     setTimeout(() => {
                         setStep("services");
                         setIsSuccess(false);
                         reset();
                     }, 500);
-                }, 3000);
+                }, 2000);
             } else {
                 const errorData = await response.json().catch(() => null);
                 if (errorData) {
@@ -218,23 +222,10 @@ export default function HireMeModal() {
             setStep("details");
             return;
         }
-
-        if (step === "details") {
-            setStep("vision");
-            return;
-        }
-
-        if (step === "vision") {
-            const isValid = await trigger("description");
-            if (isValid) setStep("contact");
-            return;
-        }
     };
 
     const prevStep = () => {
         if (step === "details") setStep("services");
-        if (step === "vision") setStep("details");
-        if (step === "contact") setStep("vision");
     };
 
     if (!isOpen) return null;
@@ -275,9 +266,7 @@ export default function HireMeModal() {
                                 <nav className="space-y-8">
                                     {[
                                         { id: "services", label: "Service", step: 1 },
-                                        { id: "details", label: "Project Details", step: 2 },
-                                        { id: "vision", label: "Project Vision", step: 3 },
-                                        { id: "contact", label: "Your Info", step: 4 }
+                                        { id: "details", label: "Project Details", step: 2 }
                                     ].map((s, i) => (
                                         <div key={s.id} className="flex items-center gap-4 group">
                                             <div className={`w-8 h-8 rounded-full border flex items-center justify-center text-[10px] font-bold transition-all duration-300
@@ -436,103 +425,12 @@ export default function HireMeModal() {
                                                         className="space-y-10"
                                                     >
                                                         <m.div variants={itemVariants}>
-                                                            <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Setting the <span className="text-blue-500 italic block mt-2">stage</span></h2>
-                                                            <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 2: Budget & Timeline</p>
+                                                            <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Finalizing the <span className="text-blue-500 italic block mt-2">blueprint</span></h2>
+                                                            <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 2: Project & Contact Details</p>
                                                         </m.div>
 
                                                         <div className="space-y-8">
-                                                            <m.div variants={itemVariants} className="space-y-4">
-                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Budget Range (Expected)</label>
-                                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                                                                    {["Under $500", "$500 – $1000", "$1000 – $3000", "$3000+"].map((range) => (
-                                                                        <button
-                                                                            key={range}
-                                                                            type="button"
-                                                                            onClick={() => setValue("budgetRange", range as any)}
-                                                                            className={`px-4 py-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${formData.budgetRange === range ? "bg-blue-600 border-blue-600 text-white" : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"}`}
-                                                                        >
-                                                                            {range}
-                                                                        </button>
-                                                                    ))}
-                                                                </div>
-                                                            </m.div>
-
-                                                            <m.div variants={itemVariants} className="space-y-4">
-                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Estimated Timeline</label>
-                                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                                                                    {["ASAP", "1–2 weeks", "1 month", "Flexible"].map((time) => (
-                                                                        <button
-                                                                            key={time}
-                                                                            type="button"
-                                                                            onClick={() => setValue("timeline", time as any)}
-                                                                            className={`px-4 py-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${formData.timeline === time ? "bg-blue-600 border-blue-600 text-white" : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"}`}
-                                                                        >
-                                                                            {time}
-                                                                        </button>
-                                                                    ))}
-                                                                </div>
-                                                            </m.div>
-
-                                                            <m.div variants={itemVariants} className="space-y-4">
-                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">What are we starting?</label>
-                                                                <select
-                                                                    {...register("projectType")}
-                                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
-                                                                >
-                                                                    <option value="New Project from scratch" className="bg-[#0f0f0f]">New Project from scratch</option>
-                                                                    <option value="Existing Project (Maintenance/Update)" className="bg-[#0f0f0f]">Existing Project (Maintenance/Update)</option>
-                                                                    <option value="Long-term Partnership" className="bg-[#0f0f0f]">Long-term Partnership</option>
-                                                                    <option value="Consulting" className="bg-[#0f0f0f]">Consulting</option>
-                                                                    <option value="Other" className="bg-[#0f0f0f]">Other</option>
-                                                                </select>
-                                                            </m.div>
-                                                        </div>
-                                                    </m.div>
-                                                )}
-
-                                                {step === "vision" && (
-                                                    <m.div
-                                                        key="vision"
-                                                        initial="hidden"
-                                                        animate="visible"
-                                                        exit={{ opacity: 0, x: -20 }}
-                                                        variants={containerVariants}
-                                                        className="space-y-10"
-                                                    >
-                                                        <m.div variants={itemVariants}>
-                                                            <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Sharing the <span className="text-blue-500 italic block mt-2">vision</span></h2>
-                                                            <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 3: Project Details</p>
-                                                        </m.div>
-
-                                                        <div className="space-y-8">
-                                                            <m.div variants={itemVariants} className="space-y-4">
-                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Tell me about your project goals</label>
-                                                                <textarea
-                                                                    {...register("description")}
-                                                                    className="w-full bg-white/5 border border-white/10 rounded-[2rem] px-8 py-6 text-sm text-white focus:border-blue-500 outline-none transition-all min-h-[200px] resize-none leading-relaxed"
-                                                                    placeholder="Briefly describe your project idea or problem."
-                                                                />
-                                                                {errors.description && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.description.message as string}</p>}
-                                                            </m.div>
-                                                        </div>
-                                                    </m.div>
-                                                )}
-
-                                                {step === "contact" && (
-                                                    <m.div
-                                                        key="contact"
-                                                        initial="hidden"
-                                                        animate="visible"
-                                                        exit={{ opacity: 0, x: -20 }}
-                                                        variants={containerVariants}
-                                                        className="space-y-10"
-                                                    >
-                                                        <m.div variants={itemVariants}>
-                                                            <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Final <span className="text-blue-500 italic block mt-2">handshake</span></h2>
-                                                            <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 4: Contact Information</p>
-                                                        </m.div>
-
-                                                        <div className="space-y-8">
+                                                            {/* Contact Info First */}
                                                             <m.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <div className="space-y-2">
                                                                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Full Name</label>
@@ -554,18 +452,54 @@ export default function HireMeModal() {
                                                                 </div>
                                                             </m.div>
 
-                                                            <m.div variants={itemVariants} className="space-y-2">
-                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Company Name (Optional)</label>
-                                                                <input
-                                                                    {...register("company")}
-                                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
-                                                                    placeholder="Company Inc."
+                                                            {/* Project Details */}
+                                                            <m.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                                <div className="space-y-4">
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Budget Range</label>
+                                                                    <div className="grid grid-cols-2 gap-2">
+                                                                        {["Under $500", "$500 – $1000", "$1000 – $3000", "$3000+"].map((range) => (
+                                                                            <button
+                                                                                key={range}
+                                                                                type="button"
+                                                                                onClick={() => setValue("budgetRange", range as any)}
+                                                                                className={`px-4 py-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${formData.budgetRange === range ? "bg-blue-600 border-blue-600 text-white" : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"}`}
+                                                                            >
+                                                                                {range}
+                                                                            </button>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="space-y-4">
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Timeline</label>
+                                                                    <div className="grid grid-cols-2 gap-2">
+                                                                        {["ASAP", "1–2 weeks", "1 month", "Flexible"].map((time) => (
+                                                                            <button
+                                                                                key={time}
+                                                                                type="button"
+                                                                                onClick={() => setValue("timeline", time as any)}
+                                                                                className={`px-4 py-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${formData.timeline === time ? "bg-blue-600 border-blue-600 text-white" : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"}`}
+                                                                            >
+                                                                                {time}
+                                                                            </button>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            </m.div>
+
+                                                            <m.div variants={itemVariants} className="space-y-4">
+                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Project Vision & Goals</label>
+                                                                <textarea
+                                                                    {...register("description")}
+                                                                    className="w-full bg-white/5 border border-white/10 rounded-[2rem] px-8 py-6 text-sm text-white focus:border-blue-500 outline-none transition-all min-h-[150px] resize-none leading-relaxed"
+                                                                    placeholder="Briefly describe what we're building..."
                                                                 />
+                                                                {errors.description && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.description.message as string}</p>}
                                                             </m.div>
 
                                                             <m.div variants={itemVariants} className="p-8 bg-blue-500/5 rounded-[2rem] border border-blue-500/10 backdrop-blur-3xl">
-                                                                <p className="text-[10px] text-gray-400 leading-relaxed font-medium">
-                                                                    By submitting this brief, you initialize a technical request. I will analyze the parameters and respond via <span className="text-blue-400">{formData.email || 'provided email'}</span> within one business cycle.
+                                                                <p className="text-[10px] text-gray-400 leading-relaxed font-medium text-center">
+                                                                    By submitting, you will be redirected to the <span className="text-blue-400 font-bold italic">Admin Suite</span> to monitor progress.
                                                                 </p>
                                                             </m.div>
                                                         </div>
@@ -596,7 +530,7 @@ export default function HireMeModal() {
                                             ) : <div className="hidden md:block" />}
 
                                             <div className="flex gap-4 w-full md:w-auto">
-                                                {step === "contact" ? (
+                                                {step === "details" ? (
                                                     <button
                                                         type="submit"
                                                         disabled={isSubmitting}

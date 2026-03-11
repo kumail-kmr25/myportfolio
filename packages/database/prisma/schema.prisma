@@ -250,6 +250,8 @@ model JourneyPhase {
   icon        String // Lucide icon name
   color       String // Tailwind gradient classes
   order       Int
+  actionLabel String? // Label for the CTA button
+  actionUrl   String? // URL or ID to scroll to
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

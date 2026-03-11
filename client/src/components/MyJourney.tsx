@@ -185,16 +185,36 @@ export default function MyJourney() {
                                             >
                                                 <div className={`absolute inset-0 bg-gradient-to-br ${phase.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
 
-                                                <div className="relative z-10">
-                                                    <div className="flex items-center gap-4 mb-4">
-                                                        <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                                                            {IconMap[phase.icon] || <Code2 className="w-5 h-5 text-blue-400" />}
+                                                    <div className="relative z-10">
+                                                        <div className="flex items-center gap-4 mb-4">
+                                                            <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
+                                                                {IconMap[phase.icon] || <Code2 className="w-5 h-5 text-blue-400" />}
+                                                            </div>
                                                         </div>
-                                                        {/* <span className="text-sm font-mono text-blue-400">{phase.phase}</span> */}
+                                                        <h3 className="text-2xl font-bold text-white mb-3">{phase.title}</h3>
+                                                        <p className="text-gray-400 leading-relaxed mb-6">{phase.description}</p>
+                                                        
+                                                        {phase.actionLabel && (
+                                                            <m.button
+                                                                whileHover={{ x: 5 }}
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    if (phase.actionUrl?.startsWith('#')) {
+                                                                        const el = document.getElementById(phase.actionUrl.substring(1));
+                                                                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                                                    } else if (phase.actionUrl) {
+                                                                        window.open(phase.actionUrl, '_blank');
+                                                                    } else {
+                                                                        openModal();
+                                                                    }
+                                                                }}
+                                                                className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 hover:text-blue-300 transition-colors group/btn"
+                                                            >
+                                                                {phase.actionLabel}
+                                                                <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                                                            </m.button>
+                                                        )}
                                                     </div>
-                                                    <h3 className="text-2xl font-bold text-white mb-3">{phase.title}</h3>
-                                                    <p className="text-gray-400 leading-relaxed">{phase.description}</p>
-                                                </div>
                                             </m.div>
                                         </div>
                                     </div>

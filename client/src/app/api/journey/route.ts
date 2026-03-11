@@ -6,21 +6,25 @@ export const runtime = "nodejs";
 const FALLBACK_PHASES = [
     {
         id: "fallback-journey-1",
-        phase: "Step 1",
+        phase: "Phase 1",
         title: "Foundation & Core Engineering",
-        description: "Established a robust engineering foundation, mastering modern web architectures.",
+        description: "Mastering complex data structures and specialized algorithms to build high-performance foundations.",
         icon: "Brain",
-        color: "from-blue-500/20 to-indigo-500/20",
-        order: 1
+        color: "from-blue-600/20 to-indigo-600/20",
+        order: 1,
+        actionLabel: "Explore Foundation",
+        actionUrl: "#skills"
     },
     {
         id: "fallback-journey-2",
-        phase: "Step 2",
+        phase: "Phase 2",
         title: "Full-Stack Orchestration",
-        description: "Developed deep expertise in full-stack orchestration and database systems.",
+        description: "Architecting end-to-end systems that bridge sophisticated backend logic with intuitive interfaces.",
         icon: "Code2",
-        color: "from-indigo-500/20 to-purple-500/20",
-        order: 2
+        color: "from-indigo-600/20 to-purple-600/20",
+        order: 2,
+        actionLabel: "View Case Studies",
+        actionUrl: "#projects"
     }
 ];
 
