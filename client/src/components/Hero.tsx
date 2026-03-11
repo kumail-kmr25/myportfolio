@@ -122,113 +122,147 @@ export default function Hero() {
                 </motion.div>
             </div>
 
-            <div className="section-container relative z-10 text-center">
-                <motion.div
-                    style={{
-                        x: mousePos.x * 0.4,
-                        y: mousePos.y * 0.4,
-                    }}
-                    initial="visible"
-                    animate="visible"
-                    variants={{
-                        hidden: { opacity: 1, y: 0 },
-                        visible: {
-                            opacity: 1,
-                            y: 0,
-                            transition: {
-                                duration: 1.2,
-                                ease: premiumEase as any,
-                                staggerChildren: 0.15
-                            }
-                        }
-                    }}
-                >
-                    <motion.div
-                        variants={{
-                            hidden: { opacity: 1, y: 0 },
-                            visible: { opacity: 1, y: 0, transition: { ease: premiumEase as any } }
-                        }}
-                        className="flex flex-col items-center gap-6 mb-12"
-                    >
-                        <div className="relative">
-                            <motion.div
-                                animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute -inset-4 bg-blue-500/10 blur-xl rounded-full"
-                            />
-                            <span className="relative inline-block py-2.5 px-6 rounded-full bg-white/[0.03] border border-white/[0.08] text-[10px] font-black uppercase tracking-[0.4em] text-blue-400 backdrop-blur-2xl transition-all hover:border-blue-500/30 hover:bg-blue-500/5 group">
-                                <span className="flex items-center gap-3">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                                    Technical Intervention Active
+            <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
+                <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                    {/* Left Column: Content */}
+                    <div className="flex-1 text-center lg:text-left">
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 1, ease: premiumEase as any }}
+                            className="flex flex-col items-center lg:items-start gap-6 mb-8"
+                        >
+                            <div className="relative">
+                                <motion.div
+                                    animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                    className="absolute -inset-4 bg-blue-500/10 blur-xl rounded-full"
+                                />
+                                <span className="relative inline-block py-2 px-5 rounded-full bg-white/[0.03] border border-white/[0.08] text-[9px] font-black uppercase tracking-[0.4em] text-blue-400 backdrop-blur-2xl transition-all hover:border-blue-500/30 hover:bg-blue-500/5 group">
+                                    <span className="flex items-center gap-3">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                                        Full-Stack Developer
+                                    </span>
                                 </span>
-                            </span>
-                        </div>
-                        <LiveStatusBadge variant="hero" />
-                    </motion.div>
+                            </div>
+                        </motion.div>
 
-                    <motion.h1
-                        variants={{
-                            hidden: { opacity: 1, y: 0, filter: "blur(0px)" },
-                            visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1.2, ease: premiumEase as any } }
-                        }}
-                        className="text-5xl sm:text-9xl lg:text-[11rem] font-black font-display text-white mb-10 tracking-tighter leading-[0.85] select-none"
-                    >
-                        Kumail <span className="text-blue-500 italic">Kmr</span>
-                    </motion.h1>
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1.2, ease: premiumEase as any }}
+                            className="text-6xl sm:text-7xl lg:text-8xl font-black font-display text-white mb-6 tracking-tighter leading-[0.9] select-none"
+                        >
+                            Kumail <span className="text-blue-500 italic">KMR</span>
+                        </motion.h1>
 
-                    <motion.div
-                        variants={{
-                            hidden: { opacity: 1, y: 0 },
-                            visible: { opacity: 1, y: 0, transition: { ease: premiumEase as any } }
-                        }}
-                        className="h-12 mb-16"
-                    >
-                        <span className="text-xl md:text-3xl text-gray-500 font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4">
-                            <span className="text-white bg-white/5 px-4 py-1 rounded-lg border border-white/10">{text}</span>
-                            <motion.span
-                                animate={{ opacity: [1, 0] }}
-                                transition={{ duration: 0.8, repeat: Infinity }}
-                                className="text-blue-500"
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2, duration: 1.2, ease: premiumEase as any }}
+                            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-400 mb-6 tracking-tight"
+                        >
+                            Building <span className="text-white">Scalable</span> Web Platforms
+                        </motion.h2>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3, duration: 1.2, ease: premiumEase as any }}
+                            className="text-gray-500 text-lg sm:text-xl max-w-xl mb-12 font-medium leading-relaxed"
+                        >
+                            I design and develop modern web applications with reliable architecture, secure systems, and production-ready deployment.
+                        </motion.p>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4, duration: 1, ease: premiumEase as any }}
+                            className="flex flex-wrap gap-4 justify-center lg:justify-start"
+                        >
+                            <Link
+                                href="#projects"
+                                prefetch={false}
+                                className="group relative px-8 py-4 bg-blue-600 text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:scale-[1.05] active:scale-[0.95] shadow-xl shadow-blue-500/20 overflow-hidden"
                             >
-                                _
-                            </motion.span>
-                        </span>
-                    </motion.div>
+                                <span className="relative z-10 flex items-center gap-2">
+                                    View Projects
+                                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                </span>
+                            </Link>
 
-                    <motion.div
-                        variants={{
-                            hidden: { opacity: 1, y: 0 },
-                            visible: { opacity: 1, y: 0, transition: { delay: 0.4, ease: premiumEase as any } }
-                        }}
-                        className="flex flex-col md:flex-row gap-6 justify-center items-center"
-                    >
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                openModal();
-                            }}
-                            className="group relative px-12 py-6 bg-blue-600 text-white rounded-[2rem] font-black text-xs tracking-[0.2em] uppercase transition-all hover:scale-[1.05] active:scale-[0.95] shadow-2xl shadow-blue-500/40 overflow-hidden"
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    openModal();
+                                }}
+                                className="group relative px-8 py-4 bg-white/[0.03] border border-white/[0.08] text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-white/[0.06] hover:border-white/20 hover:scale-[1.05] active:scale-[0.95] backdrop-blur-3xl"
+                            >
+                                <span className="flex items-center gap-2">
+                                    Hire Me
+                                </span>
+                            </button>
+
+                            <Link
+                                href="#journey"
+                                prefetch={false}
+                                className="group relative px-8 py-4 bg-transparent border border-white/10 text-gray-400 rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:text-white hover:border-white/20 hover:scale-[1.05] active:scale-[0.95]"
+                            >
+                                <span className="flex items-center gap-2">
+                                    My Journey
+                                </span>
+                            </Link>
+                        </motion.div>
+                    </div>
+
+                    {/* Right Column: Visual */}
+                    <div className="flex-1 relative order-first lg:order-last mb-12 lg:mb-0">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1.5, ease: premiumEase as any }}
+                            className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-[450px] lg:h-[450px] mx-auto"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <span className="relative z-10 flex items-center gap-4">
-                                Initialize Partnership
-                                <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform duration-500" />
-                            </span>
-                        </button>
+                            {/* Decorative Elements */}
+                            <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                                className="absolute -inset-4 border border-dashed border-blue-500/20 rounded-full"
+                            />
+                            <motion.div
+                                animate={{ rotate: -360 }}
+                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                                className="absolute -inset-8 border border-dashed border-purple-500/10 rounded-full"
+                            />
+                            
+                            <div className="relative w-full h-full rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl group">
+                                <Image
+                                    src="/profile.jpg"
+                                    alt="Kumail KMR"
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                    priority
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-transparent to-transparent opacity-40" />
+                            </div>
 
-                        <Link
-                            href="#projects"
-                            prefetch={false}
-                            className="group relative px-12 py-6 bg-white/[0.03] border border-white/[0.08] text-white rounded-[2rem] font-black text-xs tracking-[0.2em] uppercase transition-all hover:bg-white/[0.06] hover:border-white/20 hover:scale-[1.05] active:scale-[0.95] backdrop-blur-3xl"
-                        >
-                            <span className="flex items-center gap-4">
-                                View Repository
-                            </span>
-                        </Link>
-                    </motion.div>
-                </motion.div>
-
+                            {/* Floating Badges */}
+                            <motion.div
+                                animate={{ y: [0, -10, 0] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                className="absolute -top-4 -right-4 p-4 rounded-2xl bg-[#0a0a0a]/80 border border-white/10 backdrop-blur-md hidden sm:block"
+                            >
+                                <div className="text-[8px] font-black text-blue-400 uppercase tracking-widest mb-1">Status</div>
+                                <div className="text-[10px] font-bold text-white flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                    Available for Hire
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    </div>
+                </div>
             </div>
+
         </section>
     );
 }

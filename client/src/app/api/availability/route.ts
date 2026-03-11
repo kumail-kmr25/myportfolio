@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 
 export const dynamic = 'force-dynamic';
+export const runtime = "nodejs";
 
 export async function GET() {
     try {

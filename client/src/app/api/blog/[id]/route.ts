@@ -3,6 +3,8 @@ import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+export const runtime = "nodejs";
+
 export async function PATCH(
     request: Request,
     { params }: { params: Promise<{ id: string }> }

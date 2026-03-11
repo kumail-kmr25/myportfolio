@@ -3,6 +3,8 @@ import { prisma } from "@portfolio/database";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
+export const runtime = "nodejs";
+
 function generateUserId(): string {
     const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     let id = "KK-";

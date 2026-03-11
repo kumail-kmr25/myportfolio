@@ -3,6 +3,8 @@ import { prisma } from "@portfolio/database";
 import { featureRequestSchema } from "@portfolio/shared";
 import xss from "xss";
 
+export const runtime = "nodejs";
+
 // In-memory rate limiting (per-instance)
 const rateLimit = new Map<string, { count: number; lastReset: number }>();
 const LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour

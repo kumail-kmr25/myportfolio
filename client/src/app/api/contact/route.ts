@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 export const dynamic = 'force-dynamic';
+export const runtime = "nodejs";
 
 const rateLimit = new Map<string, { count: number; lastReset: number }>();
 const LIMIT_WINDOW = 60 * 60 * 1000;

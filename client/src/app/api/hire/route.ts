@@ -5,6 +5,7 @@ import { sendHireNotification, sendHireAutoReply } from "@/lib/mail";
 import xss from "xss";
 
 export const dynamic = 'force-dynamic';
+export const runtime = "nodejs";
 
 // In-memory rate limiting
 const rateLimit = new Map<string, { count: number; lastReset: number }>();

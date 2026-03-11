@@ -2,6 +2,13 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+const FALLBACK_RESUME = {
+    url: null,
+    updatedAt: null,
+    visible: false
+};
 
 export async function GET() {
     try {
@@ -11,16 +18,12 @@ export async function GET() {
         });
 
         if (!resume) {
-            return NextResponse.json({
-                url: null,
-                updatedAt: null,
-                visible: false
-            });
+            return NextResponse.json(FALLBACK_RESUME);
         }
 
         return NextResponse.json(resume);
     } catch (error) {
         console.error("PUBLIC_RESUME_GET_ERROR:", error);
-        return NextResponse.json({ error: "Failed to fetch resume" }, { status: 500 });
+        return NextResponse.json(FALLBACK_RESUME);
     }
 }

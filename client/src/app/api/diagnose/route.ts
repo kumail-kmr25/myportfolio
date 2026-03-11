@@ -3,6 +3,7 @@ import { prisma } from "@portfolio/database";
 import xss from "xss";
 
 export const dynamic = 'force-dynamic';
+export const runtime = "nodejs";
 
 export async function POST(request: Request) {
     try {

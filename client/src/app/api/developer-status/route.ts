@@ -4,6 +4,15 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+const FALLBACK_STATUS = {
+    status: "available",
+    capacityPercent: 0,
+    nextAvailabilityDays: 0,
+    currentFocus: "Open to new projects",
+    customMessage: null
+};
 
 export async function GET() {
     try {
@@ -13,19 +22,14 @@ export async function GET() {
 
         if (!status) {
             status = await (prisma as any).developerStatus.create({
-                data: {
-                    status: "available",
-                    capacityPercent: 0,
-                    nextAvailabilityDays: 0,
-                    currentFocus: "Open to new projects",
-                }
+                data: FALLBACK_STATUS
             });
         }
 
         return NextResponse.json(status);
     } catch (error) {
         console.error("Developer status GET error:", error);
-        return NextResponse.json({ error: "Failed to fetch status" }, { status: 500 });
+        return NextResponse.json(FALLBACK_STATUS);
     }
 }
 

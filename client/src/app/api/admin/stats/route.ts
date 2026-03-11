@@ -5,6 +5,8 @@ import { authOptions } from "@/lib/auth";
 import { siteStatsSchema } from "@portfolio/shared";
 import { revalidatePath } from "next/cache";
 
+export const runtime = "nodejs";
+
 export async function PATCH(request: Request) {
     try {
         const session = await getServerSession(authOptions);
