@@ -265,6 +265,7 @@ function ContactInner() {
                                                         <option value="Internship Opportunity" className="bg-[#0a0a0a] text-white">Internship Opportunity</option>
                                                         <option value="Full-Time Role" className="bg-[#0a0a0a] text-white">Full-Time Role</option>
                                                         <option value="Freelance Project" className="bg-[#0a0a0a] text-white">Freelance Project</option>
+                                                        <option value="Technical Inquiry" className="bg-[#0a0a0a] text-white">Technical Inquiry</option>
                                                         <option value="Bug Fix / Error Resolution" className="bg-[#0a0a0a] text-white">Bug Fix / Error Resolution</option>
                                                         <option value="Performance Optimization" className="bg-[#0a0a0a] text-white">Performance Optimization</option>
                                                         <option value="API Integration" className="bg-[#0a0a0a] text-white">API Integration</option>

@@ -11,8 +11,35 @@ interface Props {
     onSuccess: () => void;
 }
 
-const RELATIONSHIP_TYPES = ["Colleague", "Client", "Collaborator", "Mentor", "Employer", "Freelance Client"];
-const INTERVENTION_TYPES = ["Full-Stack Development", "Frontend Development", "Backend Development", "API Integration", "UI/UX Implementation", "Database Design", "Consulting", "Code Review", "Other"];
+const RELATIONSHIP_TYPES = [
+    "Colleague",
+    "Client",
+    "Collaborator",
+    "Mentor",
+    "Employer",
+    "Freelance Client",
+    "Internship Mentor",
+    "Hackathon Teammate",
+    "Open Source Collaborator",
+    "Hiring Manager",
+    "Other"
+];
+
+const INTERVENTION_TYPES = [
+    "Full-Stack Development",
+    "Frontend Development",
+    "Backend Development",
+    "API Integration",
+    "UI/UX Implementation",
+    "Database Design",
+    "Consulting",
+    "Code Review",
+    "UI/UX Design",
+    "DevOps / Cloud",
+    "Bug Fix / Error Optimisation",
+    "Performance Optimization",
+    "Other"
+];
 
 export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) {
     const [step, setStep] = useState(1);
