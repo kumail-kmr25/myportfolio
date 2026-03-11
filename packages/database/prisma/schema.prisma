@@ -150,6 +150,8 @@ model Project {
   results            String?  // What results it delivers
   
   isVisible          Boolean  @default(true)
+  timeline           Json?    // Idea -> Development -> Deployment -> Optimization
+  gallery            String[] // Screenshot gallery for visual showcase
   created_at         DateTime @default(now())
   updated_at         DateTime @updatedAt
 }

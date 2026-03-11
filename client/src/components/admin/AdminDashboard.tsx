@@ -12,10 +12,10 @@ import { getApiUrl } from "@/lib/api";
 import Sidebar from "@/components/admin/Sidebar";
 import DashboardOverview from "@/components/admin/DashboardOverview";
 import AdminTestimonials from "@/components/admin/AdminTestimonials";
+import AdminProjects from "@/components/admin/AdminProjects";
 import AdminContact from "@/components/admin/AdminContact";
 import AdminHireRequests from "@/components/admin/AdminHireRequests";
 import AdminBlog from "@/components/admin/AdminBlog";
-import AdminCaseStudies from "@/components/admin/AdminCaseStudies";
 import AdminFeatureRequests from "@/components/admin/AdminFeatureRequests";
 import AdminStats, { type SiteStats } from "@/components/admin/AdminStats";
 import AdminDiagnostics from "@/components/admin/AdminDiagnostics";
@@ -41,6 +41,7 @@ interface AdminContactMessage { id: string; name: string; email: string; message
 interface AdminHireRequest { id: string; name: string; email: string; company: string | null; description: string; selectedService: string; budgetRange: string; timeline: string; projectType: string; status: string; source?: string; createdAt: string; }
 interface AdminBlogPost { id: string; title: string; excerpt: string; content: string; category: string; readTime: string; published: boolean; created_at: string; }
 interface AdminDiagnosticLog { id: string; description: string; techStack?: string; createdAt: string; matchedPatternId?: string; environment: string; errorMessage?: string; }
+interface AdminProject { id: string; title: string; summary?: string; description: string; status: string; role?: string; tags: string[]; image: string; demo?: string; github?: string; problem?: string; solution?: string; targetAudience?: string; valueProp?: string; architecture?: any; challenges?: string; engineering?: string; performance?: string; scalability?: string; security?: string; lessons?: string; uiDepth: number; backendDepth: number; securityDepth: number; scalabilityDepth: number; timeline?: any; gallery: string[]; results?: string; metrics: string[]; category?: string; isFeatured: boolean; isVisible: boolean; created_at: string; updated_at: string; }
 interface AdminStats extends SiteStats { diagRuns: number; leadGenTotal: number; hireRequests: number; patternsMatched: number; }
 
 interface AdminDashboardProps {
@@ -49,7 +50,7 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ initialActivities = [], initialAvailability = null }: AdminDashboardProps) {
-    const [activeTab, setActiveTab] = useState<"overview" | "status" | "messages" | "hire" | "testimonials" | "blog" | "case-studies" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey">("overview");
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -58,18 +59,18 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     useEffect(() => {
         const tab = searchParams?.get("tab");
-        const validTabs = ["overview", "status", "messages", "hire", "testimonials", "blog", "case-studies", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey"];
+        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey"];
         if (tab && validTabs.includes(tab as any)) {
             setActiveTab(tab as any);
         }
     }, [searchParams]);
 
     // Data Fetching — keys are null until session is confirmed to prevent 401 flood
+    const { data: projects, mutate: mutateProjects } = useSWR<AdminProject[]>(isAuthenticated ? "/api/projects" : null, fetcher);
     const { data: allTestimonials, mutate: mutateTestimonials } = useSWR<AdminTestimonial[]>(isAuthenticated ? "/api/admin/testimonials" : null, fetcher);
     const { data: messages, mutate: mutateMessages } = useSWR<AdminContactMessage[]>(isAuthenticated ? "/api/contact" : null, fetcher);
     const { data: hireRequests, mutate: mutateHireRequests } = useSWR<AdminHireRequest[]>(isAuthenticated ? "/api/admin/hire" : null, fetcher);
     const { data: blogPosts, mutate: mutateBlogPosts } = useSWR<AdminBlogPost[]>(isAuthenticated ? "/api/blog" : null, fetcher);
-    const { data: caseStudies, mutate: mutateCaseStudies } = useSWR<any[]>(isAuthenticated ? "/api/admin/case-studies" : null, fetcher);
     const { data: featureRequests, mutate: mutateFeatureRequests } = useSWR<any[]>(isAuthenticated ? "/api/admin/feature-requests" : null, fetcher);
     const { data: statsData, mutate: mutateStats } = useSWR<AdminStats>(isAuthenticated ? "/api/stats" : null, fetcher);
     const { data: diagPatterns, mutate: mutateDiagPatterns } = useSWR<any[]>(isAuthenticated ? "/api/admin/diagnostic-patterns" : null, fetcher);
@@ -208,7 +209,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
         mutateBlogPosts();
     };
 
-    const handleCaseStudyAction = async () => mutateCaseStudies();
+    const handleProjectAction = async () => { await mutateProjects(); };
     const handleFeatureRequestAction = async () => mutateFeatureRequests();
     const handleStatsUpdate = async () => mutateStats();
     const handleDiagAction = async () => {
@@ -309,7 +310,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                     <div className="space-y-12">
                                         <AdminAnalytics stats={{ diagRuns: statsData?.diagRuns || 0, leadGenTotal: statsData?.leadGenTotal || 0, hireRequests: statsData?.hireRequests || 0, patternsMatched: statsData?.patternsMatched || 0 }} />
                                         <DashboardOverview
-                                            stats={{ testimonials: allTestimonials?.length || 0, messages: messages?.length || 0, hireRequests: hireRequests?.length || 0, blogPosts: blogPosts?.length || 0 }}
+                                            stats={{ projects: projects?.length || 0, testimonials: allTestimonials?.length || 0, messages: messages?.length || 0, hireRequests: hireRequests?.length || 0, blogPosts: blogPosts?.length || 0 }}
                                             recentActivity={[
                                                 ...(Array.isArray(hireRequests) ? hireRequests : []).map(h => ({ id: h.id, type: "hire", title: `Hire Request: ${h.name}`, subtitle: h.projectType, timestamp: h.createdAt, status: h.status })),
                                                 ...(Array.isArray(messages) ? messages : []).map(m => ({ id: m.id, type: "message", title: `Message: ${m.name}`, subtitle: m.inquiryType || "Inquiry", timestamp: m.created_at, status: m.replied ? "replied" : "new" })),
@@ -327,8 +328,8 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "messages" && <AdminContact messages={Array.isArray(messages) ? messages : []} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />}
                                 {activeTab === "hire" && <AdminHireRequests requests={Array.isArray(hireRequests) ? hireRequests : []} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />}
                                 {activeTab === "testimonials" && <AdminTestimonials testimonials={Array.isArray(allTestimonials) ? allTestimonials : []} onApprove={handleTestimonialApproval} onDelete={handleTestimonialDelete} />}
+                                {activeTab === "projects" && <AdminProjects projects={Array.isArray(projects) ? projects : []} onUpdate={handleProjectAction} />}
                                 {activeTab === "blog" && <AdminBlog posts={Array.isArray(blogPosts) ? blogPosts : []} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />}
-                                {activeTab === "case-studies" && <AdminCaseStudies studies={Array.isArray(caseStudies) ? caseStudies : []} onUpdate={handleCaseStudyAction} />}
                                 {activeTab === "feature-requests" && <AdminFeatureRequests requests={Array.isArray(featureRequests) ? featureRequests : []} onUpdate={handleFeatureRequestAction} />}
                                 {activeTab === "stats" && <AdminStats stats={statsData || null} onUpdate={handleStatsUpdate} />}
                                 {activeTab === "diagnostics" && <AdminDiagnostics patterns={Array.isArray(diagPatterns) ? diagPatterns : []} logs={Array.isArray(diagLogs) ? diagLogs : []} onUpdate={handleDiagAction} />}

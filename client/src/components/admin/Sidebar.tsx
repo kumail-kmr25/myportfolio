@@ -37,6 +37,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
 
     const menuItems = [
         { id: "overview", label: "Overview", icon: LayoutDashboard },
+        { id: "projects", label: "Projects", icon: FolderPlus },
         { id: "journey", label: "Journey", icon: Milestone },
         { id: "messages", label: "Messages", icon: Mail, count: messageCount },
         { id: "hire", label: "Hire Requests", icon: Briefcase, count: newHireCount },

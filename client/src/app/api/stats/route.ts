@@ -27,7 +27,7 @@ export async function GET() {
             hireRequests,
             patternsMatched
         ] = await Promise.all([
-            prisma.caseStudy.count({ where: { isPublished: true } }),
+            prisma.project.count({ where: { isVisible: true } }),
             prisma.featureRequest.count({ where: { status: "completed" } }),
             prisma.siteStats.findFirst(),
             prisma.diagnosticLog.count(),

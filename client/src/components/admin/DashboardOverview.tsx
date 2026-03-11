@@ -19,6 +19,7 @@ import AdminLiveFeed from "./AdminLiveFeed";
 
 interface OverviewProps {
     stats: {
+        projects: number;
         testimonials: number;
         messages: number;
         hireRequests: number;
@@ -42,7 +43,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
         }
     };
     const cards = [
-        { label: "Total Endorsements", value: stats.testimonials, icon: Users, color: "blue", bg: "bg-blue-500/10", text: "text-blue-400" },
+        { label: "Engineering Projects", value: stats.projects, icon: FolderPlus, color: "blue", bg: "bg-blue-500/10", text: "text-blue-400" },
         { label: "Hire Requests", value: stats.hireRequests, icon: Mail, color: "indigo", bg: "bg-indigo-500/10", text: "text-indigo-400" },
         { label: "Client Inquiries", value: stats.messages, icon: Mail, color: "purple", bg: "bg-purple-500/10", text: "text-purple-400" },
         { label: "Insights Published", value: stats.blogPosts, icon: TrendingUp, color: "green", bg: "bg-green-500/10", text: "text-green-400" },
