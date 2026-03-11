@@ -41,7 +41,6 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
         { id: "messages", label: "Messages", icon: Mail, count: messageCount },
         { id: "hire", label: "Hire Requests", icon: Briefcase, count: newHireCount },
         { id: "testimonials", label: "Testimonials", icon: MessageSquare },
-        { id: "projects", label: "Projects", icon: FolderPlus },
         { id: "case-studies", label: "Case Studies", icon: BookOpen },
         { id: "feature-requests", label: "Feature Requests", icon: CheckSquare, count: pendingFeaturesCount },
         { id: "stats", label: "Site Stats", icon: BarChart3 },

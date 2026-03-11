@@ -34,7 +34,6 @@ export default function StatsDashboard() {
     const { data: availability } = useSWR("/api/availability", fetcher, { refreshInterval: 5000 });
 
     const statItems = [
-        { label: "Total Projects", value: stats?.totalProjects || 0, icon: Layers, color: "text-blue-500", bg: "bg-blue-500/10" },
         { label: "Bugs Fixed", value: stats?.bugsFixed || 0, icon: Bug, color: "text-red-500", bg: "bg-red-500/10" },
         { label: "Case Studies", value: stats?.caseStudiesWritten || 0, icon: BookOpen, color: "text-purple-500", bg: "bg-purple-500/10" },
         { label: "Features Built", value: stats?.featureRequestsCompleted || 0, icon: CheckSquare, color: "text-green-500", bg: "bg-green-500/10" },

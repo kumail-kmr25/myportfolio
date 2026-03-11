@@ -5,7 +5,6 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const FALLBACK_STATS = {
-    totalProjects: 6,
     bugsFixed: 142,
     caseStudiesWritten: 2,
     featureRequestsCompleted: 0,
@@ -20,7 +19,6 @@ const FALLBACK_STATS = {
 export async function GET() {
     try {
         const [
-            projectCount,
             caseStudyCount,
             completedFeaturesCount,
             siteStats,
@@ -29,7 +27,6 @@ export async function GET() {
             hireRequests,
             patternsMatched
         ] = await Promise.all([
-            prisma.project.count(),
             prisma.caseStudy.count({ where: { isPublished: true } }),
             prisma.featureRequest.count({ where: { status: "completed" } }),
             prisma.siteStats.findFirst(),
@@ -40,7 +37,6 @@ export async function GET() {
         ]);
 
         const stats = {
-            totalProjects: projectCount + (siteStats?.totalProjects || 0),
             bugsFixed: siteStats?.bugsFixed || 0,
             caseStudiesWritten: caseStudyCount,
             featureRequestsCompleted: completedFeaturesCount,

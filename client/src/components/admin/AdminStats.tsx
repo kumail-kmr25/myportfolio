@@ -1,10 +1,9 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { BarChart3, Save, RefreshCw, Loader2, Info } from "lucide-react";
 
 export interface SiteStats {
-    totalProjects: number;
     bugsFixed: number;
     caseStudiesWritten: number;
     featureRequestsCompleted: number;
@@ -14,7 +13,6 @@ export interface SiteStats {
 
 export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | null, onUpdate: () => void }) {
     const [formData, setFormData] = useState<SiteStats>({
-        totalProjects: 0,
         bugsFixed: 0,
         caseStudiesWritten: 0,
         featureRequestsCompleted: 0,
@@ -46,7 +44,6 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
     };
 
     const statFields = [
-        { label: "Total Projects", key: "totalProjects", description: "Automatically aggregated from Projects table" },
         { label: "Bugs Fixed", key: "bugsFixed", description: "Manual count of bugs resolved" },
         { label: "Case Studies Written", key: "caseStudiesWritten", description: "Automatically aggregated from Case Studies" },
         { label: "Features Completed", key: "featureRequestsCompleted", description: "Automatically aggregated from Feature Requests" },

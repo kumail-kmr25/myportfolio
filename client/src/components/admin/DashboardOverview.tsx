@@ -22,7 +22,6 @@ interface OverviewProps {
         testimonials: number;
         messages: number;
         hireRequests: number;
-        projects: number;
         blogPosts: number;
     };
     recentActivity: any[];
@@ -46,7 +45,6 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
         { label: "Total Endorsements", value: stats.testimonials, icon: Users, color: "blue", bg: "bg-blue-500/10", text: "text-blue-400" },
         { label: "Hire Requests", value: stats.hireRequests, icon: Mail, color: "indigo", bg: "bg-indigo-500/10", text: "text-indigo-400" },
         { label: "Client Inquiries", value: stats.messages, icon: Mail, color: "purple", bg: "bg-purple-500/10", text: "text-purple-400" },
-        { label: "Portfolio Projects", value: stats.projects, icon: FolderPlus, color: "blue", bg: "bg-blue-500/10", text: "text-blue-400" },
         { label: "Insights Published", value: stats.blogPosts, icon: TrendingUp, color: "green", bg: "bg-green-500/10", text: "text-green-400" },
     ];
 
