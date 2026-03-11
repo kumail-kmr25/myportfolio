@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Download } from "lucide-react";
-import { motion } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useHireModal } from "@/context/HireModalContext";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
@@ -66,7 +66,7 @@ export default function Hero() {
                 {/* Noise Texture Overlay */}
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-50 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] filter contrast-150 brightness-150 mix-blend-overlay" />
 
-                <motion.div
+                <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 2, ease: premiumEase as any }}
@@ -83,7 +83,7 @@ export default function Hero() {
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020202]/80 to-[#020202] z-10" />
 
                     {/* Orbital Light Sources */}
-                    <motion.div
+                    <m.div
                         animate={{
                             x: [0, 50, -50, 0],
                             y: [0, -30, 30, 0],
@@ -93,7 +93,7 @@ export default function Hero() {
                         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                         className="absolute top-1/4 left-1/4 h-[800px] w-[800px] bg-blue-600/10 blur-[120px] rounded-full mix-blend-screen"
                     />
-                    <motion.div
+                    <m.div
                         animate={{
                             x: [0, -50, 50, 0],
                             y: [0, 30, -30, 0],
@@ -104,7 +104,7 @@ export default function Hero() {
                         className="absolute bottom-1/4 right-1/4 h-[800px] w-[800px] bg-purple-600/10 blur-[120px] rounded-full mix-blend-screen"
                     />
 
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 1.1 }}
                         animate={{ opacity: 0.03, scale: 1 }}
                         transition={{ duration: 1.5, ease: premiumEase as any }}
@@ -118,22 +118,22 @@ export default function Hero() {
                             </defs>
                             <rect width="100%" height="100%" fill="url(#grid-hero)" />
                         </svg>
-                    </motion.div>
-                </motion.div>
+                    </m.div>
+                </m.div>
             </div>
 
             <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                     {/* Left Column: Content */}
                     <div className="flex-1 text-center lg:text-left">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 1, ease: premiumEase as any }}
                             className="flex flex-col items-center lg:items-start gap-6 mb-8"
                         >
                             <div className="relative">
-                                <motion.div
+                                <m.div
                                     animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
                                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                                     className="absolute -inset-4 bg-blue-500/10 blur-xl rounded-full"
@@ -145,41 +145,42 @@ export default function Hero() {
                                     </span>
                                 </span>
                             </div>
-                        </motion.div>
+                        </m.div>
 
-                        <motion.h1
+                        <m.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.2, ease: premiumEase as any }}
                             className="text-6xl sm:text-7xl lg:text-8xl font-black font-display text-white mb-6 tracking-tighter leading-[0.9] select-none"
                         >
                             Kumail <span className="text-blue-500 italic">KMR</span>
-                        </motion.h1>
+                        </m.h1>
 
-                        <motion.h2
+                        <m.h2
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2, duration: 1.2, ease: premiumEase as any }}
                             className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-400 mb-6 tracking-tight"
                         >
                             Building <span className="text-white">Scalable</span> Web Platforms
-                        </motion.h2>
+                        </m.h2>
 
-                        <motion.p
+                        <m.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3, duration: 1.2, ease: premiumEase as any }}
                             className="text-gray-500 text-lg sm:text-xl max-w-xl mb-12 font-medium leading-relaxed"
                         >
                             I design and develop modern web applications with reliable architecture, secure systems, and production-ready deployment.
-                        </motion.p>
+                        </m.p>
 
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 1, ease: premiumEase as any }}
                             className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start w-full sm:w-auto"
                         >
+
                             <Link
                                 href="#projects"
                                 prefetch={false}
@@ -212,25 +213,26 @@ export default function Hero() {
                                     My Journey
                                 </span>
                             </Link>
-                        </motion.div>
+                        </m.div>
 
                     </div>
 
                     {/* Right Column: Visual */}
                     <div className="flex-1 relative order-first lg:order-last mb-12 lg:mb-0">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 1.5, ease: premiumEase as any }}
                             className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-[450px] lg:h-[450px] mx-auto"
                         >
+
                             {/* Decorative Elements */}
-                            <motion.div
+                             <m.div
                                 animate={{ rotate: 360 }}
                                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                                 className="absolute -inset-4 border border-dashed border-blue-500/20 rounded-full"
                             />
-                            <motion.div
+                            <m.div
                                 animate={{ rotate: -360 }}
                                 transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
                                 className="absolute -inset-8 border border-dashed border-purple-500/10 rounded-full"
@@ -243,6 +245,7 @@ export default function Hero() {
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                                     priority
+                                    quality={90}
                                     sizes="(max-width: 768px) 256px, (max-width: 1024px) 320px, 450px"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-transparent to-transparent opacity-40" />
@@ -250,7 +253,7 @@ export default function Hero() {
 
 
                             {/* Floating Badges */}
-                            <motion.div
+                            <m.div
                                 animate={{ y: [0, -10, 0] }}
                                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                                 className="absolute -top-4 -right-4 p-4 rounded-2xl bg-[#0a0a0a]/80 border border-white/10 backdrop-blur-md hidden sm:block"
@@ -260,8 +263,8 @@ export default function Hero() {
                                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                                     Available for Hire
                                 </div>
-                            </motion.div>
-                        </motion.div>
+                            </m.div>
+                        </m.div>
                     </div>
                 </div>
             </div>

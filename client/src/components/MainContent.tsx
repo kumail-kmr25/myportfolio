@@ -64,7 +64,9 @@ export default function MainContent() {
             <Services />
             <About />
             <Blog />
+            <FeatureSuggestion />
             <MyJourney />
+            <DiagnosticTool />
             <HireMeCTA />
             <Contact />
             <Footer />

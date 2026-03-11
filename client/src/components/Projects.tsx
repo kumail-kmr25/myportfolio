@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { m, AnimatePresence, Variants } from "framer-motion";
 import useSWR from "swr";
 import {
     ExternalLink, Github, Globe, ChevronRight, Layers, Zap,
@@ -82,11 +82,11 @@ const fetcher = async (url: string) => {
 };
 
 // ─────────────────────────────────────────
-// Standardized Project Card (Step 3)
+// Standardized Project Card
 // ─────────────────────────────────────────
 function ProjectCard({ project }: { project: Project }) {
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -110,6 +110,7 @@ function ProjectCard({ project }: { project: Project }) {
                     fill
                     className="object-cover transition-transform duration-1000 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    quality={90}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
 
@@ -142,7 +143,7 @@ function ProjectCard({ project }: { project: Project }) {
                     {project.summary || project.description}
                 </p>
 
-                {/* Value Points - The core "Client Focused" change */}
+                {/* Value Points */}
                 {project.valuePoints && project.valuePoints.length > 0 ? (
                     <div className="space-y-3 mb-10 mt-auto">
                         <span className="text-[9px] font-black uppercase tracking-widest text-gray-600 block mb-4">Value Proposition</span>
@@ -158,7 +159,6 @@ function ProjectCard({ project }: { project: Project }) {
                         ))}
                     </div>
                 ) : (
-                    /* Fallback to tech tags if no value points */
                     <div className="flex flex-wrap gap-2 mb-10 mt-auto">
                         {project.tags.slice(0, 4).map((tag) => (
                             <span key={tag} className="px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/5 text-[9px] font-bold text-gray-500 uppercase tracking-widest group-hover:border-blue-500/20 group-hover:text-blue-400/80 transition-all">
@@ -198,10 +198,8 @@ function ProjectCard({ project }: { project: Project }) {
                         </div>
                     )}
                 </div>
-
             </div>
-        </motion.div>
-
+        </m.div>
     );
 }
 
@@ -280,7 +278,7 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
                 </svg>
 
                 {architecture.nodes.map((node) => (
-                    <motion.div
+                    <m.div
                         key={node.id}
                         className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer`}
                         style={{ left: `${node.x}%`, top: `${node.y}%` }}
@@ -295,7 +293,7 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
                             transition-all duration-300 min-w-[80px]
                         `}>
                             {hovered === node.id && (
-                                <motion.div
+                                <m.div
                                     layoutId="pulse"
                                     className="absolute inset-0 rounded-2xl bg-current opacity-20 blur-md"
                                     animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
@@ -308,18 +306,18 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
                             </div>
                             <AnimatePresence>
                                 {hovered === node.id && (
-                                    <motion.div
+                                    <m.div
                                         initial={{ opacity: 0, y: 4, scale: 0.9 }}
                                         animate={{ opacity: 1, y: -4, scale: 1 }}
                                         exit={{ opacity: 0, y: 4, scale: 0.9 }}
                                         className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap bg-black/90 border border-white/10 rounded-xl px-3 py-1.5 text-[10px] text-gray-300 font-medium backdrop-blur-md z-30"
                                     >
                                         {node.sub}
-                                    </motion.div>
+                                    </m.div>
                                 )}
                             </AnimatePresence>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
 
@@ -362,7 +360,7 @@ function EngineeringDepthIndicator({ project }: { project: Project }) {
                         <span className="text-lg font-black text-white">{ind.value}%</span>
                     </div>
                     <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                        <motion.div
+                        <m.div
                             className={`h-full rounded-full ${ind.color === 'blue' ? 'bg-blue-500' : ind.color === 'purple' ? 'bg-purple-500' : ind.color === 'amber' ? 'bg-amber-500' : 'bg-green-500'}`}
                             initial={{ width: 0 }}
                             animate={{ width: `${ind.value}%` }}
@@ -388,9 +386,8 @@ function TabContent({ tab, project }: { tab: Tab; project: Project }) {
     switch (tab) {
         case "snapshot":
             return (
-                <motion.div {...variants} transition={{ duration: 0.3 }} className="space-y-8">
+                <m.div {...variants} transition={{ duration: 0.3 }} className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* Executive Info */}
                         <div className="space-y-6">
                             <div>
                                 <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 mb-2">Product Core</h4>
@@ -417,18 +414,17 @@ function TabContent({ tab, project }: { tab: Tab; project: Project }) {
                                 ))}
                             </div>
                         </div>
-                        {/* Depth Meters */}
                         <div className="space-y-4">
                             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-purple-400">Engineering Depth Indicator</h4>
                             <EngineeringDepthIndicator project={project} />
                         </div>
                     </div>
-                </motion.div>
+                </m.div>
             );
 
         case "overview":
             return (
-                <motion.div {...variants} transition={{ duration: 0.3 }} className="space-y-8">
+                <m.div {...variants} transition={{ duration: 0.3 }} className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <section className="space-y-4">
                             <div className="flex items-center gap-3 text-amber-400">
@@ -459,12 +455,12 @@ function TabContent({ tab, project }: { tab: Tab; project: Project }) {
                             <p className="text-gray-400 leading-relaxed text-sm sm:text-base">{project.valueProp}</p>
                         </section>
                     </div>
-                </motion.div>
+                </m.div>
             );
 
         case "architecture":
             return (
-                <motion.div {...variants} transition={{ duration: 0.3 }} className="space-y-6">
+                <m.div {...variants} transition={{ duration: 0.3 }} className="space-y-6">
                     {project.architecture && (
                         <div className="space-y-6">
                             <ArchitectureDiagram architecture={project.architecture} />
@@ -476,12 +472,12 @@ function TabContent({ tab, project }: { tab: Tab; project: Project }) {
                             </div>
                         </div>
                     )}
-                </motion.div>
+                </m.div>
             );
 
         case "engineering":
             return (
-                <motion.div {...variants} transition={{ duration: 0.3 }} className="space-y-8">
+                <m.div {...variants} transition={{ duration: 0.3 }} className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <section className="space-y-4">
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-rose-400">Crucial Challenges</h4>
@@ -504,12 +500,12 @@ function TabContent({ tab, project }: { tab: Tab; project: Project }) {
                             </div>
                         </div>
                     )}
-                </motion.div>
+                </m.div>
             );
 
         case "performance":
             return (
-                <motion.div {...variants} transition={{ duration: 0.3 }} className="space-y-8">
+                <m.div {...variants} transition={{ duration: 0.3 }} className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <section className="space-y-4">
                             <div className="flex items-center gap-3 text-cyan-400">
@@ -527,7 +523,6 @@ function TabContent({ tab, project }: { tab: Tab; project: Project }) {
                         </section>
                     </div>
 
-                    {/* Transformation & Metrics */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/5">
                         <div className="md:col-span-2 flex flex-wrap gap-3">
                             {project.metrics?.map((metric, i) => (
@@ -556,12 +551,12 @@ function TabContent({ tab, project }: { tab: Tab; project: Project }) {
                             <p className="text-sm text-gray-400 leading-relaxed">{project.improvementDetails}</p>
                         </div>
                     )}
-                </motion.div>
+                </m.div>
             );
 
         case "lessons":
             return (
-                <motion.div {...variants} transition={{ duration: 0.3 }} className="space-y-6">
+                <m.div {...variants} transition={{ duration: 0.3 }} className="space-y-6">
                     <div className="p-8 rounded-3xl bg-amber-500/5 border border-amber-500/10 border-l-4 border-l-amber-500">
                         <div className="flex items-center gap-4 text-amber-400 mb-4">
                             <Lightbulb size={24} />
@@ -569,7 +564,7 @@ function TabContent({ tab, project }: { tab: Tab; project: Project }) {
                         </div>
                         <p className="text-gray-300 leading-relaxed text-base italic">&ldquo;{project.lessons}&rdquo;</p>
                     </div>
-                </motion.div>
+                </m.div>
             );
 
         default:
@@ -666,10 +661,9 @@ export default function Projects() {
     return (
         <section id="projects" className="relative py-24 sm:py-32 bg-[#050505] overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-                {/* Section Header */}
                 <div className="mb-16 sm:mb-24 flex flex-col lg:flex-row lg:items-end justify-between gap-10">
                     <div>
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
@@ -677,7 +671,7 @@ export default function Projects() {
                         >
                             <div className="w-12 h-[1px] bg-blue-500/50" />
                             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500">Portfolio Showcase</span>
-                        </motion.div>
+                        </m.div>
                         <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[0.9]">
                             Product Case <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Studies.</span>
                         </h2>
@@ -686,7 +680,6 @@ export default function Projects() {
                         </p>
                     </div>
 
-                    {/* Category Filter Tabs */}
                     <div className="flex flex-wrap gap-2 p-1.5 rounded-[1.5rem] bg-white/[0.02] border border-white/5 backdrop-blur-sm self-start lg:self-end">
                         {categories.map((cat: any) => (
                             <button
@@ -706,11 +699,10 @@ export default function Projects() {
                     </div>
                 </div>
 
-                {/* Standardized Project Grid (Step 3) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
                     <AnimatePresence mode="popLayout">
                         {filteredProjects?.map((project) => (
-                            <motion.div
+                            <m.div
                                 key={project.id}
                                 layout
                                 initial={{ opacity: 0, scale: 0.9 }}
@@ -719,12 +711,11 @@ export default function Projects() {
                                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                             >
                                 <ProjectCard project={project} />
-                            </motion.div>
+                            </m.div>
                         ))}
                     </AnimatePresence>
                 </div>
 
-                {/* Console Deep-Dive Divider */}
                 <div id="deep-dive-console" className="relative py-24 mb-16">
                     <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-8 bg-[#050505] text-[10px] font-black uppercase tracking-[0.5em] text-gray-500 whitespace-nowrap">
@@ -747,7 +738,6 @@ export default function Projects() {
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-8 items-start">
-                    {/* ── Left: Sidebar Vertical Selector (Desktop Only) ── */}
                     <aside className="hidden lg:block w-72 flex-shrink-0 space-y-2 sticky top-32">
                         <div className="mb-6 p-4 rounded-3xl bg-blue-500/5 border border-blue-500/10">
                             <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">Project Intelligence Console</span>
@@ -781,11 +771,10 @@ export default function Projects() {
                         ))}
                     </aside>
 
-                    {/* ── Right: Dynamic Project Panel ── */}
                     <div className="flex-1 min-w-0">
                         <AnimatePresence mode="wait">
                             {active && (
-                                <motion.div
+                                <m.div
                                     key={active.id}
                                     initial={{ opacity: 0, x: 30 }}
                                     animate={{ opacity: 1, x: 0 }}
@@ -793,9 +782,7 @@ export default function Projects() {
                                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                                     className="space-y-8"
                                 >
-                                    {/* Project Header Widget */}
                                     <div className="relative p-8 sm:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/5 overflow-hidden">
-                                        {/* Banner Background */}
                                         <div className="absolute inset-0 z-0 opacity-20">
                                             <Image src={active.image} alt="" fill className="object-cover blur-2xl scale-125" />
                                             <div className="absolute inset-0 bg-gradient-to-br from-[#050505] via-[#050505]/80 to-transparent" />
@@ -840,7 +827,6 @@ export default function Projects() {
                                         </div>
                                     </div>
 
-                                    {/* Dashboard Tabs */}
                                     <div className="flex overflow-x-auto gap-1 p-2 rounded-[2rem] bg-white/[0.01] border border-white/5 scrollbar-hide">
                                         {TABS.map((tab) => (
                                             <button
@@ -860,8 +846,7 @@ export default function Projects() {
                                         ))}
                                     </div>
 
-                                    {/* Dynamic Content Display */}
-                                    <motion.div
+                                    <m.div
                                         layout
                                         initial={false}
                                         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -870,9 +855,8 @@ export default function Projects() {
                                         <AnimatePresence mode="wait">
                                             <TabContent key={`${active.id}-${activeTab}`} tab={activeTab} project={active} />
                                         </AnimatePresence>
-                                    </motion.div>
+                                    </m.div>
 
-                                    {/* Bottom Nudge - Next Case Study */}
                                     <button
                                         onClick={() => {
                                             const next = (activeIndex + 1) % projects.length;
@@ -884,7 +868,7 @@ export default function Projects() {
                                         <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700">
                                             <Image src={projects[(activeIndex + 1) % projects.length].image} alt="" fill className="object-cover" />
                                         </div>
-                                        <motion.div
+                                        <m.div
                                             className="relative z-10 flex flex-col items-center gap-3"
                                             whileHover={{ y: -5 }}
                                         >
@@ -893,28 +877,28 @@ export default function Projects() {
                                                 {projects[(activeIndex + 1) % projects.length].title}
                                             </h4>
                                             <ArrowRight size={24} className="mt-2 group-hover:translate-x-2 transition-transform text-blue-500" />
-                                        </motion.div>
+                                        </m.div>
                                     </button>
-                                </motion.div>
+                                </m.div>
                             )}
                         </AnimatePresence>
                     </div>
                 </div>
             </div>
 
-            {/* Comparison Modal */}
             <AnimatePresence>
                 {showComparison && active?.beforeImageUrl && active?.afterImageUrl && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowComparison(false)} className="absolute inset-0 bg-black/95 backdrop-blur-xl" />
-                        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="relative w-full max-w-4xl bg-[#0a0a0a] border border-white/10 rounded-[2.5rem] p-8 shadow-2xl">
+                        <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowComparison(false)} className="absolute inset-0 bg-black/95 backdrop-blur-xl" />
+                        <m.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="relative w-full max-w-4xl bg-[#0a0a0a] border border-white/10 rounded-[2.5rem] p-8 shadow-2xl">
                             <button onClick={() => setShowComparison(false)} className="absolute top-6 right-6 p-2 rounded-full bg-white/5 text-white border border-white/10 hover:bg-white/10 transition-all"><X size={20} /></button>
                             <h3 className="text-xl font-black text-white mb-2">{active.title}</h3>
                             <ComparisonSlider before={active.beforeImageUrl} after={active.afterImageUrl} />
-                        </motion.div>
+                        </m.div>
                     </div>
                 )}
             </AnimatePresence>
         </section>
     );
 }
+
