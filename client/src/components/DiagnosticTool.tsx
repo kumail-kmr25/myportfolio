@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Loader2, Bug, Terminal, Globe, ChevronRight, Activity } from "lucide-react";
 import DiagnosticResult from "./DiagnosticResult";
 import { getApiUrl } from "@/lib/api";
@@ -41,14 +41,14 @@ export default function DiagnosticTool() {
         <section id="diagnose" className="py-12 relative overflow-hidden bg-[#050505]">
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="text-center mb-16">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 0.5 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-black uppercase tracking-[0.2em] mb-6"
                     >
                         <Activity size={14} className="animate-pulse" /> Diagnostic Engine v1.0
-                    </motion.div>
+                    </m.div>
                     <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase mb-6">
                         Got a Bug? <span className="text-blue-500">Let&apos;s Break It Down.</span>
                     </h2>
@@ -59,7 +59,7 @@ export default function DiagnosticTool() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                     {/* Form Side */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -133,13 +133,13 @@ export default function DiagnosticTool() {
                                 )}
                             </button>
                         </form>
-                    </motion.div>
+                    </m.div>
 
                     {/* Result Side */}
                     <div className="min-h-[500px]">
                         <AnimatePresence mode="wait">
                             {!result && !isLoading && (
-                                <motion.div
+                                <m.div
                                     key="placeholder"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
@@ -151,11 +151,11 @@ export default function DiagnosticTool() {
                                     </div>
                                     <h3 className="text-white/40 font-bold uppercase tracking-[0.2em] text-xs">Awaiting Input</h3>
                                     <p className="text-white/20 text-xs mt-2">Analysis will appear here after submission</p>
-                                </motion.div>
+                                </m.div>
                             )}
 
                             {isLoading && (
-                                <motion.div
+                                <m.div
                                     key="loading"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
@@ -168,7 +168,7 @@ export default function DiagnosticTool() {
                                     </div>
                                     <h3 className="text-blue-500 font-bold uppercase tracking-[0.2em] text-xs mt-8">Analyzing Pattern</h3>
                                     <p className="text-gray-500 text-xs mt-2">Matching against knowledge base...</p>
-                                </motion.div>
+                                </m.div>
                             )}
 
                             {result && (

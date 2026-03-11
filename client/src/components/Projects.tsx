@@ -242,12 +242,12 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
     if (!architecture || !architecture.nodes) return null;
 
     return (
-        <div className="relative w-full rounded-3xl bg-black/40 border border-white/5 overflow-hidden p-6">
+        <div className="relative w-full rounded-3xl bg-black/40 border border-white/5 overflow-hidden p-4 sm:p-6 shadow-inner">
             <div className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-6 flex items-center gap-2">
                 <GitBranch size={12} /> System Architecture Flow
             </div>
 
-            <div className="relative w-full" style={{ height: "300px" }}>
+            <div className="relative w-full overflow-x-auto lg:overflow-visible pb-4 lg:pb-0" style={{ height: "300px", minWidth: "600px" }}>
                 <svg ref={svgRef} className="absolute inset-0 w-full h-full pointer-events-none" style={{ overflow: "visible" }}>
                     <defs>
                         <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
@@ -623,11 +623,12 @@ export default function Projects() {
 
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
-    const active = projects?.[activeIndex];
+    const displayedProjects = projects?.slice(0, 8);
+    const active = displayedProjects?.[activeIndex];
 
     const categories = ["All", ...Array.from(new Set(projects?.map(p => p.category).filter(Boolean)))];
 
-    const filteredProjects = projects?.filter(p =>
+    const filteredProjects = displayedProjects?.filter(p =>
         selectedCategory === "All" || p.category === selectedCategory
     );
 
@@ -659,9 +660,9 @@ export default function Projects() {
     );
 
     return (
-        <section id="projects" className="relative py-24 sm:py-32 bg-[#050505] overflow-hidden">
+        <section id="projects" className="relative py-24 lg:py-16 sm:py-32 bg-[#050505] overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-                <div className="mb-16 sm:mb-24 flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+                <div className="mb-16 lg:mb-12 sm:mb-24 flex flex-col lg:flex-row lg:items-end justify-between gap-10">
                     <div>
                         <m.div
                             initial={{ opacity: 0, x: -20 }}
@@ -799,7 +800,7 @@ export default function Projects() {
                                                             Role: {active.role}
                                                         </span>
                                                     </div>
-                                                    <h3 className="text-3xl sm:text-6xl font-black text-white tracking-tighter leading-tight sm:leading-none">
+                                                    <h3 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-tight lg:leading-none">
                                                         {active.title}
                                                     </h3>
                                                 </div>

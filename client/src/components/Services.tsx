@@ -1,7 +1,7 @@
 "use client";
 
 import { Code, Layout, Smartphone, Server, Globe, Rocket, Terminal } from "lucide-react";
-import { motion, Variants } from "framer-motion";
+import { m, Variants } from "framer-motion";
 
 const services = [
     {
@@ -64,30 +64,30 @@ export default function Services() {
     };
 
     return (
-        <section id="services" className="py-24 bg-[#050505] relative overflow-hidden">
+        <section id="services" className="py-24 lg:py-16 bg-[#050505] relative overflow-hidden">
             {/* Background blobs */}
             <div className="absolute top-1/4 left-0 w-96 h-96 bg-purple-600/5 rounded-full blur-[100px] pointer-events-none" />
             <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="section-container relative z-10">
-                <div className="text-center mb-16">
-                    <motion.span
+                <div className="text-center mb-16 lg:mb-12">
+                    <m.span
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-4 block"
                     >
                         Expertise
-                    </motion.span>
-                    <motion.h2
+                    </m.span>
+                    <m.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6"
                     >
                         Services <span className="text-gray-500">I Offer</span>
-                    </motion.h2>
-                    <motion.p
+                    </m.h2>
+                    <m.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -95,10 +95,10 @@ export default function Services() {
                         className="text-gray-400 text-lg max-w-2xl mx-auto"
                     >
                         Specialized solutions for startups and businesses looking to scale through technical excellence.
-                    </motion.p>
+                    </m.p>
                 </div>
 
-                <motion.div
+                <m.div
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: "-100px" }}
@@ -106,7 +106,7 @@ export default function Services() {
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
                     {services.map((service, index) => (
-                        <motion.div
+                        <m.div
                             key={index}
                             variants={itemVariants}
                             whileHover={{ y: -8, transition: { duration: 0.3 } }}
@@ -119,9 +119,9 @@ export default function Services() {
                             <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
                                 {service.description}
                             </p>
-                        </motion.div>
+                        </m.div>
                     ))}
-                </motion.div>
+                </m.div>
             </div>
         </section>
     );

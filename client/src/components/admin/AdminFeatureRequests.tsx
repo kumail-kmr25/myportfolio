@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { CheckSquare, Clock, Hammer, CheckCircle2, Mail, User, MessageCircle, Loader2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 interface FeatureRequest {
     id: string;
@@ -54,7 +54,7 @@ export default function AdminFeatureRequests({ requests, onUpdate }: { requests:
                 {requests.map((request) => {
                     const StatusIcon = statusIcons[request.status] || Clock;
                     return (
-                        <motion.div
+                        <m.div
                             key={request.id}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -92,7 +92,7 @@ export default function AdminFeatureRequests({ requests, onUpdate }: { requests:
                                     </button>
                                 ))}
                             </div>
-                        </motion.div>
+                        </m.div>
                     );
                 })}
 

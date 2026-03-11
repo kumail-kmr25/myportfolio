@@ -1,4 +1,4 @@
-import { motion, Variants } from "framer-motion";
+import { m, Variants } from "framer-motion";
 import { Bug, Code2, Layout, Database, Zap, Cloud, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
@@ -50,7 +50,7 @@ export default function HireMeCTA() {
                 </svg>
             </div>
 
-            <motion.div
+            <m.div
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-100px" }}
@@ -62,14 +62,14 @@ export default function HireMeCTA() {
                     <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/10 blur-[80px] rounded-full group-hover/cta:scale-150 transition-transform duration-1000" />
                     <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-purple-500/10 blur-[80px] rounded-full group-hover/cta:scale-150 transition-transform duration-1000 delay-150" />
 
-                    <motion.h2 variants={itemVariants} className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight relative z-10">
+                    <m.h2 variants={itemVariants} className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight relative z-10">
                         Ready to Build Something <span className="text-blue-500 italic drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]">Legendary?</span>
-                    </motion.h2>
-                    <motion.p variants={itemVariants} className="text-gray-400 mb-16 text-xl max-w-2xl mx-auto leading-relaxed">
+                    </m.h2>
+                    <m.p variants={itemVariants} className="text-gray-400 mb-16 text-xl max-w-2xl mx-auto leading-relaxed">
                         Whether you need a full-scale application or a critical performance boost, I&apos;m here to deliver high-performance engineering.
-                    </motion.p>
+                    </m.p>
 
-                    <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-16">
+                    <m.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-16">
                         {services.map((item) => (
                             <Link
                                 key={item.label}
@@ -84,9 +84,9 @@ export default function HireMeCTA() {
                                 </span>
                             </Link>
                         ))}
-                    </motion.div>
+                    </m.div>
 
-                    <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-center justify-center gap-8">
+                    <m.div variants={itemVariants} className="flex flex-col md:flex-row items-center justify-center gap-8">
                         <Link
                             href="#contact"
                             className="group relative px-12 py-6 bg-blue-600 rounded-[2rem] font-black text-white text-lg uppercase tracking-widest transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.5)] active:scale-95 flex items-center gap-4 overflow-hidden"
@@ -96,9 +96,9 @@ export default function HireMeCTA() {
                             <ArrowRight size={22} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                         </Link>
                         <LiveStatusBadge variant="hero" />
-                    </motion.div>
+                    </m.div>
                 </div>
-            </motion.div>
+            </m.div>
         </section>
     );
 }

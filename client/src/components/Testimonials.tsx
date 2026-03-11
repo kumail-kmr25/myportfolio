@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import { Star, BadgeCheck, Quote, Plus } from "lucide-react";
-import { motion, Variants } from "framer-motion";
+import { m, Variants } from "framer-motion";
 import { useState, useEffect } from "react";
 import TestimonialModal from "./TestimonialModal";
 
@@ -78,7 +78,7 @@ function Marquee({ items, reverse = false }: { items: Testimonial[]; reverse?: b
 
     return (
         <div className="overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}>
-            <motion.div
+            <m.div
                 className="flex"
                 animate={{ x: reverse ? ["0%", "33.33%"] : ["0%", "-33.33%"] }}
                 transition={{ duration: 35, ease: "linear", repeat: Infinity }}
@@ -86,7 +86,7 @@ function Marquee({ items, reverse = false }: { items: Testimonial[]; reverse?: b
                 whileHover={{ animationPlayState: "paused" } as any}
             >
                 {duplicated.map((t, i) => <TestimonialCard key={`${t.id}-${i}`} t={t} />)}
-            </motion.div>
+            </m.div>
         </div>
     );
 }
@@ -135,31 +135,31 @@ export default function Testimonials() {
     };
 
     return (
-        <section id="testimonials" className="py-24 bg-[#050505] relative overflow-hidden">
+        <section id="testimonials" className="py-24 lg:py-16 bg-[#050505] relative overflow-hidden">
             {/* Background glow and subtle dots */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-6xl h-px bg-gradient-to-r from-transparent via-blue-500/10 to-transparent" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-            <div className="section-container mb-24">
+            <div className="section-container mb-24 lg:mb-16">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                     <div className="max-w-2xl">
-                        <motion.span
+                        <m.span
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="text-blue-500 font-mono text-[10px] font-black uppercase tracking-[0.3em] mb-4 block"
                         >
                             Social Proof
-                        </motion.span>
-                        <motion.h2
+                        </m.span>
+                        <m.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4"
                         >
                             What People <span className="text-gray-500 italic">Say</span>
-                        </motion.h2>
-                        <motion.p
+                        </m.h2>
+                        <m.p
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -167,10 +167,10 @@ export default function Testimonials() {
                             className="text-gray-400 text-lg leading-relaxed"
                         >
                             Real-world feedback from engineering partners and institutional clients. Unfiltered technical validation.
-                        </motion.p>
+                        </m.p>
                     </div>
 
-                    <motion.button
+                    <m.button
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -182,7 +182,7 @@ export default function Testimonials() {
                             <Plus size={16} className="text-blue-500" />
                             Add Yours
                         </span>
-                    </motion.button>
+                    </m.button>
                 </div>
             </div>
 
@@ -202,35 +202,35 @@ export default function Testimonials() {
             {/* Stats strip */}
             {testimonials.length > 0 && (
                 <div className="section-container mt-24">
-                    <motion.div
+                    <m.div
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
                         className="flex flex-wrap items-center justify-center gap-12 p-10 rounded-[3rem] bg-white/[0.02] border border-white/5 backdrop-blur-md relative overflow-hidden"
                     >
-                        <motion.div variants={itemVariants} className="text-center group">
+                        <m.div variants={itemVariants} className="text-center group">
                             <div className="text-3xl font-black text-white group-hover:text-blue-400 transition-colors">{testimonials.length}</div>
                             <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Total Insights</div>
-                        </motion.div>
+                        </m.div>
                         <div className="hidden md:block w-px h-12 bg-white/10" />
-                        <motion.div variants={itemVariants} className="text-center group">
+                        <m.div variants={itemVariants} className="text-center group">
                             <div className="text-3xl font-black text-yellow-400 group-hover:scale-110 transition-transform">
                                 {(testimonials.reduce((sum: number, t: Testimonial) => sum + t.rating, 0) / testimonials.length).toFixed(1)}
                             </div>
                             <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Avg Rating</div>
-                        </motion.div>
+                        </m.div>
                         <div className="hidden md:block w-px h-12 bg-white/10" />
-                        <motion.div variants={itemVariants} className="text-center group">
+                        <m.div variants={itemVariants} className="text-center group">
                             <div className="text-3xl font-black text-blue-400 group-hover:text-white transition-colors">
                                 {testimonials.filter((t: Testimonial) => t.verified).length}
                             </div>
                             <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Verified Nodes</div>
-                        </motion.div>
+                        </m.div>
 
                         {/* Decorative background glow */}
                         <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-blue-500/10 blur-[60px] rounded-full pointer-events-none" />
-                    </motion.div>
+                    </m.div>
                 </div>
             )}
         </section>

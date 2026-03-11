@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp, Users, MousePointer2, Briefcase, Zap } from "lucide-react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 interface AnalyticsProps {
     stats: {
@@ -27,7 +27,7 @@ export default function AdminAnalytics({ stats }: AnalyticsProps) {
         <div className="space-y-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {data.map((item, i) => (
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         whileHover={{
@@ -50,7 +50,7 @@ export default function AdminAnalytics({ stats }: AnalyticsProps) {
                         <h3 className="text-2xl sm:text-3xl font-black text-white mb-1 relative z-10">{item.value}</h3>
                         <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest relative z-10">{item.label}</p>
                         <p className="text-[9px] text-gray-600 mt-2 font-medium italic relative z-10">{item.subtitle}</p>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
 

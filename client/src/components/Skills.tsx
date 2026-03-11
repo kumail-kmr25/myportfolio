@@ -1,7 +1,7 @@
 "use client";
 
 import { Code2, Database, Layout, Server, Smartphone, Terminal, Cpu, Globe, Cloud } from "lucide-react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const skills = [
     { name: "React", icon: Code2, color: "text-cyan-400" },
@@ -26,23 +26,23 @@ export default function Skills() {
         <section className="py-12 bg-[#050505] overflow-hidden relative">
             <div className="section-container mb-24 relative z-10">
                 <div className="text-center">
-                    <motion.span
+                    <m.span
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-4 block"
                     >
                         Infrastructure
-                    </motion.span>
-                    <motion.h2
+                    </m.span>
+                    <m.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6"
                     >
                         Core <span className="text-gray-500 italic">Technology</span>
-                    </motion.h2>
-                    <motion.p
+                    </m.h2>
+                    <m.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -50,14 +50,14 @@ export default function Skills() {
                         className="text-gray-400 text-lg max-w-2xl mx-auto"
                     >
                         A specialized toolkit for modern software engineering, focused on speed, reliability, and developer experience.
-                    </motion.p>
+                    </m.p>
                 </div>
             </div>
 
             <div className="relative flex overflow-x-hidden group">
                 <div className="animate-marquee whitespace-nowrap flex gap-8 py-10">
                     {allSkills.map((skill, index) => (
-                        <motion.div
+                        <m.div
                             key={index}
                             whileHover={{
                                 scale: 1.1,
@@ -71,13 +71,13 @@ export default function Skills() {
                             <span className="text-2xl font-bold tracking-tight text-gray-300 group-hover/skill:text-white transition-colors">
                                 {skill.name}
                             </span>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
 
                 <div className="absolute top-0 animate-marquee2 whitespace-nowrap flex gap-8 py-10">
                     {allSkills.map((skill, index) => (
-                        <motion.div
+                        <m.div
                             key={`dupe-${index}`}
                             whileHover={{
                                 scale: 1.1,
@@ -91,7 +91,7 @@ export default function Skills() {
                             <span className="text-2xl font-bold tracking-tight text-gray-300 group-hover/skill:text-white transition-colors">
                                 {skill.name}
                             </span>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>

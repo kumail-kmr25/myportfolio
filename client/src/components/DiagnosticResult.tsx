@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
     AlertCircle,
     Search,
@@ -49,7 +49,7 @@ export default function DiagnosticResult({ result }: DiagnosticResultProps) {
     ];
 
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="h-full"
@@ -69,21 +69,21 @@ export default function DiagnosticResult({ result }: DiagnosticResultProps) {
 
                 <div className="absolute top-0 right-0 p-8">
                     {result.isMatch ? (
-                        <motion.div
+                        <m.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             className="flex items-center gap-2 text-green-400 bg-green-400/10 border border-green-400/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-green-500/10"
                         >
                             <CheckCircle2 size={12} /> Pattern Matched
-                        </motion.div>
+                        </m.div>
                     ) : (
-                        <motion.div
+                        <m.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             className="flex items-center gap-2 text-blue-400 bg-blue-400/10 border border-blue-400/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/10"
                         >
                             <Zap size={12} /> General Analysis
-                        </motion.div>
+                        </m.div>
                     )}
                 </div>
 
@@ -96,7 +96,7 @@ export default function DiagnosticResult({ result }: DiagnosticResultProps) {
                             </h4>
                             <div className="space-y-3">
                                 {result.possibleCauses.map((cause, i) => (
-                                    <motion.div
+                                    <m.div
                                         initial={{ opacity: 0, x: -10 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: i * 0.1 }}
@@ -107,7 +107,7 @@ export default function DiagnosticResult({ result }: DiagnosticResultProps) {
                                             {i + 1}
                                         </div>
                                         {cause}
-                                    </motion.div>
+                                    </m.div>
                                 ))}
                             </div>
                         </section>
@@ -119,7 +119,7 @@ export default function DiagnosticResult({ result }: DiagnosticResultProps) {
                             </h4>
                             <div className="space-y-3">
                                 {result.debugSteps.map((step, i) => (
-                                    <motion.div
+                                    <m.div
                                         initial={{ opacity: 0, x: 10 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: 0.3 + (i * 0.1) }}
@@ -127,7 +127,7 @@ export default function DiagnosticResult({ result }: DiagnosticResultProps) {
                                         className="text-sm text-gray-400 pl-6 border-l-2 border-white/[0.08] py-2 hover:border-blue-500/50 transition-colors"
                                     >
                                         {step}
-                                    </motion.div>
+                                    </m.div>
                                 ))}
                             </div>
                         </section>
@@ -173,6 +173,6 @@ export default function DiagnosticResult({ result }: DiagnosticResultProps) {
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 }

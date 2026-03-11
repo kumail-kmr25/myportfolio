@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { m, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import {
     Rocket,
     Code2,
@@ -53,7 +53,7 @@ export default function MyJourney() {
     });
 
     return (
-        <section id="my-journey" ref={containerRef} className="py-24 bg-[#050505] relative overflow-hidden">
+        <section id="my-journey" ref={containerRef} className="py-24 lg:py-16 bg-[#050505] relative overflow-hidden">
             {/* Background Animated Gradient */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] rounded-full animate-pulse" />
@@ -61,16 +61,16 @@ export default function MyJourney() {
             </div>
 
             <div className="section-container relative z-10">
-                <div className="text-center mb-24">
-                    <motion.span
+                <div className="text-center mb-24 lg:mb-16">
+                    <m.span
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-blue-500 font-mono text-[10px] font-black uppercase tracking-[0.3em] mb-4 block"
                     >
                         Professional Evolution
-                    </motion.span>
-                    <motion.h2
+                    </m.span>
+                    <m.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -78,8 +78,8 @@ export default function MyJourney() {
                         className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6"
                     >
                         The <span className="text-gray-500 italic">Journey</span>
-                    </motion.h2>
-                    <motion.div
+                    </m.h2>
+                    <m.div
                         initial={{ opacity: 0, scaleX: 0 }}
                         whileInView={{ opacity: 1, scaleX: 1 }}
                         viewport={{ once: true }}
@@ -88,7 +88,7 @@ export default function MyJourney() {
                     />
 
                     {/* Check/Uncheck Toggle */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -110,12 +110,12 @@ export default function MyJourney() {
                         <p className="text-[9px] text-gray-600 font-black uppercase tracking-[0.3em]">
                             {isVisible ? 'Interacting with career timeline' : 'Initialize timeline exploration'}
                         </p>
-                    </motion.div>
+                    </m.div>
                 </div>
 
                 <AnimatePresence mode="wait">
                     {isVisible && (
-                        <motion.div
+                        <m.div
                             key="journey-content"
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
@@ -125,19 +125,19 @@ export default function MyJourney() {
                         >
                             {/* Vertical Line */}
                             <div className="absolute left-8 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px bg-white/10">
-                                <motion.div
+                                <m.div
                                     style={{ scaleY: scrollYProgress, transformOrigin: "top" }}
                                     className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-b from-blue-600 via-purple-600 to-pink-600 origin-top"
                                 />
                             </div>
 
                             {/* Phases */}
-                            <div className="space-y-24">
+                            <div className="space-y-24 lg:space-y-16">
                                 {Array.isArray(phases) && phases.map((phase: any, index: number) => (
                                     <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
                                         {/* Timeline Dot */}
                                         <div className="absolute left-8 md:left-1/2 md:-translate-x-1/2 w-4 h-4 rounded-full bg-[#050505] border-2 border-white/20 z-20">
-                                            <motion.div
+                                            <m.div
                                                 initial={{ scale: 0 }}
                                                 whileInView={{ scale: 1 }}
                                                 viewport={{ once: true }}
@@ -147,7 +147,7 @@ export default function MyJourney() {
 
                                         {/* Content Card */}
                                         <div className={`ml-20 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-16' : 'md:pl-16'}`}>
-                                            <motion.div
+                                            <m.div
                                                 initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
                                                 whileInView={{ opacity: 1, x: 0 }}
                                                 viewport={{ once: true, margin: "-100px" }}
@@ -167,14 +167,14 @@ export default function MyJourney() {
                                                     <h3 className="text-2xl font-bold text-white mb-3">{phase.title}</h3>
                                                     <p className="text-gray-400 leading-relaxed">{phase.description}</p>
                                                 </div>
-                                            </motion.div>
+                                            </m.div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
 
                             {/* Skills Highlight Block */}
-                            <div className="mt-40 max-w-4xl mx-auto">
+                            <div className="mt-40 lg:mt-24 max-w-4xl mx-auto">
                                 <div className="text-center mb-12">
                                     <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">What I Work With</h3>
                                     <div className="w-12 h-1 bg-blue-600 mx-auto rounded-full" />
@@ -182,7 +182,7 @@ export default function MyJourney() {
 
                                 <div className="flex flex-wrap justify-center gap-4">
                                     {Array.isArray(skills) && [...skills].sort((a: any, b: any) => a.order - b.order).map((skill: any, index: number) => (
-                                        <motion.div
+                                        <m.div
                                             key={index}
                                             initial={{ opacity: 0, y: 20 }}
                                             whileInView={{ opacity: 1, y: 0 }}
@@ -201,17 +201,17 @@ export default function MyJourney() {
                                                     </span>
                                                 )}
                                             </div>
-                                        </motion.div>
+                                        </m.div>
                                     ))}
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
             </div>
 
             {/* Progress Indicator (Scroll Depth) */}
-            <motion.div
+            <m.div
                 className="fixed bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 z-50 origin-left"
                 style={{ scaleX }}
             />

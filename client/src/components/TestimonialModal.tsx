@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Star, Camera, CheckCircle, X, Loader2, Upload } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 interface Props {
     isOpen: boolean;
@@ -92,10 +92,10 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
     return (
         <AnimatePresence>
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     onClick={onClose} className="absolute inset-0 bg-black/90 backdrop-blur-xl" />
 
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -116,23 +116,23 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
 
                     {/* Progress bar */}
                     <div className="h-0.5 bg-white/5">
-                        <motion.div className="h-full bg-blue-500" animate={{ width: `${step * 50}%` }} transition={{ duration: 0.4 }} />
+                        <m.div className="h-full bg-blue-500" animate={{ width: `${step * 50}%` }} transition={{ duration: 0.4 }} />
                     </div>
 
                     {isSuccess ? (
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                        <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                             className="flex flex-col items-center justify-center py-16 px-8 text-center">
                             <div className="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mb-4">
                                 <CheckCircle size={32} className="text-green-400" />
                             </div>
                             <h3 className="text-xl font-black text-white mb-2">Thank You!</h3>
                             <p className="text-gray-400 text-sm">Your testimonial is pending review and will appear once approved.</p>
-                        </motion.div>
+                        </m.div>
                     ) : (
                         <div className="p-6 max-h-[70vh] overflow-y-auto space-y-4">
                             <AnimatePresence mode="wait">
                                 {step === 1 ? (
-                                    <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
+                                    <m.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
                                         {/* Photo upload */}
                                         <div className="flex items-center gap-4">
                                             <div
@@ -195,9 +195,9 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
                                             <textarea className="input-field text-sm min-h-[160px] resize-y" value={form.message} onChange={e => set("message", e.target.value)} placeholder="Share your honest experience working with me..." />
                                             {errors.message && <p className="text-[10px] text-red-400 mt-0.5">{errors.message}</p>}
                                         </div>
-                                    </motion.div>
+                                    </m.div>
                                 ) : (
-                                    <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
+                                    <m.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
                                         <div>
                                             <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Worked With Me As</label>
                                             <select className="input-field text-sm cursor-pointer min-h-[48px]" value={form.relationship_type} onChange={e => set("relationship_type", e.target.value)}>
@@ -224,7 +224,7 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
                                             {errors.permission && <p className="text-[10px] text-red-400 mt-1">{errors.permission}</p>}
                                         </div>
                                         {errors.submit && <p className="text-[10px] text-red-400 text-center">{errors.submit}</p>}
-                                    </motion.div>
+                                    </m.div>
                                 )}
                             </AnimatePresence>
                         </div>
@@ -250,7 +250,7 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
                             )}
                         </div>
                     )}
-                </motion.div>
+                </m.div>
             </div>
         </AnimatePresence>
     );

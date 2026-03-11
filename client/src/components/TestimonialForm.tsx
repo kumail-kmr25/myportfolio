@@ -1,9 +1,9 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { z } from "zod";
 import { Star, Loader2, CheckCircle2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 import { testimonialSchema, type TestimonialFormData } from "@portfolio/shared";
 
@@ -204,7 +204,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                                         }`}
                                 />
                                 {formData.rating === num && (
-                                    <motion.div
+                                    <m.div
                                         layoutId="rating-glow"
                                         className="absolute inset-0 bg-yellow-500/20 blur-xl rounded-full -z-10"
                                     />

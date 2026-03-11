@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ReactNode } from "react";
 
 interface SectionRevealProps {
@@ -11,7 +11,7 @@ interface SectionRevealProps {
 
 export default function SectionReveal({ children, width = "full", delay = 0 }: SectionRevealProps) {
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -23,6 +23,6 @@ export default function SectionReveal({ children, width = "full", delay = 0 }: S
             className={`${width === "container" ? "section-container" : "w-full"} will-change-[transform,opacity]`}
         >
             {children}
-        </motion.div>
+        </m.div>
     );
 }

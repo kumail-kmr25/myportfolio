@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import {
     Search,
     Command,
@@ -122,7 +122,7 @@ export default function CommandPalette() {
         <AnimatePresence>
             {isOpen && (
                 <div className="fixed inset-0 z-[200] flex items-start justify-center pt-[15vh] px-4">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -130,7 +130,7 @@ export default function CommandPalette() {
                         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
                     />
 
-                    <motion.div
+                    <m.div
                         initial={{ scale: 0.95, opacity: 0, y: -20, filter: "blur(10px)" }}
                         animate={{ scale: 1, opacity: 1, y: 0, filter: "blur(0px)" }}
                         exit={{ scale: 0.95, opacity: 0, y: -20, filter: "blur(10px)" }}
@@ -221,7 +221,7 @@ export default function CommandPalette() {
                                 <Command size={10} /> kumail-kmr.dev
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
             )}
         </AnimatePresence>

@@ -19,7 +19,7 @@ import {
     Sparkles,
     Cloud
 } from "lucide-react";
-import { motion, Reorder } from "framer-motion";
+import { m, Reorder } from "framer-motion";
 
 const IconMap: { [key: string]: any } = {
     "Brain": Brain,

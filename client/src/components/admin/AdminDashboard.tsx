@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Loader2, LogOut } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -364,7 +364,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                     </div>
 
                     <AnimatePresence mode="wait">
-                        <motion.div
+                        <m.div
                             key={activeTab}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -403,7 +403,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "diagnostics" && <AdminDiagnostics patterns={Array.isArray(diagPatterns) ? diagPatterns : []} logs={Array.isArray(diagLogs) ? diagLogs : []} onUpdate={handleDiagAction} />}
                                 {activeTab === "journey" && <AdminJourney phases={Array.isArray(journeyPhases) ? journeyPhases : []} onAdd={handleAddJourney} onUpdate={handleJourneyUpdate} onDelete={handleJourneyDelete} />}
                             </ErrorBoundary>
-                        </motion.div>
+                        </m.div>
                     </AnimatePresence>
 
                     <footer className="pt-20 border-t border-white/5 flex justify-between items-center opacity-40">

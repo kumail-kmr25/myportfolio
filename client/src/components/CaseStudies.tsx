@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import useSWR from "swr";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { m, AnimatePresence, Variants } from "framer-motion";
 import { Loader2, X, AlertCircle, CheckCircle2, Cpu, BarChart3, ChevronRight, Terminal, Zap } from "lucide-react";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -47,30 +47,30 @@ export default function CaseStudies() {
     if (error) return null;
 
     return (
-        <section id="case-studies" className="py-24 bg-[#050505] relative overflow-hidden">
+        <section id="case-studies" className="py-24 lg:py-16 bg-[#050505] relative overflow-hidden">
             {/* Background elements */}
             <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/10 to-transparent" />
 
             <div className="section-container relative z-10">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 lg:mb-12 gap-8">
                     <div className="max-w-2xl">
-                        <motion.span
+                        <m.span
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="text-blue-500 font-mono text-[10px] font-black uppercase tracking-[0.3em] mb-4 block"
                         >
                             Engineering Methodology
-                        </motion.span>
-                        <motion.h2
+                        </m.span>
+                        <m.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4"
                         >
                             How I Solve <span className="text-gray-500 italic">Real Problems</span>
-                        </motion.h2>
-                        <motion.p
+                        </m.h2>
+                        <m.p
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -78,9 +78,9 @@ export default function CaseStudies() {
                             className="text-gray-400 text-lg leading-relaxed"
                         >
                             A forensic deep dive into my debugging process and how I transform critical failures into high-performance architectural solutions.
-                        </motion.p>
+                        </m.p>
                     </div>
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
@@ -88,7 +88,7 @@ export default function CaseStudies() {
                     >
                         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.5)]"></span>
                         Production Case Archive
-                    </motion.div>
+                    </m.div>
                 </div>
 
                 {isLoading ? (
@@ -96,16 +96,16 @@ export default function CaseStudies() {
                         <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
                     </div>
                 ) : !Array.isArray(caseStudies) || caseStudies.length === 0 ? (
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         className="text-center py-24 text-gray-500 bg-white/[0.02] rounded-[3rem] border border-white/5 backdrop-blur-sm"
                     >
                         <Cpu size={48} className="mx-auto mb-4 opacity-10" />
                         <p className="font-mono text-sm tracking-widest uppercase">No cases archived in current node.</p>
-                    </motion.div>
+                    </m.div>
                 ) : (
-                    <motion.div
+                    <m.div
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -113,7 +113,7 @@ export default function CaseStudies() {
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                     >
                         {caseStudies.map((study) => (
-                            <motion.div
+                            <m.div
                                 key={study.id}
                                 variants={itemVariants}
                                 onClick={() => setSelectedCase(study)}
@@ -124,9 +124,9 @@ export default function CaseStudies() {
                                     <Cpu className="w-16 h-16 text-blue-500" />
                                 </div>
 
-                                <motion.h3 className="text-2xl font-bold text-white mb-6 group-hover:text-blue-400 transition-colors leading-tight">
+                                <m.h3 className="text-2xl font-bold text-white mb-6 group-hover:text-blue-400 transition-colors leading-tight">
                                     {study.title}
-                                </motion.h3>
+                                </m.h3>
 
                                 <div className="mb-8">
                                     <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-black mb-3">Interception Message</p>
@@ -151,9 +151,9 @@ export default function CaseStudies() {
                                 <div className="mt-8 flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 group-hover:text-blue-400 transition-colors">
                                     Decrypt Case Breakdown <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                                 </div>
-                            </motion.div>
+                            </m.div>
                         ))}
-                    </motion.div>
+                    </m.div>
                 )}
             </div>
 
@@ -161,7 +161,7 @@ export default function CaseStudies() {
             <AnimatePresence>
                 {selectedCase && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
@@ -169,7 +169,7 @@ export default function CaseStudies() {
                             className="absolute inset-0 bg-black/90 backdrop-blur-md"
                         />
 
-                        <motion.div
+                        <m.div
                             initial={{ scale: 0.95, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -257,7 +257,7 @@ export default function CaseStudies() {
                                             <div className="space-y-4">
                                                 <div className="flex items-center gap-4">
                                                     <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                                                        <motion.div 
+                                                        <m.div 
                                                             initial={{ width: 0 }}
                                                             whileInView={{ width: "100%" }}
                                                             transition={{ duration: 1.5, ease: "easeOut" }}
@@ -312,7 +312,7 @@ export default function CaseStudies() {
                                 </div>
                             </div>
 
-                        </motion.div>
+                        </m.div>
                     </div>
                 )}
             </AnimatePresence>

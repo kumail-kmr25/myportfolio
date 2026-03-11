@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { m, Variants } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
 import AdminLiveFeed from "./AdminLiveFeed";
 
@@ -133,7 +133,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                             <span className="text-[10px] text-green-400 font-mono">42ms - Optimal</span>
                         </div>
                         <div className="h-1 bg-white/5 rounded-full overflow-hidden relative z-10">
-                            <motion.div
+                            <m.div
                                 initial={{ width: "0%" }}
                                 animate={{ width: "85%" }}
                                 transition={{ duration: 1.5, ease: "easeOut" }}
@@ -146,7 +146,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                             <span className="text-[10px] text-blue-400 font-mono">99.9% Uptime</span>
                         </div>
                         <div className="h-1 bg-white/5 rounded-full overflow-hidden relative z-10">
-                            <motion.div
+                            <m.div
                                 initial={{ width: "0%" }}
                                 animate={{ width: "99.9%" }}
                                 transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
@@ -159,7 +159,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                             <span className="text-[10px] text-purple-400 font-mono">Verified - v2.4</span>
                         </div>
                         <div className="h-1 bg-white/5 rounded-full overflow-hidden relative z-10">
-                            <motion.div
+                            <m.div
                                 initial={{ width: "0%" }}
                                 animate={{ width: "95%" }}
                                 transition={{ duration: 1.5, ease: "easeOut", delay: 0.4 }}

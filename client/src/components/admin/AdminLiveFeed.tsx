@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import {
     Terminal,
     Zap,
@@ -104,7 +104,7 @@ export default function AdminLiveFeed({ initialActivities = [] }: AdminLiveFeedP
                     {Array.isArray(activities) && activities.map((activity: any) => {
                         const config = TYPE_CONFIG[activity.type] || TYPE_CONFIG.message;
                         return (
-                            <motion.div
+                            <m.div
                                 key={`${activity.type}-${activity.id}`}
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -126,7 +126,7 @@ export default function AdminLiveFeed({ initialActivities = [] }: AdminLiveFeedP
                                 <div className="hidden group-hover:flex shrink-0 items-center justify-center w-6 h-6 rounded-lg bg-white/5 text-gray-400">
                                     <ChevronRight size={14} />
                                 </div>
-                            </motion.div>
+                            </m.div>
                         );
                     })}
                 </AnimatePresence>

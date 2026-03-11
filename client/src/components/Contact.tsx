@@ -7,7 +7,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { contactSchema, type ContactFormData } from "@portfolio/shared";
 import { getApiUrl } from "@/lib/api";
-import { motion, Variants } from "framer-motion";
+import { m, Variants } from "framer-motion";
 
 function ContactInner() {
     const [showPhone, setShowPhone] = useState(false);
@@ -108,42 +108,42 @@ function ContactInner() {
     };
 
     return (
-        <section id="contact" className="bg-[#050505] py-24 relative overflow-hidden">
+        <section id="contact" className="bg-[#050505] py-24 lg:py-16 relative overflow-hidden">
             {/* Background decorative elements */}
             <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-blue-600/5 blur-[120px] rounded-full" />
             <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-purple-600/5 blur-[120px] rounded-full" />
 
-            <motion.div
+            <m.div
                 className="section-container relative z-10"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-100px" }}
                 variants={containerVariants}
             >
-                <div className="text-center mb-16">
-                    <motion.span
+                <div className="text-center mb-16 lg:mb-12">
+                    <m.span
                         variants={itemVariants}
                         className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-4 block"
                     >
                         Availability
-                    </motion.span>
-                    <motion.h2
+                    </m.span>
+                    <m.h2
                         variants={itemVariants}
                         className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6"
                     >
                         Get In <span className="text-gray-500 italic">Touch</span>
-                    </motion.h2>
-                    <motion.p
+                    </m.h2>
+                    <m.p
                         variants={itemVariants}
                         className="text-gray-400 text-lg max-w-2xl mx-auto"
                     >
                         Have a project in mind or just want to discuss engineering? I&apos;d love to hear from you.
-                    </motion.p>
+                    </m.p>
                 </div>
 
                 <div className="section-container">
                     {/* Contact Form HERO - Professional & High-Converting */}
-                    <motion.div
+                    <m.div
                         variants={itemVariants}
                         className="p-1 rounded-[2.5rem] bg-gradient-to-b from-white/10 to-transparent"
                     >
@@ -358,14 +358,14 @@ function ContactInner() {
                                     </div>
 
                                     {submitStatus === "error" && (
-                                        <motion.div
+                                        <m.div
                                             initial={{ opacity: 0, height: 0 }}
                                             animate={{ opacity: 1, height: "auto" }}
                                             className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-xs font-bold flex items-center gap-3"
                                         >
                                             <AlertCircle size={18} />
                                             {errorMessage}
-                                        </motion.div>
+                                        </m.div>
                                     )}
 
                                     <div className="pt-4">
@@ -394,7 +394,7 @@ function ContactInner() {
                                 </form>
                             )}
                         </div>
-                    </motion.div>
+                    </m.div>
 
                     {/* Quick Reach Info - Now more subtle below the main form */}
                     <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -403,7 +403,7 @@ function ContactInner() {
                             { icon: Phone, color: "text-green-400", bg: "bg-green-500/10", label: "Encrypted Comms", value: "6006121193", isPhone: true },
                             { icon: MapPin, color: "text-purple-400", bg: "bg-purple-500/10", label: "Regional Node", value: "Kashmir, India" }
                         ].map((info, i) => (
-                            <motion.div
+                            <m.div
                                 key={info.label}
                                 variants={itemVariants}
                                 whileHover={{ y: -5, backgroundColor: "rgba(255,255,255,0.06)" }}
@@ -426,11 +426,11 @@ function ContactInner() {
                                         )}
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         ))}
                     </div>
                 </div>
-            </motion.div>
+            </m.div>
         </section>
     );
 }

@@ -1,7 +1,7 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useRef } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { m, AnimatePresence, Variants } from "framer-motion";
 import {
     X,
     ChevronRight,
@@ -196,7 +196,7 @@ export default function HireMeModal() {
             {isOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 lg:p-8">
                     {/* Backdrop */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -205,7 +205,7 @@ export default function HireMeModal() {
                     />
 
                     {/* Modal Container */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -258,7 +258,7 @@ export default function HireMeModal() {
                         <div className="flex-1 flex flex-col h-full bg-[#0a0a0a] relative overflow-hidden">
                             {/* Visual Progress Bar */}
                             <div className="absolute top-0 left-0 right-0 h-1 bg-white/5 z-20">
-                                <motion.div
+                                <m.div
                                     initial={{ width: "25%" }}
                                     animate={{
                                         width: step === "services" ? "25%" :
@@ -285,29 +285,29 @@ export default function HireMeModal() {
                                 <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col">
                                     <AnimatePresence mode="wait">
                                         {isSuccess ? (
-                                            <motion.div
+                                            <m.div
                                                 key="success"
                                                 initial="hidden"
                                                 animate="visible"
                                                 variants={containerVariants}
                                                 className="flex-grow flex flex-col items-center justify-center text-center space-y-8 max-w-2xl mx-auto py-12"
                                             >
-                                                <motion.div variants={itemVariants} className="w-24 h-24 bg-green-500/10 rounded-[2.5rem] flex items-center justify-center text-green-500 mb-4 border border-green-500/20 shadow-[0_0_30px_rgba(34,197,94,0.1)]">
+                                                <m.div variants={itemVariants} className="w-24 h-24 bg-green-500/10 rounded-[2.5rem] flex items-center justify-center text-green-500 mb-4 border border-green-500/20 shadow-[0_0_30px_rgba(34,197,94,0.1)]">
                                                     <CheckCircle2 size={48} />
-                                                </motion.div>
+                                                </m.div>
 
                                                 <div className="space-y-4">
-                                                    <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight leading-none">
+                                                    <m.h2 variants={itemVariants} className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight leading-none">
                                                         Transmission <span className="text-green-500">Confirmed</span>
-                                                    </motion.h2>
-                                                    <motion.div variants={itemVariants} className="h-1 w-24 bg-gradient-to-r from-green-500 to-transparent mx-auto rounded-full" />
+                                                    </m.h2>
+                                                    <m.div variants={itemVariants} className="h-1 w-24 bg-gradient-to-r from-green-500 to-transparent mx-auto rounded-full" />
                                                 </div>
 
-                                                <motion.p variants={itemVariants} className="text-gray-400 leading-relaxed text-lg font-medium">
+                                                <m.p variants={itemVariants} className="text-gray-400 leading-relaxed text-lg font-medium">
                                                     Your brief for <span className="text-white">{formData.selectedService}</span> has been securely routed. I&apos;ll analyze the requirements and initialize contact within 24 hours.
-                                                </motion.p>
+                                                </m.p>
 
-                                                <motion.div variants={itemVariants} className="bg-white/[0.02] border border-white/5 rounded-[2.5rem] p-8 w-full mt-8 space-y-6 backdrop-blur-3xl shadow-2xl">
+                                                <m.div variants={itemVariants} className="bg-white/[0.02] border border-white/5 rounded-[2.5rem] p-8 w-full mt-8 space-y-6 backdrop-blur-3xl shadow-2xl">
                                                     <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.3em]">Protocol Breakdown</p>
                                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                                                         <div className="p-5 bg-white/[0.03] rounded-2xl border border-white/5 group hover:border-green-500/30 transition-colors">
@@ -319,9 +319,9 @@ export default function HireMeModal() {
                                                             <p className="text-[10px] text-gray-500 leading-relaxed">A formal proposal will be dispatched to <span className="text-blue-400">{formData.email}</span> with next steps.</p>
                                                         </div>
                                                     </div>
-                                                </motion.div>
+                                                </m.div>
 
-                                                <motion.button
+                                                <m.button
                                                     variants={itemVariants}
                                                     type="button"
                                                     onClick={closeModal}
@@ -329,12 +329,12 @@ export default function HireMeModal() {
                                                 >
                                                     <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                                                     Session Finalized • Click to close
-                                                </motion.button>
-                                            </motion.div>
+                                                </m.button>
+                                            </m.div>
                                         ) : (
                                             <div key={step} className="flex-grow flex flex-col">
                                                 {step === "services" && (
-                                                    <motion.div
+                                                    <m.div
                                                         key="services"
                                                         initial="hidden"
                                                         animate="visible"
@@ -342,7 +342,7 @@ export default function HireMeModal() {
                                                         variants={containerVariants}
                                                         className="space-y-10"
                                                     >
-                                                        <motion.div variants={itemVariants}>
+                                                        <m.div variants={itemVariants}>
                                                             <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Let&apos;s build something <span className="text-blue-500 italic block mt-2">extraordinary</span></h2>
                                                             {status === 'booked' && (
                                                                 <div className="mb-8 p-6 bg-red-500/10 border border-red-500/20 rounded-[2rem] flex items-center gap-4 animate-in fade-in slide-in-from-top-4">
@@ -358,9 +358,9 @@ export default function HireMeModal() {
                                                                 </div>
                                                             )}
                                                             <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 1: Select Your Service</p>
-                                                        </motion.div>
+                                                        </m.div>
 
-                                                        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        <m.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             {services.map((service) => (
                                                                 <div
                                                                     key={service.id}
@@ -374,12 +374,12 @@ export default function HireMeModal() {
                                                                     <p className="text-xs text-gray-500 leading-relaxed">{service.description}</p>
                                                                 </div>
                                                             ))}
-                                                        </motion.div>
-                                                    </motion.div>
+                                                        </m.div>
+                                                    </m.div>
                                                 )}
 
                                                 {step === "details" && (
-                                                    <motion.div
+                                                    <m.div
                                                         key="details"
                                                         initial="hidden"
                                                         animate="visible"
@@ -387,13 +387,13 @@ export default function HireMeModal() {
                                                         variants={containerVariants}
                                                         className="space-y-10"
                                                     >
-                                                        <motion.div variants={itemVariants}>
+                                                        <m.div variants={itemVariants}>
                                                             <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Setting the <span className="text-blue-500 italic block mt-2">stage</span></h2>
                                                             <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 2: Budget & Timeline</p>
-                                                        </motion.div>
+                                                        </m.div>
 
                                                         <div className="space-y-8">
-                                                            <motion.div variants={itemVariants} className="space-y-4">
+                                                            <m.div variants={itemVariants} className="space-y-4">
                                                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Budget Range (Expected)</label>
                                                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                                                     {["₹10,000 – ₹25,000", "₹25,000 – ₹50,000", "₹50,000 – ₹1,00,000", "₹1,00,000+", "Flexible / To be discussed"].map((range) => (
@@ -407,9 +407,9 @@ export default function HireMeModal() {
                                                                         </button>
                                                                     ))}
                                                                 </div>
-                                                            </motion.div>
+                                                            </m.div>
 
-                                                            <motion.div variants={itemVariants} className="space-y-4">
+                                                            <m.div variants={itemVariants} className="space-y-4">
                                                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Estimated Timeline</label>
                                                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                                                     {["Urgent (less than 1 week)", "1–2 weeks", "1 month", "2–3 months", "Flexible"].map((time) => (
@@ -423,9 +423,9 @@ export default function HireMeModal() {
                                                                         </button>
                                                                     ))}
                                                                 </div>
-                                                            </motion.div>
+                                                            </m.div>
 
-                                                            <motion.div variants={itemVariants} className="space-y-4">
+                                                            <m.div variants={itemVariants} className="space-y-4">
                                                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">What are we starting?</label>
                                                                 <select
                                                                     {...register("projectType")}
@@ -437,13 +437,13 @@ export default function HireMeModal() {
                                                                     <option value="Consulting" className="bg-[#0f0f0f]">Consulting</option>
                                                                     <option value="Other" className="bg-[#0f0f0f]">Other</option>
                                                                 </select>
-                                                            </motion.div>
+                                                            </m.div>
                                                         </div>
-                                                    </motion.div>
+                                                    </m.div>
                                                 )}
 
                                                 {step === "vision" && (
-                                                    <motion.div
+                                                    <m.div
                                                         key="vision"
                                                         initial="hidden"
                                                         animate="visible"
@@ -451,13 +451,13 @@ export default function HireMeModal() {
                                                         variants={containerVariants}
                                                         className="space-y-10"
                                                     >
-                                                        <motion.div variants={itemVariants}>
+                                                        <m.div variants={itemVariants}>
                                                             <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Sharing the <span className="text-blue-500 italic block mt-2">vision</span></h2>
                                                             <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 3: Project Details</p>
-                                                        </motion.div>
+                                                        </m.div>
 
                                                         <div className="space-y-8">
-                                                            <motion.div variants={itemVariants} className="space-y-4">
+                                                            <m.div variants={itemVariants} className="space-y-4">
                                                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Tell me about your project goals</label>
                                                                 <textarea
                                                                     {...register("description")}
@@ -465,13 +465,13 @@ export default function HireMeModal() {
                                                                     placeholder="What are we building? What problems are we solving?"
                                                                 />
                                                                 {errors.description && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.description.message as string}</p>}
-                                                            </motion.div>
+                                                            </m.div>
                                                         </div>
-                                                    </motion.div>
+                                                    </m.div>
                                                 )}
 
                                                 {step === "contact" && (
-                                                    <motion.div
+                                                    <m.div
                                                         key="contact"
                                                         initial="hidden"
                                                         animate="visible"
@@ -479,13 +479,13 @@ export default function HireMeModal() {
                                                         variants={containerVariants}
                                                         className="space-y-10"
                                                     >
-                                                        <motion.div variants={itemVariants}>
+                                                        <m.div variants={itemVariants}>
                                                             <h2 className="text-4xl font-black text-white uppercase tracking-tight leading-none mb-4">Final <span className="text-blue-500 italic block mt-2">handshake</span></h2>
                                                             <p className="text-gray-500 font-black uppercase tracking-widest text-[10px]">Step 4: Contact Information</p>
-                                                        </motion.div>
+                                                        </m.div>
 
                                                         <div className="space-y-8">
-                                                            <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                            <m.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <div className="space-y-2">
                                                                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Full Name</label>
                                                                     <input
@@ -504,24 +504,24 @@ export default function HireMeModal() {
                                                                     />
                                                                     {errors.email && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.email.message as string}</p>}
                                                                 </div>
-                                                            </motion.div>
+                                                            </m.div>
 
-                                                            <motion.div variants={itemVariants} className="space-y-2">
+                                                            <m.div variants={itemVariants} className="space-y-2">
                                                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Company Name (Optional)</label>
                                                                 <input
                                                                     {...register("company")}
                                                                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
                                                                     placeholder="Company Inc."
                                                                 />
-                                                            </motion.div>
+                                                            </m.div>
 
-                                                            <motion.div variants={itemVariants} className="p-8 bg-blue-500/5 rounded-[2rem] border border-blue-500/10 backdrop-blur-3xl">
+                                                            <m.div variants={itemVariants} className="p-8 bg-blue-500/5 rounded-[2rem] border border-blue-500/10 backdrop-blur-3xl">
                                                                 <p className="text-[10px] text-gray-400 leading-relaxed font-medium">
                                                                     By submitting this brief, you initialize a technical request. I will analyze the parameters and respond via <span className="text-blue-400">{formData.email || 'provided email'}</span> within one business cycle.
                                                                 </p>
-                                                            </motion.div>
+                                                            </m.div>
                                                         </div>
-                                                    </motion.div>
+                                                    </m.div>
                                                 )}
                                             </div>
                                         )}
@@ -577,7 +577,7 @@ export default function HireMeModal() {
                                 </form>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
             )}
         </AnimatePresence>

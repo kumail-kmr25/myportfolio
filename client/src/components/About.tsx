@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { motion, Variants } from "framer-motion";
+import { m, Variants } from "framer-motion";
 
 export default function About() {
     const itemVariants: Variants = {
@@ -22,11 +22,11 @@ export default function About() {
     };
 
     return (
-        <section id="about" className="py-24 bg-[#050505] relative overflow-hidden">
+        <section id="about" className="py-24 lg:py-16 bg-[#050505] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-blue-600/5 blur-[120px] rounded-full" />
             <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-purple-600/5 blur-[120px] rounded-full" />
 
-            <motion.div
+            <m.div
                 className="section-container relative z-10"
                 variants={containerVariants}
                 initial="hidden"
@@ -35,7 +35,7 @@ export default function About() {
             >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     {/* Left: Premium Profile Visual */}
-                    <motion.div
+                    <m.div
                         variants={itemVariants}
                         className="flex justify-center lg:justify-start order-2 lg:order-1"
                     >
@@ -61,32 +61,32 @@ export default function About() {
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
 
                     {/* Right: Technical Narrative */}
                     <div className="space-y-8 order-1 lg:order-2">
                         <div className="space-y-4">
-                            <motion.span
+                            <m.span
                                 variants={itemVariants}
                                 className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-2 block"
                             >
                                 My Journey
-                            </motion.span>
-                            <motion.h2
+                            </m.span>
+                            <m.h2
                                 variants={itemVariants}
                                 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight"
                             >
                                 From Class 12th to <br />
                                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Web Engineering Excellence</span>
-                            </motion.h2>
+                            </m.h2>
                         </div>
 
-                        <motion.div
+                        <m.div
                             variants={itemVariants}
                             className="space-y-6 text-gray-400 text-lg leading-relaxed max-w-2xl"
                         >
                             <p>
-                                My journey in the tech world began in <span className="text-blue-400 font-semibold">2023</span>, right in the middle of my <span className="text-white font-medium">Class 12th session</span>.
+                                My journey in the tech world began in <span className="text-blue-400 font-semibold">2024</span>, right in the middle of my <span className="text-white font-medium">Class 12th session</span>.
                                 What started as a curiosity quickly evolved into an obsessive passion for learning by building and solving complex architectural puzzles.
                             </p>
                             <p>
@@ -94,9 +94,9 @@ export default function About() {
                                 With a focus on <span className="text-white font-medium">Full-Stack Scalability</span> and <span className="text-white font-medium">Clean Design Systems</span>,
                                 I lead technical projects from inception to production-hardened deployments.
                             </p>
-                        </motion.div>
+                        </m.div>
 
-                        <motion.div
+                        <m.div
                             variants={itemVariants}
                             className="flex flex-wrap gap-4 pt-4"
                         >
@@ -108,10 +108,10 @@ export default function About() {
                                 <div className="text-2xl font-bold text-white">SaaS</div>
                                 <div className="text-xs text-gray-500 uppercase tracking-wider">Specialty</div>
                             </div>
-                        </motion.div>
+                        </m.div>
 
                         {/* Dedicated CTA Button */}
-                        <motion.div
+                        <m.div
                             variants={itemVariants}
                             className="pt-8"
                         >
@@ -127,10 +127,10 @@ export default function About() {
                                     </svg>
                                 </div>
                             </button>
-                        </motion.div>
+                        </m.div>
                     </div>
                 </div>
-            </motion.div>
+            </m.div>
         </section>
     );
 }

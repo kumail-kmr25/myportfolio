@@ -50,7 +50,7 @@ const FALLBACK_PROJECTS = [
         summary: "AI-driven financial analytics and forecasting.",
         description: "Predictive financial modeling platform utilizing machine learning for market analysis.",
         status: "Beta",
-        image: "https://images.unsplash.com/photo-1611974717482-58-71-71-71-71", // Placeholder
+        image: "/projects/finflow.png", // Corrected path
         tags: ["AI", "Python", "React", "Tf.js"],
         category: "FinTech",
         isFeatured: false,

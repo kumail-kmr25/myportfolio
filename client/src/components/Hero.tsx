@@ -60,7 +60,7 @@ export default function Hero() {
     }, [text, isDeleting, roleIndex]);
 
     return (
-        <section id="home" aria-label="Hero section" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#020202] selection:bg-blue-500/30 pt-24">
+        <section id="home" aria-label="Hero section" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#020202] selection:bg-blue-500/30 pt-24 lg:pt-20">
             {/* Elite Technical Infrastructure */}
             <div className="absolute inset-0 z-0">
                 {/* Noise Texture Overlay */}
@@ -238,7 +238,7 @@ export default function Hero() {
                                 className="absolute -inset-8 border border-dashed border-purple-500/10 rounded-full"
                             />
                             
-                            <div className="relative w-full h-full rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl group">
+                            <div className="relative w-full h-full rounded-full overflow-hidden border border-white/10 shadow-2xl group">
                                 <Image
                                     src="/profile.jpg"
                                     alt="Kumail KMR"

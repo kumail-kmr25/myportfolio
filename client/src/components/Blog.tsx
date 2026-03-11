@@ -3,7 +3,7 @@
 import { ArrowRight, Calendar, Clock, Sparkles } from "lucide-react";
 import Link from "next/link";
 import useSWR from "swr";
-import { motion, Variants } from "framer-motion";
+import { m, Variants } from "framer-motion";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -61,27 +61,27 @@ export default function Blog() {
     };
 
     return (
-        <section id="blog" className="py-24 bg-[#050505] relative overflow-hidden">
+        <section id="blog" className="py-24 lg:py-16 bg-[#050505] relative overflow-hidden">
             <div className="section-container relative z-10">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-16">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-16 lg:mb-12">
                     <div>
-                        <motion.span
+                        <m.span
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-4 block"
                         >
                             Journal
-                        </motion.span>
-                        <motion.h2
+                        </m.span>
+                        <m.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6"
                         >
                             Latest <span className="text-gray-500">Insights</span>
-                        </motion.h2>
-                        <motion.p
+                        </m.h2>
+                        <m.p
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -89,9 +89,9 @@ export default function Blog() {
                             className="text-gray-400 text-lg max-w-2xl"
                         >
                             Thoughts on technology, engineering design, and sustainable development.
-                        </motion.p>
+                        </m.p>
                     </div>
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -100,10 +100,10 @@ export default function Blog() {
                         <Link href="#blog" aria-label="Read all blog articles" className="hidden md:flex items-center text-white hover:text-blue-400 font-bold text-sm uppercase tracking-widest transition-colors">
                             Read all articles <ArrowRight className="ml-3 w-4 h-4" aria-hidden="true" />
                         </Link>
-                    </motion.div>
+                    </m.div>
                 </div>
 
-                <motion.div
+                <m.div
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: "-100px" }}
@@ -111,7 +111,7 @@ export default function Blog() {
                     className="grid grid-cols-1 md:grid-cols-3 gap-8"
                 >
                     {posts.map((post: any) => (
-                        <motion.div
+                        <m.div
                             key={post.id}
                             variants={itemVariants}
                             className="group"
@@ -150,9 +150,9 @@ export default function Blog() {
                                     </div>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
-                </motion.div>
+                </m.div>
 
                 <div className="mt-12 text-center md:hidden">
                     <Link href="#" className="inline-flex items-center text-white hover:text-blue-400 font-bold text-sm uppercase tracking-widest transition-colors py-4 px-8 border border-white/10 rounded-2xl bg-white/5">

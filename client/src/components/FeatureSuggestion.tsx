@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import useSWR from "swr";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Loader2, MessageSquare, Send, CheckCircle2, Trophy, Lightbulb, Zap, Rocket } from "lucide-react";
 import { featureRequestSchema } from "@portfolio/shared";
 import { z } from "zod";
@@ -145,7 +145,7 @@ export default function FeatureSuggestion() {
 
                                 <AnimatePresence>
                                     {isSuccess && (
-                                        <motion.div
+                                        <m.div
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0 }}
@@ -153,7 +153,7 @@ export default function FeatureSuggestion() {
                                         >
                                             <CheckCircle2 size={16} />
                                             Thank you! Your idea has been sent.
-                                        </motion.div>
+                                        </m.div>
                                     )}
                                 </AnimatePresence>
                             </div>
@@ -180,7 +180,7 @@ export default function FeatureSuggestion() {
                                 </div>
                             ) : (
                                 completedSuggestions.map((req, index) => (
-                                    <motion.div
+                                    <m.div
                                         key={req.id}
                                         initial={{ opacity: 0, x: 20 }}
                                         whileInView={{ opacity: 1, x: 0 }}
@@ -205,7 +205,7 @@ export default function FeatureSuggestion() {
                                                 Category: {req.category}
                                             </div>
                                         </div>
-                                    </motion.div>
+                                    </m.div>
                                 ))
                             )}
                         </div>

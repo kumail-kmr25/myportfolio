@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import useSWR from "swr";
-import { motion, useInView, useSpring, useTransform, Variants } from "framer-motion";
+import { m, useInView, useSpring, useTransform, Variants } from "framer-motion";
 import { Loader2, Code2, Bug, BookOpen, Layers, CheckSquare, Calendar, Github, ExternalLink } from "lucide-react";
 import { getApiUrl } from "@/lib/api";
 
@@ -26,12 +26,12 @@ function AnimatedCounter({ value, duration = 2 }: { value: number, duration?: nu
         }
     }, [isInView, spring, value]);
 
-    return <motion.span ref={ref}>{display}</motion.span>;
+    return <m.span ref={ref}>{display}</m.span>;
 }
 
 export default function StatsDashboard() {
-    const { data: stats, isLoading } = useSWR("/api/stats", fetcher);
-    const { data: availability } = useSWR("/api/availability", fetcher);
+    const { data: stats, isLoading } = useSWR("/api/stats", fetcher, { refreshInterval: 5000 });
+    const { data: availability } = useSWR("/api/availability", fetcher, { refreshInterval: 5000 });
 
     const statItems = [
         { label: "Total Projects", value: stats?.totalProjects || 0, icon: Layers, color: "text-blue-500", bg: "bg-blue-500/10" },
@@ -64,29 +64,29 @@ export default function StatsDashboard() {
     };
 
     return (
-        <section id="stats" className="py-24 bg-[#050505] relative overflow-hidden">
+        <section id="stats" className="py-24 lg:py-16 bg-[#050505] relative overflow-hidden">
             {/* Background decorative elements */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-px bg-gradient-to-r from-transparent via-blue-500/10 to-transparent" />
 
             <div className="section-container relative z-10">
-                <div className="flex flex-col items-center text-center mb-20">
-                    <motion.span
+                <div className="flex flex-col items-center text-center mb-20 lg:mb-12">
+                    <m.span
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-blue-500 font-mono text-[10px] font-black uppercase tracking-[0.3em] mb-4 block"
                     >
                         Real-time Analytics
-                    </motion.span>
-                    <motion.h2
+                    </m.span>
+                    <m.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-4xl md:text-5xl font-bold tracking-tight text-white !mb-4"
                     >
                         Live Developer <span className="text-gray-500 italic">Stats</span>
-                    </motion.h2>
-                    <motion.p
+                    </m.h2>
+                    <m.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -94,7 +94,7 @@ export default function StatsDashboard() {
                         className="text-gray-400 max-w-xl text-lg"
                     >
                         Quantitative metrics reflecting technical output, architectural contributions, and continuous learning iteration.
-                    </motion.p>
+                    </m.p>
                 </div>
 
                 {isLoading ? (
@@ -102,7 +102,7 @@ export default function StatsDashboard() {
                         <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
                     </div>
                 ) : (
-                    <motion.div
+                    <m.div
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -110,7 +110,7 @@ export default function StatsDashboard() {
                         className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6"
                     >
                         {statItems.map((item, index) => (
-                            <motion.div
+                            <m.div
                                 key={item.label}
                                 variants={itemVariants}
                                 whileHover={{ y: -10, backgroundColor: "rgba(255,255,255,0.04)" }}
@@ -129,13 +129,13 @@ export default function StatsDashboard() {
 
                                 {/* Decorative background glow */}
                                 <div className={`absolute -bottom-10 -right-10 w-24 h-24 ${item.bg} blur-[60px] opacity-0 group-hover:opacity-40 transition-opacity`}></div>
-                            </motion.div>
+                            </m.div>
                         ))}
-                    </motion.div>
+                    </m.div>
                 )}
 
                 <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -152,9 +152,9 @@ export default function StatsDashboard() {
                                 Expand Intelligence <ExternalLink size={16} className="group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" />
                             </a>
                         </div>
-                    </motion.div>
+                    </m.div>
 
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, x: 30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -178,7 +178,7 @@ export default function StatsDashboard() {
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
         </section>

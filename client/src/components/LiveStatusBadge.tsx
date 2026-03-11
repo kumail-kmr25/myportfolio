@@ -22,7 +22,7 @@ interface StatusData {
 }
 
 export function LiveStatusBadge({ variant = "navbar" }: { variant?: "navbar" | "hero" | "hire" }) {
-    const { data } = useSWR<StatusData>("/api/developer-status", fetcher, { refreshInterval: 60000 });
+    const { data } = useSWR<StatusData>("/api/developer-status", fetcher, { refreshInterval: 5000 });
 
     if (!data) return null;
 

@@ -14,7 +14,7 @@ import {
     FileText,
     ArrowRight
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
 import { getApiUrl } from "@/lib/api";
@@ -117,15 +117,15 @@ export default function Navbar() {
                     }}
                     className="group relative z-10"
                 >
-                    <motion.span
+                    <m.span
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, ease: premiumEase as any }}
                         className="text-2xl font-black tracking-tighter text-white"
                     >
                         KUMAIL <span className="text-blue-500 italic">KMR</span>
-                    </motion.span>
-                    <motion.div
+                    </m.span>
+                    <m.div
                         className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all group-hover:w-full"
                         transition={{ duration: 0.5, ease: premiumEase as any }}
                     />
@@ -157,14 +157,14 @@ export default function Navbar() {
                                 <span className="relative z-10">
                                     {link.name}
                                     {isActive && !link.isCTA && (
-                                        <motion.span
+                                        <m.span
                                             className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-1 h-1 bg-blue-500 rounded-full"
                                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                         />
                                     )}
                                 </span>
                                 {hoveredIndex === index && !link.isCTA && (
-                                    <motion.div
+                                    <m.div
                                         className="absolute inset-0 bg-white/5 rounded-full -z-10"
                                         transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                                     />
@@ -184,13 +184,13 @@ export default function Navbar() {
                 >
                     <AnimatePresence mode="wait">
                         {isOpen ? (
-                            <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.3 }}>
+                            <m.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.3 }}>
                                 <X size={24} />
-                            </motion.div>
+                            </m.div>
                         ) : (
-                            <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.3 }}>
+                            <m.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.3 }}>
                                 <Menu size={24} />
-                            </motion.div>
+                            </m.div>
                         )}
                     </AnimatePresence>
                 </button>
@@ -199,14 +199,14 @@ export default function Navbar() {
             {/* Mobile Menu */}
             <AnimatePresence>
                 {isOpen && (
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.6, ease: premiumEase as any }}
                         className="md:hidden absolute top-full left-0 w-full glass-effect border-b border-white/[0.05] overflow-hidden shadow-2xl bg-[#020202]/95 backdrop-blur-3xl"
                     >
-                        <motion.div
+                        <m.div
                             initial="closed"
                             animate="open"
                             exit="closed"
@@ -221,7 +221,7 @@ export default function Navbar() {
                             className="flex flex-col p-10 space-y-8"
                         >
                             {dynamicLinks.map((link) => (
-                                <motion.div
+                                <m.div
                                     key={link.name}
                                     variants={{
                                         open: { opacity: 1, x: 0, filter: "blur(0px)" },
@@ -247,17 +247,17 @@ export default function Navbar() {
                                             {link.isExternal && <FileText size={24} className="text-blue-500" />}
                                             {link.name}
                                         </span>
-                                        <motion.div
+                                        <m.div
                                             animate={{ x: [0, 5, 0] }}
                                             transition={{ duration: 1.5, repeat: Infinity }}
                                         >
                                             <ArrowRight size={24} className="text-blue-500/50" />
-                                        </motion.div>
+                                        </m.div>
                                     </Link>
-                                </motion.div>
+                                </m.div>
                             ))}
-                        </motion.div>
-                    </motion.div>
+                        </m.div>
+                    </m.div>
                 )}
             </AnimatePresence>
         </nav>

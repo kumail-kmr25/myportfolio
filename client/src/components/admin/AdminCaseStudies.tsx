@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { Plus, Trash2, Edit3, Type, FileText, List, CheckCircle, Globe, Loader2, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 interface CaseStudy {
     id: string;
@@ -167,14 +167,14 @@ export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseS
             <AnimatePresence>
                 {isAdding && (
                     <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={resetForm}
                             className="absolute inset-0 bg-black/80 backdrop-blur-sm"
                         />
-                        <motion.div
+                        <m.div
                             initial={{ scale: 0.95, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -304,7 +304,7 @@ export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseS
                                     </button>
                                 </div>
                             </form>
-                        </motion.div>
+                        </m.div>
                     </div>
                 )}
             </AnimatePresence>
