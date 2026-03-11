@@ -78,6 +78,7 @@ model Testimonial {
   message             String
   rating              Int      // 1-5
   about_delivery_lead String
+  deliveryRating      Int      @default(5) // New field: 1-7 delivery experience
   photoUrl            String?  // Uploaded profile photo
   permission          Boolean  @default(false)
   approved            Boolean  @default(false)

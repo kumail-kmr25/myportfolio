@@ -248,11 +248,11 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
                                     </div>
 
                                     <a
-                                        href={`mailto:${selectedRequest.email}?subject=Regarding Your Hire Request: ${selectedRequest.selectedService}`}
+                                        href={`mailto:${selectedRequest.email}?subject=Regarding Your Project Request: ${selectedRequest.selectedService}`}
                                         className="btn-primary w-full py-5 text-sm font-black uppercase tracking-[0.2em] shadow-xl shadow-blue-500/10 flex justify-center items-center gap-3 min-h-[48px]"
                                     >
                                         <Mail size={18} />
-                                        Contact Client
+                                        Reply to {selectedRequest.name.split(' ')[0]}
                                     </a>
                                 </div>
                             </div>

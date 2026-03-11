@@ -30,7 +30,7 @@ export async function PATCH(request: Request) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const { id, approved } = await request.json();
+        const { id, approved, name, message, role, company, verified, featured, relationship_type, intervention_type, deliveryRating, about_delivery_lead } = await request.json();
 
         if (!id) {
             return NextResponse.json({ error: "Testimonial ID is required" }, { status: 400 });
@@ -38,7 +38,19 @@ export async function PATCH(request: Request) {
 
         const testimonial = await prisma.testimonial.update({
             where: { id },
-            data: { approved },
+            data: {
+                approved,
+                name,
+                message,
+                role,
+                company,
+                verified,
+                featured,
+                relationship_type,
+                intervention_type,
+                deliveryRating,
+                about_delivery_lead
+            },
         });
 
         return NextResponse.json(testimonial);

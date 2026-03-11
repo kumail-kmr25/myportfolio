@@ -5,26 +5,25 @@ export const hireSchema = z.object({
     email: z.string().email("Invalid email format"),
     company: z.string().default(""),
     selectedService: z.enum([
-        "Web Development (Full Stack)",
-        "Frontend Development (React/Next.js)",
-        "Backend Development (Node.js/Prisma)",
-        "UI/UX Design & Prototyping",
-        "Performance Optimization",
-        "Bug Fixing & Error Resolution",
+        "Website Development",
+        "Web Application",
+        "SaaS Platform",
+        "UI/UX Design",
+        "Bug Fix / Optimization",
+        "Database System",
+        "API Development",
         "Other"
     ]),
     budgetRange: z.enum([
-        "₹10,000 – ₹25,000",
-        "₹25,000 – ₹50,000",
-        "₹50,000 – ₹1,00,000",
-        "₹1,00,000+",
-        "Flexible / To be discussed"
+        "Under $500",
+        "$500 – $1000",
+        "$1000 – $3000",
+        "$3000+"
     ]),
     timeline: z.enum([
-        "Urgent (less than 1 week)",
+        "ASAP",
         "1–2 weeks",
         "1 month",
-        "2–3 months",
         "Flexible"
     ]),
     projectType: z.enum([

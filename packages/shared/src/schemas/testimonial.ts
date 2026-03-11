@@ -19,21 +19,17 @@ export const testimonialSchema = z.object({
         "Other"
     ]),
     intervention_type: z.enum([
-        "Full-Stack Development",
+        "UI/UX Design",
         "Frontend Development",
         "Backend Development",
-        "API Integration",
-        "UI/UX Implementation",
+        "Full Stack Development",
         "Database Design",
-        "Consulting",
-        "Code Review",
-        "UI/UX Design",
         "DevOps / Cloud",
-        "Bug Fix / Error Optimisation",
-        "Performance Optimization",
+        "Bug Fix / Optimization",
         "Other"
     ]),
     rating: z.number().min(1).max(5, "Rating must be between 1 and 5"),
+    deliveryRating: z.number().min(1).max(7, "Delivery Experience must be between 1 and 7"),
     message: z.string()
         .min(20, "Testimonial must be at least 20 characters")
         .max(500, "Testimonial must be less than 500 characters"),

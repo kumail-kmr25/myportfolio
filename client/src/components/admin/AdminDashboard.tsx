@@ -163,12 +163,12 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
         await signOut({ callbackUrl: "/", redirect: true });
     };
 
-    const handleTestimonialApproval = async (id: string, approved: boolean) => {
+    const handleTestimonialApproval = async (id: string, approved: boolean, data?: any) => {
         try {
             await fetch("/api/admin/testimonials", {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id, approved }),
+                body: JSON.stringify({ id, approved, ...data }),
             });
             mutateTestimonials();
         } catch (err) { console.error(err); }

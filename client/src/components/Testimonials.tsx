@@ -23,28 +23,37 @@ interface Testimonial {
 }
 
 function TestimonialCard({ t }: { t: Testimonial }) {
-    // ... (rest of TestimonialCard unchanged)
+    const [isExpanded, setIsExpanded] = useState(false);
+    const isLongMessage = t.message.length > 150;
+
     return (
-        <div className="flex-shrink-0 w-[340px] mx-3 p-6 rounded-3xl bg-white/[0.03] border border-white/8 hover:border-white/20 hover:scale-[1.03] hover:bg-white/[0.06] transition-all duration-300 group cursor-default select-none"
+        <div className={`flex-shrink-0 w-[340px] mx-3 p-6 rounded-3xl bg-white/[0.03] border border-white/8 hover:border-white/20 transition-all duration-300 group cursor-default select-none ${isExpanded ? 'h-auto z-10' : 'h-[320px]'}`}
             style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.4)" }}>
 
-            {/* Quote icon */}
-            <Quote size={22} className="text-blue-500/40 mb-4" />
-
-            {/* Stars */}
-            <div className="flex gap-1 mb-4">
-                {[1, 2, 3, 4, 5].map(n => (
-                    <Star key={n} size={13} className={n <= t.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-700"} />
-                ))}
+            <div className="flex justify-between items-start mb-4">
+                <Quote size={22} className="text-blue-500/40" />
+                <div className="flex gap-0.5">
+                    {[1, 2, 3, 4, 5].map(n => (
+                        <Star key={n} size={10} className={n <= t.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-700"} />
+                    ))}
+                </div>
             </div>
 
-            {/* Message */}
-            <p className="text-gray-300 text-sm leading-relaxed line-clamp-4 mb-5 italic">
-                &quot;{t.message}&quot;
-            </p>
+            <div className="mb-5">
+                <p className={`text-gray-300 text-sm leading-relaxed italic ${!isExpanded ? 'line-clamp-4' : ''}`}>
+                    &quot;{t.message}&quot;
+                </p>
+                {isLongMessage && (
+                    <button
+                        onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }}
+                        className="text-[10px] font-black text-blue-500 uppercase tracking-widest mt-2 hover:text-blue-400 transition-colors"
+                    >
+                        {isExpanded ? "Close" : "Read More"}
+                    </button>
+                )}
+            </div>
 
-            {/* Author */}
-            <div className="flex items-center gap-3 border-t border-white/5 pt-4">
+            <div className="flex items-center gap-3 border-t border-white/5 pt-4 mt-auto">
                 {t.photoUrl ? (
                     <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-white/10">
                         <Image src={t.photoUrl} alt={t.name} fill className="object-cover" />
@@ -61,11 +70,8 @@ function TestimonialCard({ t }: { t: Testimonial }) {
                             <BadgeCheck size={14} className="text-blue-400 flex-shrink-0" aria-label="Verified Client" />
                         )}
                     </div>
-                    <div className="text-[10px] text-gray-500 truncate">
-                        {t.role && <span>{t.role}</span>}
-                        {t.role && t.company && <span> · </span>}
-                        {t.company && <span>{t.company}</span>}
-                        {!t.role && !t.company && <span className="text-blue-400/70">{t.intervention_type}</span>}
+                    <div className="text-[10px] text-gray-500 truncate uppercase tracking-tighter">
+                        {t.company ? t.company : t.intervention_type}
                     </div>
                 </div>
             </div>

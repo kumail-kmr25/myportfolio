@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import {
     CheckCircle2,
     XCircle,
@@ -31,13 +32,28 @@ interface Testimonial {
 
 interface AdminTestimonialsProps {
     testimonials: Testimonial[];
-    onApprove: (id: string, approved: boolean) => void;
+    onApprove: (id: string, approved: boolean, data?: any) => void;
     onDelete: (id: string) => void;
     onVerify?: (id: string, verified: boolean) => void;
     onFeature?: (id: string, featured: boolean) => void;
 }
 
 export default function AdminTestimonials({ testimonials, onApprove, onDelete, onVerify, onFeature }: AdminTestimonialsProps) {
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editForm, setEditForm] = useState<Partial<Testimonial>>({});
+
+    const handleEditStart = (t: Testimonial) => {
+        setEditingId(t.id);
+        setEditForm(t);
+    };
+
+    const handleEditSave = () => {
+        if (editingId && onApprove) {
+            onApprove(editingId, editForm.approved ?? false, editForm);
+            setEditingId(null);
+        }
+    };
+
     const safeTestimonials = Array.isArray(testimonials) ? testimonials : [];
     const pending = safeTestimonials.filter(t => !t.approved);
     const approved = safeTestimonials.filter(t => t.approved);
@@ -54,6 +70,13 @@ export default function AdminTestimonials({ testimonials, onApprove, onDelete, o
 
             {/* Actions */}
             <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex flex-col sm:flex-row gap-2 sm:opacity-0 group-hover:opacity-100 transition-all sm:scale-95 group-hover:scale-100 z-10">
+                <button
+                    onClick={() => handleEditStart(testimonial)}
+                    className="p-3 sm:p-2.5 bg-[#0a0a0a]/80 sm:bg-blue-500/10 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center"
+                    title="Edit Testimonial"
+                >
+                    <Star size={18} className="sm:size-[18px]" />
+                </button>
                 <button
                     onClick={() => onApprove(testimonial.id, !testimonial.approved)}
                     className={`p-3 sm:p-2.5 rounded-xl transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center ${testimonial.approved
@@ -140,6 +163,48 @@ export default function AdminTestimonials({ testimonials, onApprove, onDelete, o
                     </div>
                 </div>
             </div>
+
+            {/* Edit Modal Overlay */}
+            {editingId === testimonial.id && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl">
+                    <div className="w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-[2rem] p-8 space-y-6 overflow-y-auto max-h-[90vh]">
+                        <div className="flex justify-between items-center">
+                            <h3 className="text-xl font-black text-white uppercase tracking-tight">Edit Testimonial</h3>
+                            <button onClick={() => setEditingId(null)} className="p-2 hover:bg-white/5 rounded-lg transition-colors">
+                                <XCircle size={20} className="text-gray-500" />
+                            </button>
+                        </div>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Name</label>
+                                <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-blue-500" value={editForm.name || ""} onChange={e => setEditForm({ ...editForm, name: e.target.value })} />
+                            </div>
+                            <div>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Message</label>
+                                <textarea className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-blue-500 min-h-[100px] resize-none" value={editForm.message || ""} onChange={e => setEditForm({ ...editForm, message: e.target.value })} />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Role</label>
+                                    <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-blue-500" value={editForm.role || ""} onChange={e => setEditForm({ ...editForm, role: e.target.value })} />
+                                </div>
+                                <div>
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Company</label>
+                                    <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-blue-500" value={editForm.company || ""} onChange={e => setEditForm({ ...editForm, company: e.target.value })} />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Delivery Feedback</label>
+                                <textarea className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-blue-500 min-h-[80px] resize-none" value={editForm.about_delivery_lead || ""} onChange={e => setEditForm({ ...editForm, about_delivery_lead: e.target.value })} />
+                            </div>
+                        </div>
+                        <div className="flex gap-4 pt-4">
+                            <button onClick={handleEditSave} className="flex-1 bg-blue-600 text-white py-4 text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-blue-700 transition-all font-bold">Save Changes</button>
+                            <button onClick={() => setEditingId(null)} className="flex-1 bg-white/5 text-white py-4 text-[10px] font-black uppercase tracking-widest rounded-2xl border border-white/10 hover:bg-white/10 transition-all">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 

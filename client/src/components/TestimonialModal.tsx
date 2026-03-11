@@ -26,18 +26,13 @@ const RELATIONSHIP_TYPES = [
 ];
 
 const INTERVENTION_TYPES = [
-    "Full-Stack Development",
+    "UI/UX Design",
     "Frontend Development",
     "Backend Development",
-    "API Integration",
-    "UI/UX Implementation",
+    "Full Stack Development",
     "Database Design",
-    "Consulting",
-    "Code Review",
-    "UI/UX Design",
     "DevOps / Cloud",
-    "Bug Fix / Error Optimisation",
-    "Performance Optimization",
+    "Bug Fix / Optimization",
     "Other"
 ];
 
@@ -51,15 +46,15 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
 
     const [form, setForm] = useState({
         name: "", email: "", role: "", company: "",
-        relationship_type: "Client", intervention_type: "Full-Stack Development",
-        message: "", rating: 5, about_delivery_lead: "", permission: false,
+        relationship_type: "Client", intervention_type: "Full Stack Development",
+        message: "", rating: 5, deliveryRating: 7, about_delivery_lead: "", permission: false,
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     useEffect(() => {
         if (!isOpen) {
             setStep(1); setIsSuccess(false); setPhotoPreview(null); setPhotoFile(null);
-            setForm({ name: "", email: "", role: "", company: "", relationship_type: "Client", intervention_type: "Full-Stack Development", message: "", rating: 5, about_delivery_lead: "", permission: false });
+            setForm({ name: "", email: "", role: "", company: "", relationship_type: "Client", intervention_type: "Full Stack Development", message: "", rating: 5, deliveryRating: 7, about_delivery_lead: "", permission: false });
             setErrors({});
         }
     }, [isOpen]);
@@ -153,7 +148,7 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
                                 <CheckCircle size={32} className="text-green-400" />
                             </div>
                             <h3 className="text-xl font-black text-white mb-2">Thank You!</h3>
-                            <p className="text-gray-400 text-sm">Your testimonial is pending review and will appear once approved.</p>
+                            <p className="text-gray-400 text-sm">Thank you for your feedback. Your testimonial will appear after approval.</p>
                         </m.div>
                     ) : (
                         <div className="p-6 max-h-[70vh] overflow-y-auto space-y-4">
@@ -238,7 +233,17 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">How was communication & delivery?</label>
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 block">Delivery Experience (1-7) *</label>
+                                            <div className="flex gap-2">
+                                                {[1, 2, 3, 4, 5, 6, 7].map(n => (
+                                                    <button key={n} onClick={() => set("deliveryRating", n)} type="button" className={`w-8 h-8 rounded-lg border text-[10px] font-black transition-all ${n <= form.deliveryRating ? "bg-blue-600 border-blue-500 text-white" : "border-white/10 text-gray-500 hover:border-white/20"}`}>
+                                                        {n}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Describe your experience working with this developer *</label>
                                             <textarea className="input-field text-sm min-h-[100px] resize-y" value={form.about_delivery_lead} onChange={e => set("about_delivery_lead", e.target.value)} placeholder="Prompt replies, delivered on time, great communication..." />
                                         </div>
                                         <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">

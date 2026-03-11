@@ -14,7 +14,8 @@ interface TestimonialFormProps {
 export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
     const [formData, setFormData] = useState<Partial<TestimonialFormData>>({
         rating: 5,
-        intervention_type: "Full-Stack Development",
+        deliveryRating: 5,
+        intervention_type: "Full Stack Development",
         permission: false,
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -168,18 +169,13 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                             onChange={(e) => setFormData({ ...formData, intervention_type: e.target.value as any })}
                         >
                             <option value="" className="bg-[#0a0a0a] text-white">Select service...</option>
-                            <option value="Full-Stack Development" className="bg-[#0a0a0a] text-white">Full-Stack Development</option>
+                            <option value="Full Stack Development" className="bg-[#0a0a0a] text-white">Full Stack Development</option>
                             <option value="Frontend Development" className="bg-[#0a0a0a] text-white">Frontend Development</option>
                             <option value="Backend Development" className="bg-[#0a0a0a] text-white">Backend Development</option>
-                            <option value="API Integration" className="bg-[#0a0a0a] text-white">API Integration</option>
-                            <option value="UI/UX Implementation" className="bg-[#0a0a0a] text-white">UI/UX Implementation</option>
-                            <option value="Database Design" className="bg-[#0a0a0a] text-white">Database Design</option>
-                            <option value="Consulting" className="bg-[#0a0a0a] text-white">Consulting</option>
-                            <option value="Code Review" className="bg-[#0a0a0a] text-white">Code Review</option>
                             <option value="UI/UX Design" className="bg-[#0a0a0a] text-white">UI/UX Design</option>
+                            <option value="Database Design" className="bg-[#0a0a0a] text-white">Database Design</option>
                             <option value="DevOps / Cloud" className="bg-[#0a0a0a] text-white">DevOps / Cloud</option>
-                            <option value="Bug Fix / Error Optimisation" className="bg-[#0a0a0a] text-white">Bug Fix / Error Optimisation</option>
-                            <option value="Performance Optimization" className="bg-[#0a0a0a] text-white">Performance Optimization</option>
+                            <option value="Bug Fix / Optimization" className="bg-[#0a0a0a] text-white">Bug Fix / Optimization</option>
                             <option value="Other" className="bg-[#0a0a0a] text-white">Other</option>
                         </select>
                         {errors.intervention_type && <p className="text-[10px] text-red-500">{errors.intervention_type}</p>}

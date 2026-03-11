@@ -28,46 +28,60 @@ type Step = "services" | "details" | "vision" | "contact" | "success";
 
 const services = [
     {
-        id: "Web Development (Full Stack)",
-        title: "Full Stack Web App",
-        description: "End-to-end development with modern stacks (Next.js, Node.js, Prisma).",
+        id: "Website Development",
+        title: "Website Development",
+        description: "Custom, high-performance websites built with modern frameworks.",
         icon: Sparkles,
         color: "blue"
     },
     {
-        id: "Frontend Development (React/Next.js)",
-        title: "Frontend Excellence",
-        description: "Transforming designs into pixel-perfect, interactive React applications.",
+        id: "Web Application",
+        title: "Web Application",
+        description: "Full-scale web applications with complex logic and state management.",
         icon: Briefcase,
         color: "indigo"
     },
     {
-        id: "Backend Development (Node.js/Prisma)",
-        title: "Robust Backends",
-        description: "Scalable APIs, database architectures, and secure server logic.",
+        id: "SaaS Platform",
+        title: "SaaS Platform",
+        description: "Scalable, multi-tenant software as a service products.",
         icon: Send,
         color: "purple"
     },
     {
-        id: "UI/UX Design & Prototyping",
+        id: "UI/UX Design",
         title: "UI/UX Design",
-        description: "Creating intuitive user experiences and premium visual identities.",
+        description: "Intuitive user experiences and stunning interface designs.",
         icon: Sparkles,
         color: "pink"
     },
     {
-        id: "Performance Optimization",
-        title: "Speed Optimization",
-        description: "Achieving perfect Lighthouse scores and blazing fast performance.",
+        id: "Bug Fix / Optimization",
+        title: "Bug Fix / Optimization",
+        description: "Technical debt resolution and performance engineering.",
         icon: Clock,
         color: "green"
     },
     {
-        id: "Bug Fixing & Error Resolution",
-        title: "Debug & Fix",
-        description: "Resolving complex technical issues and refining existing codebases.",
+        id: "Database System",
+        title: "Database System",
+        description: "Secure, optimized, and scalable data architectures.",
         icon: IndianRupee,
         color: "yellow"
+    },
+    {
+        id: "API Development",
+        title: "API Development",
+        description: "RESTful and GraphQL APIs built for speed and security.",
+        icon: Send,
+        color: "blue"
+    },
+    {
+        id: "Other",
+        title: "Other",
+        description: "Custom engineering solutions tailored to your unique needs.",
+        icon: Sparkles,
+        color: "indigo"
     }
 ] as const;
 
@@ -98,8 +112,8 @@ export default function HireMeModal() {
             company: "",
             description: "",
             source: "hire_me",
-            selectedService: "Web Development (Full Stack)",
-            budgetRange: "₹25,000 – ₹50,000",
+            selectedService: "Website Development",
+            budgetRange: "$500 – $1000",
             timeline: "1 month",
             projectType: "New Project from scratch"
         }
@@ -317,7 +331,7 @@ export default function HireMeModal() {
                                                 </div>
 
                                                 <m.p variants={itemVariants} className="text-gray-400 leading-relaxed text-lg font-medium">
-                                                    Your brief for <span className="text-white">{formData.selectedService}</span> has been securely routed. I&apos;ll analyze the requirements and initialize contact within 24 hours.
+                                                    Your message has been received. I will respond shortly.
                                                 </m.p>
 
                                                 <m.div variants={itemVariants} className="bg-white/[0.02] border border-white/5 rounded-[2.5rem] p-8 w-full mt-8 space-y-6 backdrop-blur-3xl shadow-2xl">
@@ -409,14 +423,14 @@ export default function HireMeModal() {
                                                             <m.div variants={itemVariants} className="space-y-4">
                                                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Budget Range (Expected)</label>
                                                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                                                                    {["₹10,000 – ₹25,000", "₹25,000 – ₹50,000", "₹50,000 – ₹1,00,000", "₹1,00,000+", "Flexible / To be discussed"].map((range) => (
+                                                                    {["Under $500", "$500 – $1000", "$1000 – $3000", "$3000+"].map((range) => (
                                                                         <button
                                                                             key={range}
                                                                             type="button"
                                                                             onClick={() => setValue("budgetRange", range as any)}
                                                                             className={`px-4 py-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${formData.budgetRange === range ? "bg-blue-600 border-blue-600 text-white" : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"}`}
                                                                         >
-                                                                            {range.includes("/") ? "Flexible" : range}
+                                                                            {range}
                                                                         </button>
                                                                     ))}
                                                                 </div>
@@ -425,14 +439,14 @@ export default function HireMeModal() {
                                                             <m.div variants={itemVariants} className="space-y-4">
                                                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Estimated Timeline</label>
                                                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                                                                    {["Urgent (less than 1 week)", "1–2 weeks", "1 month", "2–3 months", "Flexible"].map((time) => (
+                                                                    {["ASAP", "1–2 weeks", "1 month", "Flexible"].map((time) => (
                                                                         <button
                                                                             key={time}
                                                                             type="button"
                                                                             onClick={() => setValue("timeline", time as any)}
                                                                             className={`px-4 py-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${formData.timeline === time ? "bg-blue-600 border-blue-600 text-white" : "bg-white/5 border-white/5 text-gray-500 hover:border-white/10"}`}
                                                                         >
-                                                                            {time.includes("Urgent") ? "Urgent" : time}
+                                                                            {time}
                                                                         </button>
                                                                     ))}
                                                                 </div>
@@ -475,7 +489,7 @@ export default function HireMeModal() {
                                                                 <textarea
                                                                     {...register("description")}
                                                                     className="w-full bg-white/5 border border-white/10 rounded-[2rem] px-8 py-6 text-sm text-white focus:border-blue-500 outline-none transition-all min-h-[200px] resize-none leading-relaxed"
-                                                                    placeholder="What are we building? What problems are we solving?"
+                                                                    placeholder="Briefly describe your project idea or problem."
                                                                 />
                                                                 {errors.description && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.description.message as string}</p>}
                                                             </m.div>

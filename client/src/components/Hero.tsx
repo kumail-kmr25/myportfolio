@@ -181,17 +181,6 @@ export default function Hero() {
                             className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start w-full sm:w-auto"
                         >
 
-                            <Link
-                                href="#projects"
-                                prefetch={false}
-                                className="group relative w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:scale-[1.05] active:scale-[0.95] shadow-xl shadow-blue-500/20 overflow-hidden"
-                            >
-                                <span className="relative z-10 flex items-center justify-center gap-2">
-                                    View Projects
-                                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                                </span>
-                            </Link>
-
                             <button
                                 onClick={(e) => {
                                     e.preventDefault();
