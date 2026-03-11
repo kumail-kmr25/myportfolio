@@ -14,6 +14,7 @@ import {
     ChevronDown, ChevronUp, Users
 } from "lucide-react";
 import { getApiUrl } from "@/lib/api";
+import { useHireModal } from "@/context/HireModalContext";
 
 interface Architecture {
     nodes: Array<{ id: string; label: string; sub: string; icon: string; color: string; x: number; y: number }>;
@@ -616,6 +617,7 @@ function ComparisonSlider({ before, after }: { before: string; after: string }) 
 // Main Component
 // ─────────────────────────────────────────
 export default function Projects() {
+    const { openModal } = useHireModal();
     const { data: projects, error, isLoading } = useSWR<Project[]>(getApiUrl("/api/projects"), fetcher);
     const [activeIndex, setActiveIndex] = useState(0);
     const [activeTab, setActiveTab] = useState<Tab>("snapshot");
@@ -859,12 +861,31 @@ export default function Projects() {
                                     </m.div>
 
                                     <button
+                                        onClick={() => openModal({ service: "App Development (SaaS)", description: `I'm interested in a project similar to "${active.title}".` })}
+                                        className="group relative w-full h-48 rounded-[2.5rem] border-2 border-dashed border-blue-500/20 hover:border-blue-500/40 overflow-hidden transition-all flex flex-col items-center justify-center gap-2 bg-blue-500/[0.02]"
+                                    >
+                                        <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700">
+                                            <Image src={active.image} alt="" fill className="object-cover" />
+                                        </div>
+                                        <m.div
+                                            className="relative z-10 flex flex-col items-center gap-3"
+                                            whileHover={{ y: -5 }}
+                                        >
+                                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-500">Scale This Vision</span>
+                                            <h4 className="text-2xl font-black text-white group-hover:text-blue-400 transition-colors">
+                                                Start Similar Project
+                                            </h4>
+                                            <ArrowRight size={24} className="mt-2 group-hover:translate-x-2 transition-transform text-blue-500" />
+                                        </m.div>
+                                    </button>
+
+                                    <button
                                         onClick={() => {
                                             const next = (activeIndex + 1) % projects.length;
                                             setActiveIndex(next);
                                             window.scrollTo({ top: document.getElementById('projects')?.offsetTop ? document.getElementById('projects')!.offsetTop - 100 : 0, behavior: 'smooth' });
                                         }}
-                                        className="group relative w-full h-48 rounded-[2.5rem] border-2 border-dashed border-white/5 hover:border-blue-500/20 overflow-hidden transition-all flex flex-col items-center justify-center gap-2 text-gray-600"
+                                        className="group relative w-full h-32 rounded-[2.5rem] border-2 border-dashed border-white/5 hover:border-blue-500/20 overflow-hidden transition-all flex flex-col items-center justify-center gap-2 text-gray-600"
                                     >
                                         <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700">
                                             <Image src={projects[(activeIndex + 1) % projects.length].image} alt="" fill className="object-cover" />
@@ -874,10 +895,9 @@ export default function Projects() {
                                             whileHover={{ y: -5 }}
                                         >
                                             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 group-hover:text-blue-500 transition-colors">Initialize Next Discovery</span>
-                                            <h4 className="text-2xl font-black text-white group-hover:text-blue-400 transition-colors">
-                                                {projects[(activeIndex + 1) % projects.length].title}
+                                            <h4 className="text-xl font-black text-white group-hover:text-blue-400 transition-colors">
+                                                Next: {projects[(activeIndex + 1) % projects.length].title}
                                             </h4>
-                                            <ArrowRight size={24} className="mt-2 group-hover:translate-x-2 transition-transform text-blue-500" />
                                         </m.div>
                                     </button>
                                 </m.div>
