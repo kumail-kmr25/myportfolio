@@ -32,7 +32,6 @@ const navLinks: NavLink[] = [
     { name: "Projects", href: "#projects" },
     { name: "Case Studies", href: "#case-studies" },
     { name: "Services", href: "#services" },
-    { name: "About", href: "#about" },
     { name: "Contact", href: "#contact" },
     { name: "Hire Me", href: "#contact", isCTA: true },
 ];

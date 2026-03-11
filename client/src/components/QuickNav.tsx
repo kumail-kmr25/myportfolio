@@ -2,24 +2,30 @@
 
 import { useState, useEffect } from "react";
 import { m, AnimatePresence } from "framer-motion";
-import { Search, Command, ArrowRight } from "lucide-react";
+import { Search, Command, ArrowRight, Briefcase } from "lucide-react";
+import { useHireModal } from "@/context/HireModalContext";
 
 const quickLinks = [
-    { name: "About Me", href: "#about", key: "A" },
     { name: "Projects", href: "#projects", key: "P" },
     { name: "Case Studies", href: "#case-studies", key: "S" },
     { name: "Services", href: "#services", key: "V" },
+    { name: "Hire Me", href: "hire", key: "H", isCTA: true },
     { name: "Contact", href: "#contact", key: "C" },
 ];
 
 export default function QuickNav() {
     const [isOpen, setIsOpen] = useState(false);
+    const { openModal } = useHireModal();
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "/" && !isOpen) {
                 e.preventDefault();
                 setIsOpen(true);
+            }
+            if (e.key.toLowerCase() === "h" && !isOpen) {
+                e.preventDefault();
+                openModal();
             }
             if (e.key === "Escape" && isOpen) {
                 setIsOpen(false);
@@ -30,9 +36,13 @@ export default function QuickNav() {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [isOpen]);
 
-    const navigate = (href: string) => {
+    const navigate = (link: any) => {
         setIsOpen(false);
-        const element = document.getElementById(href.substring(1));
+        if (link.isCTA) {
+            openModal();
+            return;
+        }
+        const element = document.getElementById(link.href.substring(1));
         if (element) {
             element.scrollIntoView({ behavior: "smooth" });
         }
@@ -71,11 +81,11 @@ export default function QuickNav() {
                             {quickLinks.map((link) => (
                                 <button
                                     key={link.name}
-                                    onClick={() => navigate(link.href)}
+                                    onClick={() => navigate(link)}
                                     className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition-all group text-left"
                                 >
                                     <div className="flex items-center gap-4">
-                                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 text-xs font-bold group-hover:bg-blue-500 group-hover:text-white transition-all">
+                                        <div className={`w-8 h-8 rounded-lg ${link.isCTA ? 'bg-blue-600/20 text-blue-400' : 'bg-white/5 text-gray-400'} flex items-center justify-center text-xs font-bold group-hover:bg-blue-500 group-hover:text-white transition-all`}>
                                             {link.key}
                                         </div>
                                         <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">

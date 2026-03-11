@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { Github, Twitter, Linkedin, Instagram, ShieldCheck } from "lucide-react";
+import { Github, Twitter, Linkedin, Instagram, ShieldCheck, Mail } from "lucide-react";
 import { m, Variants } from "framer-motion";
+import { useHireModal } from "@/context/HireModalContext";
 
 export default function Footer() {
+    const { openModal } = useHireModal();
     const premiumEase = [0.16, 1, 0.3, 1];
 
     const containerVariants: Variants = {
@@ -99,8 +101,16 @@ export default function Footer() {
                         ))}
                     </div>
 
-                    {/* Admin Dashboard Link */}
-                    <m.div variants={itemVariants}>
+                    <m.div variants={itemVariants} className="flex items-center gap-6">
+                        <button
+                            onClick={() => openModal()}
+                            className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-blue-500 hover:text-white transition-all py-3 px-8 rounded-2xl border border-blue-500/20 hover:bg-blue-600 hover:border-blue-500 group backdrop-blur-3xl"
+                        >
+                            <Mail size={14} className="group-hover:scale-110 transition-transform" />
+                            <span>Hire Me</span>
+                        </button>
+
+                        {/* Admin Dashboard Link */}
                         <Link
                             href="/admin"
                             className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-gray-700 hover:text-blue-500 transition-all py-3 px-6 rounded-2xl border border-white/[0.03] hover:border-blue-500/20 hover:bg-blue-500/5 group backdrop-blur-3xl"

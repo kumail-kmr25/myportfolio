@@ -2,6 +2,7 @@
 
 import { Code, Layout, Smartphone, Server, Globe, Rocket, Terminal } from "lucide-react";
 import { m, Variants } from "framer-motion";
+import { useHireModal } from "@/context/HireModalContext";
 
 const services = [
     {
@@ -43,6 +44,7 @@ const services = [
 ];
 
 export default function Services() {
+    const { openModal } = useHireModal();
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
@@ -110,7 +112,8 @@ export default function Services() {
                             key={index}
                             variants={itemVariants}
                             whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                            className="group p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300"
+                            onClick={() => openModal()}
+                            className="group p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 cursor-pointer"
                         >
                             <div className="w-14 h-14 rounded-2xl bg-blue-600/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
                                 <service.icon className="w-7 h-7 text-blue-500" />
