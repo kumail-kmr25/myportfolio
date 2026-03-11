@@ -172,14 +172,14 @@ function ProjectCard({ project }: { project: Project }) {
                 <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-white/5">
                     <Link
                         href={`/projects/${project.id}`}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-[9px] font-black uppercase tracking-widest text-white hover:bg-white/[0.08] transition-all active:scale-[0.98]"
+                        className="flex-1 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-[9px] font-black uppercase tracking-widest text-white hover:bg-white/[0.08] transition-all active:scale-[0.98]"
                     >
                         <Layers size={12} /> View Project
                     </Link>
 
                     <button
                         onClick={() => (window as any).openCaseStudy?.(project)}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-purple-600/20 border border-purple-500/30 text-[9px] font-black uppercase tracking-widest text-purple-400 hover:bg-purple-600/30 transition-all active:scale-[0.98]"
+                        className="flex-1 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-purple-600/20 border border-purple-500/30 text-[9px] font-black uppercase tracking-widest text-purple-400 hover:bg-purple-600/30 transition-all active:scale-[0.98]"
                     >
                         <BarChart3 size={12} /> Case Study
                     </button>
@@ -188,16 +188,17 @@ function ProjectCard({ project }: { project: Project }) {
                         <Link
                             href={project.demo}
                             target="_blank"
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-blue-600 text-[9px] font-black uppercase tracking-widest text-white hover:bg-blue-500 transition-all shadow-xl shadow-blue-500/20 active:scale-[0.98]"
+                            className="flex-1 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-blue-600 text-[9px] font-black uppercase tracking-widest text-white hover:bg-blue-500 transition-all shadow-xl shadow-blue-500/20 active:scale-[0.98]"
                         >
                             <Globe size={12} /> Live Demo
                         </Link>
                     ) : (
-                        <div className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/5 text-[9px] font-black uppercase tracking-widest text-gray-600 cursor-not-allowed">
+                        <div className="flex-1 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/5 text-[9px] font-black uppercase tracking-widest text-gray-600 cursor-not-allowed">
                             <Lock size={10} /> Protected
                         </div>
                     )}
                 </div>
+
             </div>
         </motion.div>
 

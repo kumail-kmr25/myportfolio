@@ -178,14 +178,14 @@ export default function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 1, ease: premiumEase as any }}
-                            className="flex flex-wrap gap-4 justify-center lg:justify-start"
+                            className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start w-full sm:w-auto"
                         >
                             <Link
                                 href="#projects"
                                 prefetch={false}
-                                className="group relative px-8 py-4 bg-blue-600 text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:scale-[1.05] active:scale-[0.95] shadow-xl shadow-blue-500/20 overflow-hidden"
+                                className="group relative w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:scale-[1.05] active:scale-[0.95] shadow-xl shadow-blue-500/20 overflow-hidden"
                             >
-                                <span className="relative z-10 flex items-center gap-2">
+                                <span className="relative z-10 flex items-center justify-center gap-2">
                                     View Projects
                                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                                 </span>
@@ -196,9 +196,9 @@ export default function Hero() {
                                     e.preventDefault();
                                     openModal();
                                 }}
-                                className="group relative px-8 py-4 bg-white/[0.03] border border-white/[0.08] text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-white/[0.06] hover:border-white/20 hover:scale-[1.05] active:scale-[0.95] backdrop-blur-3xl"
+                                className="group relative w-full sm:w-auto px-8 py-4 bg-white/[0.03] border border-white/[0.08] text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-white/[0.06] hover:border-white/20 hover:scale-[1.05] active:scale-[0.95] backdrop-blur-3xl"
                             >
-                                <span className="flex items-center gap-2">
+                                <span className="flex items-center justify-center gap-2">
                                     Hire Me
                                 </span>
                             </button>
@@ -206,13 +206,14 @@ export default function Hero() {
                             <Link
                                 href="#journey"
                                 prefetch={false}
-                                className="group relative px-8 py-4 bg-transparent border border-white/10 text-gray-400 rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:text-white hover:border-white/20 hover:scale-[1.05] active:scale-[0.95]"
+                                className="group relative w-full sm:w-auto px-8 py-4 bg-transparent border border-white/10 text-gray-400 rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:text-white hover:border-white/20 hover:scale-[1.05] active:scale-[0.95]"
                             >
-                                <span className="flex items-center gap-2">
+                                <span className="flex items-center justify-center gap-2">
                                     My Journey
                                 </span>
                             </Link>
                         </motion.div>
+
                     </div>
 
                     {/* Right Column: Visual */}
@@ -242,9 +243,11 @@ export default function Hero() {
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                                     priority
+                                    sizes="(max-width: 768px) 256px, (max-width: 1024px) 320px, 450px"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-transparent to-transparent opacity-40" />
                             </div>
+
 
                             {/* Floating Badges */}
                             <motion.div
