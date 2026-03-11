@@ -43,13 +43,11 @@ export default function Projects() {
         );
     }
 
-    if (!projects || projects.length === 0) return null;
+    if (!Array.isArray(projects) || projects.length === 0) return null;
 
     // Filter projects based on user requested priority
-    // User requested: EduNova, MedCipher, ValeKash, FinFlow AI, Clinkart, Quebook
-    // We will sort them or take first 3 as featured
-    const featuredProjects = projects.filter((p: any) => p.isFeatured).slice(0, 3);
-    const standardProjects = projects.filter((p: any) => !p.isFeatured || featuredProjects.every((fp: any) => fp.id !== p.id));
+    const featuredProjects = Array.isArray(projects) ? projects.filter((p: any) => p.isFeatured).slice(0, 3) : [];
+    const standardProjects = Array.isArray(projects) ? projects.filter((p: any) => !p.isFeatured || featuredProjects.every((fp: any) => fp.id !== p.id)) : [];
 
     return (
         <section id="projects" className="py-24 lg:py-32 bg-[#020202] relative overflow-hidden">
