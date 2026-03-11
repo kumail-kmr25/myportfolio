@@ -62,7 +62,6 @@ export default function MainContent() {
             <StatsDashboard />
             <Testimonials />
             <Services />
-            <About />
             <Blog />
             <FeatureSuggestion />
             <MyJourney />

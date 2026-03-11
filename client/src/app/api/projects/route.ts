@@ -15,7 +15,7 @@ const FALLBACK_PROJECTS = [
         description: "A comprehensive School Management System with 2FA, RBAC, and real-time analytics.",
         status: "Production",
         image: "/projects/edunova.png",
-        tags: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind"],
+        tags: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind CSS"],
         category: "Education",
         isFeatured: true,
         isVisible: true
@@ -28,7 +28,7 @@ const FALLBACK_PROJECTS = [
         status: "Production",
         image: "/projects/medq_ai.png",
         tags: ["React", "Node.js", "MongoDB", "AI"],
-        category: "Healthcare",
+        category: "Healthcare Tech",
         isFeatured: true,
         isVisible: true
     },
@@ -50,9 +50,9 @@ const FALLBACK_PROJECTS = [
         summary: "AI-driven financial analytics and forecasting.",
         description: "Predictive financial modeling platform utilizing machine learning for market analysis.",
         status: "Beta",
-        image: "/projects/finflow.png", // Corrected path
+        image: "/projects/finflow.png",
         tags: ["AI", "Python", "React", "Tf.js"],
-        category: "FinTech",
+        category: "AI & Data Products",
         isFeatured: false,
         isVisible: true
     },
