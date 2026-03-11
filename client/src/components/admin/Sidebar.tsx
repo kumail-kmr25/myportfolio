@@ -72,7 +72,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
             )}
 
             {/* Sidebar Container */}
-            <aside className={`fixed top-0 left-0 h-full bg-[#080808] border-r border-white/5 z-40 w-72 transition-all duration-500 ease-out lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full lg:opacity-100 opacity-0'}`}>
+            <aside className={`fixed top-0 left-0 h-full bg-[#080808] border-r border-white/5 z-40 w-72 transition-all duration-500 ease-out lg:translate-x-0 ${isOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0 lg:translate-x-0 lg:opacity-100'}`}>
                 <div className="flex flex-col h-full p-8">
                     {/* Brand */}
                     <div className="flex items-center gap-4 mb-12">

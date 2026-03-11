@@ -13,8 +13,8 @@ export default function ClientProviders({ children }: { children: React.ReactNod
                 <LazyMotion features={domMax} strict>
                     {children}
                 </LazyMotion>
+                <QuickNav />
             </HireModalProvider>
-            <QuickNav />
         </SessionProvider>
     );
 }

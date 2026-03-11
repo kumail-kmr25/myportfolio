@@ -12,7 +12,8 @@ import {
     Briefcase,
     Settings,
     FileText,
-    ArrowRight
+    ArrowRight,
+    ShieldCheck
 } from "lucide-react";
 import { m, AnimatePresence } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
@@ -130,6 +131,16 @@ export default function Navbar() {
                     />
                 </Link>
 
+                {/* Admin Suite Shortcut — visible on desktop only, discreet */}
+                <Link
+                    href="/admin"
+                    title="Admin Suite"
+                    aria-label="Admin Suite"
+                    className="hidden md:flex items-center justify-center w-9 h-9 rounded-xl bg-white/[0.03] border border-white/[0.06] text-gray-600 hover:text-blue-400 hover:bg-blue-500/10 hover:border-blue-500/30 transition-all absolute left-1/2 -translate-x-1/2 -ml-32"
+                >
+                    <ShieldCheck size={16} />
+                </Link>
+
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center gap-1 bg-white/[0.03] border border-white/[0.05] p-1.5 rounded-full backdrop-blur-2xl">
                     {dynamicLinks.map((link, index) => {
@@ -176,23 +187,35 @@ export default function Navbar() {
                     })}
                 </div>
 
-                {/* Mobile Menu Button */}
-                <button
-                    className="md:hidden text-white focus:outline-none p-3 hover:bg-white/5 rounded-2xl transition-all active:scale-95"
-                    onClick={() => setIsOpen(!isOpen)}
-                >
-                    <AnimatePresence mode="wait">
-                        {isOpen ? (
-                            <m.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.3 }}>
-                                <X size={24} />
-                            </m.div>
-                        ) : (
-                            <m.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.3 }}>
-                                <Menu size={24} />
-                            </m.div>
-                        )}
-                    </AnimatePresence>
-                </button>
+                {/* Mobile Controls */}
+                <div className="md:hidden flex items-center gap-2">
+                    {/* Admin Suite — mobile discreet shortcut */}
+                    <Link
+                        href="/admin"
+                        title="Admin Suite"
+                        aria-label="Admin Suite"
+                        className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] text-gray-600 hover:text-blue-400 hover:bg-blue-500/10 hover:border-blue-500/30 transition-all"
+                    >
+                        <ShieldCheck size={16} />
+                    </Link>
+                    {/* Menu Toggle */}
+                    <button
+                        className="text-white focus:outline-none p-3 hover:bg-white/5 rounded-2xl transition-all active:scale-95"
+                        onClick={() => setIsOpen(!isOpen)}
+                    >
+                        <AnimatePresence mode="wait">
+                            {isOpen ? (
+                                <m.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.3 }}>
+                                    <X size={24} />
+                                </m.div>
+                            ) : (
+                                <m.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.3 }}>
+                                    <Menu size={24} />
+                                </m.div>
+                            )}
+                        </AnimatePresence>
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Menu */}
@@ -255,6 +278,32 @@ export default function Navbar() {
                                     </Link>
                                 </m.div>
                             ))}
+
+                            {/* Admin Suite — persistent mobile menu entry */}
+                            <m.div
+                                variants={{
+                                    open: { opacity: 1, x: 0, filter: "blur(0px)" },
+                                    closed: { opacity: 0, x: -20, filter: "blur(10px)" }
+                                }}
+                                transition={{ duration: 0.5, ease: premiumEase as any }}
+                            >
+                                <Link
+                                    href="/admin"
+                                    className="text-gray-600 pt-8 border-t border-white/[0.05] w-full text-xs font-black tracking-[0.3em] uppercase flex items-center justify-between group"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    <span className="group-hover:translate-x-3 transition-transform duration-500 flex items-center gap-3">
+                                        <ShieldCheck size={16} className="text-gray-700 group-hover:text-blue-500 transition-colors" />
+                                        Admin Suite
+                                    </span>
+                                    <m.div
+                                        animate={{ x: [0, 5, 0] }}
+                                        transition={{ duration: 1.5, repeat: Infinity }}
+                                    >
+                                        <ArrowRight size={16} className="text-gray-700 group-hover:text-blue-500 transition-colors" />
+                                    </m.div>
+                                </Link>
+                            </m.div>
                         </m.div>
                     </m.div>
                 )}

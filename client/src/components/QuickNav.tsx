@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { m, AnimatePresence } from "framer-motion";
-import { Search, Command, ArrowRight, Briefcase } from "lucide-react";
+import { Search, Command, ArrowRight, Briefcase, ShieldCheck } from "lucide-react";
 import { useHireModal } from "@/context/HireModalContext";
 
 const quickLinks = [
@@ -11,6 +11,7 @@ const quickLinks = [
     { name: "Services", href: "#services", key: "V" },
     { name: "Hire Me", href: "hire", key: "H", isCTA: true },
     { name: "Contact", href: "#contact", key: "C" },
+    { name: "Admin Suite", href: "/admin", key: "A", isAdmin: true },
 ];
 
 export default function QuickNav() {
@@ -40,6 +41,10 @@ export default function QuickNav() {
         setIsOpen(false);
         if (link.isCTA) {
             openModal();
+            return;
+        }
+        if (link.isAdmin || !link.href.startsWith("#")) {
+            window.location.href = link.href;
             return;
         }
         const element = document.getElementById(link.href.substring(1));
