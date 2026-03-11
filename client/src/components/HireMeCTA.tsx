@@ -2,6 +2,7 @@ import { m, Variants } from "framer-motion";
 import { Bug, Code2, Layout, Database, Zap, Cloud, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
+import { useHireModal } from "@/context/HireModalContext";
 
 const services = [
     { label: "Fix Bugs", icon: Bug, color: "text-red-500", bg: "bg-red-500/10", service: "Bug Fix / Error Optimisation" },
@@ -13,6 +14,7 @@ const services = [
 ];
 
 export default function HireMeCTA() {
+    const { openModal } = useHireModal();
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
@@ -71,10 +73,10 @@ export default function HireMeCTA() {
 
                     <m.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-16">
                         {services.map((item) => (
-                            <Link
+                            <div
                                 key={item.label}
-                                href={`#contact?service=${encodeURIComponent(item.service)}`}
-                                className="group flex flex-col items-center justify-center p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/5 hover:border-blue-500/30 transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] hover:bg-blue-500/[0.02]"
+                                onClick={() => openModal()}
+                                className="group flex flex-col items-center justify-center p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/5 hover:border-blue-500/30 transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] hover:bg-blue-500/[0.02] cursor-pointer"
                             >
                                 <div className={`w-14 h-14 rounded-2xl ${item.bg} ${item.color} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.15)]`}>
                                     <item.icon size={28} />
@@ -82,19 +84,19 @@ export default function HireMeCTA() {
                                 <span className="text-[10px] font-black text-gray-500 group-hover:text-blue-400 transition-colors uppercase tracking-[0.2em] text-center">
                                     {item.label}
                                 </span>
-                            </Link>
+                            </div>
                         ))}
                     </m.div>
 
                     <m.div variants={itemVariants} className="flex flex-col md:flex-row items-center justify-center gap-8">
-                        <Link
-                            href="#contact"
+                        <button
+                            onClick={() => openModal()}
                             className="group relative px-12 py-6 bg-blue-600 rounded-[2rem] font-black text-white text-lg uppercase tracking-widest transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.5)] active:scale-95 flex items-center gap-4 overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                             <span className="relative z-10">Start Your Project</span>
                             <ArrowRight size={22} className="relative z-10 group-hover:translate-x-1 transition-transform" />
-                        </Link>
+                        </button>
                         <LiveStatusBadge variant="hero" />
                     </m.div>
                 </div>
