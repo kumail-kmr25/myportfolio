@@ -252,11 +252,11 @@ export default function Hero() {
                             </div>
 
 
-                            {/* Floating Badges */}
                             <m.div
                                 animate={{ y: [0, -10, 0] }}
                                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute -top-4 -right-4 p-4 rounded-2xl bg-[#0a0a0a]/80 border border-white/10 backdrop-blur-md hidden sm:block"
+                                onClick={() => openModal()}
+                                className="absolute -top-4 -right-4 p-4 rounded-2xl bg-[#0a0a0a]/80 border border-white/10 backdrop-blur-md hidden sm:block cursor-pointer hover:bg-white/5 transition-colors group/badge"
                             >
                                 <div className="text-[8px] font-black text-blue-400 uppercase tracking-widest mb-1">Status</div>
                                 <div className="text-[10px] font-bold text-white flex items-center gap-2">

@@ -22,13 +22,11 @@ import { useRouter } from "next/navigation";
 import { useHireModal } from "@/context/HireModalContext";
 
 const navItems = [
-    { name: "Back to Home", icon: Home, href: "#home", category: "Navigation" },
-    { name: "About Me", icon: User, href: "#about", category: "Navigation" },
     { name: "My Projects", icon: Layout, href: "#projects", category: "Navigation" },
     { name: "Case Studies", icon: Terminal, href: "#case-studies", category: "Navigation" },
     { name: "My Services", icon: Settings, href: "#services", category: "Navigation" },
     { name: "Client Feedback", icon: Star, href: "#testimonials", category: "Navigation" },
-    { name: "Get in Touch", icon: Mail, href: "#contact", category: "Navigation" },
+    { name: "Get in Touch", icon: Mail, action: "hire", category: "Navigation" },
 ];
 
 const actions = [

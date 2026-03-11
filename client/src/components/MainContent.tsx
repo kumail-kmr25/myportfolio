@@ -36,9 +36,6 @@ const DiagnosticTool = dynamic(() => import("@/components/DiagnosticTool"), {
 const Blog = dynamic(() => import("@/components/Blog"), {
     loading: () => <SectionSkeleton minHeight="600px" />
 });
-const About = dynamic(() => import("@/components/About"), {
-    loading: () => <SectionSkeleton minHeight="500px" />
-});
 const HireMeCTA = dynamic(() => import("@/components/HireMeCTA"), {
     loading: () => <SectionSkeleton minHeight="300px" hasTitle={false} hasSubtitle={false} />
 });

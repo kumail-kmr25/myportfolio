@@ -6,6 +6,7 @@ import { m, AnimatePresence } from "framer-motion";
 import { Loader2, MessageSquare, Send, CheckCircle2, Trophy, Lightbulb, Zap, Rocket } from "lucide-react";
 import { featureRequestSchema } from "@portfolio/shared";
 import { z } from "zod";
+import { useHireModal } from "@/context/HireModalContext";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -18,6 +19,7 @@ interface FeatureRequest {
 }
 
 export default function FeatureSuggestion() {
+    const { openModal } = useHireModal();
     const { data: completedSuggestions, mutate } = useSWR<FeatureRequest[]>("/api/feature-requests", fetcher);
     const [formData, setFormData] = useState({
         name: "",
@@ -214,9 +216,12 @@ export default function FeatureSuggestion() {
                             <div className="relative z-10">
                                 <h4 className="text-xl font-bold mb-2">Want to work together?</h4>
                                 <p className="text-blue-100 text-sm mb-6 opacity-80">I&apos;m currently available for freelance projects and full-time opportunities.</p>
-                                <a href="#contact" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#050505] rounded-xl font-bold text-sm hover:scale-105 transition-transform">
+                                <button
+                                    onClick={() => openModal()}
+                                    className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#050505] rounded-xl font-bold text-sm hover:scale-105 transition-transform"
+                                >
                                     Let&apos;s Talk <Send size={16} />
-                                </a>
+                                </button>
                             </div>
                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-white/20 transition-all"></div>
                         </div>
