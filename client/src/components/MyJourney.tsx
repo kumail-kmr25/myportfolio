@@ -13,8 +13,12 @@ import {
     CheckCircle2,
     Circle,
     Sparkles,
-    Cloud
+    Cloud,
+    FileText,
+    ArrowRight,
+    Briefcase
 } from "lucide-react";
+import { useHireModal } from "@/context/HireModalContext";
 import { useRef, useState, useEffect } from "react";
 import useSWR from 'swr';
 import { getApiUrl } from "@/lib/api";
@@ -41,6 +45,8 @@ export default function MyJourney() {
     // Fallback data while loading
     const { data: phases = [] } = useSWR('/api/journey', fetcher);
     const { data: skills = [] } = useSWR('/api/skills', fetcher);
+    const { data: resume } = useSWR('/api/resume', fetcher);
+    const { openModal } = useHireModal();
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start end", "end start"]
@@ -110,6 +116,28 @@ export default function MyJourney() {
                         <p className="text-[9px] text-gray-600 font-black uppercase tracking-[0.3em]">
                             {isVisible ? 'Interacting with career timeline' : 'Initialize timeline exploration'}
                         </p>
+
+                        <AnimatePresence>
+                            {resume?.visible && resume?.url && (
+                                <m.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    className="mt-8"
+                                >
+                                    <a
+                                        href={resume.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-3 px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white transition-all group"
+                                    >
+                                        <FileText size={16} className="text-blue-500" />
+                                        Download Resume
+                                        <Sparkles size={14} className="group-hover:rotate-12 transition-transform opacity-50" />
+                                    </a>
+                                </m.div>
+                            )}
+                        </AnimatePresence>
                     </m.div>
                 </div>
 
@@ -204,6 +232,36 @@ export default function MyJourney() {
                                         </m.div>
                                     ))}
                                 </div>
+                            </div>
+
+                            {/* CTAs */}
+                            <div className="mt-40 lg:mt-32 max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-center gap-6">
+                                <m.button
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    onClick={() => {
+                                        const el = document.getElementById('projects');
+                                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                    }}
+                                    className="w-full md:w-auto px-10 py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] text-white flex items-center justify-center gap-4 transition-all group"
+                                >
+                                    View Projects
+                                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform text-blue-500" />
+                                </m.button>
+                                
+                                <m.button
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.1 }}
+                                    onClick={() => openModal()}
+                                    className="w-full md:w-auto px-10 py-5 bg-blue-600 hover:bg-blue-700 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] text-white flex items-center justify-center gap-4 transition-all shadow-xl shadow-blue-500/20 group"
+                                >
+                                    <Briefcase size={18} />
+                                    Hire Me
+                                    <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />
+                                </m.button>
                             </div>
                         </m.div>
                     )}

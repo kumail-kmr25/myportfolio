@@ -49,6 +49,27 @@ const services = [
         color: "purple"
     },
     {
+        id: "Frontend Development",
+        title: "Frontend Development",
+        description: "Modern, responsive, and high-performance user interfaces.",
+        icon: Sparkles,
+        color: "blue"
+    },
+    {
+        id: "Backend Development",
+        title: "Backend Development",
+        description: "Robust, scalable, and secure server-side logic and APIs.",
+        icon: Send,
+        color: "indigo"
+    },
+    {
+        id: "Full Stack Development",
+        title: "Full Stack Development",
+        description: "End-to-end development of complex web systems.",
+        icon: Briefcase,
+        color: "purple"
+    },
+    {
         id: "UI/UX Design",
         title: "UI/UX Design",
         description: "Intuitive user experiences and stunning interface designs.",
@@ -63,16 +84,16 @@ const services = [
         color: "green"
     },
     {
-        id: "Database System",
-        title: "Database System",
+        id: "Database Design",
+        title: "Database Design",
         description: "Secure, optimized, and scalable data architectures.",
         icon: IndianRupee,
         color: "yellow"
     },
     {
-        id: "API Development",
-        title: "API Development",
-        description: "RESTful and GraphQL APIs built for speed and security.",
+        id: "DevOps / Cloud",
+        title: "DevOps / Cloud",
+        description: "Cloud infrastructure, CI/CD, and system reliability.",
         icon: Send,
         color: "blue"
     },

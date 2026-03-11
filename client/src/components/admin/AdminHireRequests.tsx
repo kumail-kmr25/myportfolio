@@ -209,15 +209,19 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
                                                 <p className="text-sm text-white font-bold">{selectedRequest.timeline}</p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400">
-                                                <Briefcase size={20} />
-                                            </div>
-                                            <div>
-                                                <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Type</p>
-                                                <p className="text-sm text-white font-bold">{selectedRequest.projectType}</p>
-                                            </div>
                                         </div>
+                                        {selectedRequest.company && (
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400">
+                                                    <Briefcase size={20} />
+                                                </div>
+                                                <div>
+                                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Company</p>
+                                                    <p className="text-sm text-white font-bold">{selectedRequest.company}</p>
+                                                </div>
+                                            </div>
+                                        )}
+                                        <div className="flex items-center gap-4">
                                     </div>
 
                                     <div>

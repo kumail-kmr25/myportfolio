@@ -9,9 +9,12 @@ export const hireSchema = z.object({
         "Web Application",
         "SaaS Platform",
         "UI/UX Design",
+        "Frontend Development",
+        "Backend Development",
+        "Full Stack Development",
         "Bug Fix / Optimization",
-        "Database System",
-        "API Development",
+        "Database Design",
+        "DevOps / Cloud",
         "Other"
     ]),
     budgetRange: z.enum([
