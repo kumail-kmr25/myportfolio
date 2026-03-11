@@ -10,6 +10,8 @@ import {
     CheckCircle2
 } from "lucide-react";
 
+import { useHireModal } from "@/context/HireModalContext";
+
 interface DiagnosticResultProps {
     result: {
         possibleCauses: string[];
@@ -22,23 +24,13 @@ interface DiagnosticResultProps {
 }
 
 export default function DiagnosticResult({ result }: DiagnosticResultProps) {
-    const handleServiceClick = (service: string) => {
-        const contactSection = document.getElementById("contact");
-        if (contactSection) {
-            // Dispatch a custom event to pre-fill the contact form
-            const event = new CustomEvent("prefill-contact", {
-                detail: {
-                    service,
-                    diagnostic: `Matched Pattern: ${result.recommendedService}\nComplexity: ${result.complexity}\nSuggested fix path: ${result.debugSteps.join(", ")}`
-                }
-            });
-            window.dispatchEvent(event);
+    const { openModal } = useHireModal();
 
-            // Slight delay before scrolling to ensure the form is updated
-            setTimeout(() => {
-                contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
-            }, 100);
-        }
+    const handleServiceClick = (service: string) => {
+        openModal({
+            service,
+            description: `Matched Pattern: ${result.recommendedService}\nComplexity: ${result.complexity}\nSuggested fix path: ${result.debugSteps.join(", ")}`
+        });
     };
 
     const services = [

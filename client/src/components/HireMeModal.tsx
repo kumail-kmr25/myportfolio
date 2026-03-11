@@ -72,7 +72,7 @@ const services = [
 ] as const;
 
 export default function HireMeModal() {
-    const { isOpen, closeModal } = useHireModal();
+    const { isOpen, closeModal, initialData } = useHireModal();
     const [step, setStep] = useState<Step>("services");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -104,6 +104,20 @@ export default function HireMeModal() {
             projectType: "New Project from scratch"
         }
     });
+
+    React.useEffect(() => {
+        if (isOpen && initialData) {
+            if (initialData.service) {
+                setValue("selectedService", initialData.service as any);
+                setStep("details"); // Skip first step if service is pre-selected
+            }
+            if (initialData.description) {
+                setValue("description", initialData.description);
+            }
+        } else if (!isOpen) {
+            setStep("services"); // Reset step when closing
+        }
+    }, [isOpen, initialData, setValue]);
 
     const selectedService = watch("selectedService");
     const formData = watch();

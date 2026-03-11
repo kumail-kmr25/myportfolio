@@ -18,7 +18,10 @@ interface CaseStudy {
     techStack: string[];
 }
 
+import { useHireModal } from "@/context/HireModalContext";
+
 export default function CaseStudies() {
+    const { openModal } = useHireModal();
     const { data: caseStudies, error, isLoading } = useSWR<CaseStudy[]>("/api/case-studies", fetcher);
     const [selectedCase, setSelectedCase] = useState<CaseStudy | null>(null);
     const containerVariants: Variants = {
@@ -302,13 +305,16 @@ export default function CaseStudies() {
                                         </div>
                                     </section>
 
-                                    <div className="p-8 rounded-[2.5rem] bg-blue-600 text-white relative overflow-hidden group shadow-2xl shadow-blue-500/20">
+                                    <button
+                                        onClick={() => openModal({ service: "Performance Optimization", description: `Interested in scaling based on the "${selectedCase.title}" pattern.` })}
+                                        className="w-full text-left p-8 rounded-[2.5rem] bg-blue-600 text-white relative overflow-hidden group shadow-2xl shadow-blue-500/20 hover:bg-blue-500 transition-all active:scale-[0.98]"
+                                    >
                                         <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:scale-110 transition-transform">
                                             <CheckCircle2 className="w-16 h-16" />
                                         </div>
                                         <h5 className="text-xl font-black mb-2 relative z-10">Ready for Scale</h5>
-                                        <p className="text-sm opacity-90 relative z-10 font-medium">This architectural pattern is proven in production and ready for enterprise-grade deployment.</p>
-                                    </div>
+                                        <p className="text-sm opacity-90 relative z-10 font-medium whitespace-normal">This architectural pattern is proven in production and ready for enterprise-grade deployment. Click to initialize setup.</p>
+                                    </button>
                                 </div>
                             </div>
 

@@ -8,7 +8,11 @@ const CommandPalette = dynamic(() => import("@/components/CommandPalette"), { ss
 
 interface HireModalContextType {
     isOpen: boolean;
-    openModal: () => void;
+    initialData?: {
+        service?: string;
+        description?: string;
+    };
+    openModal: (data?: { service?: string; description?: string }) => void;
     closeModal: () => void;
 }
 
@@ -16,12 +20,19 @@ const HireModalContext = createContext<HireModalContextType | undefined>(undefin
 
 export function HireModalProvider({ children }: { children: React.ReactNode }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [initialData, setInitialData] = useState<{ service?: string; description?: string } | undefined>();
 
-    const openModal = () => setIsOpen(true);
-    const closeModal = () => setIsOpen(false);
+    const openModal = (data?: { service?: string; description?: string }) => {
+        setInitialData(data);
+        setIsOpen(true);
+    };
+    const closeModal = () => {
+        setIsOpen(false);
+        setInitialData(undefined);
+    };
 
     return (
-        <HireModalContext.Provider value={{ isOpen, openModal, closeModal }}>
+        <HireModalContext.Provider value={{ isOpen, initialData, openModal, closeModal }}>
             {children}
             <HireMeModal />
             <CommandPalette />

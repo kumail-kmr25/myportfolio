@@ -91,16 +91,9 @@ export default function Blog() {
                             Thoughts on technology, engineering design, and sustainable development.
                         </m.p>
                     </div>
-                    <m.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        <Link href="#blog" aria-label="Read all blog articles" className="hidden md:flex items-center text-white hover:text-blue-400 font-bold text-sm uppercase tracking-widest transition-colors">
-                            Read all articles <ArrowRight className="ml-3 w-4 h-4" aria-hidden="true" />
-                        </Link>
-                    </m.div>
+                    <div className="hidden md:block">
+                        {/* Placeholder for future filtering or search */}
+                    </div>
                 </div>
 
                 <m.div
