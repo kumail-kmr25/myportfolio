@@ -61,80 +61,100 @@ export default function Projects() {
                             viewport={{ once: true }}
                             className="flex flex-col items-center text-center mb-24 lg:mb-32"
                         >
-                    <div className="flex items-center gap-4 mb-6">
-                        <span className="px-5 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-black text-blue-400 uppercase tracking-widest flex items-center gap-2">
-                           <LayoutGrid size={12} /> Product Ecosystem
-                        </span>
-                    </div>
-                    
-                    <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-8 leading-none">
-                        Product <span className="text-gray-500 italic">Portfolio</span>
-                    </h2>
-                    
-                    <p className="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed italic">
-                        Technical deep-dives into end-to-end product engineering, architectural decision logs, and systemic impact analysis.
-                    </p>
-                </m.div>
+                            <div className="flex items-center gap-4 mb-6">
+                                <span className="px-5 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-black text-blue-400 uppercase tracking-widest flex items-center gap-2">
+                                <LayoutGrid size={12} /> Product Ecosystem
+                                </span>
+                            </div>
+                            
+                            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-8 leading-none">
+                                Featured <span className="text-blue-500 italic">Projects</span>
+                            </h2>
+                            
+                            <p className="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed italic">
+                                "Real systems I designed and built."
+                            </p>
+                        </m.div>
 
-                {/* Featured Projects Loop */}
-                <m.div 
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                    className="space-y-12 lg:space-y-24 mb-32"
-                >
-                    {projects.filter((p: any) => p.isFeatured).slice(0, 3).map((project: any) => (
-                        <ProjectCard 
-                            key={project.id} 
-                            project={project} 
-                            isFeatured={true} 
-                            onViewCaseStudy={setSelectedProject}
-                        />
-                    ))}
-                </m.div>
-
-                {/* Standard Projects Grid */}
-                {projects.filter((p: any) => !p.isFeatured || !projects.filter((p: any) => p.isFeatured).slice(0, 3).some((fp: any) => fp.id === p.id)).length > 0 && (
-                    <div className="space-y-16">
-                        <div className="flex items-center gap-8">
-                            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-[0.5em] shrink-0">Extended Portfolio</h3>
-                            <div className="h-px w-full bg-white/5" />
-                        </div>
-                        
+                        {/* Featured Projects (Hero Cards) */}
                         <m.div 
                             variants={containerVariants}
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true }}
-                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                            viewport={{ once: true, margin: "-100px" }}
+                            className="space-y-12 lg:space-y-24 mb-32"
                         >
-                            {projects.filter((p: any) => !p.isFeatured || !projects.filter((p: any) => p.isFeatured).slice(0, 3).some((fp: any) => fp.id === p.id)).map((project: any) => (
+                            {projects.filter((p: any) => p.isFeatured).slice(0, 2).map((project: any) => (
                                 <ProjectCard 
                                     key={project.id} 
                                     project={project} 
+                                    isFeatured={true} 
                                     onViewCaseStudy={setSelectedProject}
                                 />
                             ))}
                         </m.div>
-                    </div>
-                )}
 
-                {/* Integration Note */}
-                <m.div 
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    className="mt-32 p-12 rounded-[3.5rem] bg-white/[0.02] border border-white/5 text-center group"
-                >
-                    <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 mx-auto mb-6 group-hover:scale-110 transition-transform">
-                        <Code2 size={24} />
-                    </div>
-                    <h4 className="text-xl font-bold text-white mb-2">Want to see the code?</h4>
-                    <p className="text-gray-500 text-sm mb-8">Access the production snapshots and architectural documentation for any system above.</p>
-                    <a href="https://github.com/kumail-kmr25" target="_blank" className="btn-primary py-4 px-10">
-                        Global Repository Access
-                    </a>
-                </m.div>
+                        {/* Standard Projects Grid */}
+                        {projects.filter((p: any) => !p.isFeatured || !projects.filter((fp: any) => fp.isFeatured).slice(0, 2).some((fp: any) => fp.id === p.id)).length > 0 && (
+                            <div className="space-y-16">
+                                <m.div 
+                                    variants={containerVariants}
+                                    initial="hidden"
+                                    whileInView="visible"
+                                    viewport={{ once: true }}
+                                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                                >
+                                    {projects.filter((p: any) => !p.isFeatured || !projects.filter((fp: any) => fp.isFeatured).slice(0, 2).some((fp: any) => fp.id === p.id)).map((project: any) => (
+                                        <ProjectCard 
+                                            key={project.id} 
+                                            project={project} 
+                                            onViewCaseStudy={setSelectedProject}
+                                        />
+                                    ))}
+                                </m.div>
+                            </div>
+                        )}
+
+                        {/* Call To Action Section */}
+                        <m.div 
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                            className="mt-32 p-12 lg:p-16 rounded-[3.5rem] bg-gradient-to-br from-blue-600/10 via-blue-900/5 to-transparent border border-blue-500/20 text-center relative overflow-hidden group"
+                        >
+                            {/* Animated Background Glow */}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none group-hover:bg-blue-500/20 transition-colors duration-1000" />
+                            
+                            <div className="relative z-10 flex flex-col items-center">
+                                <div className="w-20 h-20 rounded-[2rem] bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-8 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
+                                    <Rocket size={32} />
+                                </div>
+                                
+                                <h3 className="text-4xl lg:text-5xl font-black text-white tracking-tight mb-4">
+                                    Need something similar <span className="text-blue-500 italic block sm:inline mt-2 sm:mt-0">built?</span>
+                                </h3>
+                                
+                                <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-12">
+                                    Let's collaborate to build a high-performance system tailored to your specific needs.
+                                </p>
+                                
+                                <div className="flex flex-col sm:flex-row items-center gap-6">
+                                    <a 
+                                        href="#hire" 
+                                        className="btn-primary py-4 px-10 text-sm w-full sm:w-auto hover:scale-105 transition-transform"
+                                    >
+                                        Hire Me
+                                    </a>
+                                    <a 
+                                        href="#contact" 
+                                        className="w-full sm:w-auto px-10 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-[10px] uppercase tracking-widest hover:border-blue-500/30 min-h-[48px]"
+                                    >
+                                        Start a Project
+                                    </a>
+                                </div>
+                            </div>
+                        </m.div>
                     </>
                 )}
             </div>

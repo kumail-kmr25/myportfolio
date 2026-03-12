@@ -6,7 +6,7 @@ import { Search, Command, ArrowRight, Briefcase, ShieldCheck } from "lucide-reac
 import { useHireModal } from "@/context/HireModalContext";
 
 const quickLinks = [
-    { name: "Portfolio", href: "/portfolio", key: "P", isCTA: false },
+    { name: "Projects", href: "#projects", key: "P", isCTA: false },
     { name: "Testimonials", href: "/testimonials", key: "T", isCTA: false },
     { name: "Case Studies", href: "/#case-studies", key: "S", isCTA: false },
     { name: "Services", href: "/#services", key: "V", isCTA: false },

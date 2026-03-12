@@ -6,6 +6,9 @@ import dynamic from "next/dynamic";
 import SectionSkeleton from "@/components/SectionSkeleton";
 
 // Dynamic imports for below-the-fold components to improve initial load performance
+const Projects = dynamic(() => import("@/components/Projects"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
 const TrustSignals = dynamic(() => import("@/components/TrustSignals"), {
     loading: () => <div className="h-24 bg-black/20 animate-pulse" />
 });
@@ -47,6 +50,7 @@ export default function MainContent() {
     return (
         <>
             <CaseStudies />
+            <Projects />
             <TrustSignals />
             <Skills />
             <StatsDashboard />

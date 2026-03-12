@@ -31,7 +31,7 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
     { name: "Case Studies", href: "/#case-studies" },
-    { name: "Portfolio", href: "/portfolio" },
+    { name: "Projects", href: "#projects" },
     { name: "Testimonials", href: "/testimonials" },
     { name: "Contact", href: "#contact" },
     { name: "Hire Me", href: "#contact", isCTA: true },

@@ -39,7 +39,7 @@ export default function StatsDashboard() {
         { label: "Features Built", value: stats?.featureRequestsCompleted || 0, icon: CheckSquare, color: "text-green-500", bg: "bg-green-500/10" },
         { label: "Years in Learning", value: stats?.yearsLearning || 0, icon: Calendar, color: "text-yellow-500", bg: "bg-yellow-500/10" },
         { label: "Deployments", value: stats?.deploymentCount || 0, icon: Rocket, color: "text-orange-500", bg: "bg-orange-500/10" },
-        { label: "Portfolio Projects", value: stats?.projectsTotal || 8, icon: Layers, color: "text-blue-500", bg: "bg-blue-500/10" },
+        { label: "Featured Projects", value: stats?.projectsTotal || 8, icon: Layers, color: "text-blue-500", bg: "bg-blue-500/10" },
     ];
 
     const containerVariants: Variants = {
