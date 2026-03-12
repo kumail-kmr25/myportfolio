@@ -14,9 +14,16 @@ export async function GET() {
         const skills = await prisma.skill.findMany({
             orderBy: { order: "asc" },
         });
-        return NextResponse.json(skills);
+        return NextResponse.json({
+            skills,
+            deployment_version: "v1.0.1-stable"
+        });
     } catch (error) {
         console.error("[API] Error fetching skills:", error);
-        return NextResponse.json(FALLBACK_SKILLS);
+        return NextResponse.json({
+            skills: FALLBACK_SKILLS,
+            deployment_version: "v1.0.1-fallback",
+            error: error instanceof Error ? error.message : "Unknown error"
+        });
     }
 }

@@ -173,8 +173,10 @@ export default function StatsDashboard() {
                                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Core Engine: OPTIMAL</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">DB Node: ACTIVE</span>
+                                    <span className={`w-2.5 h-2.5 rounded-full ${availability?.status === 'booked' ? 'bg-red-500' : 'bg-green-500'} animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]`}></span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                        DB Node: {availability?.status?.toUpperCase() || 'ACTIVE'}
+                                    </span>
                                 </div>
                             </div>
                         </div>

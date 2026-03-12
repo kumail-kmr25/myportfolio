@@ -27,7 +27,9 @@ export async function GET() {
                         config.manualOverride === "limited" ? "Limited availability" : "Fully booked"),
                 activeCount,
                 maxProjects,
-                nextSlot: config.manualOverride === "booked" && activeProjects[0] ? activeProjects[0].expectedEndDate : null
+                nextSlot: config.manualOverride === "booked" && activeProjects[0] ? activeProjects[0].expectedEndDate : null,
+                deployment_version: "v1.0.1-stable",
+                vercel_id: process.env.VERCEL_URL || "local"
             });
         }
 
@@ -38,7 +40,9 @@ export async function GET() {
                 message: "Available for new projects",
                 activeCount: 0,
                 maxProjects,
-                nextSlot: null
+                nextSlot: null,
+                deployment_version: "v1.0.1-stable",
+                vercel_id: process.env.VERCEL_URL || "local"
             });
         }
 
@@ -48,7 +52,9 @@ export async function GET() {
                 message: `Limited availability (${maxProjects - activeCount} slot left)`,
                 activeCount,
                 maxProjects,
-                nextSlot: null
+                nextSlot: null,
+                deployment_version: "v1.0.1-stable",
+                vercel_id: process.env.VERCEL_URL || "local"
             });
         }
 
@@ -58,7 +64,9 @@ export async function GET() {
             message: "Fully booked",
             activeCount,
             maxProjects,
-            nextSlot: activeProjects[0]?.expectedEndDate || null
+            nextSlot: activeProjects[0]?.expectedEndDate || null,
+            deployment_version: "v1.0.1-stable",
+            vercel_id: process.env.VERCEL_URL || "local"
         });
 
     } catch (error) {
@@ -67,7 +75,10 @@ export async function GET() {
             status: "available",
             message: "Available for new projects",
             activeCount: 0,
-            maxProjects: 2
+            maxProjects: 2,
+            deployment_version: "v1.0.1-fallback",
+            vercel_id: process.env.VERCEL_URL || "local",
+            error: error instanceof Error ? error.message : "Unknown error"
         });
     }
 }

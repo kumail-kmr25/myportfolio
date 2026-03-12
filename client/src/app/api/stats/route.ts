@@ -43,17 +43,20 @@ export async function GET() {
             featureRequestsCompleted: completedFeaturesCount,
             yearsLearning: siteStats?.yearsLearning || 0,
             deploymentCount: siteStats?.deploymentCount || 0,
-            projectsTotal: (caseStudyCount || 0) + 6, // 2 case studies + 6 portfolio projects = 8 total
+            projectsTotal: (caseStudyCount || 0) + 6,
             diagRuns,
             leadGenTotal,
             hireRequests,
             patternsMatched
         };
 
-        return NextResponse.json(stats);
+        return NextResponse.json({ ...stats, deployment_version: "v1.0.2-stable" });
     } catch (error) {
         console.error("Error fetching stats:", error);
-        // Return fallback data to keep UI functional
-        return NextResponse.json(FALLBACK_STATS);
+        return NextResponse.json({ 
+            ...FALLBACK_STATS, 
+            deployment_version: "v1.0.2-fallback",
+            error: error instanceof Error ? error.message : "Unknown error"
+        });
     }
 }

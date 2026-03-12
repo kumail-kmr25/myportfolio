@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Github, Twitter, Linkedin, Instagram, ShieldCheck, Mail } from "lucide-react";
 import { m, Variants } from "framer-motion";

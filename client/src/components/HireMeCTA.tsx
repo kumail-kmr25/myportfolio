@@ -1,3 +1,4 @@
+"use client";
 import { m, Variants } from "framer-motion";
 import { Bug, Code2, Layout, Database, Zap, Cloud, ArrowRight } from "lucide-react";
 import Link from "next/link";

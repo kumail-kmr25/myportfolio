@@ -298,9 +298,7 @@ export default function HireMeModal() {
                                 <m.div
                                     initial={{ width: "25%" }}
                                     animate={{
-                                        width: step === "services" ? "25%" :
-                                            step === "details" ? "50%" :
-                                                step === "vision" ? "75%" : "100%"
+                                        width: step === "services" ? "50%" : "100%"
                                     }}
                                     className="h-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.5)]"
                                 />
