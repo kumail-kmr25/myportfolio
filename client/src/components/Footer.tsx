@@ -111,7 +111,13 @@ export default function Footer() {
                             <span>Hire Me</span>
                         </button>
 
-                    </m.div>
+                        <Link 
+                            href="/admin" 
+                            className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition-colors"
+                        >
+                            <ShieldCheck size={14} />
+                            <span className="hidden sm:inline">Admin</span>
+                        </Link>                    </m.div>
                 </div>
             </m.div>
         </footer>

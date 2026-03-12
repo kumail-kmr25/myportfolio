@@ -31,10 +31,10 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
     { name: "Case Studies", href: "/#case-studies" },
-    { name: "Projects", href: "#projects" },
+    { name: "Portfolio", href: "/portfolio" },
     { name: "Testimonials", href: "/testimonials" },
-    { name: "Contact", href: "#contact" },
-    { name: "Hire Me", href: "#contact", isCTA: true },
+    { name: "Contact", href: "/#contact" },
+    { name: "Hire Me", href: "/#contact", isCTA: true },
 ];
 
 export default function Navbar() {
