@@ -22,7 +22,7 @@ export async function GET() {
             return NextResponse.json(MOCK_PROJECTS);
         }
 
-        return NextResponse.json(projects);
+        return NextResponse.json({ projects, version: "v1.0.1-fixed" });
     } catch (error) {
         console.error("GET_PROJECTS_ERROR:", error);
         // Guaranteed fallback if DB or imports fail
