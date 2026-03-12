@@ -10,6 +10,7 @@ const FALLBACK_STATS = {
     featureRequestsCompleted: 0,
     yearsLearning: 2,
     deploymentCount: 102,
+    projectsTotal: 8,
     diagRuns: 0,
     leadGenTotal: 0,
     hireRequests: 0,
@@ -42,6 +43,7 @@ export async function GET() {
             featureRequestsCompleted: completedFeaturesCount,
             yearsLearning: siteStats?.yearsLearning || 0,
             deploymentCount: siteStats?.deploymentCount || 0,
+            projectsTotal: (caseStudyCount || 0) + 6, // 2 case studies + 6 portfolio projects = 8 total
             diagRuns,
             leadGenTotal,
             hireRequests,
