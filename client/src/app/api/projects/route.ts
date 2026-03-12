@@ -32,14 +32,29 @@ export async function GET() {
                 title: "Edunova",
                 isVisible: true,
                 summary: "Enterprise-grade SaaS for academic orchestration.",
-                description: "A comprehensive School Management System.",
+                description: "A comprehensive School Management System with 2FA and RBAC.",
                 status: "Production",
                 role: "Full Stack Architect",
                 tags: ["TypeScript", "Next.js", "PostgreSQL"],
                 image: "/projects/edunova.png",
                 demo: "https://edunova-saas.vercel.app",
                 isFeatured: true,
-                valuePoints: ["Reduces administrative overhead", "Real-time orchestration"],
+                valuePoints: ["Reduces administrative overhead by 40%", "Real-time student lifecycle management"],
+                created_at: new Date().toISOString()
+            },
+            {
+                id: "fallback-2",
+                title: "MedQ AI",
+                isVisible: true,
+                summary: "Next-gen healthcare data management with clinical workflows.",
+                description: "A secure medical record system (EMR) focusing on data privacy.",
+                status: "Beta",
+                role: "Backend Lead",
+                tags: ["React.js", "MongoDB", "Node.js"],
+                image: "/projects/medq_ai.png",
+                demo: "https://gemini-med.vercel.app/",
+                isFeatured: true,
+                valuePoints: ["Streamlined clinical documentation", "HIPAA-compliant framework"],
                 created_at: new Date().toISOString()
             }
         ]);
