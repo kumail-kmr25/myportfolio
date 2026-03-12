@@ -3,7 +3,7 @@
 import { useState } from "react";
 import useSWR from "swr";
 import { m, AnimatePresence } from "framer-motion";
-import { Layers, Loader2, Sparkles, Code2, Rocket, LayoutGrid } from "lucide-react";
+import { Layers, Loader2, Sparkles, Code2, Rocket, LayoutGrid, Cpu } from "lucide-react";
 import ProjectCard from "./ProjectCard";
 import ProjectCaseStudyModal from "./ProjectCaseStudyModal";
 import SectionReveal from "./SectionReveal";
@@ -82,7 +82,7 @@ export default function Projects() {
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: "-100px" }}
-                            className="space-y-12 lg:space-y-24 mb-32"
+                            className="space-y-12 lg:space-y-24 mb-24"
                         >
                             {projects.filter((p: any) => p.isFeatured).slice(0, 2).map((project: any) => (
                                 <ProjectCard 
@@ -92,6 +92,51 @@ export default function Projects() {
                                     onViewCaseStudy={setSelectedProject}
                                 />
                             ))}
+                        </m.div>
+
+                        {/* Live System Status Panel (Bonus Trick) */}
+                        <m.div 
+                            variants={containerVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            className="mb-24 p-6 lg:p-10 rounded-[2.5rem] lg:rounded-[3rem] bg-[#050505] border border-white/10 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 relative overflow-hidden group"
+                        >
+                            {/* Animated Background Line */}
+                            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
+                            
+                            <div className="flex items-center gap-4 md:w-1/3">
+                                <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 shrink-0 relative">
+                                    <div className="absolute inset-0 bg-blue-500/20 rounded-2xl animate-ping opacity-20" />
+                                    <Cpu size={24} />
+                                </div>
+                                <div>
+                                    <h3 className="text-white font-black uppercase tracking-widest text-sm">System Status</h3>
+                                    <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Live Developer Dashboard</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full md:w-2/3 md:border-l border-white/10 md:pl-8">
+                                <div className="space-y-1">
+                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Projects Built</p>
+                                    <p className="text-2xl font-black text-white">{projects.length}</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Systems Online</p>
+                                    <p className="text-2xl font-black text-white">{projects.filter((p:any) => p.demo && p.demo !== "#").length}</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Currently Building</p>
+                                    <p className="text-2xl font-black text-white">1</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Open For Work</p>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+                                        <p className="text-2xl font-black text-white">Yes</p>
+                                    </div>
+                                </div>
+                            </div>
                         </m.div>
 
                         {/* Standard Projects Grid */}

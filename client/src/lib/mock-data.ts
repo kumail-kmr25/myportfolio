@@ -15,7 +15,38 @@ export const MOCK_PROJECTS = [
         isFeatured: true,
         valuePoints: ["Deep contextual reasoning capabilities", "Vector-based semantic search", "Automated intelligent workflows"],
         metrics: ["Sub-500ms response time", "99.9% Uptime", "10k+ Daily Queries"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString()
+        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(),
+        systemArchitecture: [
+            { name: "Frontend", value: "Next.js (App Router)" },
+            { name: "Backend", value: "FastAPI (Python)" },
+            { name: "Database", value: "PostgreSQL & Pinecone" },
+            { name: "ORM/Querying", value: "SQLAlchemy" },
+            { name: "Hosting", value: "Vercel & AWS EC2" }
+        ],
+        engineeringDecisions: [
+            { 
+                title: "Why FastAPI instead of Node.js for backend?", 
+                reason: "Crucial for AI workloads.", 
+                benefits: "Native support for Python's AI/ML ecosystem (LangChain, OpenAI SDK) and significantly faster async execution for vector computations." 
+            },
+            {
+                title: "Why Pinecone alongside PostgreSQL?",
+                reason: "Separation of concerns.",
+                benefits: "PostgreSQL handles structured user/session data, while Pinecone specifically powers the high-dimensional vector similarity search necessary for the RAG pipeline."
+            }
+        ],
+        codeSnippet: {
+            language: "python",
+            description: "Core RAG logic routing queries through the vector space.",
+            code: `@app.post("/api/v1/query")\nasync def process_query(req: QueryRequest, db: Session = Depends(get_db)):\n    # 1. Generate local embedding\n    query_vector = await embedding_service.embed_text(req.prompt)\n    \n    # 2. Semantic search against Pinecone\n    context_matches = pinecone_index.query(\n        vector=query_vector, \n        top_k=5, \n        include_metadata=True\n    )\n    \n    # 3. Construct prompt & stream LLM response\n    context_text = "\\n".join([m.metadata['text'] for m in context_matches.matches])\n    return StreamingResponse(\n        llm_service.stream_inference(req.prompt, context_text),\n        media_type="text/event-stream"\n    )`
+        },
+        realStats: {
+            components: "60+",
+            apiRoutes: "24",
+            models: "12",
+            platform: "AWS + Vercel",
+            buildTime: "8 Weeks"
+        }
     },
     {
         id: "mock-medq-ai",
@@ -33,7 +64,33 @@ export const MOCK_PROJECTS = [
         isFeatured: true,
         valuePoints: ["Streamlined clinical documentation", "Predictive medical data entry", "HIPAA-compliant security framework"],
         metrics: ["Reduced entry time by 60%", "Zero data breaches", "Automated compliance checks"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString()
+        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(),
+        systemArchitecture: [
+            { name: "Frontend", value: "React.js (SPA)" },
+            { name: "Backend", value: "Node.js (Express)" },
+            { name: "Database", value: "MongoDB" },
+            { name: "Security", value: "AES-256 Encryption" },
+            { name: "Hosting", value: "Vercel" }
+        ],
+        engineeringDecisions: [
+            { 
+                title: "Why MongoDB instead of SQL?", 
+                reason: "Flexible schema design for unpredictable medical forms.", 
+                benefits: "Clinical forms vary drastically between specialties. A NoSQL document structure allows dynamic form generation without constant schema migrations." 
+            }
+        ],
+        codeSnippet: {
+            language: "javascript",
+            description: "HIPAA-compliant data encryption middleware before DB insertion.",
+            code: `// Audit logging & encryption interceptor\nconst patientSchema = new Schema({ ... });\n\npatientSchema.pre('save', async function(next) {\n  if (this.isModified('phi_data')) {\n    // Audit trail\n    await AuditLog.create({\n      action: 'PHI_UPDATE',\n      target_id: this._id,\n      timestamp: new Date()\n    });\n    \n    // Field-level encryption\n    this.phi_data = cryptoService.encrypt(this.phi_data);\n  }\n  next();\n});`
+        },
+        realStats: {
+            components: "45+",
+            apiRoutes: "32",
+            models: "18",
+            platform: "Vercel",
+            buildTime: "12 Weeks"
+        }
     },
     {
         id: "mock-edunova",
@@ -50,7 +107,33 @@ export const MOCK_PROJECTS = [
         github: "https://github.com/kumail-kmr25/Edunova-saas.git",
         isFeatured: false,
         valuePoints: ["Reduces administrative overhead by 40%", "Real-time student lifecycle management", "Secure institution-wide orchestration"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14).toISOString()
+        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14).toISOString(),
+        systemArchitecture: [
+            { name: "Frontend", value: "Next.js" },
+            { name: "Backend", value: "Next API Routes (Serverless)" },
+            { name: "Database", value: "PostgreSQL" },
+            { name: "ORM", value: "Prisma" },
+            { name: "Hosting", value: "Vercel" }
+        ],
+        engineeringDecisions: [
+            { 
+                title: "Why PostgreSQL / Prisma?", 
+                reason: "Strict relational data integrity.", 
+                benefits: "Educational environments require complex relations (Students -> Classes -> Teachers -> Grades). Relational structure ensures data consistency, and Prisma gives type-safe DB queries." 
+            }
+        ],
+        codeSnippet: {
+            language: "typescript",
+            description: "Complex hierarchical data fetching with Prisma.",
+            code: `export async function getInstitutionalOverview(schoolId: string) {\n  return await prisma.school.findUnique({\n    where: { id: schoolId },\n    include: {\n      departments: {\n        include: {\n          courses: {\n            where: { isActive: true },\n            select: { id: true, name: true, credits: true }\n          },\n          staff: true\n        }\n      },\n      _count: {\n        select: { students: true, staff: true }\n      }\n    }\n  });\n}`
+        },
+        realStats: {
+            components: "85+",
+            apiRoutes: "40",
+            models: "22",
+            platform: "Vercel + Supabase DB",
+            buildTime: "16 Weeks"
+        }
     },
     {
         id: "mock-valekash",

@@ -54,6 +54,11 @@ interface Project {
     results?: string;
     metrics: string[];
     category?: string;
+    // --- New Proof of Work Fields ---
+    systemArchitecture?: { name: string, value: string }[];
+    engineeringDecisions?: { title: string, reason: string, benefits: string }[];
+    codeSnippet?: { language: string, code: string, description: string };
+    realStats?: { components: string, apiRoutes: string, models: string, platform: string, buildTime: string };
 }
 
 interface ProjectCaseStudyModalProps {
@@ -78,6 +83,7 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
 
     const timeline = project.timeline ? (typeof project.timeline === 'string' ? JSON.parse(project.timeline) : project.timeline) : [
         { phase: "Idea", label: "Conceptualization" },
+        { phase: "Wireframe", label: "App Design" },
         { phase: "Dev", label: "Engineering" },
         { phase: "Deploy", label: "Production" },
         { phase: "Optimize", label: "Scaling" }
@@ -245,46 +251,121 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                                 </div>
                             </div>
 
-                            {/* Technical Insights (The Terminal) */}
-                            <section className="space-y-8">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
-                                        <Terminal size={20} />
+                            {/* Proof of Work: System Architecture */}
+                            {project.systemArchitecture && project.systemArchitecture.length > 0 && (
+                                <section className="space-y-8">
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
+                                            <Layers size={20} />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-white tracking-tight uppercase">System Architecture</h3>
                                     </div>
-                                    <h3 className="text-xl font-bold text-white tracking-tight uppercase">Code & Architecture Insights</h3>
-                                </div>
-                                <div className="bg-[#050505] rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl">
-                                    <div className="bg-white/5 px-6 py-4 border-b border-white/10 flex items-center justify-between">
-                                        <div className="flex gap-2">
-                                            <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                                            <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-                                            <div className="w-3 h-3 rounded-full bg-green-500/50" />
-                                        </div>
-                                        <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">system_breakdown.bash</span>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                        {project.systemArchitecture.map((arch, idx) => (
+                                            <div key={idx} className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 space-y-2 hover:bg-white/[0.04] hover:border-blue-500/30 transition-all">
+                                                <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">{arch.name}</p>
+                                                <p className="text-sm font-bold text-white">{arch.value}</p>
+                                            </div>
+                                        ))}
                                     </div>
-                                    <div className="p-8 sm:p-12 font-mono text-sm leading-8 space-y-4">
-                                        <div className="flex gap-4">
-                                            <span className="text-blue-500 font-black">❯</span>
-                                            <p className="text-gray-400 italic">cat architecture_map.json</p>
+                                </section>
+                            )}
+
+                            {/* Proof of Work: Key Engineering Decisions */}
+                            {project.engineeringDecisions && project.engineeringDecisions.length > 0 && (
+                                <section className="space-y-8">
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
+                                            <Cpu size={20} />
                                         </div>
-                                        <div className="pl-8 space-y-2 border-l border-white/10 ml-1">
-                                            <p className="text-blue-400"><span className="text-white">"Frontend"</span>: "React + Next.js (App Router)",</p>
-                                            <p className="text-purple-400"><span className="text-white">"Backend"</span>: "Node.js (Next API Routes)",</p>
-                                            <p className="text-emerald-400"><span className="text-white">"Database"</span>: "PostgreSQL (Prisma ORM)",</p>
-                                            <p className="text-amber-400"><span className="text-white">"Realtime"</span>: "WebSockets / SWR Optimistic UI",</p>
-                                            <p className="text-gray-500"><span className="text-white">"Cloud"</span>: "Vercel + Edge Infrastructure"</p>
+                                        <h3 className="text-xl font-bold text-white tracking-tight uppercase">Key Engineering Decisions</h3>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {project.engineeringDecisions.map((decision, idx) => (
+                                            <div key={idx} className="p-8 rounded-[2.5rem] bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/5 space-y-4">
+                                                <h4 className="text-lg font-bold text-white bg-white/5 inline-block px-4 py-2 rounded-xl mb-2">{decision.title}</h4>
+                                                <div className="space-y-3">
+                                                    <div className="pl-4 border-l-2 border-red-500/50">
+                                                        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-1">The Why</p>
+                                                        <p className="text-sm text-gray-400 italic">{decision.reason}</p>
+                                                    </div>
+                                                    <div className="pl-4 border-l-2 border-green-500/50">
+                                                        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-1">The Benefit</p>
+                                                        <p className="text-sm text-gray-300">{decision.benefits}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+                            )}
+
+                            {/* Proof of Work: Code Snippet Highlight */}
+                            {project.codeSnippet && (
+                                <section className="space-y-8 relative group">
+                                    {/* Ambient Glow */}
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-500/5 blur-[100px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    
+                                    <div className="flex items-center gap-4 mb-4 relative z-10">
+                                        <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                                            <Code2 size={20} />
                                         </div>
-                                        <div className="flex gap-4 pt-6">
-                                            <span className="text-blue-500 font-black">❯</span>
-                                            <p className="text-gray-300">Initialized system metrics...</p>
-                                        </div>
-                                        <div className="flex gap-4">
-                                            <span className="text-green-500 font-black">✓</span>
-                                            <p className="text-gray-400 uppercase tracking-widest text-[10px] font-black">Optimized Query execution confirmed</p>
+                                        <div>
+                                            <h3 className="text-xl font-bold text-white tracking-tight uppercase flex items-center gap-3">
+                                                Real Code In Production
+                                                <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] tracking-widest">Verified</span>
+                                            </h3>
                                         </div>
                                     </div>
-                                </div>
-                            </section>
+                                    <div className="bg-[#0D0D0D] rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl relative z-10">
+                                        <div className="bg-white/5 px-6 py-4 border-b border-white/10 flex items-center justify-between">
+                                            <span className="text-xs font-mono text-gray-400">{project.codeSnippet.description}</span>
+                                            <span className="px-3 py-1 rounded-md bg-white/10 text-[10px] font-black font-mono text-white uppercase tracking-widest">{project.codeSnippet.language}</span>
+                                        </div>
+                                        <div className="p-8 sm:p-10 overflow-x-auto custom-scrollbar">
+                                            <pre className="text-sm font-mono leading-relaxed text-gray-300">
+                                                <code>
+                                                    {project.codeSnippet.code}
+                                                </code>
+                                            </pre>
+                                        </div>
+                                    </div>
+                                </section>
+                            )}
+
+                            {/* Proof of Work: Real Development Stats */}
+                            {project.realStats && (
+                                <section className="space-y-8">
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-400">
+                                            <BarChart size={20} />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-white tracking-tight uppercase">Project Scale & Stats</h3>
+                                    </div>
+                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                        <div className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 text-center">
+                                            <p className="text-3xl font-black text-white mb-1">{project.realStats.components}</p>
+                                            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Components</p>
+                                        </div>
+                                        <div className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 text-center">
+                                            <p className="text-3xl font-black text-white mb-1">{project.realStats.apiRoutes}</p>
+                                            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">API Routes</p>
+                                        </div>
+                                        <div className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 text-center">
+                                            <p className="text-3xl font-black text-white mb-1">{project.realStats.models}</p>
+                                            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">DB Models</p>
+                                        </div>
+                                        <div className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 text-center">
+                                            <p className="text-xl font-black text-white mb-1 mt-1 truncate">{project.realStats.platform}</p>
+                                            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Deployed On</p>
+                                        </div>
+                                        <div className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 text-center col-span-2 md:col-span-1">
+                                            <p className="text-xl font-black text-white mb-1 mt-1">{project.realStats.buildTime}</p>
+                                            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Build Time</p>
+                                        </div>
+                                    </div>
+                                </section>
+                            )}
 
                             {/* Timeline Visualizer */}
                             <section className="space-y-12">
@@ -296,10 +377,10 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                                 </div>
                                 <div className="relative pt-8 pb-12">
                                     <div className="absolute top-1/2 left-0 w-full h-px bg-white/5 -translate-y-1/2 hidden md:block" />
-                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
                                         {timeline.map((item: any, i: number) => (
-                                            <div key={i} className="relative z-10 text-center md:text-left">
-                                                <div className="w-12 h-12 rounded-2xl bg-[#080808] border border-white/10 flex items-center justify-center text-white font-black mb-4 mx-auto md:mx-0 group-hover:border-blue-500/50 transition-colors">
+                                            <div key={i} className="relative z-10 text-center md:text-left flex-1">
+                                                <div className="w-12 h-12 rounded-2xl bg-[#080808] border border-white/10 flex items-center justify-center text-white font-black mb-4 mx-auto md:mx-0 group-hover:border-blue-500/50 transition-colors shadow-[0_0_15px_rgba(0,0,0,0.5)]">
                                                     {i + 1}
                                                 </div>
                                                 <h4 className="text-blue-500 text-[10px] font-black uppercase tracking-widest mb-1">{item.phase}</h4>
