@@ -113,10 +113,10 @@ export default function Footer() {
 
                         <Link 
                             href="/admin" 
-                            className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition-colors"
+                            className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-blue-500 transition-all py-3 px-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-white/[0.02]"
                         >
                             <ShieldCheck size={14} />
-                            <span className="hidden sm:inline">Admin</span>
+                            <span>Admin</span>
                         </Link>                    </m.div>
                 </div>
             </m.div>

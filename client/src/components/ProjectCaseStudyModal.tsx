@@ -254,7 +254,7 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                             </div>
 
                             {/* Proof of Work: System Architecture */}
-                            {project.systemArchitecture && project.systemArchitecture.length > 0 && (
+                            {(project.systemArchitecture && project.systemArchitecture.length > 0) || project.architecture ? (
                                 <section className="space-y-8">
                                     <div className="flex items-center gap-4 mb-4">
                                         <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
@@ -262,16 +262,70 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                                         </div>
                                         <h3 className="text-xl font-bold text-white tracking-tight uppercase">System Architecture</h3>
                                     </div>
-                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                        {project.systemArchitecture.map((arch, idx) => (
-                                            <div key={idx} className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 space-y-2 hover:bg-white/[0.04] hover:border-blue-500/30 transition-all">
-                                                <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">{arch.name}</p>
-                                                <p className="text-sm font-bold text-white">{arch.value}</p>
-                                            </div>
-                                        ))}
-                                    </div>
+                                    
+                                    {/* Static Info Grid */}
+                                    {project.systemArchitecture && project.systemArchitecture.length > 0 && (
+                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+                                            {project.systemArchitecture.map((arch: any, idx: number) => (
+                                                <div key={idx} className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 space-y-2 hover:bg-white/[0.04] hover:border-blue-500/30 transition-all">
+                                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">{arch.name}</p>
+                                                    <p className="text-sm font-bold text-white">{arch.value}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {/* Dynamic Diagram Renderer (if architecture exists) */}
+                                    {project.architecture && project.architecture.nodes && (
+                                        <div className="relative aspect-[21/9] w-full bg-[#050505] rounded-[3rem] border border-white/5 overflow-hidden group/arch">
+                                            {/* Grid Paper Effect */}
+                                            <div className="absolute inset-0 bg-[radial-gradient(#ffffff10_1px,transparent_1px)] [background-size:40px_40px] opacity-20" />
+                                            
+                                            {/* Edges / Connections */}
+                                            <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                                                {project.architecture.edges?.map((edge: any, i: number) => {
+                                                    const from = project.architecture.nodes.find((n: any) => n.id === edge.from);
+                                                    const to = project.architecture.nodes.find((n: any) => n.id === edge.to);
+                                                    if (!from || !to) return null;
+                                                    return (
+                                                        <m.line 
+                                                            key={i}
+                                                            x1={`${from.x}%`} y1={`${from.y}%`}
+                                                            x2={`${to.x}%`} y2={`${to.y}%`}
+                                                            stroke="currentColor"
+                                                            className="text-blue-500/20"
+                                                            strokeWidth="1"
+                                                            initial={{ pathLength: 0, opacity: 0 }}
+                                                            whileInView={{ pathLength: 1, opacity: 1 }}
+                                                            transition={{ duration: 1.5, delay: i * 0.2 }}
+                                                        />
+                                                    );
+                                                })}
+                                            </svg>
+
+                                            {/* Nodes */}
+                                            {project.architecture.nodes.map((node: any, i: number) => (
+                                                <m.div
+                                                    key={node.id}
+                                                    initial={{ opacity: 0, scale: 0.8 }}
+                                                    whileInView={{ opacity: 1, scale: 1 }}
+                                                    transition={{ delay: i * 0.1 }}
+                                                    className="absolute -translate-x-1/2 -translate-y-1/2 p-4 rounded-2xl bg-[#0a0a0a] border border-white/10 flex flex-col items-center gap-2 group/node hover:border-blue-500/50 transition-all cursor-default z-10"
+                                                    style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                                                >
+                                                    <div className={`p-2 rounded-lg bg-${node.color || 'blue'}-500/10 text-${node.color || 'blue'}-500`}>
+                                                        <Code2 size={16} />
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <p className="text-[10px] font-black text-white uppercase tracking-tighter">{node.label}</p>
+                                                        <p className="text-[8px] text-gray-500 font-bold uppercase tracking-widest">{node.sub}</p>
+                                                    </div>
+                                                </m.div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </section>
-                            )}
+                            ) : null}
 
                             {/* Proof of Work: Key Engineering Decisions */}
                             {project.engineeringDecisions && project.engineeringDecisions.length > 0 && (

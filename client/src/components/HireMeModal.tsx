@@ -134,11 +134,13 @@ export default function HireMeModal() {
             email: "",
             company: "",
             description: "",
+            referenceLink: "",
+            contactMethod: "Email",
             source: "hire_me",
             selectedService: "Website Development",
             budgetRange: "$500 – $1000",
             timeline: "1 month",
-            projectType: "New Project from scratch"
+            projectType: "Website Development"
         }
     });
 
@@ -429,9 +431,9 @@ export default function HireMeModal() {
 
                                                         <div className="space-y-8">
                                                             {/* Contact Info First */}
-                                                            <m.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                            <m.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                                                 <div className="space-y-2">
-                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Full Name</label>
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Full Name*</label>
                                                                     <input
                                                                         {...register("name")}
                                                                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
@@ -440,13 +442,53 @@ export default function HireMeModal() {
                                                                     {errors.name && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.name.message as string}</p>}
                                                                 </div>
                                                                 <div className="space-y-2">
-                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Work Email</label>
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Work Email*</label>
                                                                     <input
                                                                         {...register("email")}
                                                                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
                                                                         placeholder="john@company.com"
                                                                     />
                                                                     {errors.email && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.email.message as string}</p>}
+                                                                </div>
+                                                                <div className="space-y-2">
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Company (Optional)</label>
+                                                                    <input
+                                                                        {...register("company")}
+                                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
+                                                                        placeholder="Agency Inc."
+                                                                    />
+                                                                </div>
+                                                            </m.div>
+
+                                                            {/* Project Type & Link */}
+                                                            <m.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                                <div className="space-y-2">
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Project Type*</label>
+                                                                    <select
+                                                                        {...register("projectType")}
+                                                                        className="w-full bg-[#0a0a0a] border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer"
+                                                                    >
+                                                                        {[
+                                                                            "UI/UX Design",
+                                                                            "Frontend Development",
+                                                                            "Backend Development",
+                                                                            "Full Stack Development",
+                                                                            "DevOps / Cloud",
+                                                                            "Database Design",
+                                                                            "Bug Fix / Error Optimization",
+                                                                            "Website Development",
+                                                                            "Web Application",
+                                                                            "Other"
+                                                                        ].map(type => <option key={type} value={type}>{type}</option>)}
+                                                                    </select>
+                                                                </div>
+                                                                <div className="space-y-2">
+                                                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Reference Link (Optional)</label>
+                                                                    <input
+                                                                        {...register("referenceLink")}
+                                                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:border-blue-500 outline-none transition-all"
+                                                                        placeholder="Reference site or design Link"
+                                                                    />
                                                                 </div>
                                                             </m.div>
 
@@ -486,13 +528,30 @@ export default function HireMeModal() {
                                                             </m.div>
 
                                                             <m.div variants={itemVariants} className="space-y-4">
-                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Project Vision & Goals</label>
+                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Project Description*</label>
                                                                 <textarea
                                                                     {...register("description")}
                                                                     className="w-full bg-white/5 border border-white/10 rounded-[2rem] px-8 py-6 text-sm text-white focus:border-blue-500 outline-none transition-all min-h-[150px] resize-none leading-relaxed"
-                                                                    placeholder="Briefly describe what we're building..."
+                                                                    placeholder="Describe your idea, the problem you want solved, or the system you want built."
                                                                 />
                                                                 {errors.description && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-4">{errors.description.message as string}</p>}
+                                                            </m.div>
+
+                                                            {/* Preferred Contact Method */}
+                                                            <m.div variants={itemVariants} className="space-y-4">
+                                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Preferred Communication Method</label>
+                                                                <div className="grid grid-cols-3 gap-4">
+                                                                    {["Email", "LinkedIn", "WhatsApp"].map((method) => (
+                                                                        <button
+                                                                            key={method}
+                                                                            type="button"
+                                                                            onClick={() => setValue("contactMethod", method as any)}
+                                                                            className={`px-4 py-4 rounded-2xl border text-[10px] font-black uppercase tracking-widest transition-all ${formData.contactMethod === method ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/20" : "bg-white/5 border-white/10 text-gray-500 hover:border-white/20"}`}
+                                                                        >
+                                                                            {method}
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
                                                             </m.div>
 
                                                             <m.div variants={itemVariants} className="p-8 bg-blue-500/5 rounded-[2rem] border border-blue-500/10 backdrop-blur-3xl">

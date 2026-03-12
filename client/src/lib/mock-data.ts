@@ -141,7 +141,7 @@ export const MOCK_PROJECTS = [
         category: "FinTech",
         isVisible: true,
         summary: "High-velocity fintech solution for seamless digital asset transactions and escrow.",
-        description: "A secure payment processing and digital wallet platform focusing on transaction atomicity.",
+        description: "A secure payment processing and digital wallet platform focusing on transaction atomicity and high financial security standards.",
         status: "Concept",
         role: "System Architect",
         tags: ["Next.js", "PostgreSQL", "Prisma", "Tailwind"],
@@ -150,7 +150,20 @@ export const MOCK_PROJECTS = [
         github: "https://github.com/kumail-kmr25/ValeKash-Final.git",
         isFeatured: false,
         valuePoints: ["Atomic digital asset transactions", "Automated escrow verification", "High-integrity financial ledger"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 20).toISOString()
+        metrics: ["0% Double Spend", "1ms Ledger Latency", "99.9% Security Audit"],
+        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 20).toISOString(),
+        systemArchitecture: [
+            { name: "Frontend", value: "Next.js 15 UI" },
+            { name: "Ledger", value: "PostgreSQL (ACID)" },
+            { name: "API", value: "Fastify / Node" }
+        ],
+        engineeringDecisions: [
+            {
+                title: "Why PostgreSQL for Ledger?",
+                reason: "ACID compliance is mandatory.",
+                benefits: "Guarantees that financial transactions are never partially completed, preventing double-spending."
+            }
+        ]
     },
     {
         id: "mock-nestq-ai",
@@ -158,16 +171,22 @@ export const MOCK_PROJECTS = [
         category: "FinTech",
         isVisible: true,
         summary: "AI-driven financial analytics engine for predictive budgeting and treasury management.",
-        description: "An intelligent platform that uses machine learning to categorize expenses and predict future cash flow trends.",
+        description: "An intelligent platform that uses machine learning to categorize expenses and predict future cash flow trends. Formerly known as FinFlow AI.",
         status: "Production",
         role: "Lead Developer",
         tags: ["React.js", "MongoDB", "Node.js", "Tailwind"],
-        image: "/projects/finflow.png", // Reusing existing image placeholder
+        image: "/projects/finflow.png",
         demo: "#",
         github: "#",
         isFeatured: false,
         valuePoints: ["95% accurate cash-flow predictions", "Intelligent expense categorization", "SME financial optimization"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 25).toISOString()
+        metrics: ["95% Prediction Accuracy", "60% Render Speedup", "30% Lower API Costs"],
+        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 25).toISOString(),
+        systemArchitecture: [
+            { name: "Frontend", value: "React / Shadcn" },
+            { name: "AI Engine", value: "Python / TensorFlow" },
+            { name: "Storage", value: "MongoDB Atlas" }
+        ]
     },
     {
         id: "mock-clinkart",
@@ -175,7 +194,7 @@ export const MOCK_PROJECTS = [
         category: "E-Commerce",
         isVisible: true,
         summary: "High-performance E-commerce engine for modern retail and rapid scaling.",
-        description: "A headless e-commerce solution with extreme focus on SEO, core web vitals, and conversion optimization.",
+        description: "A headless e-commerce solution with extreme focus on SEO, core web vitals, and conversion optimization. Built for high-traffic retail flows.",
         status: "Production",
         role: "Full Stack Developer",
         tags: ["Next.js", "React.js", "MongoDB", "Tailwind"],
@@ -184,7 +203,13 @@ export const MOCK_PROJECTS = [
         github: "#",
         isFeatured: false,
         valuePoints: ["100/100 Lighthouse performance", "Hyper-optimized conversion funnel", "Scalable headless commerce"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString()
+        metrics: ["100/100 Lighthouse", "15% Conversion Boost", "70% Payload Reduction"],
+        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString(),
+        systemArchitecture: [
+            { name: "Store", value: "Next.js Static" },
+            { name: "Orders", value: "GraphQL / Node" },
+            { name: "DB", value: "MongoDB" }
+        ]
     },
     {
         id: "mock-quebook",
@@ -192,7 +217,7 @@ export const MOCK_PROJECTS = [
         category: "Developer Tools",
         isVisible: true,
         summary: "Collaborative technical documentation platform for engineering-heavy teams.",
-        description: "A documentation engine that supports markdown, live code samples, and complex system diagrams.",
+        description: "A documentation engine that supports markdown, live code samples, and complex system diagrams. Integrated with GitHub workflows.",
         status: "Beta",
         role: "Frontend Engineer",
         tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind"],
@@ -201,7 +226,12 @@ export const MOCK_PROJECTS = [
         github: "#",
         isFeatured: false,
         valuePoints: ["Real-time document sync", "Interactive system diagrams", "Markdown-first technical writing"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 35).toISOString()
+        metrics: ["0ms Navigation Delay", "100% SEO Score", "50+ Microservices Configured"],
+        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 35).toISOString(),
+        systemArchitecture: [
+            { name: "Engine", value: "Next.js Static" },
+            { name: "Storage", value: "MongoDB Atlas" }
+        ]
     },
     {
         id: "mock-bab-e-ilm",
@@ -209,7 +239,7 @@ export const MOCK_PROJECTS = [
         category: "Education",
         isVisible: true,
         summary: "Digital knowledge repository and comprehensive educational portal.",
-        description: "A centralized platform for accessing structured educational content, featuring advanced search and categorizations.",
+        description: "A centralized platform for accessing structured educational content, featuring advanced search and categorizations. Built for scalability and accessibility in educational environments.",
         status: "Production",
         role: "Full Stack Developer",
         tags: ["React.js", "Node.js", "PostgreSQL", "Tailwind"],
@@ -218,6 +248,11 @@ export const MOCK_PROJECTS = [
         github: "#",
         isFeatured: false,
         valuePoints: ["Structured knowledge architecture", "Advanced semantic search", "Intuitive learning interfaces"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 40).toISOString()
+        metrics: ["98% Search Accuracy", "30% Faster Research Time", "100+ Categories Mapped"],
+        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 40).toISOString(),
+        systemArchitecture: [
+            { name: "Portal", value: "React / Vite" },
+            { name: "Archive", value: "PostgreSQL" }
+        ]
     }
 ];

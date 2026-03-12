@@ -17,6 +17,18 @@ export const hireSchema = z.object({
         "DevOps / Cloud",
         "Other"
     ]),
+    projectType: z.enum([
+        "UI/UX Design",
+        "Frontend Development",
+        "Backend Development",
+        "Full Stack Development",
+        "DevOps / Cloud",
+        "Database Design",
+        "Bug Fix / Error Optimization",
+        "Website Development",
+        "Web Application",
+        "Other"
+    ]),
     budgetRange: z.enum([
         "Under $500",
         "$500 – $1000",
@@ -29,17 +41,12 @@ export const hireSchema = z.object({
         "1 month",
         "Flexible"
     ]),
-    projectType: z.enum([
-        "New Project from scratch",
-        "Existing Project (Maintenance/Update)",
-        "Long-term Partnership",
-        "Consulting",
-        "Other"
-    ]),
     description: z.string()
-        .min(20, "Project details must be at least 20 characters")
+        .min(10, "Project details must be at least 10 characters")
         .max(3000, "Description must be less than 3000 characters"),
-    source: z.string(),
+    referenceLink: z.string().url("Invalid URL format").optional().or(z.literal("")),
+    contactMethod: z.enum(["Email", "LinkedIn", "WhatsApp"]),
+    source: z.string().default("hire_me"),
 });
 
 export type HireFormData = z.infer<typeof hireSchema>;

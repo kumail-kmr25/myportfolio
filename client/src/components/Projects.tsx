@@ -7,12 +7,16 @@ import { Layers, Loader2, Sparkles, Code2, Rocket, LayoutGrid, Cpu } from "lucid
 import ProjectCard from "./ProjectCard";
 import ProjectCaseStudyModal from "./ProjectCaseStudyModal";
 import SectionReveal from "./SectionReveal";
+import { useHireModal } from "@/context/HireModalContext";
 
 const fetcher = (url: string) => fetch(url).then(r => r.json());
 
 export default function Projects() {
-    const { data: projects, isLoading } = useSWR("/api/projects", fetcher);
+    const { data, isLoading } = useSWR("/api/projects", fetcher);
+    // Handle both direct array (fallback/mock) and object-wrapped array (API v1)
+    const projects = data?.projects || (Array.isArray(data) ? data : []);
     const [selectedProject, setSelectedProject] = useState<any>(null);
+    const { openModal } = useHireModal();
 
     const containerVariants: any = {
         hidden: { opacity: 0 },
@@ -185,18 +189,18 @@ export default function Projects() {
                                 </p>
                                 
                                 <div className="flex flex-col sm:flex-row items-center gap-6">
-                                    <a 
-                                        href="#hire" 
+                                    <button 
+                                        onClick={() => openModal()}
                                         className="btn-primary py-4 px-10 text-sm w-full sm:w-auto hover:scale-105 transition-transform"
                                     >
                                         Hire Me
-                                    </a>
-                                    <a 
-                                        href="#contact" 
+                                    </button>
+                                    <button 
+                                        onClick={() => openModal()}
                                         className="w-full sm:w-auto px-10 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-[10px] uppercase tracking-widest hover:border-blue-500/30 min-h-[48px]"
                                     >
                                         Start a Project
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </m.div>

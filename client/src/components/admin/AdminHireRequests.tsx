@@ -13,7 +13,8 @@ import {
     Calendar,
     Briefcase,
     IndianRupee,
-    Trash2
+    Trash2,
+    Settings
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -27,6 +28,8 @@ interface HireRequest {
     budgetRange: string;
     timeline: string;
     projectType: string;
+    referenceLink?: string | null;
+    contactMethod?: string | null;
     status: string;
     source?: string;
     createdAt: string;
@@ -190,38 +193,80 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
                                 </div>
 
                                 <div className="space-y-8">
-                                    <div className="p-6 bg-white/[0.03] border border-white/5 rounded-3xl space-y-4">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400">
-                                                <IndianRupee size={20} />
-                                            </div>
-                                            <div>
-                                                <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Budget</p>
-                                                <p className="text-sm text-white font-bold">{selectedRequest.budgetRange}</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400">
-                                                <Clock size={20} />
-                                            </div>
-                                            <div>
-                                                <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Timeline</p>
-                                                <p className="text-sm text-white font-bold">{selectedRequest.timeline}</p>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        {selectedRequest.company && (
+                                    <div className="p-6 bg-white/[0.03] border border-white/5 rounded-3xl space-y-6">
+                                        <div className="grid grid-cols-1 gap-6">
                                             <div className="flex items-center gap-4">
-                                                <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400">
+                                                <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-blue-400">
                                                     <Briefcase size={20} />
                                                 </div>
-                                                <div>
-                                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Company</p>
-                                                    <p className="text-sm text-white font-bold">{selectedRequest.company}</p>
+                                                <div className="min-w-0">
+                                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Project Type</p>
+                                                    <p className="text-sm text-white font-bold truncate">{selectedRequest.projectType || selectedRequest.selectedService}</p>
                                                 </div>
                                             </div>
-                                        )}
-                                        <div className="flex items-center gap-4">
+
+                                            {selectedRequest.company && (
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-purple-400">
+                                                        <Settings size={20} />
+                                                    </div>
+                                                    <div className="min-w-0">
+                                                        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Company</p>
+                                                        <p className="text-sm text-white font-bold truncate">{selectedRequest.company}</p>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400">
+                                                        <IndianRupee size={20} />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Budget</p>
+                                                        <p className="text-sm text-white font-bold">{selectedRequest.budgetRange}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400">
+                                                        <Clock size={20} />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Timeline</p>
+                                                        <p className="text-sm text-white font-bold">{selectedRequest.timeline}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-emerald-400">
+                                                    <Mail size={20} />
+                                                </div>
+                                                <div>
+                                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Contact Preference</p>
+                                                    <p className="text-sm text-white font-bold">{selectedRequest.contactMethod || "Email"}</p>
+                                                </div>
+                                            </div>
+
+                                            {selectedRequest.referenceLink && (
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-blue-400">
+                                                        <ExternalLink size={20} />
+                                                    </div>
+                                                    <div className="min-w-0 flex-1">
+                                                        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Reference</p>
+                                                        <a 
+                                                            href={selectedRequest.referenceLink} 
+                                                            target="_blank" 
+                                                            rel="noopener noreferrer" 
+                                                            className="text-sm text-blue-400 font-bold truncate block hover:underline"
+                                                        >
+                                                            {selectedRequest.referenceLink.replace(/^https?:\/\//, '')}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
 
                                     <div>

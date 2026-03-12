@@ -236,6 +236,8 @@ model HireRequest {
   budgetRange     String
   timeline        String
   projectType     String
+  referenceLink   String?
+  contactMethod   String?
   source          String   @default("hire_me")
   status          String   @default("new") // new / contacted / closed
   createdAt       DateTime @default(now())

@@ -50,6 +50,8 @@ export async function POST(request: Request) {
             timeline,
             projectType,
             description,
+            referenceLink,
+            contactMethod,
             source
         } = result.data;
 
@@ -57,6 +59,7 @@ export async function POST(request: Request) {
         const sanitizedDescription = xss(description);
         const sanitizedName = xss(name);
         const sanitizedCompany = company ? xss(company) : null;
+        const sanitizedReferenceLink = referenceLink ? xss(referenceLink) : null;
 
         // Save to Database
         const hireRequest = await prisma.hireRequest.create({
@@ -69,6 +72,8 @@ export async function POST(request: Request) {
                 budgetRange: budgetRange,
                 timeline: timeline,
                 projectType: projectType,
+                referenceLink: sanitizedReferenceLink,
+                contactMethod: contactMethod,
                 source: source || "hire_me",
                 status: "new"
             },

@@ -45,61 +45,50 @@ async function main() {
     // 3. Create Flagship Projects
     const projects = [
         {
-            title: "Edunova",
+            title: "CUE AI",
             isVisible: true,
-            summary: "Enterprise-grade SaaS for academic orchestration and real-time institutional management.",
-            description: "A comprehensive School Management System with 2FA, RBAC, and real-time notifications. Designed to handle thousands of concurrent users with zero-latency overhead.",
+            isFeatured: true,
+            summary: "Advanced AI-powered conversational engine and reasoning system.",
+            description: "A sophisticated AI platform leveraging large language models for deep contextual reasoning, semantic search, and intelligent automation workflows. Built with a focus on low-latency inference and high-dimensional vector similarity.",
             status: "Production",
-            role: "Full Stack Architect",
-            tags: ["TypeScript", "Next.js", "PostgreSQL", "Prisma", "Tailwind CSS"],
-            image: "/projects/edunova.png",
-            demo: "https://edunova-saas.vercel.app",
-            github: "https://github.com/kumail-kmr25/Edunova-saas.git",
-            problem: "Educational institutions struggled with fragmented data, manual attendance tracking, and insecure grade management systems.",
-            solution: "Built a unified platform that centralizes student lifecycle management, from admission to graduation, with automated reporting.",
-            targetAudience: "K-12 Schools, Universities, and Corporate Training Centers.",
-            valueProp: "Reduces administrative overhead by 40% through automated workflow orchestration.",
-            challenges: "Syncing real-time attendance across 50+ classrooms simultaneously without overloading the database connection pool.",
-            engineering: "Implemented a hybrid caching strategy using Next.js unstable_cache and database-level indexing for high-frequency queries.",
-            performance: "Database query optimization reduced average response time from 450ms to 42ms.",
-            scalability: "Stateless architecture allows horizontal scaling across Vercel's global edge network.",
-            security: "Multi-factor authentication (MFA) and granular Role-Based Access Control (RBAC) ensure data integrity.",
-            lessons: "Learned that database schema design is the most critical part of long-term project stability.",
-            beforeImageUrl: "https://images.unsplash.com/photo-1546410531-bb4daee2014c?auto=format&fit=crop&q=80&w=1200",
-            afterImageUrl: "https://images.unsplash.com/photo-1501503060800-3fa87a55ffb8?auto=format&fit=crop&q=80&w=1200",
-            improvementDetails: "Refactored legacy Monolith into a modular Next.js architecture, utilizing ISR for static snapshots of institutional data while maintaining real-time updates for active sessions.",
-            metrics: ["-90% Server Load", "450ms -> 42ms TTFB", "40% Admin Efficiency"],
-            decisionLogs: [
-                "Moved from Client-Side Fetching to Server Components with ISR",
-                "Implemented Redis for session-based notification caching",
-                "Strict PostgreSQL indexing on student_id and classroom_locks"
-            ],
-            uiDepth: 85,
+            role: "Lead Architect",
+            tags: ["Next.js", "Python", "FastAPI", "Vector DB", "Tailwind"],
+            image: "/projects/cue_ai.png",
+            demo: "#",
+            github: "#",
+            problem: "Teams waste hours on repetitive information lookup and context-switching between multiple tools.",
+            solution: "Built a unified AI assistant that integrates with team workflows and learns from organizational context to provide relevant, accurate answers.",
+            targetAudience: "Technology teams, product managers, and knowledge workers.",
+            valueProp: "Reduces context-switching by 60% through intelligent workflow integration.",
+            challenges: "Maintaining conversation context across long sessions while keeping token usage efficient.",
+            engineering: "Implemented a sliding context window with semantic compression using embeddings to retain relevant context.",
+            performance: "Response streaming reduces perceived latency by 80% using Vercel AI SDK.",
+            metrics: ["80% Faster Responses", "70% Token Reduction", "60% Less Context Switching"],
+            uiDepth: 88,
             backendDepth: 95,
             securityDepth: 90,
-            scalabilityDepth: 88,
+            scalabilityDepth: 92,
             architecture: {
                 nodes: [
-                    { id: "ui", label: "Frontend", sub: "Next.js 15 App Router", icon: "Monitor", color: "blue", x: 10, y: 35 },
-                    { id: "api", label: "API Layer", sub: "Route Handlers / Zod", icon: "Server", color: "purple", x: 40, y: 35 },
-                    { id: "db", label: "Database", sub: "PostgreSQL / Prisma", icon: "Database", color: "green", x: 70, y: 35 },
-                    { id: "auth", label: "Auth", sub: "Clerk / JWT", icon: "Lock", color: "amber", x: 40, y: 70 }
+                    { id: "ui", label: "Chat UI", sub: "Next.js / Vercel AI SDK", icon: "Monitor", color: "blue", x: 10, y: 35 },
+                    { id: "api", label: "AI Gateway", sub: "Node / OpenAI API", icon: "Cpu", color: "purple", x: 40, y: 35 },
+                    { id: "db", label: "Context", sub: "PostgreSQL / pgvector", icon: "Database", color: "green", x: 70, y: 35 }
                 ],
                 edges: [
-                    { from: "ui", to: "api", label: "tRPC / REST" },
-                    { from: "api", to: "db", label: "Type-safe Queries" },
-                    { from: "ui", to: "auth", label: "Session Mgmt" }
+                    { from: "ui", to: "api", label: "Streaming SSE" },
+                    { from: "api", to: "db", label: "Vector Retrieval" }
                 ]
             }
         },
         {
             title: "MedQ AI",
             isVisible: true,
+            isFeatured: true,
             summary: "Next-gen healthcare data management with strictly audited clinical workflows.",
-            description: "A secure medical record system (EMR) focusing on data privacy and rapid clinical data entry. Built for performance in high-stakes environments.",
+            description: "A secure medical record system (EMR) focusing on data privacy and rapid clinical data entry. Built for performance in high-stakes environments with HIPAA-compliant standards.",
             status: "Beta",
             role: "Backend Lead",
-            tags: ["JavaScript", "React.js", "MongoDB", "Express", "Node.js"],
+            tags: ["React.js", "MongoDB", "Express", "Node.js"],
             image: "/projects/medq_ai.png",
             demo: "https://gemini-med.vercel.app/",
             github: "https://github.com/kumail-kmr25/Que-med.git",
@@ -110,18 +99,7 @@ async function main() {
             challenges: "Handling complex, nested medical histories while maintaining search speed across millions of records.",
             engineering: "Built a custom aggregation pipeline in MongoDB to generate real-time patient health trends.",
             performance: "Implemented client-side optimistic UI updates for a zero-lag user experience, reducing perceived latency by 200%.",
-            scalability: "Database sharding prepared for multi-regional deployment with automated failover.",
-            security: "End-to-end encryption for patient PII (Personally Identifiable Information) with strict audit logging.",
-            lessons: "The importance of UX in technical products—if doctors can't use it quickly, the tech doesn't matter.",
-            beforeImageUrl: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200",
-            afterImageUrl: "https://images.unsplash.com/photo-1576091160550-2173599211d0?auto=format&fit=crop&q=80&w=1200",
-            improvementDetails: "Refactored the data ingestion layer to use bulk-insert operations and added composite indexes, resulting in a 4x increase in write throughput.",
             metrics: ["-85% DB Latency", "99.9% Data Integrity", "4x Data Entry Speed"],
-            decisionLogs: [
-                "Migrated from normalized to denormalized medical records for faster reads",
-                "Implemented custom Zod validation for complex health schemas",
-                "Switched to Redis for session and temporary scan caching"
-            ],
             uiDepth: 80,
             backendDepth: 90,
             securityDepth: 95,
@@ -139,10 +117,76 @@ async function main() {
             }
         },
         {
+            title: "EduNova",
+            isVisible: true,
+            summary: "Enterprise-grade SaaS for academic orchestration and real-time institutional management.",
+            description: "A comprehensive School Management System with 2FA, RBAC, and real-time notifications. Designed to handle thousands of concurrent users with zero-latency overhead.",
+            status: "Production",
+            role: "Full Stack Architect",
+            tags: ["TypeScript", "Next.js", "PostgreSQL", "Prisma", "Tailwind CSS"],
+            image: "/projects/edunova.png",
+            demo: "https://edunova-saas.vercel.app",
+            github: "https://github.com/kumail-kmr25/Edunova-saas.git",
+            problem: "Educational institutions struggled with fragmented data, manual attendance tracking, and insecure grade management systems.",
+            solution: "Built a unified platform that centralizes student lifecycle management, from admission to graduation, with automated reporting.",
+            targetAudience: "K-12 Schools, Universities, and Corporate Training Centers.",
+            valueProp: "Reduces administrative overhead by 40% through automated workflow orchestration.",
+            metrics: ["-90% Server Load", "450ms -> 42ms TTFB", "40% Admin Efficiency"],
+            uiDepth: 85,
+            backendDepth: 95,
+            securityDepth: 90,
+            scalabilityDepth: 88,
+            architecture: {
+                nodes: [
+                    { id: "ui", label: "Frontend", sub: "Next.js 15 App Router", icon: "Monitor", color: "blue", x: 10, y: 35 },
+                    { id: "api", label: "API Layer", sub: "Route Handlers / Zod", icon: "Server", color: "purple", x: 40, y: 35 },
+                    { id: "db", label: "Database", sub: "PostgreSQL / Prisma", icon: "Database", color: "green", x: 70, y: 35 }
+                ],
+                edges: [
+                    { from: "ui", to: "api", label: "tRPC / REST" },
+                    { from: "api", to: "db", label: "Type-safe Queries" }
+                ]
+            }
+        },
+        {
+            title: "BAB E ILM",
+            isVisible: true,
+            summary: "Digital knowledge repository and comprehensive educational portal.",
+            description: "A centralized platform for accessing structured educational content, featuring advanced search and categorizations. Built for scalability and accessibility in educational environments.",
+            status: "Production",
+            role: "Full Stack Developer",
+            tags: ["React.js", "Node.js", "PostgreSQL", "Tailwind"],
+            image: "/projects/babeilm.png",
+            demo: "#",
+            github: "#",
+            problem: "Fragmentation of educational resources makes it difficult for students to find high-quality, structured information.",
+            solution: "Created a unified knowledge hub with semantic search and intuitive hierarchical content organization.",
+            targetAudience: "Students, Educators, and Researchers.",
+            valueProp: "Simplifies information retrieval through a structured knowledge architecture.",
+            challenges: "Managing massive volumes of unstructured educational data and providing fast, relevant search results.",
+            engineering: "Implemented a custom indexing strategy in PostgreSQL and a clean, responsive React frontend for multi-device support.",
+            metrics: ["98% Search Accuracy", "30% Faster Research Time", "100+ Categories Mapped"],
+            uiDepth: 80,
+            backendDepth: 88,
+            securityDepth: 85,
+            scalabilityDepth: 90,
+            architecture: {
+                nodes: [
+                    { id: "ui", label: "Portal", sub: "React / Vite", icon: "Monitor", color: "blue", x: 10, y: 35 },
+                    { id: "api", label: "Backend", sub: "Node / Express", icon: "Server", color: "purple", x: 40, y: 35 },
+                    { id: "db", label: "Archive", sub: "PostgreSQL", icon: "Database", color: "green", x: 70, y: 35 }
+                ],
+                edges: [
+                    { from: "ui", to: "api", label: "REST" },
+                    { from: "api", to: "db", label: "Indexed Queries" }
+                ]
+            }
+        },
+        {
             title: "ValeKash",
             isVisible: true,
             summary: "High-velocity fintech solution for seamless digital asset transactions and escrow.",
-            description: "A secure payment processing and digital wallet platform. Focused on transaction atomicity and financial security standards.",
+            description: "A secure payment processing and digital wallet platform focusing on transaction atomicity and high financial security standards.",
             status: "Concept",
             role: "System Architect",
             tags: ["TypeScript", "Next.js", "PostgreSQL", "Tailwind CSS"],
@@ -150,24 +194,9 @@ async function main() {
             demo: "https://valekash.vercel.app/",
             github: "https://github.com/kumail-kmr25/ValeKash-Final.git",
             problem: "Trust issues in peer-to-peer digital transactions and lack of transparent escrow mechanisms.",
-            solution: "Architecture of an automated escrow system that holds funds until technical verification of delivery.",
+            solution: "Designed an automated escrow system that holds funds until technical verification of delivery.",
             targetAudience: "Freelancers and digital product marketplaces.",
-            valueProp: "Guarantees payment safety through algorithmic verification.",
-            challenges: "Ensuring transaction atomicity—preventing partial failures where money is moved but not recorded.",
-            engineering: "Utilized PostgreSQL serializable isolation levels to prevent race conditions during heavy traffic.",
-            performance: "Built an internal ledger system optimized for sub-millisecond balance checks.",
-            scalability: "Designed for microservices split as the transaction volume grows.",
-            security: "Hardware security module (HSM) integration simulated for key management.",
-            lessons: "Financial systems require a 'failure-first' mindset—everything must be reversible and logged.",
-            beforeImageUrl: "https://images.unsplash.com/photo-1621417646639-23454eb686a1?auto=format&fit=crop&q=80&w=1200",
-            afterImageUrl: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1200",
-            improvementDetails: "Implemented a custom double-entry bookkeeping ledger with transactional integrity, ensuring 100% data consistency even during network partitions.",
             metrics: ["0% Double Spend", "1ms Ledger Latency", "99.9% Security Audit"],
-            decisionLogs: [
-                "Utilized Prisma's $transaction for all ledger movements",
-                "Implemented optimistic concurrency control for wallet updates",
-                "Added mTLS for internal microservice communication"
-            ],
             uiDepth: 75,
             backendDepth: 98,
             securityDepth: 98,
@@ -185,35 +214,19 @@ async function main() {
             }
         },
         {
-            title: "FinFlow AI",
+            title: "NESTQ AI",
             isVisible: true,
             summary: "AI-driven financial analytics engine for predictive budgeting and treasury management.",
-            description: "An intelligent platform that uses machine learning to categorize expenses and predict future cash flow trends. Built for precision.",
+            description: "An intelligent platform that uses machine learning to categorize expenses and predict future cash flow trends. Formerly known as FinFlow AI.",
             status: "Production",
             role: "Lead Developer",
-            tags: ["JavaScript", "React.js", "MongoDB", "Tailwind CSS"],
+            tags: ["React.js", "MongoDB", "Node.js", "Tailwind"],
             image: "/projects/finflow.png",
             demo: "#",
             github: "#",
             problem: "SMEs struggle to predict their runway due to inconsistent financial tracking and varying expense cycles.",
-            solution: "Integrated OpenAI API for intelligent transaction categorization and trend analysis.",
-            targetAudience: "Small to Medium Enterprises and Startups.",
-            valueProp: "Provides 95% accurate cash-flow predictions 3 months in advance.",
-            challenges: "Cleaning and normalizing messy transaction data from multiple bank sources.",
-            engineering: "Built a background worker system to process AI tasks without blocking the main event loop.",
-            performance: "Reduced frontend render time for data-heavy charts by 60% using virtualization and memoization.",
-            scalability: "Stateless API ensures it can handle rapid increases in data volume through elastic scaling.",
-            security: "Strict data isolation policies ensure no company can see another's private financial records.",
-            lessons: "AI is only as good as the data cleaning pipeline before it.",
-            beforeImageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
-            afterImageUrl: "https://images.unsplash.com/photo-1551288049-bbbda5366a7a?auto=format&fit=crop&q=80&w=1200",
-            improvementDetails: "Optimized the AI inference pipeline by implementing a request queue and caching frequent classification patterns.",
+            solution: "Integrated AI categorization models to normalize messy transaction data and generate high-precision forecasts.",
             metrics: ["95% Prediction Accuracy", "60% Render Speedup", "30% Lower API Costs"],
-            decisionLogs: [
-                "Utilized OpenAI function calling for consistent data extraction",
-                "Implemented React Virtual for data-heavy transaction lists",
-                "Added a staging layer for AI data normalization"
-            ],
             uiDepth: 90,
             backendDepth: 85,
             securityDepth: 88,
@@ -221,157 +234,70 @@ async function main() {
             architecture: {
                 nodes: [
                     { id: "ui", label: "Frontend", sub: "React / Shadcn UI", icon: "Monitor", color: "blue", x: 10, y: 35 },
-                    { id: "api", label: "API", sub: "Node.js Core / Fastify", icon: "Server", color: "purple", x: 40, y: 35 },
-                    { id: "ai", label: "AI Engine", sub: "OpenAI / Python Workers", icon: "Cpu", color: "amber", x: 40, y: 70 },
-                    { id: "db", label: "Insights", sub: "MongoDB / Redis", icon: "Database", color: "green", x: 70, y: 35 }
+                    { id: "api", label: "Core", sub: "Fastify / Node", icon: "Server", color: "purple", x: 40, y: 35 },
+                    { id: "db", label: "Stats", sub: "MongoDB Atlas", icon: "Database", color: "green", x: 70, y: 35 }
                 ],
                 edges: [
-                    { from: "ui", to: "api", label: "Standard JSON API" },
-                    { from: "api", to: "ai", label: "Prompt Orchestration" },
-                    { from: "api", to: "db", label: "Context Retrieval" }
+                    { from: "ui", to: "api", label: "REST" },
+                    { from: "api", to: "db", label: "Aggregations" }
                 ]
             }
         },
         {
-            title: "ClinkArt",
+            title: "Clinkart",
             isVisible: true,
             summary: "High-performance E-commerce engine for modern retail and rapid scaling.",
-            description: "A headless e-commerce solution with extreme focus on SEO, core web vitals, and conversion optimization. Built for high-traffic sales.",
+            description: "A headless e-commerce solution with extreme focus on SEO, core web vitals, and conversion optimization. Built for high-traffic retail flows.",
             status: "Production",
             role: "Full Stack Developer",
-            tags: ["JavaScript", "React.js", "MongoDB", "Next.js"],
+            tags: ["Next.js", "React.js", "MongoDB", "Tailwind"],
             image: "/projects/clinkart.png",
             demo: "#",
             github: "#",
-            problem: "Legacy e-commerce platforms are slow, dragging down Google rankings and conversion rates.",
-            solution: "Engineered a headless commerce stack that achieves a 100/100 Lighthouse score.",
-            targetAudience: "D2C Brands and specialized online retailers.",
-            valueProp: "Boosts search visibility by 50% through hyper-optimized technical SEO.",
-            challenges: "Managing inventory levels in real-time across high-traffic global flash sales.",
-            engineering: "Developed a distributed locking mechanism to prevent overselling during peak load.",
-            performance: "Image optimization pipeline reduces payload size by 70% while maintaining 4k quality.",
-            scalability: "Serverless functions used for non-critical paths to reduce main server load.",
-            security: "PCI-compliant payment integration using secure stripe-connect architecture.",
-            lessons: "Performance is a feature—every 100ms of delay costs real revenue.",
-            beforeImageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200",
-            afterImageUrl: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80&w=1200",
-            improvementDetails: "Optimized the checkout funnel by implementing edge-side pre-rendering (ESR) and persistent cart state, increasing conversion by 15%.",
             metrics: ["100/100 Lighthouse", "15% Conversion Boost", "70% Payload Reduction"],
-            decisionLogs: [
-                "Implemented Next.js 15 Partial Prerendering (PPR)",
-                "Switched to Redis for real-time inventory locking",
-                "Automated SVG icon sprite generation for zero-layout shift"
-            ],
             uiDepth: 95,
             backendDepth: 88,
             securityDepth: 85,
             scalabilityDepth: 90,
             architecture: {
                 nodes: [
-                    { id: "ui", label: "Storefront", sub: "React / Next.js", icon: "Monitor", color: "blue", x: 10, y: 35 },
-                    { id: "api", label: "Orders", sub: "Node / GraphQL", icon: "Server", color: "purple", x: 40, y: 35 },
-                    { id: "db", label: "Catalog", sub: "MongoDB / Redis", icon: "Database", color: "green", x: 70, y: 35 }
+                    { id: "ui", label: "Storefront", sub: "Next.js Headless", icon: "Monitor", color: "blue", x: 10, y: 35 },
+                    { id: "api", label: "Orders", sub: "GraphQL / Node", icon: "Server", color: "purple", x: 40, y: 35 },
+                    { id: "db", label: "Products", sub: "MongoDB", icon: "Database", color: "green", x: 70, y: 35 }
                 ],
                 edges: [
-                    { from: "ui", to: "api", label: "GraphQL Queries" },
-                    { from: "api", to: "db", label: "Cache-aside Pattern" }
+                    { from: "ui", to: "api", label: "GraphQL" },
+                    { from: "api", to: "db", label: "Query Optimization" }
                 ]
             }
         },
         {
-            title: "QueBook",
+            title: "Quebook",
             isVisible: true,
             summary: "Collaborative technical documentation platform for engineering-heavy teams.",
-            description: "A documentation engine that supports markdown, live code samples, and complex system diagrams. Built for clarity and speed.",
+            description: "A documentation engine that supports markdown, live code samples, and complex system diagrams. Integrated with GitHub workflows.",
             status: "Beta",
             role: "Frontend Engineer",
-            tags: ["TypeScript", "Next.js", "MongoDB", "Framer Motion"],
+            tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind"],
             image: "/projects/quebook.png",
             demo: "#",
             github: "#",
-            problem: "Traditional documentation tools are disconnected from the actual codebase and architecture.",
-            solution: "Created a platform that syncs with GitHub repos to pull technical specs and build docs automatically.",
-            targetAudience: "DevOps teams and Software Architects.",
-            valueProp: "Keeps documentation 100% in sync with code through automated CI/CD pulls.",
-            challenges: "Building a performant markdown-to-React compiler that supports interactive code blocks.",
-            engineering: "Leveraged AST-based parsing to identify and render technical diagrams from text definitions.",
-            performance: "Implemented static site generation (SSG) with ISR for instantaneous document loads.",
-            scalability: "Designed to handle versioned documentation for hundreds of independent modules.",
-            security: "GitHub OAuth integration for secure team-based access control.",
-            lessons: "Technical users value speed and searchability over fancy visuals.",
-            beforeImageUrl: "https://images.unsplash.com/photo-1517842645767-c639fd477b8d?auto=format&fit=crop&q=80&w=1200",
-            afterImageUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200",
-            improvementDetails: "Built a custom MDX-to-HTML parser with AST modifications to automatically inject interactive Mermaid.js diagrams into technical specs.",
             metrics: ["0ms Navigation Delay", "100% SEO Score", "50+ Microservices Configured"],
-            decisionLogs: [
-                "Utilized unified/remark ecosystems for markdown parsing",
-                "Implemented incremental static regeneration (ISR)",
-                "Built a custom search index using WebWorkers"
-            ],
             uiDepth: 85,
             backendDepth: 85,
             securityDepth: 80,
             scalabilityDepth: 85,
             architecture: {
                 nodes: [
-                    { id: "ui", label: "Reader", sub: "Next.js Static", icon: "Monitor", color: "blue", x: 10, y: 35 },
-                    { id: "api", label: "Parsers", sub: "Edge Functions", icon: "Server", color: "purple", x: 40, y: 35 },
-                    { id: "db", label: "Storage", sub: "MongoDB / S3", icon: "Database", color: "green", x: 70, y: 35 }
+                    { id: "ui", label: "Docs App", sub: "Next.js Static", icon: "Monitor", color: "blue", x: 10, y: 35 },
+                    { id: "db", label: "Vault", sub: "MongoDB Atlas", icon: "Database", color: "green", x: 70, y: 35 }
                 ],
                 edges: [
-                    { from: "ui", to: "api", label: "Markdown fetch" },
-                    { from: "api", to: "db", label: "AST caching" }
-                ]
-            }
-        },
-        {
-            title: "Cue AI",
-            isVisible: true,
-            summary: "Intelligent AI assistant platform for context-aware conversations and workflow automation.",
-            description: "A sophisticated AI-powered assistant that leverages large language models to provide context-aware responses, automate repetitive tasks, and integrate with existing workflows.",
-            status: "Beta",
-            role: "Full Stack Developer",
-            tags: ["TypeScript", "Next.js", "OpenAI", "PostgreSQL", "Vercel AI SDK"],
-            image: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&q=80&w=1200",
-            demo: "#",
-            github: "#",
-            problem: "Teams waste hours on repetitive information lookup and context-switching between multiple tools.",
-            solution: "Built a unified AI assistant that integrates with team workflows and learns from organizational context to provide relevant, accurate answers.",
-            targetAudience: "Technology teams, product managers, and knowledge workers.",
-            valueProp: "Reduces context-switching by 60% through intelligent workflow integration.",
-            challenges: "Maintaining conversation context across long sessions while keeping token usage efficient.",
-            engineering: "Implemented a sliding context window with semantic compression using embeddings to retain relevant context.",
-            performance: "Response streaming reduces perceived latency by 80% using Vercel AI SDK.",
-            scalability: "Stateless serverless architecture supports thousands of concurrent conversations.",
-            security: "End-to-end encryption for all conversation data with user-controlled retention policies.",
-            lessons: "The quality of the system prompt is 80% of the AI product's success.",
-            beforeImageUrl: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=1200",
-            afterImageUrl: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&q=80&w=1200",
-            improvementDetails: "Replaced naive message history with semantic chunking and embedding-based retrieval, reducing token costs by 70% while improving response relevance.",
-            metrics: ["80% Faster Responses", "70% Token Reduction", "60% Less Context Switching"],
-            decisionLogs: [
-                "Used Vercel AI SDK for unified streaming across providers",
-                "Implemented pgvector for semantic similarity search",
-                "Built custom rate limiting per user to control API costs"
-            ],
-            uiDepth: 88,
-            backendDepth: 85,
-            securityDepth: 90,
-            scalabilityDepth: 92,
-            architecture: {
-                nodes: [
-                    { id: "ui", label: "Chat UI", sub: "Next.js / Vercel AI SDK", icon: "Monitor", color: "blue", x: 10, y: 35 },
-                    { id: "api", label: "AI Gateway", sub: "Node / OpenAI API", icon: "Cpu", color: "purple", x: 40, y: 35 },
-                    { id: "db", label: "Context", sub: "PostgreSQL / pgvector", icon: "Database", color: "green", x: 70, y: 35 }
-                ],
-                edges: [
-                    { from: "ui", to: "api", label: "Streaming SSE" },
-                    { from: "api", to: "db", label: "Vector Retrieval" }
+                    { from: "ui", to: "db", label: "Static Access" }
                 ]
             }
         }
     ];
-
     for (const p of projects) {
         try {
             await prisma.project.create({ data: p });
