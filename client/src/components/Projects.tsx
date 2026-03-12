@@ -68,7 +68,7 @@ export default function Projects() {
                     </div>
                     
                     <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-8 leading-none">
-                        Case <span className="text-gray-500 italic">Studies</span>
+                        Product <span className="text-gray-500 italic">Portfolio</span>
                     </h2>
                     
                     <p className="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed italic">
