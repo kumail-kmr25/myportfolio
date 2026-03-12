@@ -20,7 +20,8 @@ export default function ProjectCard({ project, isFeatured = false, onViewCaseStu
         return (
             <m.div 
                 variants={cardVariants}
-                className="group relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 p-8 lg:p-12 rounded-[3.5rem] bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/5 hover:border-blue-500/30 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(59,130,246,0.15)] transition-all duration-700 overflow-hidden"
+                onClick={() => onViewCaseStudy(project)}
+                className="group relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 p-8 lg:p-12 rounded-[3.5rem] bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/5 hover:border-blue-500/30 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(59,130,246,0.15)] transition-all duration-700 overflow-hidden cursor-pointer"
             >
                 {/* Background Glow */}
                 <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500/20 blur-[120px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -31,6 +32,8 @@ export default function ProjectCard({ project, isFeatured = false, onViewCaseStu
                         src={project.image} 
                         alt={project.title} 
                         fill 
+                        priority
+                        sizes="(max-width: 1024px) 100vw, 50vw"
                         className="object-cover scale-100 group-hover:scale-105 transition-transform duration-1000 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#020202]/90 via-[#020202]/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700" />
@@ -102,7 +105,8 @@ export default function ProjectCard({ project, isFeatured = false, onViewCaseStu
     return (
         <m.div 
             variants={cardVariants}
-            className="group relative p-6 lg:p-8 rounded-[3rem] bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/5 hover:border-blue-500/20 hover:bg-gradient-to-b hover:from-white/[0.06] hover:to-white/[0.02] hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(59,130,246,0.1)] transition-all duration-500 flex flex-col h-full"
+            onClick={() => onViewCaseStudy(project)}
+            className="group relative p-6 lg:p-8 rounded-[3rem] bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/5 hover:border-blue-500/20 hover:bg-gradient-to-b hover:from-white/[0.06] hover:to-white/[0.02] hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(59,130,246,0.1)] transition-all duration-500 flex flex-col h-full cursor-pointer"
         >
             {/* Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-blue-500/10 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -113,6 +117,7 @@ export default function ProjectCard({ project, isFeatured = false, onViewCaseStu
                     src={project.image} 
                     alt={project.title} 
                     fill 
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#020202]/90 via-[#020202]/30 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-500" />

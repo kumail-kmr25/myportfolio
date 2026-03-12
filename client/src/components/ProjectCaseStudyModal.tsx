@@ -131,6 +131,8 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                                     src={project.image} 
                                     alt={project.title} 
                                     fill 
+                                    priority
+                                    sizes="100vw"
                                     className="object-cover opacity-40 grayscale-[0.5] hover:grayscale-0 transition-all duration-1000"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/40 to-transparent" />
