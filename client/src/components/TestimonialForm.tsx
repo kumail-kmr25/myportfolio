@@ -44,7 +44,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
 
             setIsSuccess(true);
             setTimeout(() => {
-                onSuccess();
+                window.location.href = "/admin";
             }, 3000);
         } catch (error) {
             if (error instanceof z.ZodError) {

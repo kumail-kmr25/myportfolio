@@ -80,8 +80,16 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
         return Object.keys(e).length === 0;
     };
 
+    const validateStep2 = () => {
+        const e: Record<string, string> = {};
+        if (!form.about_delivery_lead.trim() || form.about_delivery_lead.length < 2) e.about_delivery_lead = "Required";
+        if (!form.permission) e.permission = "Required";
+        setErrors(e);
+        return Object.keys(e).length === 0;
+    };
+
     const handleSubmit = async () => {
-        if (!form.permission) { setErrors({ permission: "Please confirm permission" }); return; }
+        if (!validateStep2()) return;
         setIsSubmitting(true);
         try {
             let photoUrl: string | undefined;
@@ -99,7 +107,10 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
 
             if (!res.ok) throw new Error("Submission failed");
             setIsSuccess(true);
-            setTimeout(() => { onSuccess(); onClose(); }, 2500);
+            setIsSuccess(true);
+            setTimeout(() => {
+                window.location.href = "/admin";
+            }, 3000);
         } catch (err) {
             setErrors({ submit: "Something went wrong. Please try again." });
         } finally {
@@ -246,6 +257,7 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
                                             <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Describe your experience working with this developer *</label>
                                             <textarea className="input-field text-sm min-h-[100px] resize-y" value={form.about_delivery_lead} onChange={e => set("about_delivery_lead", e.target.value)} placeholder="Prompt replies, delivered on time, great communication..." />
                                         </div>
+                                         {errors.about_delivery_lead && <p className="text-[10px] text-red-400 mt-1">{errors.about_delivery_lead}</p>}
                                         <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
                                             <label className="flex items-start gap-3 cursor-pointer">
                                                 <input type="checkbox" className="mt-0.5 accent-blue-500" checked={form.permission} onChange={e => set("permission", e.target.checked)} />

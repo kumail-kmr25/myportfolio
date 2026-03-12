@@ -109,7 +109,7 @@ export default function Blog() {
                             variants={itemVariants}
                             className="group"
                         >
-                            <div className="h-full flex flex-col bg-white/[0.02] border border-white/5 group-hover:bg-white/[0.04] group-hover:border-white/10 transition-all duration-500 p-8 rounded-[2.5rem] relative overflow-hidden">
+                            <Link href="/portfolio" className="h-full flex flex-col bg-white/[0.02] border border-white/5 group-hover:bg-white/[0.04] group-hover:border-white/10 transition-all duration-500 p-8 rounded-[2.5rem] relative overflow-hidden">
                                 {/* Glow Effect */}
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
@@ -142,13 +142,13 @@ export default function Blog() {
                                         <ArrowRight size={20} />
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         </m.div>
                     ))}
                 </m.div>
 
                 <div className="mt-12 text-center md:hidden">
-                    <Link href="#" className="inline-flex items-center text-white hover:text-blue-400 font-bold text-sm uppercase tracking-widest transition-colors py-4 px-8 border border-white/10 rounded-2xl bg-white/5">
+                    <Link href="/portfolio" className="inline-flex items-center text-white hover:text-blue-400 font-bold text-sm uppercase tracking-widest transition-all py-4 px-8 border border-white/10 rounded-2xl bg-white/5">
                         Read all articles <ArrowRight className="ml-3 w-4 h-4" />
                     </Link>
                 </div>
