@@ -20,6 +20,16 @@ const FALLBACK_TESTIMONIALS = [
         relationship_type: "Client",
         intervention_type: "Full Stack Development",
         created_at: new Date().toISOString()
+    },
+    {
+        id: "fallback-t-2",
+        name: "SaaS Founder",
+        role: "CEO & Product Lead",
+        message: "The architecture Kumail designed for our orchestration engine is rock solid. He transformed a complex problem into a clean, performant system.",
+        rating: 5,
+        relationship_type: "Partner",
+        intervention_type: "System Architecture",
+        created_at: new Date().toISOString()
     }
 ];
 
