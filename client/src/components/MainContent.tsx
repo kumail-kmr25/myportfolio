@@ -52,9 +52,9 @@ const Footer = dynamic(() => import("@/components/Footer"), {
 export default function MainContent() {
     return (
         <>
+            <Projects />
             <TrustSignals />
             <Skills />
-            <Projects />
             <CaseStudies />
             <StatsDashboard />
             <Testimonials />

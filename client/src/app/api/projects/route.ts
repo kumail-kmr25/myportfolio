@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { MOCK_PROJECTS } from "@/lib/mock-data";
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -15,10 +16,17 @@ export async function GET() {
                 { created_at: 'desc' }
             ]
         });
+        
+        // Fallback to mock data if no projects found in DB
+        if (projects.length === 0) {
+            return NextResponse.json(MOCK_PROJECTS);
+        }
+
         return NextResponse.json(projects);
     } catch (error) {
         console.error("GET_PROJECTS_ERROR:", error);
-        return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
+        // Fallback to mock data on connection errors
+        return NextResponse.json(MOCK_PROJECTS);
     }
 }
 
