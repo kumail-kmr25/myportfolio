@@ -111,6 +111,9 @@ export default function AdminProjects({ projects, onUpdate }: AdminProjectsProps
             if (res.ok) {
                 await onUpdate();
                 handleDiscard();
+            } else {
+                const errorData = await res.json();
+                alert(`Error: ${errorData.error || "Failed to save project"}\n${errorData.message || ""}`);
             }
         } catch (err) {
             console.error(err);
@@ -124,7 +127,12 @@ export default function AdminProjects({ projects, onUpdate }: AdminProjectsProps
         setIsLoading(true);
         try {
             const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
-            if (res.ok) await onUpdate();
+            if (res.ok) {
+                await onUpdate();
+            } else {
+                const errorData = await res.json();
+                alert(`Error: ${errorData.error || "Failed to delete project"}`);
+            }
         } catch (err) {
             console.error(err);
         } finally {

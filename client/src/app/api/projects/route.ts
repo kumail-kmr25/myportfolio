@@ -22,11 +22,11 @@ export async function GET() {
             return NextResponse.json(MOCK_PROJECTS);
         }
 
-        return NextResponse.json({ projects, version: "v1.0.1-fixed" });
+        return NextResponse.json({ projects, version: "v1.0.2-stable" });
     } catch (error) {
         console.error("GET_PROJECTS_ERROR:", error);
         // Guaranteed fallback if DB or imports fail
-        return NextResponse.json([
+        const fallback = [
             {
                 id: "fallback-1",
                 title: "Edunova",
@@ -57,7 +57,8 @@ export async function GET() {
                 valuePoints: ["Streamlined clinical documentation", "HIPAA-compliant framework"],
                 created_at: new Date().toISOString()
             }
-        ]);
+        ];
+        return NextResponse.json({ projects: fallback, version: "v1.0.2-fallback" });
     }
 }
 
@@ -82,6 +83,6 @@ export async function POST(req: Request) {
         return NextResponse.json(project);
     } catch (error) {
         console.error("POST_PROJECT_ERROR:", error);
-        return NextResponse.json({ error: "Failed to create project", message: error.message }, { status: 200 });
+        return NextResponse.json({ error: "Failed to create project", message: error instanceof Error ? error.message : "Unknown error" }, { status: 500 });
     }
 }

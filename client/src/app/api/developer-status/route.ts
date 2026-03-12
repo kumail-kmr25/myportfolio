@@ -16,12 +16,12 @@ const FALLBACK_STATUS = {
 
 export async function GET() {
     try {
-        let status = await (prisma as any).developerStatus.findFirst({
+        let status = await prisma.developerStatus.findFirst({
             orderBy: { updatedAt: "desc" }
         });
 
         if (!status) {
-            status = await (prisma as any).developerStatus.create({
+            status = await prisma.developerStatus.create({
                 data: FALLBACK_STATUS
             });
         }
@@ -43,12 +43,12 @@ export async function PATCH(request: Request) {
         const body = await request.json();
         const { status, capacityPercent, nextAvailabilityDays, currentFocus, customMessage } = body;
 
-        let devStatus = await (prisma as any).developerStatus.findFirst({
+        let devStatus = await prisma.developerStatus.findFirst({
             orderBy: { updatedAt: "desc" }
         });
 
         if (devStatus) {
-            devStatus = await (prisma as any).developerStatus.update({
+            devStatus = await prisma.developerStatus.update({
                 where: { id: devStatus.id },
                 data: {
                     ...(status && { status }),
@@ -59,7 +59,7 @@ export async function PATCH(request: Request) {
                 }
             });
         } else {
-            devStatus = await (prisma as any).developerStatus.create({
+            devStatus = await prisma.developerStatus.create({
                 data: {
                     status: status || "available",
                     capacityPercent: capacityPercent || 0,
