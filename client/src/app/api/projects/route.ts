@@ -25,8 +25,24 @@ export async function GET() {
         return NextResponse.json(projects);
     } catch (error) {
         console.error("GET_PROJECTS_ERROR:", error);
-        // Fallback to mock data on connection errors
-        return NextResponse.json(MOCK_PROJECTS);
+        // Guaranteed fallback if DB or imports fail
+        return NextResponse.json([
+            {
+                id: "fallback-1",
+                title: "Edunova",
+                isVisible: true,
+                summary: "Enterprise-grade SaaS for academic orchestration.",
+                description: "A comprehensive School Management System.",
+                status: "Production",
+                role: "Full Stack Architect",
+                tags: ["TypeScript", "Next.js", "PostgreSQL"],
+                image: "/projects/edunova.png",
+                demo: "https://edunova-saas.vercel.app",
+                isFeatured: true,
+                valuePoints: ["Reduces administrative overhead", "Real-time orchestration"],
+                created_at: new Date().toISOString()
+            }
+        ]);
     }
 }
 
