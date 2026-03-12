@@ -173,10 +173,8 @@ export default function HireMeModal() {
 
             if (response.ok) {
                 setIsSuccess(true);
-                // Redirect to admin after a short delay
                 setTimeout(() => {
                     closeModal();
-                    router.push("/admin");
                     setTimeout(() => {
                         setStep("services");
                         setIsSuccess(false);
@@ -554,11 +552,6 @@ export default function HireMeModal() {
                                                                 </div>
                                                             </m.div>
 
-                                                            <m.div variants={itemVariants} className="p-8 bg-blue-500/5 rounded-[2rem] border border-blue-500/10 backdrop-blur-3xl">
-                                                                <p className="text-[10px] text-gray-400 leading-relaxed font-medium text-center">
-                                                                    By submitting, you will be redirected to the <span className="text-blue-400 font-bold italic">Admin Suite</span> to monitor progress.
-                                                                </p>
-                                                            </m.div>
                                                         </div>
                                                     </m.div>
                                                 )}
