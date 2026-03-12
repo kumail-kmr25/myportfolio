@@ -372,9 +372,11 @@ export default function AdminProjects({ projects, onUpdate }: AdminProjectsProps
                              <div className="flex gap-2">
                                 <button
                                     onClick={() => handleEdit(project)}
-                                    className="p-4 bg-blue-500/10 text-blue-500 rounded-2xl hover:bg-blue-500 hover:text-white transition-all border border-blue-500/10"
+                                    className="p-4 bg-blue-500/10 text-blue-500 rounded-2xl hover:bg-blue-500 hover:text-white transition-all border border-blue-500/10 flex items-center gap-2 group/edit"
+                                    title="Edit Project"
                                 >
-                                    <Code size={20} />
+                                    <Plus className="rotate-45" size={20} />
+                                    <span className="text-[10px] font-black uppercase tracking-widest hidden group-hover/edit:block">Edit</span>
                                 </button>
                                 <button
                                     onClick={() => handleDelete(project.id)}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Github, Twitter, Linkedin, Instagram, ShieldCheck, Mail } from "lucide-react";
 import { m, Variants } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
+import { shouldHideAdmin } from "@/lib/nav-config";
 
 export default function Footer() {
     const { openModal } = useHireModal();
@@ -111,13 +112,16 @@ export default function Footer() {
                             <span>Hire Me</span>
                         </button>
 
-                        <Link 
-                            href="/admin" 
-                            className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-blue-500 transition-all py-3 px-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-white/[0.02]"
-                        >
-                            <ShieldCheck size={14} />
-                            <span>Admin</span>
-                        </Link>                    </m.div>
+                        {!shouldHideAdmin() && (
+                            <Link 
+                                href="/admin" 
+                                className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-blue-500 transition-all py-3 px-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-white/[0.02]"
+                            >
+                                <ShieldCheck size={14} />
+                                <span>Admin</span>
+                            </Link>
+                        )}
+                    </m.div>
                 </div>
             </m.div>
         </footer>

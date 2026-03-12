@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import useSWR from "swr";
 import { m, AnimatePresence } from "framer-motion";
-import { Layers, Loader2, Sparkles, Code2, Rocket, LayoutGrid, Cpu } from "lucide-react";
+import { Layers, Loader2, Sparkles, Code2, Rocket, LayoutGrid, Cpu, ArrowRight } from "lucide-react";
 import ProjectCard from "./ProjectCard";
 import ProjectCaseStudyModal from "./ProjectCaseStudyModal";
 import SectionReveal from "./SectionReveal";
@@ -160,6 +161,28 @@ export default function Projects() {
                                             onViewCaseStudy={setSelectedProject}
                                         />
                                     ))}
+                                </m.div>
+
+                                {/* See More Projects Button */}
+                                <m.div 
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.8, delay: 0.2 }}
+                                    className="flex justify-center mt-12"
+                                >
+                                    <Link 
+                                        href="#contact"
+                                        onClick={(e: React.MouseEvent) => {
+                                            e.preventDefault();
+                                            document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                                        }}
+                                        className="group relative px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-[10px] uppercase tracking-widest hover:border-blue-500/30 overflow-hidden"
+                                    >
+                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <span className="relative z-10">See More Projects</span>
+                                        <ArrowRight size={14} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                                    </Link>
                                 </m.div>
                             </div>
                         )}

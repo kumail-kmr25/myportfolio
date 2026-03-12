@@ -19,6 +19,7 @@ import { m, AnimatePresence } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
 import { getApiUrl } from "@/lib/api";
+import { shouldHideAdmin } from "@/lib/nav-config";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
@@ -31,7 +32,7 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
     { name: "Case Studies", href: "/#case-studies" },
-    { name: "Portfolio", href: "/portfolio" },
+    { name: "Projects", href: "/portfolio" },
     { name: "Testimonials", href: "/testimonials" },
     { name: "Contact", href: "/#contact" },
     { name: "Admin", href: "/admin" },
@@ -64,7 +65,7 @@ export default function Navbar() {
     }, []);
 
     const dynamicLinks: NavLink[] = [
-        ...navLinks.filter(l => !l.isCTA),
+        ...navLinks.filter(l => !l.isCTA && (l.name !== "Admin" || !shouldHideAdmin())),
         ...(resumeUrl ? [{ name: "Resume", href: resumeUrl, isExternal: true }] : []),
         ...navLinks.filter(l => l.isCTA)
     ];
