@@ -10,6 +10,6 @@ export async function GET() {
         return NextResponse.json({ status: "connected", timestamp: new Date().toISOString() });
     } catch (error) {
         console.error("[DB-STATUS] Connection failed:", error);
-        return NextResponse.json({ status: "failed", timestamp: new Date().toISOString() }, { status: 500 });
+        return NextResponse.json({ status: "failed", timestamp: new Date().toISOString() }, { status: 200 });
     }
 }

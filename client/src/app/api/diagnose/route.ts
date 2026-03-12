@@ -101,6 +101,6 @@ export async function POST(request: Request) {
 
     } catch (error: any) {
         console.error("DIAGNOSE API ERROR:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        return NextResponse.json({ error: "Internal server error", message: error.message }, { status: 200 });
     }
 }
