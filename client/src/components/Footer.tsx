@@ -110,15 +110,6 @@ export default function Footer() {
                             <span>Hire Me</span>
                         </button>
 
-                        {/* Admin Dashboard Link */}
-                        <Link
-                            href="/admin"
-                            className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-gray-700 hover:text-blue-500 transition-all py-3 px-6 rounded-2xl border border-white/[0.03] hover:border-blue-500/20 hover:bg-blue-500/5 group backdrop-blur-3xl"
-                            title="Admin Dashboard"
-                        >
-                            <ShieldCheck size={14} className="group-hover:rotate-12 transition-transform" />
-                            <span>System Admin</span>
-                        </Link>
                     </m.div>
                 </div>
             </m.div>
