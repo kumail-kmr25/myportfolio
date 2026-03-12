@@ -34,21 +34,6 @@ export default function Projects() {
         }
     };
 
-    if (isLoading) {
-        return (
-            <div className="py-32 flex flex-col items-center justify-center space-y-4">
-                <Loader2 className="w-10 h-10 text-blue-500 animate-spin opacity-20" />
-                <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Compiling Product Matrix...</p>
-            </div>
-        );
-    }
-
-    if (!Array.isArray(projects) || projects.length === 0) return null;
-
-    // Filter projects based on user requested priority
-    const featuredProjects = Array.isArray(projects) ? projects.filter((p: any) => p.isFeatured).slice(0, 3) : [];
-    const standardProjects = Array.isArray(projects) ? projects.filter((p: any) => !p.isFeatured || featuredProjects.every((fp: any) => fp.id !== p.id)) : [];
-
     return (
         <section id="projects" className="py-24 lg:py-32 bg-[#020202] relative overflow-hidden">
             {/* Background Architecture Elements */}
@@ -57,14 +42,25 @@ export default function Projects() {
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 blur-[120px] rounded-full" />
 
             <div className="section-container relative z-10">
-                {/* Header Section */}
-                <m.div 
-                    variants={headerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    className="flex flex-col items-center text-center mb-24 lg:mb-32"
-                >
+                {isLoading ? (
+                    <div className="py-32 flex flex-col items-center justify-center space-y-4">
+                        <Loader2 className="w-10 h-10 text-blue-500 animate-spin opacity-20" />
+                        <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Compiling Product Matrix...</p>
+                    </div>
+                ) : (!Array.isArray(projects) || projects.length === 0) ? (
+                    <div className="py-32 flex flex-col items-center justify-center space-y-4 text-center">
+                        <p className="text-gray-500 italic">No projects available at the moment.</p>
+                    </div>
+                ) : (
+                    <>
+                        {/* Header Section */}
+                        <m.div 
+                            variants={headerVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            className="flex flex-col items-center text-center mb-24 lg:mb-32"
+                        >
                     <div className="flex items-center gap-4 mb-6">
                         <span className="px-5 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-black text-blue-400 uppercase tracking-widest flex items-center gap-2">
                            <LayoutGrid size={12} /> Product Ecosystem
@@ -88,7 +84,7 @@ export default function Projects() {
                     viewport={{ once: true, margin: "-100px" }}
                     className="space-y-12 lg:space-y-24 mb-32"
                 >
-                    {featuredProjects.map((project: any) => (
+                    {projects.filter((p: any) => p.isFeatured).slice(0, 3).map((project: any) => (
                         <ProjectCard 
                             key={project.id} 
                             project={project} 
@@ -99,7 +95,7 @@ export default function Projects() {
                 </m.div>
 
                 {/* Standard Projects Grid */}
-                {standardProjects.length > 0 && (
+                {projects.filter((p: any) => !p.isFeatured || !projects.filter((p: any) => p.isFeatured).slice(0, 3).some((fp: any) => fp.id === p.id)).length > 0 && (
                     <div className="space-y-16">
                         <div className="flex items-center gap-8">
                             <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-[0.5em] shrink-0">Extended Portfolio</h3>
@@ -113,7 +109,7 @@ export default function Projects() {
                             viewport={{ once: true }}
                             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                         >
-                            {standardProjects.map((project: any) => (
+                            {projects.filter((p: any) => !p.isFeatured || !projects.filter((p: any) => p.isFeatured).slice(0, 3).some((fp: any) => fp.id === p.id)).map((project: any) => (
                                 <ProjectCard 
                                     key={project.id} 
                                     project={project} 
@@ -139,6 +135,8 @@ export default function Projects() {
                         Global Repository Access
                     </a>
                 </m.div>
+                    </>
+                )}
             </div>
 
             {/* Modal Orchestration */}

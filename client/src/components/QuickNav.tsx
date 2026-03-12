@@ -11,7 +11,6 @@ const quickLinks = [
     { name: "Services", href: "#services", key: "V" },
     { name: "Hire Me", href: "hire", key: "H", isCTA: true },
     { name: "Contact", href: "#contact", key: "C" },
-    { name: "Admin Suite", href: "/admin", key: "A", isAdmin: true },
 ];
 
 export default function QuickNav() {
