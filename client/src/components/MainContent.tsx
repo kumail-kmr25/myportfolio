@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 import { getApiUrl } from "@/lib/api";
 
 import SectionSkeleton from "@/components/SectionSkeleton";
+import TechMarquee from "./TechMarquee";
+import ViewportReveal from "./ViewportReveal";
 
 // Dynamic imports for below-the-fold components to improve initial load performance
 const Projects = dynamic(() => import("@/components/Projects"), {
@@ -56,18 +58,19 @@ export default function MainContent() {
 
     return (
         <>
-            <CaseStudies />
-            <Projects />
-            <HireMeCTA />
-            <TrustSignals />
-            <Skills />
-            <StatsDashboard />
-            <Services />
-            <Blog />
-            <FeatureSuggestion />
-            <MyJourney />
-            <DiagnosticTool />
-            <Contact />
+            <ViewportReveal><CaseStudies /></ViewportReveal>
+            <ViewportReveal><Projects /></ViewportReveal>
+            <ViewportReveal><HireMeCTA /></ViewportReveal>
+            <ViewportReveal><TrustSignals /></ViewportReveal>
+            <TechMarquee />
+            <ViewportReveal><Skills /></ViewportReveal>
+            <ViewportReveal><StatsDashboard /></ViewportReveal>
+            <ViewportReveal><Services /></ViewportReveal>
+            <ViewportReveal><Blog /></ViewportReveal>
+            <ViewportReveal><FeatureSuggestion /></ViewportReveal>
+            <ViewportReveal><MyJourney /></ViewportReveal>
+            <ViewportReveal><DiagnosticTool /></ViewportReveal>
+            <ViewportReveal><Contact /></ViewportReveal>
             <Footer />
         </>
     )

@@ -152,7 +152,35 @@ export default function Hero() {
                             transition={{ duration: 1.2, ease: premiumEase as any }}
                             className="text-6xl sm:text-7xl lg:text-8xl font-black font-display text-white mb-6 tracking-tighter leading-[0.9] select-none"
                         >
-                            Kumail <span className="text-blue-500 italic">KMR</span>
+                            <m.span
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ staggerChildren: 0.05, delayChildren: 0.2 }}
+                                className="flex flex-wrap"
+                            >
+                                {"Kumail".split("").map((char, i) => (
+                                    <m.span
+                                        key={i}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.8, ease: premiumEase as any }}
+                                    >
+                                        {char}
+                                    </m.span>
+                                ))}
+                                <m.span className="text-blue-500 italic ml-4 flex">
+                                    {"KMR".split("").map((char, i) => (
+                                        <m.span
+                                            key={i}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.8, ease: premiumEase as any }}
+                                        >
+                                            {char}
+                                        </m.span>
+                                    ))}
+                                </m.span>
+                            </m.span>
                         </m.h1>
 
                         <m.h2
