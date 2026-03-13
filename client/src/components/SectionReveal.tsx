@@ -18,7 +18,7 @@ export default function SectionReveal({ children, width = "full", delay = 0 }: S
             transition={{
                 duration: 0.8,
                 delay,
-                ease: [0.21, 0.47, 0.32, 0.98]
+                ease: [0.16, 1, 0.3, 1]
             }}
             className={`${width === "container" ? "section-container" : "w-full"} will-change-[transform,opacity]`}
         >
