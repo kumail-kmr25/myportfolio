@@ -12,6 +12,17 @@ const FALLBACK_CASES = [
         solution: "Implemented defensive cleanup pattern.",
         impact: "Stable memory footprint sustained under load.",
         techStack: ["Node.js", "Socket.io"],
+        architecture: {
+            nodes: [
+                { id: "front", x: 20, y: 50, label: "Frontend", sub: "Next.js UI", color: "blue" },
+                { id: "api", x: 50, y: 50, label: "API", sub: "Node.js Logic", color: "purple" },
+                { id: "db", x: 80, y: 50, label: "Database", sub: "Redis Cache", color: "emerald" }
+            ],
+            edges: [
+                { from: "front", to: "api" },
+                { from: "api", to: "db" }
+            ]
+        },
         isPublished: true,
         created_at: new Date().toISOString()
     }

@@ -10,7 +10,8 @@ import {
     ChevronRight,
     Activity,
     ShieldCheck,
-    Cpu
+    Cpu,
+    Star
 } from "lucide-react";
 import useSWR from "swr";
 import { formatDistanceToNow } from "date-fns";
@@ -28,7 +29,7 @@ const fetcher = async (url: string) => {
 
 interface Activity {
     id: string;
-    type: "hire" | "message" | "diagnostic" | "system" | "security";
+    type: "hire" | "message" | "diagnostic" | "system" | "security" | "testimonial";
     title: string;
     subtitle: string;
     timestamp: string;
@@ -40,6 +41,7 @@ const TYPE_CONFIG: Record<string, any> = {
     hire: { icon: Briefcase, color: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-500/20" },
     message: { icon: Mail, color: "text-indigo-400", bg: "bg-indigo-400/10", border: "border-indigo-500/20" },
     diagnostic: { icon: Zap, color: "text-purple-400", bg: "bg-purple-400/10", border: "border-purple-500/20" },
+    testimonial: { icon: Star, color: "text-yellow-400", bg: "bg-yellow-400/10", border: "border-yellow-500/20" },
     system: { icon: Cpu, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-500/20" },
     security: { icon: ShieldCheck, color: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-500/20" },
 };

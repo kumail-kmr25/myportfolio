@@ -130,6 +130,28 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
         } catch (err) { console.error(err); }
     };
 
+    const handleTestimonialVerify = async (id: string, verified: boolean) => {
+        try {
+            await fetch("/api/admin/testimonials", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, verified }),
+            });
+            mutateTestimonials();
+        } catch (err) { console.error(err); }
+    };
+
+    const handleTestimonialFeature = async (id: string, featured: boolean) => {
+        try {
+            await fetch("/api/admin/testimonials", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, featured }),
+            });
+            mutateTestimonials();
+        } catch (err) { console.error(err); }
+    };
+
     const handleTestimonialDelete = async (id: string) => {
         if (!confirm("Delete this testimonial?")) return;
         try {
@@ -313,6 +335,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                             stats={{ projects: projects?.length || 0, testimonials: allTestimonials?.length || 0, messages: messages?.length || 0, hireRequests: hireRequests?.length || 0, blogPosts: blogPosts?.length || 0 }}
                                             recentActivity={[
                                                 ...(Array.isArray(hireRequests) ? hireRequests : []).map(h => ({ id: h.id, type: "hire", title: `Hire Request: ${h.name}`, subtitle: h.projectType, timestamp: h.createdAt, status: h.status })),
+                                                ...(Array.isArray(allTestimonials) ? allTestimonials : []).map(t => ({ id: t.id, type: "testimonial", title: `Testimonial: ${t.name}`, subtitle: `${t.rating} Stars`, timestamp: t.created_at, status: t.approved ? "approved" : "pending" })),
                                                 ...(Array.isArray(messages) ? messages : []).map(m => ({ id: m.id, type: "message", title: `Message: ${m.name}`, subtitle: m.inquiryType || "Inquiry", timestamp: m.created_at, status: m.replied ? "replied" : "new" })),
                                                 ...(Array.isArray(diagLogs) ? diagLogs : []).map(l => ({ id: l.id, type: "diagnostic", title: "Diagnostic Run", subtitle: l.description, timestamp: l.createdAt, status: "completed" }))
                                             ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 10)}
@@ -327,7 +350,15 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "resume" && <AdminResume />}
                                 {activeTab === "messages" && <AdminContact messages={Array.isArray(messages) ? messages : []} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />}
                                 {activeTab === "hire" && <AdminHireRequests requests={Array.isArray(hireRequests) ? hireRequests : []} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />}
-                                {activeTab === "testimonials" && <AdminTestimonials testimonials={Array.isArray(allTestimonials) ? allTestimonials : []} onApprove={handleTestimonialApproval} onDelete={handleTestimonialDelete} />}
+                                {activeTab === "testimonials" && (
+                                    <AdminTestimonials 
+                                        testimonials={Array.isArray(allTestimonials) ? allTestimonials : []} 
+                                        onApprove={handleTestimonialApproval} 
+                                        onDelete={handleTestimonialDelete}
+                                        onVerify={handleTestimonialVerify}
+                                        onFeature={handleTestimonialFeature}
+                                    />
+                                )}
                                 {activeTab === "projects" && <AdminProjects projects={Array.isArray(projects) ? projects : []} onUpdate={handleProjectAction} />}
                                 {activeTab === "blog" && <AdminBlog posts={Array.isArray(blogPosts) ? blogPosts : []} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />}
                                 {activeTab === "feature-requests" && <AdminFeatureRequests requests={Array.isArray(featureRequests) ? featureRequests : []} onUpdate={handleFeatureRequestAction} />}

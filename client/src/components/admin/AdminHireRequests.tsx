@@ -280,12 +280,12 @@ export default function AdminHireRequests({ requests, onUpdateStatus, onDelete }
 
                                     <div className="space-y-4">
                                         <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Update Status</p>
-                                        <div className="grid grid-cols-3 gap-2">
+                                        <div className="flex flex-wrap gap-2">
                                             {["new", "contacted", "closed"].map((status) => (
                                                 <button
                                                     key={status}
                                                     onClick={() => onUpdateStatus(selectedRequest.id, status)}
-                                                    className={`py-3 md:py-4 rounded-xl md:rounded-2xl text-[10px] md:text-xs min-h-[48px] font-black uppercase tracking-widest border transition-all ${selectedRequest.status === status
+                                                    className={`flex-1 min-w-[80px] py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all ${selectedRequest.status === status
                                                         ? "bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/20"
                                                         : "bg-white/5 border-white/10 text-gray-500 hover:text-white"
                                                         }`}

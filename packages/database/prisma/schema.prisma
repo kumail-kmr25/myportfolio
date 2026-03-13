@@ -165,6 +165,7 @@ model CaseStudy {
   solution     String
   impact       String
   techStack    String[]
+  architecture Json?    // System flow nodes and connections
   isPublished  Boolean  @default(false)
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt

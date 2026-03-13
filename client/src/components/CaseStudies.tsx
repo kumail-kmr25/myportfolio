@@ -4,6 +4,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import { m, AnimatePresence, Variants } from "framer-motion";
 import { Loader2, X, AlertCircle, CheckCircle2, Cpu, BarChart3, ChevronRight, Terminal, Zap } from "lucide-react";
+import ArchitectureDiagram from "./ArchitectureDiagram";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -16,6 +17,7 @@ interface CaseStudy {
     solution: string;
     impact: string;
     techStack: string[];
+    architecture?: any;
 }
 
 import { useHireModal } from "@/context/HireModalContext";
@@ -242,37 +244,41 @@ export default function CaseStudies() {
                                             <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
                                             04. System Architecture
                                         </h4>
-                                        <div className="p-8 rounded-[2.5rem] bg-black/40 border border-white/5 relative overflow-hidden group">
-                                            <div className="flex items-center justify-between mb-8">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-                                                        <Cpu size={20} />
+                                        {selectedCase.architecture ? (
+                                            <ArchitectureDiagram architecture={selectedCase.architecture} />
+                                        ) : (
+                                            <div className="p-8 rounded-[2.5rem] bg-black/40 border border-white/5 relative overflow-hidden group">
+                                                <div className="flex items-center justify-between mb-8">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                                                            <Cpu size={20} />
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-xs font-black text-white uppercase tracking-widest">Stack Logic</div>
+                                                            <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Frontend → API → Database</div>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <div className="text-xs font-black text-white uppercase tracking-widest">Stack Logic</div>
-                                                        <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Frontend → API → Database</div>
+                                                    <div className="px-4 py-1.5 rounded-full bg-white/[0.03] border border-white/5 text-[9px] font-black text-gray-500 uppercase tracking-widest">
+                                                        Verifed Production
                                                     </div>
                                                 </div>
-                                                <div className="px-4 py-1.5 rounded-full bg-white/[0.03] border border-white/5 text-[9px] font-black text-gray-500 uppercase tracking-widest">
-                                                    Verifed Production
+                                                <div className="space-y-4">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                                            <m.div 
+                                                                initial={{ width: 0 }}
+                                                                whileInView={{ width: "100%" }}
+                                                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                                                className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500" 
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-gray-500 text-xs leading-relaxed italic">
+                                                        "Engineered for maximum throughput with a decoupled micro-frontend architecture and a highly optimized data persistence layer."
+                                                    </p>
                                                 </div>
                                             </div>
-                                            <div className="space-y-4">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                                                        <m.div 
-                                                            initial={{ width: 0 }}
-                                                            whileInView={{ width: "100%" }}
-                                                            transition={{ duration: 1.5, ease: "easeOut" }}
-                                                            className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500" 
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <p className="text-gray-500 text-xs leading-relaxed italic">
-                                                    "Engineered for maximum throughput with a decoupled micro-frontend architecture and a highly optimized data persistence layer."
-                                                </p>
-                                            </div>
-                                        </div>
+                                        )}
                                     </section>
                                 </div>
 

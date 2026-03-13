@@ -2,7 +2,7 @@ import { prisma } from "@portfolio/database";
 
 export async function fetchActivities() {
     try {
-        const [hireRequests, messages, diagLogs] = await Promise.all([
+        const [hireRequests, messages, diagLogs, testimonials] = await Promise.all([
             prisma.hireRequest.findMany({
                 orderBy: { createdAt: "desc" },
                 take: 10
@@ -13,6 +13,10 @@ export async function fetchActivities() {
             }),
             prisma.diagnosticLog.findMany({
                 orderBy: { createdAt: "desc" },
+                take: 10
+            }),
+            prisma.testimonial.findMany({
+                orderBy: { created_at: "desc" },
                 take: 10
             })
         ]);
@@ -44,6 +48,15 @@ export async function fetchActivities() {
                 timestamp: l.createdAt.toISOString(),
                 status: l.matchedPatternId ? "matched" : "no-match",
                 color: "purple"
+            })),
+            ...testimonials.map(t => ({
+                id: t.id,
+                type: "testimonial",
+                title: `New Testimonial: ${t.name}`,
+                subtitle: `${t.role ? t.role + ' | ' : ''}${t.rating} Stars`,
+                timestamp: new Date(t.created_at).toISOString(),
+                status: t.approved ? "approved" : "pending",
+                color: "star"
             })),
             {
                 id: "sys-1",
