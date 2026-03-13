@@ -8,10 +8,14 @@ import ArchitectureDiagram from "./ArchitectureDiagram";
 import { getApiUrl } from "@/lib/api";
 
 const fetcher = async (url: string) => {
-    const res = await fetch(getApiUrl(url));
-    const json = await res.json();
-    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
-    return json.success ? json.data : json;
+    try {
+        const res = await fetch(getApiUrl(url));
+        const json = await res.json();
+        return json.success ? json.data : json;
+    } catch (error) {
+        console.error("[FETCH_ERROR]", error);
+        return null;
+    }
 };
 
 interface CaseStudy {

@@ -2,7 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import Link from "next/link";
-import dynamic from "next/dynamic";
+import "./globals.css";
+
 import ClientProviders from "@/components/ClientProviders";
 
 const inter = Inter({
@@ -66,7 +67,7 @@ export const metadata: Metadata = {
   },
 };
 
-const WhatsAppButton = dynamic(() => import("@/components/WhatsAppButton"), { ssr: false });
+
 
 export default function RootLayout({
   children,
@@ -103,7 +104,6 @@ export default function RootLayout({
       >
         <ClientProviders>
           {children}
-          <WhatsAppButton />
         </ClientProviders>
       </body>
     </html>
