@@ -20,8 +20,49 @@ const fetcher = async (url: string) => {
 
 export default function Projects() {
     const { data, isLoading } = useSWR("/api/projects", fetcher);
+    
+    // Premium fallback data for when API is empty or failing
+    const fallbackProjects = [
+        {
+            id: "valekash-mock",
+            title: "ValeKash",
+            summary: "Decoupled Operation System for Kashmir",
+            description: "A large-scale operation system designed to streamline digital identity and financial transactions in the region.",
+            isFeatured: true,
+            status: "Production",
+            tags: ["Next.js", "PostgreSQL", "Microservices"],
+            image: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=1200&q=80",
+            demo: "#",
+            github: "#"
+        },
+        {
+            id: "nestq-mock",
+            title: "NESTQ AI",
+            summary: "Intelligent Business Management & Accounting",
+            description: "AI-driven platform for financial sector management, providing deep insights into corporate accounting and tax compliance.",
+            isFeatured: true,
+            status: "Beta",
+            tags: ["React", "AI/ML", "Enterprise"],
+            image: "https://images.unsplash.com/photo-1551288049-bbdac8a28a1e?auto=format&fit=crop&w=1200&q=80",
+            demo: "#",
+            github: "#"
+        },
+        {
+            id: "quebook-mock",
+            title: "Quebook",
+            summary: "AI-Driven Social Interaction Platform",
+            description: "Next-gen social network utilizing behavioral AI to suggest meaningful connections and curated content streams.",
+            isFeatured: false,
+            status: "Production",
+            tags: ["Node.js", "WebSocket", "BigData"],
+            image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80",
+            demo: "#",
+            github: "#"
+        }
+    ];
+
     // Handle both direct array (fallback/mock) and object-wrapped array (API v1)
-    const projects = Array.isArray(data) ? data : [];
+    const projects = Array.isArray(data) && data.length > 0 ? data : fallbackProjects;
     const [selectedProject, setSelectedProject] = useState<any>(null);
     const [showAllProjects, setShowAllProjects] = useState(false);
     const { openModal } = useHireModal();
@@ -61,7 +102,7 @@ export default function Projects() {
                     </div>
                 ) : (!Array.isArray(projects) || projects.length === 0) ? (
                     <div className="py-32 flex flex-col items-center justify-center space-y-4 text-center">
-                        <p className="text-gray-500 italic">No projects available at the moment.</p>
+                        <p className="text-gray-500 italic">Synchronizing Neural Project Matrix...</p>
                     </div>
                 ) : (
                     <>
