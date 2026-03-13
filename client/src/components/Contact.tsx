@@ -399,9 +399,8 @@ function ContactInner() {
                     {/* Quick Reach Info - Now more subtle below the main form */}
                     <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
                         {[
-                            { icon: MessageCircle, color: "text-green-400", bg: "bg-green-500/10", label: "WhatsApp Chat", value: "+91 6006121193", href: "https://wa.me/916006121193" },
                             { icon: MapPin, color: "text-purple-400", bg: "bg-purple-500/10", label: "Regional Node", value: "Kashmir, India" }
-                        ].map((info, i) => (
+                        ].map((info) => (
                             <m.div
                                 key={info.label}
                                 variants={itemVariants}
@@ -414,13 +413,7 @@ function ContactInner() {
                                 <div className="flex-1">
                                     <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-1">{info.label}</p>
                                     <div className="flex items-center justify-between">
-                                        {info.href ? (
-                                            <a href={info.href} target="_blank" rel="noopener noreferrer" className="text-sm text-white font-bold hover:text-green-400 transition-colors flex items-center gap-2 group/wa">
-                                                {info.value} <ArrowRight size={12} className="text-gray-600 group-hover/wa:translate-x-1 transition-transform" />
-                                            </a>
-                                        ) : (
-                                            <p className="text-sm text-white font-bold">{info.value}</p>
-                                        )}
+                                        <p className="text-sm text-white font-bold">{info.value}</p>
                                     </div>
                                 </div>
                             </m.div>

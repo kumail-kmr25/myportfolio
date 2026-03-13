@@ -15,6 +15,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
             <HireModalProvider>
                 <LazyMotion features={domMax} strict>
                     {children}
+                    <WhatsAppButton />
                 </LazyMotion>
                 <QuickNav />
             </HireModalProvider>

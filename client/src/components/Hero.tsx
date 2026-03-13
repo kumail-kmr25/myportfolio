@@ -20,7 +20,6 @@ export default function Hero() {
     const [text, setText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const { openModal } = useHireModal();
 
     const premiumEase = [0.16, 1, 0.3, 1];
 
@@ -190,17 +189,14 @@ export default function Hero() {
                                 View Projects <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                             </button>
 
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    openModal();
-                                }}
+                            <Link
+                                href="/hire"
                                 className="group relative w-full sm:w-auto px-8 py-4 bg-white/[0.03] border border-white/[0.08] text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-white/[0.06] hover:border-white/20 hover:scale-[1.05] active:scale-[0.95] backdrop-blur-3xl"
                             >
                                 <span className="flex items-center justify-center gap-2">
                                     Hire Me
                                 </span>
-                            </button>
+                            </Link>
 
                             <Link
                                 href="#journey"
@@ -253,10 +249,11 @@ export default function Hero() {
                             <m.div
                                 animate={{ y: [0, -10, 0] }}
                                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                onClick={() => openModal()}
                                 className="absolute -top-4 -right-4 hidden sm:block cursor-pointer hover:scale-105 transition-transform"
                             >
-                                <LiveStatusBadge variant="hero" />
+                                <Link href="/hire">
+                                    <LiveStatusBadge variant="hero" />
+                                </Link>
                             </m.div>
                         </m.div>
                     </div>

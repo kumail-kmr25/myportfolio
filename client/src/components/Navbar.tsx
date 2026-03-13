@@ -107,14 +107,17 @@ export default function Navbar() {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 ${scrolled ? "py-4 bg-[#020202]/40 backdrop-blur-3xl border-b border-white/[0.05]" : "py-8 bg-transparent"}`}
+            className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 ${scrolled ? "py-4 bg-white/70 backdrop-blur-3xl border-b border-black/[0.05]" : "py-8 bg-transparent"}`}
         >
             <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
                 <Link
-                    href="#home"
+                    href="/"
                     onClick={(e) => {
-                        e.preventDefault();
-                        document.getElementById("home")?.scrollIntoView({ behavior: "smooth" });
+                        // Only scroll if on home page, otherwise let normal link behavior handle it
+                        if (window.location.pathname === "/") {
+                            e.preventDefault();
+                            document.getElementById("home")?.scrollIntoView({ behavior: "smooth" });
+                        }
                     }}
                     className="group relative z-10"
                 >
@@ -122,12 +125,12 @@ export default function Navbar() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, ease: premiumEase as any }}
-                        className="text-2xl font-black tracking-tighter text-white"
+                        className={`text-2xl font-black tracking-tighter transition-colors ${scrolled ? "text-black" : "text-white"}`}
                     >
-                        KUMAIL <span className="text-blue-500 italic">KMR</span>
+                        KUMAIL <span className="text-blue-600 italic">KMR</span>
                     </m.span>
                     <m.div
-                        className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all group-hover:w-full"
+                        className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"
                         transition={{ duration: 0.5, ease: premiumEase as any }}
                     />
                 </Link>
@@ -138,45 +141,39 @@ export default function Navbar() {
 
 
                 {/* Desktop Menu */}
-                <div className="hidden md:flex items-center gap-1 bg-white/[0.03] border border-white/[0.05] p-1.5 rounded-full backdrop-blur-2xl">
+                <div className={`hidden md:flex items-center gap-1 border p-1.5 rounded-full backdrop-blur-2xl transition-all ${scrolled ? "bg-white/40 border-black/[0.05]" : "bg-white/[0.03] border-white/[0.05]"}`}>
                     {dynamicLinks.map((link, index) => {
                         const isActive = activeSection === link.href.substring(1);
                         return (
                             <Link
                                 key={link.name}
-                                href={link.isCTA ? "#" : link.href}
+                                href={link.isCTA ? "/hire" : link.href}
                                 target={link.isExternal ? "_blank" : undefined}
                                 rel={link.isExternal ? "noopener noreferrer" : undefined}
-                                onClick={(e) => {
-                                    if (link.isCTA) {
-                                        e.preventDefault();
-                                        openModal();
-                                    }
-                                }}
                                 onMouseEnter={() => setHoveredIndex(index)}
                                 onMouseLeave={() => setHoveredIndex(null)}
                                 className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all relative z-10
                                     ${link.isCTA
                                         ? "bg-blue-600 text-white hover:bg-blue-500 shadow-xl shadow-blue-500/20 ml-2 overflow-hidden group/cta"
-                                        : isActive ? "text-white" : "text-gray-500 hover:text-white"}`}
+                                        : isActive ? (scrolled ? "text-blue-600" : "text-white") : (scrolled ? "text-gray-600 hover:text-black" : "text-gray-400 hover:text-white")}`}
                             >
                                 <span className="relative z-10">
                                     {link.name}
                                     {isActive && !link.isCTA && (
                                         <m.span
-                                            className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-1 h-1 bg-blue-500 rounded-full"
+                                            className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-1 h-1 bg-blue-600 rounded-full"
                                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                         />
                                     )}
                                 </span>
                                 {hoveredIndex === index && !link.isCTA && (
                                     <m.div
-                                        className="absolute inset-0 bg-white/5 rounded-full -z-10"
+                                        className={`absolute inset-0 rounded-full -z-10 ${scrolled ? "bg-black/5" : "bg-white/5"}`}
                                         transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                                     />
                                 )}
                                 {link.isCTA && (
-                                    <span className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500 -z-10" />
+                                    <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500 -z-10" />
                                 )}
                             </Link>
                         );
@@ -239,21 +236,17 @@ export default function Navbar() {
                                     transition={{ duration: 0.5, ease: premiumEase as any }}
                                 >
                                     <Link
-                                        href={link.isCTA ? "#" : link.href}
+                                        href={link.isCTA ? "/hire" : link.href}
                                         target={link.isExternal ? "_blank" : undefined}
                                         rel={link.isExternal ? "noopener noreferrer" : undefined}
                                         className={`text-3xl font-black tracking-tighter uppercase flex items-center justify-between group
-                                            ${link.isCTA ? "text-blue-500 pt-8 border-t border-white/[0.05] w-full" : "text-white"}`}
-                                        onClick={(e) => {
-                                            if (link.isCTA) {
-                                                e.preventDefault();
-                                                openModal();
-                                            }
+                                            ${link.isCTA ? "text-blue-600 pt-8 border-t border-black/[0.05] w-full" : (scrolled ? "text-black" : "text-white")}`}
+                                        onClick={() => {
                                             setIsOpen(false);
                                         }}
                                     >
                                         <span className="group-hover:translate-x-3 transition-transform duration-500 flex items-center gap-4">
-                                            {link.isExternal && <FileText size={24} className="text-blue-500" />}
+                                            {link.isExternal && <FileText size={24} className="text-blue-600" />}
                                             {link.name}
                                         </span>
                                         <m.div
