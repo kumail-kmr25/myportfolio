@@ -57,7 +57,14 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                 });
                 setErrors(newErrors);
             } else {
-                setErrors({ form: (error as Error).message });
+                const msg = (error as Error).message;
+                if (msg.includes("fetch") || msg.includes("Failed to fetch")) {
+                    setErrors({ form: "Network error: Unable to connect to the server. Please check your internet or try again later." });
+                } else if (msg.includes("500") || msg.includes("Failed to submit")) {
+                    setErrors({ form: "Server Error: The database might be offline. Our engineers are notified. Please try again in a few minutes." });
+                } else {
+                    setErrors({ form: msg });
+                }
             }
         } finally {
             setIsLoading(false);

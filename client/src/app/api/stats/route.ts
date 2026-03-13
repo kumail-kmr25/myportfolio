@@ -10,7 +10,7 @@ const FALLBACK_STATS = {
     featureRequestsCompleted: 0,
     yearsLearning: 2,
     deploymentCount: 102,
-    projectsTotal: 8,
+    projectsTotal: 3,
     diagRuns: 0,
     leadGenTotal: 0,
     hireRequests: 0,

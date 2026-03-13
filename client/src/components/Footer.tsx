@@ -156,7 +156,7 @@ export default function Footer() {
                                     className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-8"
                                 >
                                     Additional <span className="text-blue-500">Premium Builds</span>
-                                </h3 >
+                                </m.h3>
                                 <m.p 
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}

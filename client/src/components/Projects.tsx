@@ -17,6 +17,7 @@ export default function Projects() {
     // Handle both direct array (fallback/mock) and object-wrapped array (API v1)
     const projects = data?.projects || (Array.isArray(data) ? data : []);
     const [selectedProject, setSelectedProject] = useState<any>(null);
+    const [showAllProjects, setShowAllProjects] = useState(false);
     const { openModal } = useHireModal();
 
     const containerVariants: any = {
@@ -124,15 +125,15 @@ export default function Projects() {
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full md:w-2/3 md:border-l border-white/10 md:pl-8">
                                 <div className="space-y-1">
                                     <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Projects Built</p>
-                                    <p className="text-2xl font-black text-white">{projects.length}</p>
+                                    <p className="text-2xl font-black text-white">3</p>
                                 </div>
                                 <div className="space-y-1">
                                     <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Systems Online</p>
-                                    <p className="text-2xl font-black text-white">{projects.filter((p:any) => p.demo && p.demo !== "#").length}</p>
+                                    <p className="text-2xl font-black text-white">{projects.filter((p:any) => p.demo && p.demo !== "#").length + 1}</p>
                                 </div>
                                 <div className="space-y-1">
                                     <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Currently Building</p>
-                                    <p className="text-2xl font-black text-white">1</p>
+                                    <p className="text-2xl font-black text-white">2</p>
                                 </div>
                                 <div className="space-y-1">
                                     <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Open For Work</p>
@@ -163,27 +164,38 @@ export default function Projects() {
                                     ))}
                                 </m.div>
 
+                                {showAllProjects && (
+                                    <m.div 
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12"
+                                    >
+                                        {[
+                                            { name: "ValeKash", description: "comprehensive operation system for kashmir", color: "from-blue-600/20 to-blue-900/10" },
+                                            { name: "NESTQ AI", description: "complete management for business and accountant for financial sector", color: "from-blue-600/20 to-blue-900/10" },
+                                            { name: "Quebook", description: "ai suggest social media platform", color: "from-blue-600/20 to-blue-900/10" },
+                                            { name: "Cue AI", description: "AI personal assistant chatbot and suggestion", color: "from-blue-600/20 to-blue-900/10" }
+                                        ].map((p) => (
+                                            <div key={p.name} className={`p-8 rounded-3xl bg-gradient-to-br ${p.color} border border-blue-500/30 backdrop-blur-xl group hover:border-blue-500 transition-all`}>
+                                                <h4 className="text-2xl font-black text-white mb-2 group-hover:text-blue-400 transition-colors">{p.name}</h4>
+                                                <p className="text-gray-400 text-sm italic">&quot;{p.description}&quot;</p>
+                                            </div>
+                                        ))}
+                                    </m.div>
+                                )}
+
                                 {/* See More Projects Button */}
-                                <m.div 
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.8, delay: 0.2 }}
-                                    className="flex justify-center mt-12"
-                                >
-                                    <Link 
-                                        href="#contact"
-                                        onClick={(e: React.MouseEvent) => {
-                                            e.preventDefault();
-                                            document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                                        }}
+                                <div className="flex justify-center mt-12">
+                                    <button 
+                                        onClick={() => setShowAllProjects(!showAllProjects)}
                                         className="group relative px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-[10px] uppercase tracking-widest hover:border-blue-500/30 overflow-hidden"
                                     >
                                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        <span className="relative z-10">See More Projects</span>
-                                        <ArrowRight size={14} className="relative z-10 group-hover:translate-x-1 transition-transform" />
-                                    </Link>
-                                </m.div>
+                                        <span className="relative z-10">{showAllProjects ? "Collapse Intel" : "See More Projects"}</span>
+                                        <ArrowRight size={14} className={`relative z-10 group-hover:translate-x-1 transition-transform ${showAllProjects ? "rotate-90" : ""}`} />
+                                    </button>
+                                </div>
                             </div>
                         )}
 

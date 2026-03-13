@@ -112,7 +112,14 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
                 window.location.href = "/admin";
             }, 3000);
         } catch (err) {
-            setErrors({ submit: "Something went wrong. Please try again." });
+            const msg = (err as Error).message;
+            if (msg.includes("fetch") || msg.includes("Failed to fetch")) {
+                setErrors({ submit: "Network error: Unable to connect to the server. Please check your internet or try again later." });
+            } else if (msg.includes("Submission failed") || msg.includes("500")) {
+                setErrors({ submit: "Server Error: The database might be offline. Our engineers are notified. Please try again in a few minutes." });
+            } else {
+                setErrors({ submit: "Something went wrong. " + msg });
+            }
         } finally {
             setIsSubmitting(false);
         }

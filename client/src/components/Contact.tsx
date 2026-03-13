@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Phone, MapPin, Send, MessageCircle, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Send, MessageCircle, Loader2, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { contactSchema, type ContactFormData } from "@portfolio/shared";
@@ -10,7 +10,6 @@ import { getApiUrl } from "@/lib/api";
 import { m, Variants } from "framer-motion";
 
 function ContactInner() {
-    const [showPhone, setShowPhone] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
     const [submittedData, setSubmittedData] = useState<ContactFormData | null>(null);
@@ -398,10 +397,9 @@ function ContactInner() {
                     </m.div>
 
                     {/* Quick Reach Info - Now more subtle below the main form */}
-                    <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
                         {[
-                            { icon: Mail, color: "text-blue-400", bg: "bg-blue-500/10", label: "Direct Email", value: "ka6307464@gmail.com" },
-                            { icon: Phone, color: "text-green-400", bg: "bg-green-500/10", label: "Encrypted Comms", value: "6006121193", isPhone: true },
+                            { icon: MessageCircle, color: "text-green-400", bg: "bg-green-500/10", label: "WhatsApp Chat", value: "+91 6006121193", href: "https://wa.me/916006121193" },
                             { icon: MapPin, color: "text-purple-400", bg: "bg-purple-500/10", label: "Regional Node", value: "Kashmir, India" }
                         ].map((info, i) => (
                             <m.div
@@ -416,14 +414,12 @@ function ContactInner() {
                                 <div className="flex-1">
                                     <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-1">{info.label}</p>
                                     <div className="flex items-center justify-between">
-                                        <p className="text-sm text-white font-bold">{info.isPhone ? (showPhone ? info.value : "••••••••••") : info.value}</p>
-                                        {info.isPhone && !showPhone && (
-                                            <button
-                                                onClick={() => setShowPhone(true)}
-                                                className="text-[10px] text-blue-400 font-bold uppercase tracking-widest hover:underline"
-                                            >
-                                                Decrypt
-                                            </button>
+                                        {info.href ? (
+                                            <a href={info.href} target="_blank" rel="noopener noreferrer" className="text-sm text-white font-bold hover:text-green-400 transition-colors flex items-center gap-2 group/wa">
+                                                {info.value} <ArrowRight size={12} className="text-gray-600 group-hover/wa:translate-x-1 transition-transform" />
+                                            </a>
+                                        ) : (
+                                            <p className="text-sm text-white font-bold">{info.value}</p>
                                         )}
                                     </div>
                                 </div>
