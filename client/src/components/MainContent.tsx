@@ -6,9 +6,7 @@ import { getApiUrl } from "@/lib/api";
 import SectionSkeleton from "@/components/SectionSkeleton";
 
 // Dynamic imports for below-the-fold components to improve initial load performance
-const Projects = dynamic(() => import("@/components/Projects"), {
-    loading: () => <SectionSkeleton minHeight="600px" />
-});
+import Projects from "@/components/Projects";
 const TrustSignals = dynamic(() => import("@/components/TrustSignals"), {
     loading: () => <div className="h-24 bg-black/20 animate-pulse" />
 });
@@ -18,12 +16,8 @@ const Skills = dynamic(() => import("@/components/Skills"), {
 const Services = dynamic(() => import("@/components/Services"), {
     loading: () => <SectionSkeleton minHeight="600px" />
 });
-const StatsDashboard = dynamic(() => import("@/components/StatsDashboard"), {
-    loading: () => <SectionSkeleton minHeight="400px" hasSubtitle={false} />
-});
-const CaseStudies = dynamic(() => import("@/components/CaseStudies"), {
-    loading: () => <SectionSkeleton minHeight="600px" />
-});
+import StatsDashboard from "@/components/StatsDashboard";
+import CaseStudies from "@/components/CaseStudies";
 const FeatureSuggestion = dynamic(() => import("@/components/FeatureSuggestion"), {
     loading: () => <SectionSkeleton minHeight="400px" />
 });

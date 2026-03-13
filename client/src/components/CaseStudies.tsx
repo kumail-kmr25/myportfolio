@@ -8,10 +8,14 @@ import ArchitectureDiagram from "./ArchitectureDiagram";
 import { getApiUrl } from "@/lib/api";
 
 const fetcher = async (url: string) => {
-    const res = await fetch(getApiUrl(url));
-    const json = await res.json();
-    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
-    return json.success ? json.data : json;
+    try {
+        const res = await fetch(getApiUrl(url));
+        const json = await res.json();
+        return json.success ? json.data : json;
+    } catch (error) {
+        console.error("[FETCH_ERROR]", error);
+        return null;
+    }
 };
 
 interface CaseStudy {
@@ -106,7 +110,7 @@ export default function CaseStudies() {
                     <div className="flex justify-center py-20">
                         <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
                     </div>
-                ) : (!caseStudies || (Array.isArray(caseStudies) && (caseStudies as any).length === 0) || ( (caseStudies as any).caseStudies && (caseStudies as any).caseStudies.length === 0)) ? (
+                ) : (!caseStudies || (Array.isArray(caseStudies) && caseStudies.length === 0)) ? (
                     <m.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
@@ -147,7 +151,7 @@ export default function CaseStudies() {
                                 </div>
 
                                 <div className="flex flex-wrap gap-2 mt-auto">
-                                    {study.techStack.slice(0, 3).map(tech => (
+                                    {(study.techStack as string[]).slice(0, 3).map((tech: string) => (
                                         <span key={tech} className="px-3 py-1 bg-white/5 text-gray-400 text-[9px] font-black uppercase tracking-widest rounded-full border border-white/5 group-hover:border-blue-500/20 group-hover:text-blue-300 transition-colors">
                                             {tech}
                                         </span>

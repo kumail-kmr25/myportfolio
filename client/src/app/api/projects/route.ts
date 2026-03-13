@@ -77,6 +77,10 @@ export async function POST(req: Request) {
                 gallery: body.gallery || [],
                 timeline: body.timeline || null,
                 architecture: body.architecture || null,
+                systemArchitecture: body.systemArchitecture || null,
+                engineeringDecisions: body.engineeringDecisions || null,
+                codeSnippet: body.codeSnippet || null,
+                realStats: body.realStats || null,
             }
         });
         return apiResponse(project);

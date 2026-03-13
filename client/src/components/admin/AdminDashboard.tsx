@@ -407,25 +407,94 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "status" && <AdminDeveloperStatus />}
                                 {activeTab === "capacity" && <AdminCapacityManager />}
                                 {activeTab === "resume" && <AdminResume />}
-                                {activeTab === "messages" && <AdminContact messages={(messages as any)?.messages || (Array.isArray(messages) ? messages : [])} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />}
-                                {activeTab === "hire" && <AdminHireRequests requests={(hireRequests as any)?.requests || (hireRequests as any)?.hireRequests || (Array.isArray(hireRequests) ? hireRequests : [])} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />}
-                                {activeTab === "testimonials" && (
-                                    <AdminTestimonials 
-                                        testimonials={(allTestimonials as any)?.testimonials || (Array.isArray(allTestimonials) ? allTestimonials : [])} 
-                                        onApprove={handleTestimonialApproval} 
-                                        onDelete={handleTestimonialDelete}
-                                        onVerify={handleTestimonialVerify}
-                                        onFeature={handleTestimonialFeature}
-                                    />
+                                
+                                {activeTab === "messages" && (
+                                    messages ? (
+                                        <AdminContact messages={(messages as any)?.messages || (Array.isArray(messages) ? messages : [])} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />
+                                    ) : (
+                                        <div className="flex items-center justify-center py-24"><Loader2 className="w-8 h-8 animate-spin text-blue-500/20" /></div>
+                                    )
                                 )}
-                                {activeTab === "projects" && <AdminProjects projects={(projects as any)?.projects || (Array.isArray(projects) ? projects : [])} onUpdate={handleProjectAction} />}
-                                {activeTab === "blog" && <AdminBlog posts={(blogPosts as any)?.posts || (Array.isArray(blogPosts) ? blogPosts : [])} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />}
-                                {activeTab === "feature-requests" && <AdminFeatureRequests requests={(featureRequests as any)?.requests || (Array.isArray(featureRequests) ? featureRequests : [])} onUpdate={handleFeatureRequestAction} />}
+                                
+                                {activeTab === "hire" && (
+                                    hireRequests ? (
+                                        <AdminHireRequests requests={(hireRequests as any)?.requests || (hireRequests as any)?.hireRequests || (Array.isArray(hireRequests) ? hireRequests : [])} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />
+                                    ) : (
+                                        <div className="flex items-center justify-center py-24"><Loader2 className="w-8 h-8 animate-spin text-blue-500/20" /></div>
+                                    )
+                                )}
+                                
+                                {activeTab === "testimonials" && (
+                                    allTestimonials ? (
+                                        <AdminTestimonials 
+                                            testimonials={(allTestimonials as any)?.testimonials || (Array.isArray(allTestimonials) ? allTestimonials : [])} 
+                                            onApprove={handleTestimonialApproval} 
+                                            onDelete={handleTestimonialDelete}
+                                            onVerify={handleTestimonialVerify}
+                                            onFeature={handleTestimonialFeature}
+                                        />
+                                    ) : (
+                                        <div className="flex items-center justify-center py-24"><Loader2 className="w-8 h-8 animate-spin text-blue-500/20" /></div>
+                                    )
+                                )}
+                                
+                                {activeTab === "projects" && (
+                                    projects ? (
+                                        <AdminProjects projects={(projects as any)?.projects || (Array.isArray(projects) ? projects : [])} onUpdate={handleProjectAction} />
+                                    ) : (
+                                        <div className="flex items-center justify-center py-24"><Loader2 className="w-8 h-8 animate-spin text-blue-500/20" /></div>
+                                    )
+                                )}
+                                
+                                {activeTab === "blog" && (
+                                    blogPosts ? (
+                                        <AdminBlog posts={(blogPosts as any)?.posts || (Array.isArray(blogPosts) ? blogPosts : [])} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />
+                                    ) : (
+                                        <div className="flex items-center justify-center py-24"><Loader2 className="w-8 h-8 animate-spin text-blue-500/20" /></div>
+                                    )
+                                )}
+                                
+                                {activeTab === "feature-requests" && (
+                                    featureRequests ? (
+                                        <AdminFeatureRequests requests={(featureRequests as any)?.requests || (Array.isArray(featureRequests) ? featureRequests : [])} onUpdate={handleFeatureRequestAction} />
+                                    ) : (
+                                        <div className="flex items-center justify-center py-24"><Loader2 className="w-8 h-8 animate-spin text-blue-500/20" /></div>
+                                    )
+                                )}
+                                
                                 {activeTab === "stats" && <AdminStats stats={(statsData as any)?.data || statsData || null} onUpdate={handleStatsUpdate} />}
-                                {activeTab === "diagnostics" && <AdminDiagnostics patterns={(diagPatterns as any)?.patterns || (Array.isArray(diagPatterns) ? diagPatterns : [])} logs={(diagLogs as any)?.logs || (Array.isArray(diagLogs) ? diagLogs : [])} onUpdate={handleDiagAction} />}
-                                {activeTab === "journey" && <AdminJourney phases={(journeyPhases as any)?.phases || (Array.isArray(journeyPhases) ? journeyPhases : [])} onAdd={handleAddJourney} onUpdate={handleJourneyUpdate} onDelete={handleJourneyDelete} />}
-                                {activeTab === "case-studies" && <AdminCaseStudies studies={(caseStudies as any)?.caseStudies || (Array.isArray(caseStudies) ? caseStudies : [])} onUpdate={() => mutateCaseStudies()} />}
-                                {activeTab === "activity" && <AdminActivityLog logs={(activityLogs as any)?.logs || (Array.isArray(activityLogs) ? activityLogs : [])} onUpdate={() => mutateActivityLogs()} />}
+                                
+                                {activeTab === "diagnostics" && (
+                                    diagPatterns && diagLogs ? (
+                                        <AdminDiagnostics patterns={(diagPatterns as any)?.patterns || (Array.isArray(diagPatterns) ? diagPatterns : [])} logs={(diagLogs as any)?.logs || (Array.isArray(diagLogs) ? diagLogs : [])} onUpdate={handleDiagAction} />
+                                    ) : (
+                                        <div className="flex items-center justify-center py-24"><Loader2 className="w-8 h-8 animate-spin text-blue-500/20" /></div>
+                                    )
+                                )}
+                                
+                                {activeTab === "journey" && (
+                                    journeyPhases ? (
+                                        <AdminJourney phases={(journeyPhases as any)?.phases || (Array.isArray(journeyPhases) ? journeyPhases : [])} onAdd={handleAddJourney} onUpdate={handleJourneyUpdate} onDelete={handleJourneyDelete} />
+                                    ) : (
+                                        <div className="flex items-center justify-center py-24"><Loader2 className="w-8 h-8 animate-spin text-blue-500/20" /></div>
+                                    )
+                                )}
+                                
+                                {activeTab === "case-studies" && (
+                                    caseStudies ? (
+                                        <AdminCaseStudies studies={(caseStudies as any)?.caseStudies || (Array.isArray(caseStudies) ? caseStudies : [])} onUpdate={() => mutateCaseStudies()} />
+                                    ) : (
+                                        <div className="flex items-center justify-center py-24"><Loader2 className="w-8 h-8 animate-spin text-blue-500/20" /></div>
+                                    )
+                                )}
+                                
+                                {activeTab === "activity" && (
+                                    activityLogs ? (
+                                        <AdminActivityLog logs={(activityLogs as any)?.logs || (Array.isArray(activityLogs) ? activityLogs : [])} onUpdate={() => mutateActivityLogs()} />
+                                    ) : (
+                                        <div className="flex items-center justify-center py-24"><Loader2 className="w-8 h-8 animate-spin text-blue-500/20" /></div>
+                                    )
+                                )}
                             </ErrorBoundary>
                         </m.div>
                     </AnimatePresence>
