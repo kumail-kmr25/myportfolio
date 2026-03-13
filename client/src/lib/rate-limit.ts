@@ -45,7 +45,7 @@ export function checkRateLimit(ip: string, options: RateLimitOptions) {
  * Standard API response wrapper
  */
 export function apiResponse(data: any, status = 200) {
-    return NextResponse.json({ success: true, ...data }, { status });
+    return NextResponse.json({ success: true, data }, { status });
 }
 
 /**

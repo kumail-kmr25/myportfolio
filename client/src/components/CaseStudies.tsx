@@ -106,7 +106,7 @@ export default function CaseStudies() {
                     <div className="flex justify-center py-20">
                         <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
                     </div>
-                ) : (!Array.isArray(caseStudies) || caseStudies.length === 0) ? (
+                ) : (!caseStudies || (Array.isArray(caseStudies) && (caseStudies as any).length === 0) || ( (caseStudies as any).caseStudies && (caseStudies as any).caseStudies.length === 0)) ? (
                     <m.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
@@ -123,7 +123,7 @@ export default function CaseStudies() {
                         viewport={{ once: true, margin: "-100px" }}
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                     >
-                        {caseStudies.map((study) => (
+                        {((caseStudies as any).caseStudies || (caseStudies as any)).map((study: any) => (
                             <m.div
                                 key={study.id}
                                 variants={itemVariants}

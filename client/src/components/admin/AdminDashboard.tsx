@@ -378,16 +378,27 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                             <ErrorBoundary>
                                 {activeTab === "overview" && (
                                     <div className="space-y-12">
-                                        <AdminAnalytics stats={{ diagRuns: statsData?.diagRuns || 0, leadGenTotal: statsData?.leadGenTotal || 0, hireRequests: statsData?.hireRequests || 0, patternsMatched: statsData?.patternsMatched || 0 }} />
+                                        <AdminAnalytics stats={{ 
+                                            diagRuns: (statsData as any)?.diagRuns ?? (statsData as any)?.data?.diagRuns ?? 0, 
+                                            leadGenTotal: (statsData as any)?.leadGenTotal ?? (statsData as any)?.data?.leadGenTotal ?? 0, 
+                                            hireRequests: (statsData as any)?.hireRequests ?? (statsData as any)?.data?.hireRequests ?? 0, 
+                                            patternsMatched: (statsData as any)?.patternsMatched ?? (statsData as any)?.data?.patternsMatched ?? 0 
+                                        }} />
                                         <DashboardOverview
-                                            stats={{ projects: projects?.length || 0, testimonials: allTestimonials?.length || 0, messages: messages?.length || 0, hireRequests: hireRequests?.length || 0, blogPosts: blogPosts?.length || 0 }}
+                                            stats={{ 
+                                                projects: (projects as any)?.projects?.length ?? (projects as any)?.length ?? 0, 
+                                                testimonials: (allTestimonials as any)?.testimonials?.length ?? (allTestimonials as any)?.length ?? 0, 
+                                                messages: (messages as any)?.messages?.length ?? (messages as any)?.length ?? 0, 
+                                                hireRequests: (hireRequests as any)?.requests?.length ?? (hireRequests as any)?.hireRequests?.length ?? (hireRequests as any)?.length ?? 0, 
+                                                blogPosts: (blogPosts as any)?.posts?.length ?? (blogPosts as any)?.length ?? 0 
+                                            }}
                                             recentActivity={[
-                                                ...(Array.isArray(hireRequests) ? hireRequests : []).map(h => ({ id: h.id, type: "hire", title: `Hire Request: ${h.name}`, subtitle: h.projectType, timestamp: h.createdAt, status: h.status })),
-                                                ...(Array.isArray(allTestimonials) ? allTestimonials : []).map(t => ({ id: t.id, type: "testimonial", title: `Testimonial: ${t.name}`, subtitle: `${t.rating} Stars`, timestamp: t.created_at, status: t.approved ? "approved" : "pending" })),
-                                                ...(Array.isArray(messages) ? messages : []).map(m => ({ id: m.id, type: "message", title: `Message: ${m.name}`, subtitle: m.inquiryType || "Inquiry", timestamp: m.created_at, status: m.replied ? "replied" : "new" })),
-                                                ...(Array.isArray(diagLogs) ? diagLogs : []).map(l => ({ id: l.id, type: "diagnostic", title: "Diagnostic Run", subtitle: l.description, timestamp: l.createdAt, status: "completed" }))
+                                                ...(Array.isArray(hireRequests) ? hireRequests : (hireRequests as any)?.requests || (hireRequests as any)?.hireRequests || []).map((h: any) => ({ id: h.id, type: "hire", title: `Hire Request: ${h.name}`, subtitle: h.projectType, timestamp: h.createdAt, status: h.status })),
+                                                ...(Array.isArray(allTestimonials) ? allTestimonials : (allTestimonials as any)?.testimonials || []).map((t: any) => ({ id: t.id, type: "testimonial", title: `Testimonial: ${t.name}`, subtitle: `${t.rating} Stars`, timestamp: t.created_at, status: t.approved ? "approved" : "pending" })),
+                                                ...(Array.isArray(messages) ? messages : (messages as any)?.messages || []).map((m: any) => ({ id: m.id, type: "message", title: `Message: ${m.name}`, subtitle: m.inquiryType || "Inquiry", timestamp: m.created_at, status: m.replied ? "replied" : "new" })),
+                                                ...(Array.isArray(diagLogs) ? diagLogs : (diagLogs as any)?.logs || []).map((l: any) => ({ id: l.id, type: "diagnostic", title: "Diagnostic Run", subtitle: l.description, timestamp: l.createdAt, status: "completed" }))
                                             ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 10)}
-                                            availabilityStatus={availabilityData?.status || "Available"}
+                                            availabilityStatus={(availabilityData as any)?.status ?? (availabilityData as any)?.data?.status ?? "Available"}
                                             onUpdateAvailability={handleUpdateAvailability}
                                         />
                                     </div>
@@ -396,25 +407,25 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "status" && <AdminDeveloperStatus />}
                                 {activeTab === "capacity" && <AdminCapacityManager />}
                                 {activeTab === "resume" && <AdminResume />}
-                                {activeTab === "messages" && <AdminContact messages={Array.isArray(messages) ? messages : []} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />}
-                                {activeTab === "hire" && <AdminHireRequests requests={Array.isArray(hireRequests) ? hireRequests : []} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />}
+                                {activeTab === "messages" && <AdminContact messages={(messages as any)?.messages || (Array.isArray(messages) ? messages : [])} onToggleReplied={handleToggleReplied} onDelete={handleMessageDelete} />}
+                                {activeTab === "hire" && <AdminHireRequests requests={(hireRequests as any)?.requests || (hireRequests as any)?.hireRequests || (Array.isArray(hireRequests) ? hireRequests : [])} onUpdateStatus={handleHireStatusUpdate} onDelete={handleHireDelete} />}
                                 {activeTab === "testimonials" && (
                                     <AdminTestimonials 
-                                        testimonials={Array.isArray(allTestimonials) ? allTestimonials : []} 
+                                        testimonials={(allTestimonials as any)?.testimonials || (Array.isArray(allTestimonials) ? allTestimonials : [])} 
                                         onApprove={handleTestimonialApproval} 
                                         onDelete={handleTestimonialDelete}
                                         onVerify={handleTestimonialVerify}
                                         onFeature={handleTestimonialFeature}
                                     />
                                 )}
-                                {activeTab === "projects" && <AdminProjects projects={Array.isArray(projects) ? projects : []} onUpdate={handleProjectAction} />}
-                                {activeTab === "blog" && <AdminBlog posts={Array.isArray(blogPosts) ? blogPosts : []} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />}
-                                {activeTab === "feature-requests" && <AdminFeatureRequests requests={Array.isArray(featureRequests) ? featureRequests : []} onUpdate={handleFeatureRequestAction} />}
-                                {activeTab === "stats" && <AdminStats stats={statsData || null} onUpdate={handleStatsUpdate} />}
-                                {activeTab === "diagnostics" && <AdminDiagnostics patterns={Array.isArray(diagPatterns) ? diagPatterns : []} logs={Array.isArray(diagLogs) ? diagLogs : []} onUpdate={handleDiagAction} />}
-                                {activeTab === "journey" && <AdminJourney phases={Array.isArray(journeyPhases) ? journeyPhases : []} onAdd={handleAddJourney} onUpdate={handleJourneyUpdate} onDelete={handleJourneyDelete} />}
-                                {activeTab === "case-studies" && <AdminCaseStudies studies={Array.isArray(caseStudies) ? caseStudies : []} onUpdate={() => mutateCaseStudies()} />}
-                                {activeTab === "activity" && <AdminActivityLog logs={Array.isArray(activityLogs) ? activityLogs : []} onUpdate={() => mutateActivityLogs()} />}
+                                {activeTab === "projects" && <AdminProjects projects={(projects as any)?.projects || (Array.isArray(projects) ? projects : [])} onUpdate={handleProjectAction} />}
+                                {activeTab === "blog" && <AdminBlog posts={(blogPosts as any)?.posts || (Array.isArray(blogPosts) ? blogPosts : [])} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />}
+                                {activeTab === "feature-requests" && <AdminFeatureRequests requests={(featureRequests as any)?.requests || (Array.isArray(featureRequests) ? featureRequests : [])} onUpdate={handleFeatureRequestAction} />}
+                                {activeTab === "stats" && <AdminStats stats={(statsData as any)?.data || statsData || null} onUpdate={handleStatsUpdate} />}
+                                {activeTab === "diagnostics" && <AdminDiagnostics patterns={(diagPatterns as any)?.patterns || (Array.isArray(diagPatterns) ? diagPatterns : [])} logs={(diagLogs as any)?.logs || (Array.isArray(diagLogs) ? diagLogs : [])} onUpdate={handleDiagAction} />}
+                                {activeTab === "journey" && <AdminJourney phases={(journeyPhases as any)?.phases || (Array.isArray(journeyPhases) ? journeyPhases : [])} onAdd={handleAddJourney} onUpdate={handleJourneyUpdate} onDelete={handleJourneyDelete} />}
+                                {activeTab === "case-studies" && <AdminCaseStudies studies={(caseStudies as any)?.caseStudies || (Array.isArray(caseStudies) ? caseStudies : [])} onUpdate={() => mutateCaseStudies()} />}
+                                {activeTab === "activity" && <AdminActivityLog logs={(activityLogs as any)?.logs || (Array.isArray(activityLogs) ? activityLogs : [])} onUpdate={() => mutateActivityLogs()} />}
                             </ErrorBoundary>
                         </m.div>
                     </AnimatePresence>

@@ -61,8 +61,9 @@ export default function Projects() {
         }
     ];
 
-    // Handle both direct array (fallback/mock) and object-wrapped array (API v1)
-    const projects = Array.isArray(data) && data.length > 0 ? data : fallbackProjects;
+    // Handle both direct array (legacy) and object-wrapped array (Standard API)
+    const projectsData = data?.projects || (Array.isArray(data) ? data : null);
+    const projects = projectsData && projectsData.length > 0 ? projectsData : fallbackProjects;
     const [selectedProject, setSelectedProject] = useState<any>(null);
     const [showAllProjects, setShowAllProjects] = useState(false);
     const { openModal } = useHireModal();

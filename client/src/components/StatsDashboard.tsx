@@ -39,12 +39,12 @@ export default function StatsDashboard() {
     const { data: availability } = useSWR("/api/availability", fetcher, { refreshInterval: 5000 });
 
     const statItems = [
-        { label: "Bugs Fixed", value: stats?.bugsFixed || 0, icon: Bug, color: "text-red-500", bg: "bg-red-500/10" },
-        { label: "Case Studies", value: stats?.caseStudiesWritten || 0, icon: BookOpen, color: "text-purple-500", bg: "bg-purple-500/10" },
-        { label: "Features Built", value: stats?.featureRequestsCompleted || 0, icon: CheckSquare, color: "text-green-500", bg: "bg-green-500/10" },
-        { label: "Years in Learning", value: stats?.yearsLearning || 0, icon: Calendar, color: "text-yellow-500", bg: "bg-yellow-500/10" },
-        { label: "Deployments", value: stats?.deploymentCount || 0, icon: Rocket, color: "text-orange-500", bg: "bg-orange-500/10" },
-        { label: "Featured Projects", value: stats?.projectsTotal || 3, icon: Layers, color: "text-blue-500", bg: "bg-blue-500/10" },
+        { label: "Bugs Fixed", value: (stats as any)?.bugsFixed ?? (stats as any)?.data?.bugsFixed ?? 0, icon: Bug, color: "text-red-500", bg: "bg-red-500/10" },
+        { label: "Case Studies", value: (stats as any)?.caseStudiesWritten ?? (stats as any)?.data?.caseStudiesWritten ?? 0, icon: BookOpen, color: "text-purple-500", bg: "bg-purple-500/10" },
+        { label: "Features Built", value: (stats as any)?.featureRequestsCompleted ?? (stats as any)?.data?.featureRequestsCompleted ?? 0, icon: CheckSquare, color: "text-green-500", bg: "bg-green-500/10" },
+        { label: "Years in Learning", value: (stats as any)?.yearsLearning ?? (stats as any)?.data?.yearsLearning ?? 0, icon: Calendar, color: "text-yellow-500", bg: "bg-yellow-500/10" },
+        { label: "Deployments", value: (stats as any)?.deploymentCount ?? (stats as any)?.data?.deploymentCount ?? 0, icon: Rocket, color: "text-orange-500", bg: "bg-orange-500/10" },
+        { label: "Featured Projects", value: (stats as any)?.projectsTotal ?? (stats as any)?.data?.projectsTotal ?? 3, icon: Layers, color: "text-blue-500", bg: "bg-blue-500/10" },
     ];
 
     const containerVariants: Variants = {

@@ -44,7 +44,8 @@ const fallbackPosts = [
 export default function Blog() {
     const { data: blogPosts } = useSWR("/api/blog", fetcher);
 
-    const posts = Array.isArray(blogPosts) && blogPosts.length > 0 ? blogPosts : fallbackPosts;
+    const postsData = blogPosts?.posts || (Array.isArray(blogPosts) ? blogPosts : null);
+    const posts = postsData && postsData.length > 0 ? postsData : fallbackPosts;
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },

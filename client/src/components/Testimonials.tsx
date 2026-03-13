@@ -113,8 +113,12 @@ export default function Testimonials() {
     const fetchTestimonials = useCallback(async () => {
         setIsLoading(true);
         try {
-            const data = await fetcher("/api/testimonials");
-            setTestimonials(data);
+            const res = await fetcher("/api/testimonials");
+            if (res && res.testimonials) {
+                setTestimonials(res.testimonials);
+            } else if (Array.isArray(res)) {
+                setTestimonials(res);
+            }
         } catch (error) {
             console.error("Error fetching testimonials:", error);
         } finally {
