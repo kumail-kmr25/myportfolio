@@ -11,6 +11,7 @@ const FALLBACK_CASES = [
         rootCause: "Unbounded event listener accumulation.",
         solution: "Implemented defensive cleanup pattern.",
         impact: "Stable memory footprint sustained under load.",
+        steps: ["Event loop analysis", "Heap snapshot comparison", "Defensive cleanup implementation"],
         techStack: ["Node.js", "Socket.io"],
         architecture: {
             nodes: [

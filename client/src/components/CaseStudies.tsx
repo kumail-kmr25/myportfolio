@@ -227,7 +227,7 @@ export default function CaseStudies() {
                                             03. Key Features
                                         </h4>
                                         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            {selectedCase.steps.map((feature: string, i: number) => (
+                                            {selectedCase.steps?.map((feature: string, i: number) => (
                                                 <li key={i} className="flex gap-4 p-5 rounded-2xl bg-white/[0.02] border border-white/5 group hover:border-blue-500/30 transition-all">
                                                     <span className="flex-shrink-0 w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-[10px] font-black text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all">
                                                         {i + 1}
