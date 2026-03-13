@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const dynamic = 'force-dynamic';
 export const runtime = "nodejs";
@@ -20,7 +20,7 @@ export async function GET() {
 
         // 1. Manual Override Precedence
         if (config?.manualOverride) {
-            return NextResponse.json({
+            return apiResponse({
                 status: config.manualOverride,
                 message: config.overrideMessage || (
                     config.manualOverride === "available" ? "Available for new projects" :
@@ -35,7 +35,7 @@ export async function GET() {
 
         // 2. Dynamic Logic
         if (activeCount === 0) {
-            return NextResponse.json({
+            return apiResponse({
                 status: "available",
                 message: "Available for new projects",
                 activeCount: 0,
@@ -47,7 +47,7 @@ export async function GET() {
         }
 
         if (activeCount < maxProjects) {
-            return NextResponse.json({
+            return apiResponse({
                 status: "limited",
                 message: `Limited availability (${maxProjects - activeCount} slot left)`,
                 activeCount,
@@ -59,7 +59,7 @@ export async function GET() {
         }
 
         // Fully booked
-        return NextResponse.json({
+        return apiResponse({
             status: "booked",
             message: "Fully booked",
             activeCount,
@@ -71,14 +71,13 @@ export async function GET() {
 
     } catch (error) {
         console.error("AVAILABILITY_API_ERROR:", error);
-        return NextResponse.json({
+        return apiResponse({
             status: "available",
             message: "Available for new projects",
             activeCount: 0,
             maxProjects: 2,
             deployment_version: "v1.0.1-fallback",
-            vercel_id: process.env.VERCEL_URL || "local",
-            error: error instanceof Error ? error.message : "Unknown error"
+            vercel_id: process.env.VERCEL_URL || "local"
         });
     }
 }

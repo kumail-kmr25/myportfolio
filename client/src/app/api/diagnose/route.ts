@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import xss from "xss";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const dynamic = 'force-dynamic';
 export const runtime = "nodejs";
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
         const { description, techStack, errorMessage, environment } = body;
 
         if (!description) {
-            return NextResponse.json({ error: "Description is required" }, { status: 400 });
+            return apiError("Description is required", 400);
         }
 
         const sanitizedDescription = xss(description);
@@ -97,10 +97,10 @@ export async function POST(request: Request) {
             }
         });
 
-        return NextResponse.json(result);
+        return apiResponse(result);
 
     } catch (error: any) {
         console.error("DIAGNOSE API ERROR:", error);
-        return NextResponse.json({ error: "Internal server error", message: error.message }, { status: 200 });
+        return apiError("Internal server error", 500);
     }
 }
