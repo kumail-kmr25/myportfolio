@@ -66,7 +66,7 @@ export default function ProjectCard({ project, isFeatured = false, onViewCaseStu
                     <div className="space-y-3 pt-2">
                         <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em]">Technology Stack</p>
                         <div className="flex flex-wrap gap-2 group-hover:glow-tech transition-all duration-500">
-                            {Array.isArray(project.tags) && project.tags.slice(0, 5).map((tag: any) => (
+                            {project.tags.slice(0, 5).map((tag: any) => (
                                 <span key={tag} className="px-3 py-1.5 rounded-lg bg-blue-500/5 border border-blue-500/10 text-[10px] font-bold text-blue-300 shadow-sm backdrop-blur-sm group-hover:bg-blue-500/10 group-hover:border-blue-500/30 group-hover:text-blue-200 transition-all duration-500">
                                     {tag}
                                 </span>
@@ -156,12 +156,12 @@ export default function ProjectCard({ project, isFeatured = false, onViewCaseStu
                 {/* Tags Grid */}
                 <div className="mt-auto pt-6 border-t border-white/5 space-y-4">
                     <div className="flex flex-wrap gap-2">
-                        {Array.isArray(project.tags) && project.tags.slice(0, 4).map((tag: any) => (
+                        {project.tags.slice(0, 4).map((tag: any) => (
                             <span key={tag} className="px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-[9px] font-bold text-gray-400 group-hover:border-blue-500/20 group-hover:text-blue-300 group-hover:bg-blue-500/5 transition-all duration-300">
                                 {tag}
                             </span>
                         ))}
-                        {Array.isArray(project.tags) && project.tags.length > 4 && (
+                        {project.tags.length > 4 && (
                             <span className="px-2.5 py-1 rounded-md bg-transparent text-[9px] font-bold text-gray-600">
                                 +{project.tags.length - 4}
                             </span>

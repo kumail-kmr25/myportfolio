@@ -14,10 +14,7 @@ import { getApiUrl } from "@/lib/api";
 const fetcher = async (url: string) => {
     const res = await fetch(getApiUrl(url));
     const json = await res.json();
-    if (!res.ok || json.success === false) {
-        console.warn("API Fetch Warning:", json.error || "Fetch failed");
-        return null; // Return null instead of throwing to allow component to fallback gracefully
-    }
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
     return json.success ? json.data : json;
 };
 
@@ -65,8 +62,8 @@ export default function Projects() {
     ];
 
     // Handle both direct array (legacy) and object-wrapped array (Standard API)
-    const projectsData = Array.isArray(data?.projects) ? data.projects : (Array.isArray(data) ? data : null);
-    const projects = (projectsData && projectsData.length > 0) ? projectsData : fallbackProjects;
+    const projectsData = data?.projects || (Array.isArray(data) ? data : null);
+    const projects = projectsData && projectsData.length > 0 ? projectsData : fallbackProjects;
     const [selectedProject, setSelectedProject] = useState<any>(null);
     const [showAllProjects, setShowAllProjects] = useState(false);
     const { openModal } = useHireModal();

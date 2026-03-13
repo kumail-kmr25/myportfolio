@@ -52,11 +52,6 @@ interface Project {
     category?: string;
     isFeatured: boolean;
     isVisible: boolean;
-    // --- New Proof of Work Fields ---
-    systemArchitecture?: any;
-    engineeringDecisions?: any;
-    codeSnippet?: any;
-    realStats?: any;
     created_at: string;
     updated_at: string;
 }
@@ -93,11 +88,7 @@ export default function AdminProjects({ projects, onUpdate }: AdminProjectsProps
         metrics: [],
         category: "Full Stack",
         isFeatured: false,
-        isVisible: true,
-        systemArchitecture: [],
-        engineeringDecisions: [],
-        codeSnippet: { language: "typescript", code: "", description: "" },
-        realStats: { components: "0", apiRoutes: "0", models: "0", platform: "Vercel", buildTime: "0s" }
+        isVisible: true
     });
 
     const handleEdit = (project: Project) => {
@@ -112,18 +103,10 @@ export default function AdminProjects({ projects, onUpdate }: AdminProjectsProps
         try {
             const method = editingProject ? "PATCH" : "POST";
             const url = editingProject ? `/api/projects/${editingProject.id}` : "/api/projects";
-            const submissionData = {
-                ...formData,
-                systemArchitecture: typeof formData.systemArchitecture === 'string' ? JSON.parse(formData.systemArchitecture) : formData.systemArchitecture,
-                engineeringDecisions: typeof formData.engineeringDecisions === 'string' ? JSON.parse(formData.engineeringDecisions) : formData.engineeringDecisions,
-                codeSnippet: typeof formData.codeSnippet === 'string' ? JSON.parse(formData.codeSnippet) : formData.codeSnippet,
-                realStats: typeof formData.realStats === 'string' ? JSON.parse(formData.realStats) : formData.realStats,
-            };
-
             const response = await fetch(getApiUrl(url), {
                 method,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(submissionData),
+                body: JSON.stringify(formData),
             });
             
             const data = await response.json();
@@ -184,11 +167,7 @@ export default function AdminProjects({ projects, onUpdate }: AdminProjectsProps
             metrics: [],
             category: "Full Stack",
             isFeatured: false,
-            isVisible: true,
-            systemArchitecture: [],
-            engineeringDecisions: [],
-            codeSnippet: { language: "typescript", code: "", description: "" },
-            realStats: { components: "0", apiRoutes: "0", models: "0", platform: "Vercel", buildTime: "0s" }
+            isVisible: true
         });
     };
 
@@ -304,53 +283,6 @@ export default function AdminProjects({ projects, onUpdate }: AdminProjectsProps
                                 value={formData.engineering}
                                 onChange={(e) => setFormData({ ...formData, engineering: e.target.value })}
                             />
-                        </div>
-
-                        {/* Proof of Work Editors (JSON) */}
-                        <div className="space-y-6 pt-6 border-t border-white/5">
-                            <h3 className="text-sm font-black uppercase tracking-widest text-blue-500">Technical Depth (JSON)</h3>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">System Architecture (Array)</label>
-                                    <textarea
-                                        className="input-field min-h-[100px] font-mono text-[10px]"
-                                        placeholder='[{"name": "Engine", "value": "Next.js"}]'
-                                        value={typeof formData.systemArchitecture === 'string' ? formData.systemArchitecture : JSON.stringify(formData.systemArchitecture, null, 2)}
-                                        onChange={(e) => setFormData({ ...formData, systemArchitecture: e.target.value })}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Engineering Decisions (Array)</label>
-                                    <textarea
-                                        className="input-field min-h-[100px] font-mono text-[10px]"
-                                        placeholder='[{"title": "Caching", "reason": "Speed", "benefits": "90% faster"}]'
-                                        value={typeof formData.engineeringDecisions === 'string' ? formData.engineeringDecisions : JSON.stringify(formData.engineeringDecisions, null, 2)}
-                                        onChange={(e) => setFormData({ ...formData, engineeringDecisions: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Code Snippet (Object)</label>
-                                    <textarea
-                                        className="input-field min-h-[100px] font-mono text-[10px]"
-                                        placeholder='{"language": "ts", "code": "...", "description": "..."}'
-                                        value={typeof formData.codeSnippet === 'string' ? formData.codeSnippet : JSON.stringify(formData.codeSnippet, null, 2)}
-                                        onChange={(e) => setFormData({ ...formData, codeSnippet: e.target.value })}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-4">Real Stats (Object)</label>
-                                    <textarea
-                                        className="input-field min-h-[100px] font-mono text-[10px]"
-                                        placeholder='{"components": "45", "platform": "Vercel"}'
-                                        value={typeof formData.realStats === 'string' ? formData.realStats : JSON.stringify(formData.realStats, null, 2)}
-                                        onChange={(e) => setFormData({ ...formData, realStats: e.target.value })}
-                                    />
-                                </div>
-                            </div>
                         </div>
 
                         {/* Metrics & Features */}

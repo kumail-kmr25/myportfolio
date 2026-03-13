@@ -138,10 +138,6 @@ model Project {
   valuePoints        String[]
   gallery            String[]
   timeline           Json?
-  systemArchitecture  Json?
-  engineeringDecisions Json?
-  codeSnippet         Json?
-  realStats           Json?
 }
 
 model CaseStudy {
