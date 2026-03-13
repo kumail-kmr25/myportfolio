@@ -100,9 +100,11 @@ export default function Projects() {
                         <Loader2 className="w-10 h-10 text-blue-500 animate-spin opacity-20" />
                         <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Compiling Product Matrix...</p>
                     </div>
-                ) : (!Array.isArray(projects) || projects.length === 0) ? (
+                ) : projects.length === 0 ? (
                     <div className="py-32 flex flex-col items-center justify-center space-y-4 text-center">
+                        <Loader2 className="w-8 h-8 text-blue-500 animate-spin opacity-20" />
                         <p className="text-gray-500 italic">Synchronizing Neural Project Matrix...</p>
+                        <p className="text-[10px] text-gray-600 uppercase tracking-widest font-black">Establishing Data Uplink</p>
                     </div>
                 ) : (
                     <>

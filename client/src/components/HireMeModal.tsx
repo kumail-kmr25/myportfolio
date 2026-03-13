@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { hireSchema, type HireFormData } from "@portfolio/shared";
 import { useHireModal } from "@/context/HireModalContext";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
+import { getApiUrl } from "@/lib/api";
 
 const fetcher = async (url: string) => {
     const res = await fetch(url);
@@ -170,7 +171,7 @@ export default function HireMeModal() {
         setIsSubmitting(true);
         setError(null);
         try {
-            const response = await fetch('/api/hire', {
+            const response = await fetch(getApiUrl('/api/hire'), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),

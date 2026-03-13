@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-
+import { getApiUrl } from "@/lib/api";
 
 import SectionSkeleton from "@/components/SectionSkeleton";
 
@@ -42,12 +42,23 @@ const Contact = dynamic(() => import("@/components/Contact"), {
 const Footer = dynamic(() => import("@/components/Footer"), {
     loading: () => <div className="h-40 bg-black/20 animate-pulse" />
 });
+const HireMeCTA = dynamic(() => import("@/components/HireMeCTA"), {
+    loading: () => <SectionSkeleton minHeight="400px" />
+});
 
 export default function MainContent() {
+    const fetcher = async (url: string) => {
+        const res = await fetch(getApiUrl(url));
+        const json = await res.json();
+        if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+        return json.success ? json.data : json;
+    };
+
     return (
         <>
             <CaseStudies />
             <Projects />
+            <HireMeCTA />
             <TrustSignals />
             <Skills />
             <StatsDashboard />
