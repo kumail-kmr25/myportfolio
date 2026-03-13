@@ -5,8 +5,14 @@ import useSWR from "swr";
 import { m, AnimatePresence, Variants } from "framer-motion";
 import { Loader2, X, AlertCircle, CheckCircle2, Cpu, BarChart3, ChevronRight, Terminal, Zap } from "lucide-react";
 import ArchitectureDiagram from "./ArchitectureDiagram";
+import { getApiUrl } from "@/lib/api";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(getApiUrl(url));
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 interface CaseStudy {
     id: string;
@@ -100,7 +106,7 @@ export default function CaseStudies() {
                     <div className="flex justify-center py-20">
                         <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
                     </div>
-                ) : !Array.isArray(caseStudies) || caseStudies.length === 0 ? (
+                ) : (!Array.isArray(caseStudies) || caseStudies.length === 0) ? (
                     <m.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
@@ -274,7 +280,7 @@ export default function CaseStudies() {
                                                         </div>
                                                     </div>
                                                     <p className="text-gray-500 text-xs leading-relaxed italic">
-                                                        "Engineered for maximum throughput with a decoupled micro-frontend architecture and a highly optimized data persistence layer."
+                                                        &quot;Engineered for maximum throughput with a decoupled micro-frontend architecture and a highly optimized data persistence layer.&quot;
                                                     </p>
                                                 </div>
                                             </div>

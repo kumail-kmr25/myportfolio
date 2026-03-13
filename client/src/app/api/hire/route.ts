@@ -1,44 +1,28 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { hireSchema } from "@portfolio/shared";
 import { sendHireNotification, sendHireAutoReply } from "@/lib/mail";
 import xss from "xss";
+import { checkRateLimit, getClientIP, apiResponse, apiError } from "@/lib/rate-limit";
 
 export const dynamic = 'force-dynamic';
 export const runtime = "nodejs";
 
-// In-memory rate limiting
-const rateLimit = new Map<string, { count: number; lastReset: number }>();
-const LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
-const MAX_REQUESTS = 3; // Stricter for hire requests
-
 export async function POST(request: Request) {
     try {
-        const ip = request.headers.get("x-forwarded-for") || "anonymous";
-        const now = Date.now();
+        const ip = getClientIP(request);
+        const { isLimited, response: limitResponse } = checkRateLimit(ip, {
+            windowMs: 60 * 60 * 1000,
+            max: 3 // Stricter for hire requests
+        });
 
-        // Rate Limiting
-        const clientLimit = rateLimit.get(ip) || { count: 0, lastReset: now };
-        if (now - clientLimit.lastReset > LIMIT_WINDOW) {
-            clientLimit.count = 0;
-            clientLimit.lastReset = now;
-        }
-
-        if (clientLimit.count >= MAX_REQUESTS) {
-            return NextResponse.json({ success: false, error: "Too many requests. Please try again later." }, { status: 429 });
-        }
+        if (isLimited && limitResponse) return limitResponse;
 
         const body = await request.json();
 
         // Validation
         const result = hireSchema.safeParse(body);
         if (!result.success) {
-            return NextResponse.json({
-                success: false,
-                error: "Validation failed",
-                details: result.error.format(),
-                received: body
-            }, { status: 400 });
+            return apiError("Validation failed", 400, result.error.format());
         }
 
         const {
@@ -79,10 +63,6 @@ export async function POST(request: Request) {
             },
         });
 
-        // Update Rate Limit
-        clientLimit.count++;
-        rateLimit.set(ip, clientLimit);
-
         // Send Email Notifications (Non-blocking)
         sendHireNotification({
             name: sanitizedName,
@@ -98,13 +78,9 @@ export async function POST(request: Request) {
         sendHireAutoReply(email, sanitizedName)
             .catch((err) => console.error("Hire auto-reply email failed:", err));
 
-        return NextResponse.json({ success: true, message: "Hire request submitted successfully!", id: hireRequest.id }, { status: 201 });
+        return apiResponse({ message: "Hire request submitted successfully!", id: hireRequest.id }, 201);
     } catch (error: any) {
         console.error("Hire API EXCEPTION:", error);
-        return NextResponse.json({
-            success: false,
-            error: "Internal server error",
-            message: error.message,
-        }, { status: 500 });
+        return apiError(error.message || "Internal server error");
     }
 }

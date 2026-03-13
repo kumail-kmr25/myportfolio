@@ -1,14 +1,9 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { featureRequestSchema } from "@portfolio/shared";
 import xss from "xss";
+import { checkRateLimit, getClientIP, apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
-
-// In-memory rate limiting (per-instance)
-const rateLimit = new Map<string, { count: number; lastReset: number }>();
-const LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
-const MAX_REQUESTS = 5;
 
 export async function GET() {
     try {
@@ -17,32 +12,27 @@ export async function GET() {
             orderBy: { created_at: "desc" },
             take: 10
         });
-        return NextResponse.json(completedRequests);
+        return apiResponse(completedRequests);
     } catch (error) {
-        return NextResponse.json({ error: "Failed to fetch features" }, { status: 500 });
+        return apiError("Failed to fetch features", 500);
     }
 }
 
 export async function POST(request: Request) {
     try {
-        const ip = request.headers.get("x-forwarded-for") || "anonymous";
-        const now = Date.now();
-        const clientLimit = rateLimit.get(ip) || { count: 0, lastReset: now };
+        const ip = getClientIP(request);
+        const { isLimited, response: limitResponse } = checkRateLimit(ip, {
+            windowMs: 60 * 60 * 1000,
+            max: 5
+        });
 
-        if (now - clientLimit.lastReset > LIMIT_WINDOW) {
-            clientLimit.count = 0;
-            clientLimit.lastReset = now;
-        }
-
-        if (clientLimit.count >= MAX_REQUESTS) {
-            return NextResponse.json({ error: "Too many submissions. Try again later." }, { status: 429 });
-        }
+        if (isLimited && limitResponse) return limitResponse;
 
         const body = await request.json();
 
         const result = featureRequestSchema.safeParse(body);
         if (!result.success) {
-            return NextResponse.json({ error: "Validation failed", details: result.error.format() }, { status: 400 });
+            return apiError("Validation failed", 400, result.error.format());
         }
 
         const { name, email, message, category } = result.data;
@@ -57,12 +47,9 @@ export async function POST(request: Request) {
             }
         });
 
-        clientLimit.count++;
-        rateLimit.set(ip, clientLimit);
-
-        return NextResponse.json({ success: true, id: featureRequest.id });
+        return apiResponse({ id: featureRequest.id });
     } catch (error) {
         console.error("Feature request POST error:", error);
-        return NextResponse.json({ error: "Failed to submit feature request" }, { status: 500 });
+        return apiError("Failed to submit feature request");
     }
 }

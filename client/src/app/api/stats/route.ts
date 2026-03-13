@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -50,10 +51,10 @@ export async function GET() {
             patternsMatched
         };
 
-        return NextResponse.json({ ...stats, deployment_version: "v1.0.2-stable" });
+        return apiResponse({ ...stats, deployment_version: "v1.0.2-stable" });
     } catch (error) {
         console.error("Error fetching stats:", error);
-        return NextResponse.json({ 
+        return apiResponse({ 
             ...FALLBACK_STATS, 
             deployment_version: "v1.0.2-fallback",
             error: error instanceof Error ? error.message : "Unknown error"

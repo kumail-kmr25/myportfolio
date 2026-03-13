@@ -2,10 +2,16 @@
 
 import { ArrowRight, Calendar, Clock, Sparkles } from "lucide-react";
 import Link from "next/link";
-import useSWR from "swr";
 import { m, Variants } from "framer-motion";
+import useSWR from "swr";
+import { getApiUrl } from "@/lib/api";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(getApiUrl(url));
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 // Fallback posts when no database posts exist
 const fallbackPosts = [
@@ -38,7 +44,7 @@ const fallbackPosts = [
 export default function Blog() {
     const { data: blogPosts } = useSWR("/api/blog", fetcher);
 
-    const posts = blogPosts && Array.isArray(blogPosts) && blogPosts.length > 0 ? blogPosts : fallbackPosts;
+    const posts = Array.isArray(blogPosts) && blogPosts.length > 0 ? blogPosts : fallbackPosts;
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },

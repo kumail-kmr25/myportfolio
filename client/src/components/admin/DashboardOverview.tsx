@@ -141,10 +141,10 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                         </div>
 
                         <div className="flex items-center justify-between relative z-10 pt-2">
-                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">API Resilience</span>
+                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">Vercel Edge Integrity</span>
                             <span className="text-[10px] text-blue-400 font-mono">99.9% Uptime</span>
                         </div>
-                        <div className="h-1 bg-white/5 rounded-full overflow-hidden relative z-10">
+                        <div className=" h-1 bg-white/5 rounded-full overflow-hidden relative z-10">
                             <m.div
                                 initial={{ width: "0%" }}
                                 animate={{ width: "99.9%" }}
@@ -154,13 +154,13 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                         </div>
 
                         <div className="flex items-center justify-between relative z-10 pt-2">
-                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">Protocol Integrity</span>
-                            <span className="text-[10px] text-purple-400 font-mono">Verified - v2.4</span>
+                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-none">Security Protocol</span>
+                            <span className="text-[10px] text-purple-400 font-mono">TLS 1.3 - Active</span>
                         </div>
                         <div className="h-1 bg-white/5 rounded-full overflow-hidden relative z-10">
                             <m.div
                                 initial={{ width: "0%" }}
-                                animate={{ width: "95%" }}
+                                animate={{ width: "100%" }}
                                 transition={{ duration: 1.5, ease: "easeOut", delay: 0.4 }}
                                 className="h-full bg-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
                             />

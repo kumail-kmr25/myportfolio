@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CheckSquare, Clock, Hammer, CheckCircle2, Mail, User, MessageCircle, Loader2 } from "lucide-react";
 import { m } from "framer-motion";
+import { getApiUrl } from "@/lib/api";
 
 interface FeatureRequest {
     id: string;
@@ -20,12 +21,14 @@ export default function AdminFeatureRequests({ requests, onUpdate }: { requests:
     const updateStatus = async (id: string, status: string) => {
         setLoading(id);
         try {
-            const res = await fetch(`/api/admin/feature-requests/${id}`, {
+            const response = await fetch(getApiUrl(`/api/admin/feature-requests/${id}`), {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status })
             });
-            if (res.ok) onUpdate();
+            const data = await response.json();
+            if (response.ok && data.success) onUpdate();
+            else console.error("Update failed:", data.error);
         } finally {
             setLoading(null);
         }

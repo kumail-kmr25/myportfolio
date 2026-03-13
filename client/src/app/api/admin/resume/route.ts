@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -13,26 +14,24 @@ export async function GET() {
         });
 
         if (!resume) {
-            return NextResponse.json({
+            return apiResponse({
                 url: null,
                 updatedAt: null,
                 visible: false
             });
         }
 
-        return NextResponse.json(resume);
+        return apiResponse(resume);
     } catch (error) {
         console.error("RESUME_GET_ERROR:", error);
-        return NextResponse.json({ error: "Failed to fetch resume" }, { status: 500 });
+        return apiError("Resume retrieval failed");
     }
 }
 
 export async function POST(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const body = await request.json();
         const { url, visible } = body;
@@ -43,9 +42,9 @@ export async function POST(request: Request) {
             create: { id: "current-resume", url, visible, updatedAt: new Date() }
         });
 
-        return NextResponse.json(resume);
+        return apiResponse(resume);
     } catch (error) {
         console.error("RESUME_POST_ERROR:", error);
-        return NextResponse.json({ error: "Failed to update resume" }, { status: 500 });
+        return apiError("Resume persistence failure");
     }
 }

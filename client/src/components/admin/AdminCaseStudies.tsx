@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Plus, Trash2, Edit3, Type, FileText, List, CheckCircle, Globe, Loader2, X } from "lucide-react";
 import { m, AnimatePresence } from "framer-motion";
+import { getApiUrl } from "@/lib/api";
 
 interface CaseStudy {
     id: string;
@@ -69,15 +70,19 @@ export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseS
             const url = editingId ? `/api/admin/case-studies/${editingId}` : "/api/admin/case-studies";
             const method = editingId ? "PATCH" : "POST";
 
-            const res = await fetch(url, {
+            const response = await fetch(getApiUrl(url), {
                 method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
             });
 
-            if (res.ok) {
+            const data = await response.json();
+
+            if (response.ok && data.success) {
                 onUpdate();
                 resetForm();
+            } else {
+                console.error("Submit failed:", data.error);
             }
         } finally {
             setLoading(null);
@@ -88,8 +93,10 @@ export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseS
         if (!confirm("Delete this case study?")) return;
         setLoading(id);
         try {
-            const res = await fetch(`/api/admin/case-studies/${id}`, { method: "DELETE" });
-            if (res.ok) onUpdate();
+            const response = await fetch(getApiUrl(`/api/admin/case-studies/${id}`), { method: "DELETE" });
+            const data = await response.json();
+            if (response.ok && data.success) onUpdate();
+            else console.error("Delete failed:", data.error);
         } finally {
             setLoading(null);
         }
@@ -98,12 +105,14 @@ export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseS
     const togglePublish = async (id: string, current: boolean) => {
         setLoading(id);
         try {
-            const res = await fetch(`/api/admin/case-studies/${id}`, {
+            const response = await fetch(getApiUrl(`/api/admin/case-studies/${id}`), {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ isPublished: !current })
             });
-            if (res.ok) onUpdate();
+            const data = await response.json();
+            if (response.ok && data.success) onUpdate();
+            else console.error("Toggle publish failed:", data.error);
         } finally {
             setLoading(null);
         }

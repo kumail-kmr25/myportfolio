@@ -23,7 +23,12 @@ import { useRef, useState, useEffect } from "react";
 import useSWR from 'swr';
 import { getApiUrl } from "@/lib/api";
 
-const fetcher = (url: string) => fetch(getApiUrl(url)).then(res => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(getApiUrl(url));
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 const IconMap: { [key: string]: React.ReactNode } = {
     "Brain": <Brain className="w-5 h-5 text-blue-400" />,

@@ -4,7 +4,12 @@ import { useState, useEffect } from "react";
 import useSWR from "swr";
 import { Save, AlertCircle, Clock, Activity, RefreshCcw } from "lucide-react";
 
-const fetcher = (url: string) => fetch(url).then(r => r.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 const STATUS_OPTIONS = [
     { value: "available", label: "🟢 Available" },

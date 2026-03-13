@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 
+import { apiResponse, apiError } from "@/lib/rate-limit";
+
 export const runtime = "nodejs";
 
 const FALLBACK_SKILLS = [
@@ -14,16 +16,9 @@ export async function GET() {
         const skills = await prisma.skill.findMany({
             orderBy: { order: "asc" },
         });
-        return NextResponse.json({
-            skills,
-            deployment_version: "v1.0.1-stable"
-        });
+        return apiResponse(skills);
     } catch (error) {
         console.error("[API] Error fetching skills:", error);
-        return NextResponse.json({
-            skills: FALLBACK_SKILLS,
-            deployment_version: "v1.0.1-fallback",
-            error: error instanceof Error ? error.message : "Unknown error"
-        });
+        return apiResponse(FALLBACK_SKILLS);
     }
 }

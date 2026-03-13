@@ -6,6 +6,7 @@ import { Star, BadgeCheck, Quote, Plus } from "lucide-react";
 import { m, Variants } from "framer-motion";
 import { useState, useEffect } from "react";
 import TestimonialModal from "./TestimonialModal";
+import { getApiUrl } from "@/lib/api";
 
 interface Testimonial {
     id: string;
@@ -104,10 +105,10 @@ export default function Testimonials() {
 
     const fetchTestimonials = async () => {
         try {
-            const res = await fetch("/api/testimonials");
-            if (res.ok) {
-                const data = await res.json();
-                setTestimonials(data);
+            const res = await fetch(getApiUrl("/api/testimonials"));
+            const data = await res.json();
+            if (res.ok && data.success !== false) {
+                setTestimonials(data.data || data);
             }
         } catch (error) {
             console.error("Error fetching testimonials:", error);

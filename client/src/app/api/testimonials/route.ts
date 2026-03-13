@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { testimonialSchema } from "@portfolio/shared";
 import { z } from "zod";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
-// Basic in-memory rate limiting
 const rateLimit = new Map<string, { count: number; lastReset: number }>();
-const LIMIT_WINDOW = 60 * 1000; // 1 minute
+const LIMIT_WINDOW = 60 * 1000;
 const MAX_REQUESTS = 5;
 
 export const runtime = "nodejs";
@@ -42,7 +42,6 @@ export async function GET() {
             },
         });
 
-        // Sanitize: remove email from public display
         const sanitizedTestimonials = testimonials.map((t: any) => {
             const { email, ...rest } = t;
             return {
@@ -51,10 +50,10 @@ export async function GET() {
             };
         });
 
-        return NextResponse.json(sanitizedTestimonials);
+        return apiResponse(sanitizedTestimonials);
     } catch (error) {
         console.error("Error fetching testimonials:", error);
-        return NextResponse.json(FALLBACK_TESTIMONIALS);
+        return apiResponse(FALLBACK_TESTIMONIALS);
     }
 }
 
@@ -71,7 +70,7 @@ export async function POST(request: Request) {
         }
 
         if (clientLimit.count >= MAX_REQUESTS) {
-            return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
+            return apiError("Submission frequency limit exceeded", 429);
         }
 
         clientLimit.count++;
@@ -80,7 +79,6 @@ export async function POST(request: Request) {
         const body = await request.json();
         const validatedData = testimonialSchema.parse(body);
 
-        // Strip frontend-only fields before persisting
         const { permission, ...dbData } = validatedData as any;
 
         const testimonial = await prisma.testimonial.create({
@@ -90,19 +88,18 @@ export async function POST(request: Request) {
             },
         });
 
-        // Sanitize: remove email from response and convert created_at to ISO string
         const { email, ...rest } = testimonial as any;
         const sanitizedTestimonial = {
             ...rest,
             created_at: rest.created_at.toISOString(),
         };
 
-        return NextResponse.json(sanitizedTestimonial, { status: 201 });
+        return apiResponse(sanitizedTestimonial, 201);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return NextResponse.json({ error: "Validation failed", details: error.format() }, { status: 400 });
+            return apiError("Validation sequence rejected");
         }
         console.error("Error creating testimonial:", error);
-        return NextResponse.json({ error: "Failed to create testimonial" }, { status: 500 });
+        return apiError("Testimonial transmission failed");
     }
 }

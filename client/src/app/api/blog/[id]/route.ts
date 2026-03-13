@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -11,12 +12,11 @@ export async function PATCH(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const { id } = await params;
-        const { title, excerpt, content, category, readTime, published } = await request.json();
+        const body = await request.json();
+        const { title, excerpt, content, category, readTime, published } = body;
 
         const post = await prisma.blogPost.update({
             where: { id },
@@ -30,10 +30,10 @@ export async function PATCH(
             },
         });
 
-        return NextResponse.json(post);
+        return apiResponse(post);
     } catch (error) {
         console.error("Blog PATCH error:", error);
-        return NextResponse.json({ error: "Failed to update blog post" }, { status: 500 });
+        return apiError("Publishing update failure");
     }
 }
 
@@ -43,9 +43,7 @@ export async function DELETE(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const { id } = await params;
 
@@ -53,9 +51,9 @@ export async function DELETE(
             where: { id },
         });
 
-        return NextResponse.json({ success: true });
+        return apiResponse({ success: true });
     } catch (error) {
         console.error("Blog DELETE error:", error);
-        return NextResponse.json({ error: "Failed to delete blog post" }, { status: 500 });
+        return apiError("Content purge sequence failed");
     }
 }

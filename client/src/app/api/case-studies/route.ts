@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 
+import { apiResponse } from "@/lib/rate-limit";
+
 export const runtime = "nodejs";
 
 const FALLBACK_CASES = [
@@ -35,9 +37,9 @@ export async function GET() {
             where: { isPublished: true },
             orderBy: { created_at: "desc" },
         });
-        return NextResponse.json(caseStudies);
+        return apiResponse(caseStudies);
     } catch (error) {
         console.error("Error fetching case studies:", error);
-        return NextResponse.json(FALLBACK_CASES);
+        return apiResponse(FALLBACK_CASES);
     }
 }

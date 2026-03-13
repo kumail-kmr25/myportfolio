@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -10,8 +10,7 @@ export async function GET() {
         const projectCount = await prisma.project.count();
         const blogCount = await prisma.blogPost.count();
         
-        return NextResponse.json({
-            success: true,
+        return apiResponse({
             counts: {
                 admins: adminCount,
                 projects: projectCount,
@@ -21,10 +20,6 @@ export async function GET() {
             timestamp: new Date().toISOString()
         });
     } catch (error) {
-        return NextResponse.json({
-            success: false,
-            error: error instanceof Error ? error.message : "Database connection failed",
-            timestamp: new Date().toISOString()
-        }, { status: 500 });
+        return apiError(error instanceof Error ? error.message : "Database connection failed", 500);
     }
 }

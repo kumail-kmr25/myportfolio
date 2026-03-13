@@ -52,9 +52,9 @@ export default function Navbar() {
         const fetchResume = async () => {
             try {
                 const res = await fetch(getApiUrl("/api/resume"));
-                if (res.ok) {
-                    const data = await res.json();
-                    setResumeUrl(data.url);
+                const result = await res.json();
+                if (res.ok && result.success && result.data?.url) {
+                    setResumeUrl(result.data.url);
                 }
             } catch (err) {
                 // Silently ignore
@@ -131,6 +131,10 @@ export default function Navbar() {
                         transition={{ duration: 0.5, ease: premiumEase as any }}
                     />
                 </Link>
+
+                <div className="flex-1 px-8 hidden md:block">
+                    <LiveStatusBadge variant="navbar" />
+                </div>
 
 
                 {/* Desktop Menu */}

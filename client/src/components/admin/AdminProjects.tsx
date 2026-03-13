@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import { getApiUrl } from "@/lib/api";
 
 interface Project {
     id: string;
@@ -102,19 +103,19 @@ export default function AdminProjects({ projects, onUpdate }: AdminProjectsProps
         try {
             const method = editingProject ? "PATCH" : "POST";
             const url = editingProject ? `/api/projects/${editingProject.id}` : "/api/projects";
-            
-            const res = await fetch(url, {
+            const response = await fetch(getApiUrl(url), {
                 method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
             
-            if (res.ok) {
+            const data = await response.json();
+            
+            if (response.ok && data.success) {
                 await onUpdate();
                 handleDiscard();
             } else {
-                const errorData = await res.json();
-                alert(`Error: ${errorData.error || "Failed to save project"}\n${errorData.message || ""}`);
+                alert(`Error: ${data.error || "Failed to save project"}${data.message ? `\n${data.message}` : ""}`);
             }
         } catch (err) {
             console.error(err);
@@ -127,12 +128,12 @@ export default function AdminProjects({ projects, onUpdate }: AdminProjectsProps
         if (!confirm("Are you sure you want to delete this project? This action cannot be undone.")) return;
         setIsLoading(true);
         try {
-            const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
-            if (res.ok) {
+            const response = await fetch(getApiUrl(`/api/projects/${id}`), { method: "DELETE" });
+            const data = await response.json();
+            if (response.ok && data.success) {
                 await onUpdate();
             } else {
-                const errorData = await res.json();
-                alert(`Error: ${errorData.error || "Failed to delete project"}`);
+                alert(`Error: ${data.error || "Failed to delete project"}`);
             }
         } catch (err) {
             console.error(err);

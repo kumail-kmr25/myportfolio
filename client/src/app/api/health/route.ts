@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -9,7 +9,7 @@ export async function GET() {
         // Simple heartbeat query
         await prisma.$queryRaw`SELECT 1`;
         
-        return NextResponse.json({
+        return apiResponse({
             status: "ok",
             database: "connected",
             timestamp: new Date().toISOString(),
@@ -20,13 +20,6 @@ export async function GET() {
     } catch (error) {
         console.error("[HEALTH-CHECK] Database connection failed:", error);
         
-        return NextResponse.json({
-            status: "error",
-            database: "disconnected",
-            error: error instanceof Error ? error.message : "Unknown error",
-            timestamp: new Date().toISOString(),
-            deployment_version: "v2.1.0-stable",
-            vercel_id: process.env.VERCEL_URL || "local"
-        }, { status: 503 });
+        return apiError(error instanceof Error ? error.message : "Unknown error", 503);
     }
 }

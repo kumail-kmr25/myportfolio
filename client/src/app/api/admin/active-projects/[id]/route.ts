@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export async function PATCH(
     request: Request,
@@ -9,7 +10,7 @@ export async function PATCH(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         const body = await request.json();
         const { id } = await params;
@@ -22,9 +23,10 @@ export async function PATCH(
             where: { id },
             data
         });
-        return NextResponse.json(project);
+        return apiResponse(project);
     } catch (error) {
-        return NextResponse.json({ error: "Failed to update" }, { status: 500 });
+        console.error("ActiveProject PATCH error:", error);
+        return apiError("Failed to update active project");
     }
 }
 
@@ -34,12 +36,13 @@ export async function DELETE(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         const { id } = await params;
         await prisma.activeProject.delete({ where: { id } });
-        return NextResponse.json({ success: true });
+        return apiResponse({ success: true });
     } catch (error) {
-        return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
+        console.error("ActiveProject DELETE error:", error);
+        return apiError("Failed to delete active project");
     }
 }

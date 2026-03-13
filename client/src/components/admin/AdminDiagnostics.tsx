@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import {
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import AdminDiagnosticLog from "./AdminDiagnosticLog";
 import useSWR from "swr";
+import { getApiUrl } from "@/lib/api";
 
 export default function AdminDiagnostics({ patterns, logs, onUpdate }: { patterns: any[], logs: any[], onUpdate: () => void }) {
     const [subTab, setSubTab] = useState<"patterns" | "logs">("patterns");
@@ -23,8 +24,10 @@ export default function AdminDiagnostics({ patterns, logs, onUpdate }: { pattern
 
     const handleDeletePattern = async (id: string) => {
         if (!confirm("Delete this pattern?")) return;
-        const res = await fetch(`/api/admin/diagnostic-patterns/${id}`, { method: "DELETE" });
-        if (res.ok) onUpdate();
+        const response = await fetch(getApiUrl(`/api/admin/diagnostic-patterns/${id}`), { method: "DELETE" });
+        const data = await response.json();
+        if (response.ok && data.success) onUpdate();
+        else console.error("Delete failed:", data.error);
     };
 
     return (
@@ -167,15 +170,19 @@ function PatternForm({ pattern, onClose, onUpdate }: { pattern?: any, onClose: (
         const url = pattern ? `/api/admin/diagnostic-patterns/${pattern.id}` : "/api/admin/diagnostic-patterns";
         const method = pattern ? "PATCH" : "POST";
 
-        const res = await fetch(url, {
+        const response = await fetch(getApiUrl(url), {
             method,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
 
-        if (res.ok) {
+        const data = await response.json();
+
+        if (response.ok && data.success) {
             onUpdate();
             onClose();
+        } else {
+            console.error("Save failed:", data.error);
         }
     };
 

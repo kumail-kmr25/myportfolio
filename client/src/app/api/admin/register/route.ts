@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -35,14 +36,14 @@ export async function GET(request: Request) {
 
         const result = verifyCredentials(name, email, phone);
 
-        return NextResponse.json({
+        return apiResponse({
             nameMatch: result.nameMatch,
             emailMatch: result.emailMatch,
             phoneMatch: result.phoneMatch,
         });
     } catch (error) {
         console.error("Verification check error:", error);
-        return NextResponse.json({ error: "Verification failed" }, { status: 500 });
+        return apiError("Verification failed");
     }
 }
 
@@ -50,22 +51,22 @@ export async function POST(request: Request) {
     try {
         const existingAdmin = await prisma.admin.findFirst();
         if (existingAdmin) {
-            return NextResponse.json({ error: "Admin already registered. Registration is closed." }, { status: 403 });
+            return apiError("Admin already registered. Registration is closed.", 403);
         }
 
         const { name, email, phone, password } = await request.json();
 
         if (!name || !email || !phone || !password) {
-            return NextResponse.json({ error: "Name, email, phone and password are required." }, { status: 400 });
+            return apiError("Name, email, phone and password are required.", 400);
         }
 
         if (password.length < 8) {
-            return NextResponse.json({ error: "Password must be at least 8 characters." }, { status: 400 });
+            return apiError("Password must be at least 8 characters.", 400);
         }
 
         const verification = verifyCredentials(name, email, phone);
         if (!verification.allMatch) {
-            return NextResponse.json({ error: "You cannot register. Only authorised admins can register." }, { status: 403 });
+            return apiError("You cannot register. Only authorised admins can register.", 403);
         }
 
         const userId = generateUserId();
@@ -81,7 +82,7 @@ export async function POST(request: Request) {
             },
         });
 
-        return NextResponse.json({
+        return apiResponse({
             success: true,
             message: "Admin registered successfully!",
             userId: admin.userId,
@@ -89,8 +90,8 @@ export async function POST(request: Request) {
     } catch (error: any) {
         console.error("Registration error:", error);
         if (error.code === "P2002") {
-            return NextResponse.json({ error: "An account with these details already exists." }, { status: 409 });
+            return apiError("An account with these details already exists.", 409);
         }
-        return NextResponse.json({ error: "Registration failed. Please try again." }, { status: 500 });
+        return apiError("Registration failed. Please try again.");
     }
 }

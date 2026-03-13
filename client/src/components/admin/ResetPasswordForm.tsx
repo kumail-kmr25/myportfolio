@@ -29,7 +29,7 @@ function ResetPasswordFormContent() {
                 body: JSON.stringify({ token, newPassword }),
             });
             const data = await res.json();
-            if (!res.ok) { setError(data.error || "Reset failed. The link may be expired."); return; }
+            if (!res.ok || data.success === false) { setError(data.error || "Reset failed. The link may be expired."); return; }
             setSuccess(true);
         } catch { setError("Something went wrong. Please try again."); }
         finally { setIsLoading(false); }

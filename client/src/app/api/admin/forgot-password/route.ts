@@ -2,13 +2,14 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import crypto from "crypto";
 import { sendPasswordResetEmail } from "@/lib/mail";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
     try {
         const { email } = await request.json();
 
         if (!email) {
-            return NextResponse.json({ error: "Email is required." }, { status: 400 });
+            return apiError("Email is required.", 400);
         }
 
         const admin = await prisma.admin.findFirst({
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
 
         // Even if we don't find the admin, we return success to prevent email enumeration
         if (!admin) {
-            return NextResponse.json({
+            return apiResponse({
                 success: true,
                 message: "If an account exists for that email, we've sent a reset link.",
             });
@@ -38,12 +39,12 @@ export async function POST(request: Request) {
 
         await sendPasswordResetEmail(email, resetUrl);
 
-        return NextResponse.json({
+        return apiResponse({
             success: true,
             message: "If an account exists for that email, we've sent a reset link.",
         });
     } catch (error) {
         console.error("Forgot password error:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        return apiError("Internal server error");
     }
 }

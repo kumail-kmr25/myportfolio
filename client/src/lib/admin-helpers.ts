@@ -24,16 +24,16 @@ export async function fetchActivities() {
         const activities = [
             ...hireRequests.map(h => ({
                 id: h.id,
-                type: "hire",
+                type: "hire" as const,
                 title: `New Hire Request: ${h.name}`,
-                subtitle: `${h.selectedService} | ${h.budgetRange}`,
+                subtitle: `${h.selectedService} • ${h.budgetRange}`,
                 timestamp: h.createdAt.toISOString(),
                 status: h.status,
                 color: "blue"
             })),
             ...messages.map(m => ({
                 id: m.id,
-                type: "message",
+                type: "message" as const,
                 title: `Message from ${m.name}`,
                 subtitle: m.inquiryType || "General Inquiry",
                 timestamp: m.created_at.toISOString(),
@@ -42,25 +42,25 @@ export async function fetchActivities() {
             })),
             ...diagLogs.map(l => ({
                 id: l.id,
-                type: "diagnostic",
+                type: "diagnostic" as const,
                 title: "Diagnostic Run",
-                subtitle: l.description.substring(0, 60) + (l.description.length > 60 ? "..." : ""),
+                subtitle: l.description.length > 60 ? l.description.substring(0, 57) + "..." : l.description,
                 timestamp: l.createdAt.toISOString(),
                 status: l.matchedPatternId ? "matched" : "no-match",
                 color: "purple"
             })),
             ...testimonials.map(t => ({
                 id: t.id,
-                type: "testimonial",
+                type: "testimonial" as const,
                 title: `New Testimonial: ${t.name}`,
-                subtitle: `${t.role ? t.role + ' | ' : ''}${t.rating} Stars`,
+                subtitle: `${t.role ? t.role + ' • ' : ''}${t.rating} Stars`,
                 timestamp: new Date(t.created_at).toISOString(),
                 status: t.approved ? "approved" : "pending",
-                color: "star"
+                color: "yellow"
             })),
             {
                 id: "sys-1",
-                type: "system",
+                type: "system" as const,
                 title: "Security Heartbeat",
                 subtitle: "SSL/TLS integrity check verified. Secure handshake active.",
                 timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
@@ -69,7 +69,7 @@ export async function fetchActivities() {
             },
             {
                 id: "sys-2",
-                type: "system",
+                type: "system" as const,
                 title: "Database Optimization",
                 subtitle: "Vacuum process completed. Index health: 98.4%",
                 timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
@@ -78,7 +78,7 @@ export async function fetchActivities() {
             },
             {
                 id: "sys-3",
-                type: "security",
+                type: "security" as const,
                 title: "Admin Session",
                 subtitle: `Authorized session active`,
                 timestamp: new Date(Date.now() - 1000 * 60 * 2).toISOString(),

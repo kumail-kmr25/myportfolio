@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const dynamic = 'force-dynamic';
 export const runtime = "nodejs";
@@ -12,9 +13,7 @@ export async function PATCH(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const { replied } = await request.json();
         const { id } = await params;
@@ -24,10 +23,10 @@ export async function PATCH(
             data: { replied },
         });
 
-        return NextResponse.json(updated);
+        return apiResponse(updated);
     } catch (error) {
         console.error("Admin contact PATCH error:", error);
-        return NextResponse.json({ error: "Failed to update message" }, { status: 500 });
+        return apiError("Message status update failed");
     }
 }
 
@@ -37,9 +36,7 @@ export async function DELETE(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const { id } = await params;
 
@@ -47,17 +44,15 @@ export async function DELETE(
             where: { id },
         });
 
-        if (!existingMessage) {
-            return NextResponse.json({ error: "Message not found" }, { status: 404 });
-        }
+        if (!existingMessage) return apiError("Resource non-existent", 404);
 
         await prisma.contactSubmission.delete({
             where: { id },
         });
 
-        return NextResponse.json({ success: true });
+        return apiResponse({ success: true });
     } catch (error) {
         console.error("Admin contact DELETE error:", error);
-        return NextResponse.json({ error: "Failed to delete message" }, { status: 500 });
+        return apiError("Failed to purge contact record");
     }
 }

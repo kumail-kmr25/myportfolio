@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -33,9 +34,9 @@ export async function GET() {
         const phases = await prisma.journeyPhase.findMany({
             orderBy: { order: "asc" },
         });
-        return NextResponse.json(phases);
+        return apiResponse(phases);
     } catch (error) {
         console.error("[API] Error fetching journey phases:", error);
-        return NextResponse.json(FALLBACK_PHASES);
+        return apiResponse(FALLBACK_PHASES);
     }
 }

@@ -2,15 +2,15 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export async function PATCH(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         const { status } = await request.json();
 
-        // Update the system config's manual override to reflect availability
         const existing = await prisma.systemConfig.findFirst();
         if (existing) {
             await prisma.systemConfig.update({
@@ -19,8 +19,9 @@ export async function PATCH(request: Request) {
             });
         }
 
-        return NextResponse.json({ success: true });
+        return apiResponse({ success: true });
     } catch (error) {
-        return NextResponse.json({ error: "Failed to update availability" }, { status: 500 });
+        console.error("ADMIN_AVAILABILITY_PATCH_ERROR:", error);
+        return apiError("System override failure");
     }
 }

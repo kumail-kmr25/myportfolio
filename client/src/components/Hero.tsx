@@ -254,13 +254,9 @@ export default function Hero() {
                                 animate={{ y: [0, -10, 0] }}
                                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                                 onClick={() => openModal()}
-                                className="absolute -top-4 -right-4 p-4 rounded-2xl bg-[#0a0a0a]/80 border border-white/10 backdrop-blur-md hidden sm:block cursor-pointer hover:bg-white/5 transition-colors group/badge"
+                                className="absolute -top-4 -right-4 hidden sm:block cursor-pointer hover:scale-105 transition-transform"
                             >
-                                <div className="text-[8px] font-black text-blue-400 uppercase tracking-widest mb-1">Status</div>
-                                <div className="text-[10px] font-bold text-white flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                                    Available for Hire
-                                </div>
+                                <LiveStatusBadge variant="hero" />
                             </m.div>
                         </m.div>
                     </div>

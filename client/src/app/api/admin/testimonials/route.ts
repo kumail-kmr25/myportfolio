@@ -2,39 +2,35 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function GET() {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const testimonials = await prisma.testimonial.findMany({
-            orderBy: { created_at: "desc" },
+            orderBy: { created_at: "desc" }
         });
 
-        return NextResponse.json(testimonials);
+        return apiResponse(testimonials);
     } catch (error) {
         console.error("Admin testimonials error:", error);
-        return NextResponse.json({ error: "Failed to fetch testimonials" }, { status: 500 });
+        return apiError("Failed to fetch testimonials");
     }
 }
 
 export async function PATCH(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
-        const { id, approved, name, message, role, company, verified, featured, relationship_type, intervention_type, deliveryRating, about_delivery_lead } = await request.json();
+        const body = await request.json();
+        const { id, approved, name, message, role, company, verified, featured, relationship_type, intervention_type, deliveryRating, about_delivery_lead } = body;
 
-        if (!id) {
-            return NextResponse.json({ error: "Testimonial ID is required" }, { status: 400 });
-        }
+        if (!id) return apiError("Testimonial ID is required", 400);
 
         const testimonial = await prisma.testimonial.update({
             where: { id },
@@ -53,9 +49,9 @@ export async function PATCH(request: Request) {
             },
         });
 
-        return NextResponse.json(testimonial);
+        return apiResponse(testimonial);
     } catch (error) {
         console.error("Admin testimonials PATCH error:", error);
-        return NextResponse.json({ error: "Failed to update testimonial" }, { status: 500 });
+        return apiError("Failed to update testimonial status");
     }
 }

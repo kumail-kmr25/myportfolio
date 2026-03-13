@@ -23,7 +23,12 @@ import { hireSchema, type HireFormData } from "@portfolio/shared";
 import { useHireModal } from "@/context/HireModalContext";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 type Step = "services" | "details" | "success";
 
@@ -171,7 +176,9 @@ export default function HireMeModal() {
                 body: JSON.stringify(data),
             });
 
-            if (response.ok) {
+            const json = await response.json().catch(() => ({ success: false, error: "Network response parse failure" }));
+
+            if (response.ok && json.success !== false) {
                 setIsSuccess(true);
                 setTimeout(() => {
                     closeModal();
@@ -182,12 +189,7 @@ export default function HireMeModal() {
                     }, 500);
                 }, 2000);
             } else {
-                const errorData = await response.json().catch(() => null);
-                if (errorData) {
-                    setError(errorData.error + (errorData.message ? `: ${errorData.message}` : "") || "Something went wrong.");
-                } else {
-                    setError(`Error ${response.status}: ${response.statusText}`);
-                }
+                setError(json.error || `Error ${response.status}: ${response.statusText}`);
             }
         } catch (err: any) {
             setError(`Network error: ${err.message || "Failed to fetch"}`);

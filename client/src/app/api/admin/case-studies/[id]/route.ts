@@ -3,6 +3,7 @@ import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { caseStudySchema } from "@portfolio/shared";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -12,14 +13,11 @@ export async function PATCH(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const { id } = await params;
         const body = await request.json();
 
-        // Partial validation for PATCH
         const validatedData = caseStudySchema.partial().parse(body);
 
         const caseStudy = await prisma.caseStudy.update({
@@ -27,13 +25,13 @@ export async function PATCH(
             data: validatedData,
         });
 
-        return NextResponse.json(caseStudy);
+        return apiResponse(caseStudy);
     } catch (error) {
         if (error instanceof Error && error.name === "ZodError") {
-            return NextResponse.json({ error: (error as any).format() }, { status: 400 });
+            return apiError("Domain validation failed: " + JSON.stringify((error as any).format()), 400);
         }
         console.error("Admin Case Study PATCH error:", error);
-        return NextResponse.json({ error: "Failed to update case study" }, { status: 500 });
+        return apiError("Engineering brief update failure");
     }
 }
 
@@ -43,9 +41,7 @@ export async function DELETE(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const { id } = await params;
 
@@ -53,9 +49,9 @@ export async function DELETE(
             where: { id },
         });
 
-        return NextResponse.json({ success: true });
+        return apiResponse({ success: true });
     } catch (error) {
         console.error("Admin Case Study DELETE error:", error);
-        return NextResponse.json({ error: "Failed to delete case study" }, { status: 500 });
+        return apiError("Asset removal sequence aborted");
     }
 }

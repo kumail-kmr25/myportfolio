@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import crypto from "crypto";
 import { sendPasswordResetEmail } from "@/lib/mail";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 // Basic in-memory rate limiting
 const rateLimit = new Map<string, { count: number; lastReset: number }>();
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
         }
 
         if (clientLimit.count >= MAX_REQUESTS) {
-            return NextResponse.json({ error: "Too many reset attempts. Please try again in 15 minutes." }, { status: 429 });
+            return apiError("Too many reset attempts. Please try again in 15 minutes.", 429);
         }
 
         clientLimit.count++;
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         const { email } = await request.json();
 
         if (!email || !email.includes("@")) {
-            return NextResponse.json({ message: "If this email is registered, a reset link will be sent." });
+            return apiResponse({ message: "If this email is registered, a reset link will be sent." });
         }
 
         const admin = await prisma.admin.findUnique({
@@ -48,18 +48,18 @@ export async function POST(request: Request) {
                 },
             });
 
-            const appUrl = process.env.APP_URL || "http://localhost:3000";
+            const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "http://localhost:3000";
             const resetUrl = `${appUrl}/admin/reset-password?token=${token}`;
 
             await sendPasswordResetEmail(admin.email, resetUrl);
         }
 
         // Always return generic success to prevent email enumeration
-        return NextResponse.json({
+        return apiResponse({
             message: "If this email is registered, a reset link will be sent.",
         });
     } catch (error) {
         console.error("Forgot password error:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        return apiError("Internal server error");
     }
 }

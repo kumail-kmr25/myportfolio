@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -11,9 +12,7 @@ export async function PATCH(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const { id } = await params;
         const data = await request.json();
@@ -30,10 +29,10 @@ export async function PATCH(
             },
         });
 
-        return NextResponse.json(phase);
+        return apiResponse(phase);
     } catch (error) {
         console.error("[API] Admin journey PATCH error:", error);
-        return NextResponse.json({ error: "Failed to update journey phase" }, { status: 500 });
+        return apiError("Failed to update journey phase");
     }
 }
 
@@ -43,9 +42,7 @@ export async function DELETE(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const { id } = await params;
 
@@ -53,9 +50,9 @@ export async function DELETE(
             where: { id },
         });
 
-        return NextResponse.json({ success: true });
+        return apiResponse({ success: true });
     } catch (error) {
         console.error("[API] Admin journey DELETE error:", error);
-        return NextResponse.json({ error: "Failed to delete journey phase" }, { status: 500 });
+        return apiError("Failed to delete journey phase");
     }
 }

@@ -6,7 +6,12 @@ import { m, useInView, useSpring, useTransform, Variants } from "framer-motion";
 import { Loader2, Code2, Bug, BookOpen, Layers, CheckSquare, Calendar, Github, ExternalLink } from "lucide-react";
 import { getApiUrl } from "@/lib/api";
 
-const fetcher = (url: string) => fetch(getApiUrl(url)).then((res) => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(getApiUrl(url));
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 function AnimatedCounter({ value, duration = 2 }: { value: number, duration?: number }) {
     const ref = useRef(null);

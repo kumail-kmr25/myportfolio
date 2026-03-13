@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 
+import { apiResponse } from "@/lib/rate-limit";
+
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
@@ -17,13 +19,9 @@ export async function GET() {
             orderBy: { updatedAt: 'desc' }
         });
 
-        if (!resume) {
-            return NextResponse.json(FALLBACK_RESUME);
-        }
-
-        return NextResponse.json(resume);
+        return apiResponse(resume || FALLBACK_RESUME);
     } catch (error) {
         console.error("PUBLIC_RESUME_GET_ERROR:", error);
-        return NextResponse.json(FALLBACK_RESUME);
+        return apiResponse(FALLBACK_RESUME);
     }
 }

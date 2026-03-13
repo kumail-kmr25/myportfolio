@@ -24,6 +24,8 @@ import AdminDeveloperStatus from "@/components/admin/AdminDeveloperStatus";
 import AdminAnalytics from "@/components/admin/AdminAnalytics";
 import AdminResume from "@/components/admin/AdminResume";
 import AdminJourney from "@/components/admin/AdminJourney";
+import AdminCaseStudies from "./AdminCaseStudies";
+import AdminActivityLog from "./AdminActivityLog";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
 
 const fetcher = async (url: string) => {
@@ -32,8 +34,11 @@ const fetcher = async (url: string) => {
         window.dispatchEvent(new CustomEvent('auth-unauthorized'));
         throw new Error("Unauthorized");
     }
-    if (!res.ok) throw new Error("Fetch failed");
-    return res.json();
+    const json = await res.json();
+    if (!res.ok || json.success === false) {
+        throw new Error(json.error || "Fetch failed");
+    }
+    return json.success ? json.data : json;
 };
 
 interface AdminTestimonial { id: string; name: string; email: string; company?: string | null; relationship_type: string; intervention_type: string; message: string; rating: number; about_delivery_lead: string; approved: boolean; featured: boolean; verified: boolean; created_at: string; }
@@ -42,6 +47,7 @@ interface AdminHireRequest { id: string; name: string; email: string; company: s
 interface AdminBlogPost { id: string; title: string; excerpt: string; content: string; category: string; readTime: string; published: boolean; created_at: string; }
 interface AdminDiagnosticLog { id: string; description: string; techStack?: string; createdAt: string; matchedPatternId?: string; environment: string; errorMessage?: string; }
 interface AdminProject { id: string; title: string; summary?: string; description: string; status: string; role?: string; tags: string[]; image: string; demo?: string; github?: string; problem?: string; solution?: string; targetAudience?: string; valueProp?: string; architecture?: any; challenges?: string; engineering?: string; performance?: string; scalability?: string; security?: string; lessons?: string; uiDepth: number; backendDepth: number; securityDepth: number; scalabilityDepth: number; timeline?: any; gallery: string[]; results?: string; metrics: string[]; category?: string; isFeatured: boolean; isVisible: boolean; created_at: string; updated_at: string; }
+interface AdminCaseStudy { id: string; title: string; errorMessage: string; rootCause: string; steps: string[]; solution: string; impact: string; techStack: string[]; isPublished: boolean; created_at: string; }
 interface AdminStats extends SiteStats { diagRuns: number; leadGenTotal: number; hireRequests: number; patternsMatched: number; }
 
 interface AdminDashboardProps {
@@ -50,7 +56,7 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ initialActivities = [], initialAvailability = null }: AdminDashboardProps) {
-    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey" | "activity" | "case-studies">("overview");
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -59,7 +65,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     useEffect(() => {
         const tab = searchParams?.get("tab");
-        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey"];
+        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey", "activity", "case-studies"];
         if (tab && validTabs.includes(tab as any)) {
             setActiveTab(tab as any);
         }
@@ -79,6 +85,8 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
         fallbackData: initialAvailability
     });
     const { data: journeyPhases, mutate: mutateJourney } = useSWR<any[]>(isAuthenticated ? "/api/admin/journey" : null, fetcher);
+    const { data: caseStudies, mutate: mutateCaseStudies } = useSWR<AdminCaseStudy[]>(isAuthenticated ? "/api/admin/case-studies" : null, fetcher);
+    const { data: activityLogs, mutate: mutateActivityLogs } = useSWR<any[]>(isAuthenticated ? "/api/admin/activity-log" : null, fetcher);
 
 
     useEffect(() => {
@@ -143,21 +151,31 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     const handleTestimonialFeature = async (id: string, featured: boolean) => {
         try {
-            await fetch("/api/admin/testimonials", {
+            const res = await fetch("/api/admin/testimonials", {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, featured }),
             });
-            mutateTestimonials();
+            const data = await res.json().catch(() => ({ success: false }));
+            if (res.ok && data.success !== false) {
+                mutateTestimonials();
+            } else {
+                console.error("Testimonial feature update failed:", data.error || res.statusText);
+            }
         } catch (err) { console.error(err); }
     };
 
     const handleTestimonialDelete = async (id: string) => {
         if (!confirm("Delete this testimonial?")) return;
         try {
-            await fetch(`/api/admin/testimonials/${id}`, { method: "DELETE" });
-            mutateTestimonials();
-        } catch (err) { console.error(err); }
+            const res = await fetch(`/api/admin/testimonials/${id}`, { method: "DELETE" });
+            const data = await res.json().catch(() => ({ success: false }));
+            if (res.ok && data.success !== false) {
+                mutateTestimonials();
+            } else {
+                alert(`Failed to delete testimonial: ${data.error || res.statusText}`);
+            }
+        } catch (err) { console.error(err); alert("Network error. Please try again."); }
     };
 
     const handleMessageDelete = async (id: string) => {
@@ -174,23 +192,33 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     const handleToggleReplied = async (id: string, current: boolean) => {
         try {
-            await fetch(`/api/admin/contact/${id}`, {
+            const res = await fetch(`/api/admin/contact/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ replied: !current }),
             });
-            mutateMessages();
+            const data = await res.json().catch(() => ({ success: false }));
+            if (res.ok && data.success !== false) {
+                mutateMessages();
+            } else {
+                console.error("Failed to toggle reply status:", data.error || res.statusText);
+            }
         } catch (err) { console.error(err); }
     };
 
     const handleHireStatusUpdate = async (id: string, status: string) => {
         try {
-            await fetch("/api/admin/hire", {
+            const res = await fetch("/api/admin/hire", {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, status }),
             });
-            mutateHireRequests();
+            const data = await res.json().catch(() => ({ success: false }));
+            if (res.ok && data.success !== false) {
+                mutateHireRequests();
+            } else {
+                console.error("Failed to update hire status:", data.error || res.statusText);
+            }
         } catch (err) { console.error(err); }
     };
 
@@ -213,7 +241,12 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(blogData),
         });
-        if (res.ok) mutateBlogPosts();
+        const data = await res.json().catch(() => ({ success: false }));
+        if (res.ok && data.success !== false) {
+            mutateBlogPosts();
+        } else {
+            console.error("Failed to add blog:", data.error || res.statusText);
+        }
     };
 
     const handleBlogUpdate = async (id: string, blogData: any) => {
@@ -222,7 +255,12 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(blogData),
         });
-        if (res.ok) mutateBlogPosts();
+        const data = await res.json().catch(() => ({ success: false }));
+        if (res.ok && data.success !== false) {
+            mutateBlogPosts();
+        } else {
+            console.error("Failed to update blog:", data.error || res.statusText);
+        }
     };
 
     const handleBlogDelete = async (id: string) => {
@@ -245,7 +283,12 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
         });
-        if (res.ok) mutateJourney();
+        const resData = await res.json().catch(() => ({ success: false }));
+        if (res.ok && resData.success !== false) {
+            mutateJourney();
+        } else {
+            console.error("Failed to add journey phase:", resData.error || res.statusText);
+        }
     };
 
     const handleJourneyUpdate = async (id: string, data: any) => {
@@ -254,7 +297,12 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
         });
-        if (res.ok) mutateJourney();
+        const resData = await res.json().catch(() => ({ success: false }));
+        if (res.ok && resData.success !== false) {
+            mutateJourney();
+        } else {
+            console.error("Failed to update journey phase:", resData.error || res.statusText);
+        }
     };
 
     const handleJourneyDelete = async (id: string) => {
@@ -365,6 +413,8 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "stats" && <AdminStats stats={statsData || null} onUpdate={handleStatsUpdate} />}
                                 {activeTab === "diagnostics" && <AdminDiagnostics patterns={Array.isArray(diagPatterns) ? diagPatterns : []} logs={Array.isArray(diagLogs) ? diagLogs : []} onUpdate={handleDiagAction} />}
                                 {activeTab === "journey" && <AdminJourney phases={Array.isArray(journeyPhases) ? journeyPhases : []} onAdd={handleAddJourney} onUpdate={handleJourneyUpdate} onDelete={handleJourneyDelete} />}
+                                {activeTab === "case-studies" && <AdminCaseStudies studies={Array.isArray(caseStudies) ? caseStudies : []} onUpdate={() => mutateCaseStudies()} />}
+                                {activeTab === "activity" && <AdminActivityLog logs={Array.isArray(activityLogs) ? activityLogs : []} onUpdate={() => mutateActivityLogs()} />}
                             </ErrorBoundary>
                         </m.div>
                     </AnimatePresence>

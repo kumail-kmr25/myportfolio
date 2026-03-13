@@ -7,8 +7,14 @@ import { Loader2, MessageSquare, Send, CheckCircle2, Trophy, Lightbulb, Zap, Roc
 import { featureRequestSchema } from "@portfolio/shared";
 import { z } from "zod";
 import { useHireModal } from "@/context/HireModalContext";
+import { getApiUrl } from "@/lib/api";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(getApiUrl(url));
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 interface FeatureRequest {
     id: string;
@@ -39,14 +45,14 @@ export default function FeatureSuggestion() {
         try {
             const validatedData = featureRequestSchema.parse(formData);
 
-            const res = await fetch(`/api/feature-requests`, {
-
+            const res = await fetch(getApiUrl(`/api/feature-requests`), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(validatedData),
             });
 
-            if (!res.ok) throw new Error("Failed to submit");
+            const data = await res.json();
+            if (!res.ok || data.success === false) throw new Error(data.error || "Failed to submit");
 
             setIsSuccess(true);
             setFormData({ name: "", email: "", message: "", category: "UI" });

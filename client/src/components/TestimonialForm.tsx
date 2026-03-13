@@ -6,6 +6,7 @@ import { Star, Loader2, CheckCircle2 } from "lucide-react";
 import { m } from "framer-motion";
 
 import { testimonialSchema, type TestimonialFormData } from "@portfolio/shared";
+import { getApiUrl } from "@/lib/api";
 
 interface TestimonialFormProps {
     onSuccess: () => void;
@@ -30,15 +31,14 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
         try {
             const validatedData = testimonialSchema.parse(formData);
 
-            const res = await fetch(`/api/testimonials`, {
-
+            const res = await fetch(getApiUrl(`/api/testimonials`), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(validatedData),
             });
 
-            if (!res.ok) {
-                const data = await res.json();
+            const data = await res.json();
+            if (!res.ok || data.success === false) {
                 throw new Error(data.error || "Failed to submit testimonial");
             }
 

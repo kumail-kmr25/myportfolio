@@ -4,7 +4,14 @@ import { useState } from "react";
 import { Loader2, Save, Zap, Clock, BarChart3, MessageSquare } from "lucide-react";
 import useSWR from "swr";
 
-const fetcher = (url: string) => fetch(url).then(r => r.json());
+import { getApiUrl } from "@/lib/api";
+
+const fetcher = async (url: string) => {
+    const res = await fetch(getApiUrl(url));
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 const STATUS_OPTIONS = [
     { value: "available", label: "🟢 Available", desc: "Open to new projects" },
@@ -36,15 +43,20 @@ export default function AdminLiveStatus() {
         if (!current) return;
         setSaving(true);
         try {
-            await fetch("/api/admin/developer-status", {
+            const response = await fetch(getApiUrl("/api/admin/developer-status"), {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(current),
             });
-            await mutate();
-            setSaved(true);
-            setTimeout(() => setSaved(false), 2000);
-            setForm(null);
+            const data = await response.json();
+            if (response.ok && data.success) {
+                await mutate();
+                setSaved(true);
+                setTimeout(() => setSaved(false), 2000);
+                setForm(null);
+            } else {
+                console.error("Save failed:", data.error);
+            }
         } finally {
             setSaving(false);
         }

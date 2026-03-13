@@ -2,32 +2,35 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function GET() {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         const patterns = await prisma.issuePattern.findMany({
             orderBy: { createdAt: "desc" }
         });
-        return NextResponse.json(patterns);
+        return apiResponse(patterns);
     } catch (error) {
-        return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
+        console.error("IssuePatterns GET error:", error);
+        return apiError("Failed to fetch patterns");
     }
 }
 
 export async function POST(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         const body = await request.json();
         const pattern = await prisma.issuePattern.create({ data: body });
-        return NextResponse.json(pattern, { status: 201 });
+        return apiResponse(pattern, 201);
     } catch (error) {
-        return NextResponse.json({ error: "Failed to create" }, { status: 500 });
+        console.error("IssuePatterns POST error:", error);
+        return apiError("Failed to create pattern");
     }
 }

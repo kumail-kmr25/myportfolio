@@ -11,7 +11,12 @@ const STATUS_CONFIG = {
 
 type StatusKey = keyof typeof STATUS_CONFIG;
 
-const fetcher = (url: string) => fetch(url).then(r => r.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 interface StatusData {
     status: StatusKey;

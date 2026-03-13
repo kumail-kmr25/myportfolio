@@ -23,7 +23,12 @@ interface Resume {
     createdAt: string;
 }
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 export default function AdminResume() {
     const { data: resumes, mutate } = useSWR<Resume[]>("/api/admin/resume", fetcher);

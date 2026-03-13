@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { BarChart3, Save, RefreshCw, Loader2, Info } from "lucide-react";
+import { getApiUrl } from "@/lib/api";
 
 export interface SiteStats {
     bugsFixed: number;
@@ -31,13 +32,14 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await fetch(`/api/admin/stats`, {
-
+            const response = await fetch(getApiUrl(`/api/admin/stats`), {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
             });
-            if (res.ok) onUpdate();
+            const data = await response.json();
+            if (response.ok && data.success) onUpdate();
+            else console.error("Update failed:", data.error);
         } finally {
             setLoading(false);
         }

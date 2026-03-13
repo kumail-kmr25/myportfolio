@@ -3,6 +3,7 @@ import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { MOCK_PROJECTS } from "@/lib/mock-data";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -17,15 +18,13 @@ export async function GET() {
             ]
         });
         
-        // Fallback to mock data if no projects found in DB
         if (projects.length === 0) {
-            return NextResponse.json(MOCK_PROJECTS);
+            return apiResponse(MOCK_PROJECTS);
         }
 
-        return NextResponse.json({ projects, version: "v1.0.2-stable" });
+        return apiResponse({ projects, version: "v1.0.2-stable" });
     } catch (error) {
         console.error("GET_PROJECTS_ERROR:", error);
-        // Guaranteed fallback if DB or imports fail
         const fallback = [
             {
                 id: "fallback-1",
@@ -58,14 +57,14 @@ export async function GET() {
                 created_at: new Date().toISOString()
             }
         ];
-        return NextResponse.json({ projects: fallback, version: "v1.0.2-fallback" });
+        return apiResponse({ projects: fallback, version: "v1.0.2-fallback" });
     }
 }
 
 export async function POST(req: Request) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         const body = await req.json();
         const project = await prisma.project.create({
@@ -80,9 +79,9 @@ export async function POST(req: Request) {
                 architecture: body.architecture || null,
             }
         });
-        return NextResponse.json(project);
+        return apiResponse(project);
     } catch (error) {
         console.error("POST_PROJECT_ERROR:", error);
-        return NextResponse.json({ error: "Failed to create project", message: error instanceof Error ? error.message : "Unknown error" }, { status: 500 });
+        return apiError("Project creation failed");
     }
 }

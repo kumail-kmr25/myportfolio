@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -26,19 +27,17 @@ export async function GET() {
             });
         }
 
-        return NextResponse.json(status);
+        return apiResponse(status);
     } catch (error) {
         console.error("Developer status GET error:", error);
-        return NextResponse.json(FALLBACK_STATUS);
+        return apiResponse(FALLBACK_STATUS);
     }
 }
 
 export async function PATCH(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        if (!session) return apiError("Unauthorized", 401);
 
         const body = await request.json();
         const { status, capacityPercent, nextAvailabilityDays, currentFocus, customMessage } = body;
@@ -70,9 +69,9 @@ export async function PATCH(request: Request) {
             });
         }
 
-        return NextResponse.json(devStatus);
+        return apiResponse(devStatus);
     } catch (error) {
         console.error("Developer status PATCH error:", error);
-        return NextResponse.json({ error: "Failed to update status" }, { status: 500 });
+        return apiError("Failed to update status");
     }
 }

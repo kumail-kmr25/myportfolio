@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -11,7 +12,7 @@ export async function PATCH(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         const { id } = await params;
         const { status } = await request.json();
@@ -21,10 +22,10 @@ export async function PATCH(
             data: { status }
         });
 
-        return NextResponse.json(updated);
+        return apiResponse(updated);
     } catch (error) {
         console.error("Admin Feature Request PATCH error:", error);
-        return NextResponse.json({ error: "Failed to update feature request" }, { status: 500 });
+        return apiError("Roadmap integration sync failure");
     }
 }
 
@@ -34,15 +35,15 @@ export async function DELETE(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         const { id } = await params;
 
         await prisma.featureRequest.delete({ where: { id } });
 
-        return NextResponse.json({ success: true });
+        return apiResponse({ success: true });
     } catch (error) {
         console.error("Admin Feature Request DELETE error:", error);
-        return NextResponse.json({ error: "Failed to delete feature request" }, { status: 500 });
+        return apiError("Failed to prune feature request");
     }
 }

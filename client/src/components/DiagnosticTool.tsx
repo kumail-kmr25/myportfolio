@@ -23,13 +23,16 @@ export default function DiagnosticTool() {
 
         try {
             const res = await fetch(getApiUrl("/api/diagnose"), {
-
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
             });
             const data = await res.json();
-            setResult(data);
+            if (res.ok && data.success !== false) {
+                setResult(data.data || data);
+            } else {
+                console.error("DIAGNOSE_API_ERROR:", data.error || res.statusText);
+            }
         } catch (error) {
             console.error("DIAGNOSE_FRONTEND_ERROR:", error);
         } finally {

@@ -21,7 +21,7 @@ export default function ForgotPasswordForm() {
                 body: JSON.stringify({ email }),
             });
             const data = await res.json();
-            if (!res.ok) {
+            if (!res.ok || data.success === false) {
                 setError(data.error || "Failed to send link.");
                 return;
             }

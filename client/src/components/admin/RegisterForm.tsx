@@ -28,9 +28,10 @@ export default function RegisterForm() {
                 try {
                     const params = new URLSearchParams({ name: name || "", email: email || "", phone: phone || "" });
                     const res = await fetch(`/api/admin/register?${params}`);
-                    if (res.ok) {
-                        const data = await res.json();
-                        setMatchStatus({ nameMatch: data.nameMatch, emailMatch: data.emailMatch, phoneMatch: data.phoneMatch });
+                    const data = await res.json();
+                    if (res.ok && data.success !== false) {
+                        const payload = data.data || data;
+                        setMatchStatus({ nameMatch: payload.nameMatch, emailMatch: payload.emailMatch, phoneMatch: payload.phoneMatch });
                     }
                 } catch { }
             }, 300);
@@ -84,8 +85,8 @@ export default function RegisterForm() {
                 body: JSON.stringify(formData),
             });
             const data = await res.json();
-            if (!res.ok) {
-                setError(data.error);
+            if (!res.ok || data.success === false) {
+                setError(data.error || "Registration failed. Try again.");
                 return;
             }
             setSuccess(true);

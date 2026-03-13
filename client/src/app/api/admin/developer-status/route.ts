@@ -2,18 +2,18 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function PATCH(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         const body = await request.json();
         const { status, capacityPercent, nextAvailabilityDays, currentFocus, customMessage } = body;
 
-        // Upsert — only one row
         const existing = await prisma.developerStatus.findFirst();
 
         let result;
@@ -30,13 +30,19 @@ export async function PATCH(request: Request) {
             });
         } else {
             result = await prisma.developerStatus.create({
-                data: { status: status || "available", capacityPercent: capacityPercent || 0, nextAvailabilityDays: nextAvailabilityDays || 0, currentFocus: currentFocus || "Open to new projects", customMessage }
+                data: { 
+                    status: status || "available", 
+                    capacityPercent: capacityPercent || 0, 
+                    nextAvailabilityDays: nextAvailabilityDays || 0, 
+                    currentFocus: currentFocus || "Open to new projects", 
+                    customMessage 
+                }
             });
         }
 
-        return NextResponse.json(result);
+        return apiResponse(result);
     } catch (error) {
         console.error("Developer status PATCH error:", error);
-        return NextResponse.json({ error: "Failed to update status" }, { status: 500 });
+        return apiError("Broadcast signal synchronization failed");
     }
 }

@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
+import { apiResponse } from "@/lib/rate-limit";
 export const runtime = "nodejs";
 export async function GET() {
-    return NextResponse.json({ status: "ok", message: "Deployment check: v1.0.1", timestamp: new Date().toISOString() });
+    return apiResponse({ status: "ok", message: "Deployment check: v1.0.1", timestamp: new Date().toISOString() });
 }

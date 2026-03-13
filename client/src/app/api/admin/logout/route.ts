@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
+import { apiResponse } from "@/lib/rate-limit";
 
 export async function POST() {
-    const response = NextResponse.json({ success: true });
+    const response = apiResponse({ success: true });
 
     // Clear legacy custom admin session cookie
     response.cookies.set("admin_session", "", {

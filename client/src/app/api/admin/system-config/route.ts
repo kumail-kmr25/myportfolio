@@ -2,13 +2,14 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { apiResponse, apiError } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function GET() {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         let config = await prisma.systemConfig.findFirst();
 
@@ -18,16 +19,17 @@ export async function GET() {
             });
         }
 
-        return NextResponse.json(config);
+        return apiResponse(config);
     } catch (error) {
-        return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
+        console.error("SYSTEM_CONFIG_GET_ERROR:", error);
+        return apiError("System configuration retrieval failed");
     }
 }
 
 export async function PATCH(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) return apiError("Unauthorized", 401);
 
         const body = await request.json();
         const existing = await prisma.systemConfig.findFirst();
@@ -44,8 +46,9 @@ export async function PATCH(request: Request) {
             });
         }
 
-        return NextResponse.json(config);
+        return apiResponse(config);
     } catch (error) {
-        return NextResponse.json({ error: "Failed to update" }, { status: 500 });
+        console.error("SYSTEM_CONFIG_PATCH_ERROR:", error);
+        return apiError("Failed to update core system parameters");
     }
 }

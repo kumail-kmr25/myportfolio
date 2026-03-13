@@ -9,13 +9,19 @@ import ProjectCard from "./ProjectCard";
 import ProjectCaseStudyModal from "./ProjectCaseStudyModal";
 import SectionReveal from "./SectionReveal";
 import { useHireModal } from "@/context/HireModalContext";
+import { getApiUrl } from "@/lib/api";
 
-const fetcher = (url: string) => fetch(url).then(r => r.json());
+const fetcher = async (url: string) => {
+    const res = await fetch(getApiUrl(url));
+    const json = await res.json();
+    if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+    return json.success ? json.data : json;
+};
 
 export default function Projects() {
     const { data, isLoading } = useSWR("/api/projects", fetcher);
     // Handle both direct array (fallback/mock) and object-wrapped array (API v1)
-    const projects = data?.projects || (Array.isArray(data) ? data : []);
+    const projects = Array.isArray(data) ? data : [];
     const [selectedProject, setSelectedProject] = useState<any>(null);
     const [showAllProjects, setShowAllProjects] = useState(false);
     const { openModal } = useHireModal();
@@ -78,7 +84,7 @@ export default function Projects() {
                             </h2>
                             
                             <p className="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed italic">
-                                "Real systems I designed and built."
+                                &quot;Real systems I designed and built.&quot;
                             </p>
                         </m.div>
 
@@ -220,7 +226,7 @@ export default function Projects() {
                                 </h3>
                                 
                                 <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-12">
-                                    Let's collaborate to build a high-performance system tailored to your specific needs.
+                                    Let&apos;s collaborate to build a high-performance system tailored to your specific needs.
                                 </p>
                                 
                                 <div className="flex flex-col sm:flex-row items-center gap-6">

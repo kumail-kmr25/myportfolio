@@ -34,7 +34,7 @@ export default function QuickNav() {
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isOpen]);
+    }, [isOpen, openModal]);
 
     const navigate = (link: any) => {
         setIsOpen(false);

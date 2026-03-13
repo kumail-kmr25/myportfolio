@@ -207,7 +207,7 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                                             <h3 className="text-xl font-bold text-white tracking-tight uppercase">Problem</h3>
                                         </div>
                                         <p className="text-gray-400 text-lg leading-relaxed italic border-l-2 border-red-500/20 pl-6">
-                                            "{project.problem || "No specific problem documented for this project."}"
+                                            &quot;{project.problem || "No specific problem documented for this project."}&quot;
                                         </p>
                                     </div>
 
@@ -496,7 +496,7 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                         <section className="px-8 sm:px-16 pb-20 pt-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-8">
                             <div>
                                 <h4 className="text-white font-bold italic">Interested in the engineering behind this?</h4>
-                                <p className="text-gray-500 text-sm">Let's discuss architecture and technical feasibility.</p>
+                                <p className="text-gray-500 text-sm">Let&apos;s discuss architecture and technical feasibility.</p>
                             </div>
                             <div className="flex gap-4">
                                 <button 
