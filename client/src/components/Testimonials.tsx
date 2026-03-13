@@ -4,7 +4,7 @@
 import Image from "next/image";
 import { Star, BadgeCheck, Quote, Plus } from "lucide-react";
 import { m, Variants } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import TestimonialModal from "./TestimonialModal";
 import { getApiUrl } from "@/lib/api";
 
@@ -103,23 +103,28 @@ export default function Testimonials() {
     const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchTestimonials = async () => {
+    const fetcher = useCallback(async (url: string) => {
+        const res = await fetch(getApiUrl(url));
+        const json = await res.json();
+        if (!res.ok || json.success === false) throw new Error(json.error || "Fetch failed");
+        return json.success ? json.data : json;
+    }, []);
+
+    const fetchTestimonials = useCallback(async () => {
+        setIsLoading(true);
         try {
-            const res = await fetch(getApiUrl("/api/testimonials"));
-            const data = await res.json();
-            if (res.ok && data.success !== false) {
-                setTestimonials(data.data || data);
-            }
+            const data = await fetcher("/api/testimonials");
+            setTestimonials(data);
         } catch (error) {
             console.error("Error fetching testimonials:", error);
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [fetcher]);
 
     useEffect(() => {
         fetchTestimonials();
-    }, []);
+    }, [fetchTestimonials]);
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },

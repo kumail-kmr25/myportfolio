@@ -107,10 +107,7 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
 
             if (!res.ok) throw new Error("Submission failed");
             setIsSuccess(true);
-            setIsSuccess(true);
-            setTimeout(() => {
-                window.location.href = "/admin";
-            }, 3000);
+            onSuccess(); // Refresh the list
         } catch (err) {
             const msg = (err as Error).message;
             if (msg.includes("fetch") || msg.includes("Failed to fetch")) {
