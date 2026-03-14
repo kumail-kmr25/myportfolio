@@ -12,6 +12,9 @@ import PaymentLinks from "./features/PaymentLinks";
 import MilestoneTracker from "./features/MilestoneTracker";
 import BusinessCard from "./features/BusinessCard";
 import ABTesting from "./features/ABTesting";
+import SignatureGen from "./features/SignatureGen";
+import ArticleList from "./features/ArticleList";
+import AchievementGallery from "./features/AchievementGallery";
 
 export default function About() {
     const itemVariants: Variants = {
@@ -169,6 +172,10 @@ export default function About() {
                 </div>
 
                 <div className="mt-32">
+                    <AchievementGallery />
+                </div>
+
+                <div className="mt-32">
                     <TechRadar />
                 </div>
 
@@ -185,12 +192,17 @@ export default function About() {
                 </div>
 
                 <div className="mt-32">
+                    <ArticleList />
+                </div>
+
+                <div className="mt-32">
                     <MilestoneTracker />
                 </div>
 
                 <div className="mt-48 lg:mt-64 space-y-32">
                     <ProposalGen />
                     <PaymentLinks />
+                    <SignatureGen />
                 </div>
 
                 <div className="mt-32 lg:mt-48">

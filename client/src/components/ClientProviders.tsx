@@ -11,6 +11,7 @@ import Preloader from "./Preloader";
 import Navbar from "./Navbar";
 import { SelectionProvider } from "@/context/SelectionContext";
 import AIChatAssistant from "./features/AIChatAssistant";
+import FloatingControls from "./features/FloatingControls";
 
 export default function ClientProviders({ children }: { children: React.ReactNode }) {
     return (
@@ -34,6 +35,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
                     </LazyMotion>
                     <QuickNav />
                     <AIChatAssistant />
+                    <FloatingControls />
                 </HireModalProvider>
             </SelectionProvider>
         </SessionProvider>
