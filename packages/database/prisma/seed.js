@@ -9,7 +9,7 @@ async function main() {
 
     // 1. Create Admin
     const adminEmail = "ka6307464@gmail.com";
-    const hashedPassword = await bcrypt.hash("admin123", 10);
+    const hashedPassword = "$2b$12$mZWl6IrG1SR3Cur.hxVL.22ciZl.64GTDk.C2kEh"; // KUMAIL@admin25?.
 
     try {
         await prisma.admin.upsert({
