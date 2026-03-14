@@ -7,21 +7,24 @@ import Image from "next/image";
 interface ProjectCardProps {
     project: any;
     isFeatured?: boolean;
+    isHero?: boolean;
     onViewCaseStudy: (project: any) => void;
 }
 
-export default function ProjectCard({ project, isFeatured = false, onViewCaseStudy }: ProjectCardProps) {
+export default function ProjectCard({ project, isFeatured = false, isHero = false, onViewCaseStudy }: ProjectCardProps) {
+    const isMainFeatured = isHero || isFeatured;
+    
     const cardVariants: any = {
         hidden: { opacity: 0, y: 30 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
     };
 
-    if (isFeatured) {
+    if (isMainFeatured) {
         return (
             <m.div 
                 variants={cardVariants}
                 onClick={() => onViewCaseStudy(project)}
-                className="group relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 p-8 lg:p-12 rounded-[3.5rem] bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/5 hover:border-blue-500/30 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(59,130,246,0.15)] transition-all duration-700 overflow-hidden cursor-pointer"
+                className={`group relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 p-8 lg:p-12 rounded-[3.5rem] bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/5 hover:border-blue-500/30 transition-all duration-700 overflow-hidden cursor-pointer ${isHero ? 'lg:col-span-1' : ''}`}
             >
                 {/* Background Glow */}
                 <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500/20 blur-[120px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />

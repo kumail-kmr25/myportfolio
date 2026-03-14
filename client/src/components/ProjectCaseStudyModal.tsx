@@ -318,27 +318,60 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                                 </section>
                             )}
 
-                            {/* Deep Engineering Section */}
-                            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                <div className="card p-8 bg-white/5 border-white/5 space-y-4">
-                                    <BarChart className="text-blue-500" size={24} />
-                                    <h4 className="text-white font-bold">Performance</h4>
-                                    <p className="text-xs text-gray-500 leading-relaxed">{project.performance || "Highly optimized initial loads with Next.js pre-rendering."}</p>
+                            {/* Deep Engineering Section - Technical Depth Visuals */}
+                            <section className="space-y-12">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
+                                        <Cpu size={20} />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-white tracking-tight uppercase">Technical Depth Analysis</h3>
                                 </div>
-                                <div className="card p-8 bg-white/5 border-white/5 space-y-4">
-                                    <Shield className="text-purple-500" size={24} />
-                                    <h4 className="text-white font-bold">Security</h4>
-                                    <p className="text-xs text-gray-500 leading-relaxed">{project.security || "End-to-end data encryption and robust auth patterns."}</p>
+                                
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    {[
+                                        { label: "UI/UX Fidelity", value: project.uiDepth || 85, icon: Layers, color: "text-blue-500", bg: "bg-blue-500/10" },
+                                        { label: "Backend Logic", value: project.backendDepth || 80, icon: Database, color: "text-purple-500", bg: "bg-purple-500/10" },
+                                        { label: "Security Layer", value: project.securityDepth || 90, icon: Shield, color: "text-emerald-500", bg: "bg-emerald-500/10" },
+                                        { label: "Scalability", value: project.scalabilityDepth || 75, icon: Zap, color: "text-orange-500", bg: "bg-orange-500/10" },
+                                    ].map((depth) => (
+                                        <div key={depth.label} className="p-8 rounded-[2.5rem] bg-white/5 border border-white/5 space-y-6 group hover:border-white/10 transition-all">
+                                            <div className="flex justify-between items-start">
+                                                <div className={`p-3 rounded-2xl ${depth.bg} ${depth.color}`}>
+                                                    <depth.icon size={20} />
+                                                </div>
+                                                <span className={`text-2xl font-black ${depth.color}`}>{depth.value}%</span>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">{depth.label}</p>
+                                                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                                    <m.div 
+                                                        initial={{ width: 0 }}
+                                                        whileInView={{ width: `${depth.value}%` }}
+                                                        transition={{ duration: 1, ease: "easeOut" }}
+                                                        className={`h-full bg-gradient-to-r from-blue-600 to-blue-400`}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="card p-8 bg-white/5 border-white/5 space-y-4">
-                                    <Cpu className="text-orange-500" size={24} />
-                                    <h4 className="text-white font-bold">Scalability</h4>
-                                    <p className="text-xs text-gray-500 leading-relaxed">{project.scalability || "Microservice-ready architecture built for growth."}</p>
-                                </div>
-                                <div className="card p-8 bg-white/5 border-white/5 space-y-4">
-                                    <Database className="text-emerald-500" size={24} />
-                                    <h4 className="text-white font-bold">Resilience</h4>
-                                    <p className="text-xs text-gray-500 leading-relaxed">{project.backendDepth > 80 ? "Fault-tolerant systems with error handling." : "Standard reliable logic."}</p>
+
+                                {/* Engineering Insight Card */}
+                                <div className="p-10 rounded-[3rem] bg-[#050505] border border-white/10 relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 p-8 opacity-5">
+                                        <Terminal size={120} />
+                                    </div>
+                                    <div className="relative z-10 flex flex-col lg:flex-row gap-10 items-center">
+                                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-500 shrink-0">
+                                            <Code2 size={24} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <h4 className="text-lg font-black text-white uppercase tracking-tight">Engineering Insight</h4>
+                                            <p className="text-gray-400 italic text-lg leading-relaxed">
+                                                &quot;{project.engineering || project.scalability || "System handles high-concurrency demands by leveraging edge-caching and optimized database indexing."}&quot;
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </section>
 

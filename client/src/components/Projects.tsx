@@ -1,15 +1,33 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState, useEffect, useMemo } from "react";
 import useSWR from "swr";
 import { m, AnimatePresence } from "framer-motion";
-import { Layers, Loader2, Sparkles, Code2, Rocket, LayoutGrid, Cpu, ArrowRight } from "lucide-react";
+import { 
+    Layers, 
+    Loader2, 
+    Sparkles, 
+    Code2, 
+    Rocket, 
+    LayoutGrid, 
+    Cpu, 
+    ArrowRight,
+    Utensils,
+    Hotel,
+    Clapperboard,
+    Zap,
+    BarChart3,
+    ShoppingCart,
+    Wrench,
+    MapPin,
+    Globe
+} from "lucide-react";
 import ProjectCard from "./ProjectCard";
 import ProjectCaseStudyModal from "./ProjectCaseStudyModal";
 import SectionReveal from "./SectionReveal";
 import { useHireModal } from "@/context/HireModalContext";
 import { getApiUrl } from "@/lib/api";
+import { highConversionProjects } from "@/lib/projects-data";
 
 const fetcher = async (url: string) => {
     try {
@@ -22,85 +40,58 @@ const fetcher = async (url: string) => {
     }
 };
 
+const industries = [
+    { id: "all", label: "Global Scope", icon: Globe },
+    { id: "Restaurant", label: "Restaurants", icon: Utensils },
+    { id: "Hotel", label: "Hotels", icon: Hotel },
+    { id: "Agency", label: "Agencies", icon: Clapperboard },
+    { id: "Startup", label: "Startups", icon: Zap },
+    { id: "SaaS", label: "SaaS/B2B", icon: BarChart3 },
+    { id: "E-commerce", label: "E-Commerce", icon: ShoppingCart },
+    { id: "Local Service", label: "Servicing", icon: Wrench },
+    { id: "Real Estate", label: "Real Estate", icon: MapPin },
+];
+
 export default function Projects() {
     const { data, isLoading } = useSWR("/api/projects", fetcher);
-    
-    // Updated Premium fallback data with requested projects
-    const fallbackProjects = [
-        {
-            id: "restaurant-booking",
-            title: "Restaurant Booking Platform",
-            summary: "Client had a static HTML site with no online reservations. Built a full-stack booking system with real-time availability.",
-            result: "Online bookings increased by 60% in first month",
-            isFeatured: true,
-            status: "Production",
-            tags: ["Next.js", "Node.js", "PostgreSQL", "Stripe"],
-            image: "https://picsum.photos/seed/restaurant/800/500",
-            demo: "#",
-            github: "#"
-        },
-        {
-            id: "saas-dashboard",
-            title: "SaaS Dashboard UI",
-            summary: "Startup needed a scalable admin dashboard for their B2B product. Built a fully responsive dashboard with real-time analytics.",
-            result: "Reduced page load time from 6s to 1.3s",
-            isFeatured: true,
-            status: "Production",
-            tags: ["React", "TypeScript", "TailwindCSS", "Chart.js"],
-            image: "https://picsum.photos/seed/dashboard/800/500",
-            demo: "#",
-            github: "#"
-        },
-        {
-            id: "ecommerce-rebuild",
-            title: "E-Commerce Store Rebuild",
-            summary: "Client's WooCommerce store was scoring 28 on PageSpeed. Rebuilt in Next.js with optimized images and CDN.",
-            result: "PageSpeed score improved from 28 to 94",
-            isFeatured: false,
-            status: "Production",
-            tags: ["Next.js", "Shopify API", "TailwindCSS", "Vercel"],
-            image: "https://picsum.photos/seed/ecommerce/800/500",
-            demo: "#",
-            github: "#"
-        }
-    ];
-
-    // Added a loading timeout state to avoid indefinite loaders
-    const [loadingTimeout, setLoadingTimeout] = useState(false);
-    
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoadingTimeout(true);
-        }, 1500);
-        return () => clearTimeout(timer);
-    }, []);
-
-    // Handle both direct array (legacy) and object-wrapped array (Standard API)
-    const projectsData = data?.projects || (Array.isArray(data) ? data : null);
-    const projects = projectsData && projectsData.length > 0 ? projectsData : fallbackProjects;
+    const [selectedIndustry, setSelectedIndustry] = useState("all");
     const [selectedProject, setSelectedProject] = useState<any>(null);
-    const [showAllProjects, setShowAllProjects] = useState(false);
     const { openModal } = useHireModal();
 
-    const isCurrentlyLoading = isLoading && !loadingTimeout;
+    const projectsData = data?.projects || (Array.isArray(data) ? data : null);
+    
+    // Merge real data with our high-conversion drafts
+    const allProjects = useMemo(() => {
+        const merged = [...(projectsData || [])];
+        // Add draft projects if they don't exist by ID
+        highConversionProjects.forEach(draft => {
+            if (!merged.find(p => p.id === draft.id || p.title === draft.title)) {
+                merged.push(draft);
+            }
+        });
+        return merged.filter(p => p.isVisible !== false);
+    }, [projectsData]);
 
-    const containerVariants: any = {
+    const filteredProjects = useMemo(() => {
+        if (selectedIndustry === "all") return allProjects;
+        return allProjects.filter(p => p.category === selectedIndustry);
+    }, [allProjects, selectedIndustry]);
+
+    const heroProject = useMemo(() => {
+        return filteredProjects.find(p => p.isFeatured) || filteredProjects[0];
+    }, [filteredProjects]);
+
+    const secondaryProjects = useMemo(() => {
+        return filteredProjects.filter(p => p.id !== heroProject?.id);
+    }, [filteredProjects, heroProject]);
+
+    const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.2,
-                delayChildren: 0.3
+                staggerChildren: 0.1
             }
-        }
-    };
-
-    const headerVariants: any = {
-        hidden: { opacity: 0, y: 30 },
-        visible: { 
-            opacity: 1, 
-            y: 0, 
-            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } 
         }
     };
 
@@ -108,208 +99,159 @@ export default function Projects() {
         <section id="projects" className="py-24 lg:py-32 bg-[#020202] relative overflow-hidden">
             {/* Background Architecture Elements */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full bg-gradient-to-b from-blue-500/10 via-white/5 to-transparent" />
-            <div className="absolute top-1/2 right-0 w-96 h-96 bg-blue-500/5 blur-[120px] rounded-full" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 blur-[120px] rounded-full" />
-
+            <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-blue-500/5 blur-[120px] rounded-full" />
+            
             <div className="section-container relative z-10">
-                {isCurrentlyLoading ? (
-                    <div className="py-32 flex flex-col items-center justify-center space-y-4">
-                        <Loader2 className="w-10 h-10 text-blue-500 animate-spin opacity-20" />
-                        <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Compiling Product Matrix...</p>
-                    </div>
-                ) : projects.length === 0 ? (
-                    <div className="py-32 flex flex-col items-center justify-center space-y-4 text-center">
-                        <Loader2 className="w-8 h-8 text-blue-500 animate-spin opacity-20" />
-                        <p className="text-gray-500 italic">Synchronizing Neural Project Matrix...</p>
-                        <p className="text-[10px] text-gray-600 uppercase tracking-widest font-black">Establishing Data Uplink</p>
-                    </div>
-                ) : (
-                    <>
-                        {/* Header Section */}
+                <SectionReveal>
+                    <div className="flex flex-col items-center text-center mb-20 lg:mb-24">
                         <m.div 
-                            variants={headerVariants}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            className="flex flex-col items-center text-center mb-24 lg:mb-32"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-black text-blue-400 uppercase tracking-widest mb-6"
                         >
-                            <div className="flex items-center gap-4 mb-6">
-                                <span className="px-5 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-black text-blue-400 uppercase tracking-widest flex items-center gap-2">
-                                <LayoutGrid size={12} /> Product Ecosystem
-                                </span>
-                            </div>
-                            
-                            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-8 leading-none">
-                                Featured <span className="text-blue-500 italic">Projects</span>
-                            </h2>
-                            
-                            <p className="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed italic">
-                                &quot;Real systems I designed and built.&quot;
-                            </p>
+                            <Sparkles size={12} className="animate-pulse" /> Result-Driven Architecture
                         </m.div>
+                        
+                        <h2 className="text-6xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter mb-8 leading-[0.85]">
+                            The <span className="text-blue-500 italic">Portfolio</span>
+                        </h2>
+                        
+                        <p className="text-xl text-gray-400 max-w-2xl leading-relaxed font-medium italic">
+                            &quot;I don&apos;t build features. I build business outcomes.&quot;
+                        </p>
+                    </div>
+                </SectionReveal>
 
-                        {/* Featured Projects (Hero Cards) */}
-                        <m.div 
-                            variants={containerVariants}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: "-100px" }}
-                            className="space-y-12 lg:space-y-24 mb-24"
+                {/* Industry Filter Controls */}
+                <div className="flex flex-wrap justify-center gap-2 mb-20 lg:mb-24">
+                    {industries.map((ind) => (
+                        <button
+                            key={ind.id}
+                            onClick={() => setSelectedIndustry(ind.id)}
+                            className={`group flex items-center gap-2.5 px-6 py-3 rounded-2xl border transition-all duration-300 font-black text-[10px] uppercase tracking-widest ${
+                                selectedIndustry === ind.id 
+                                ? "bg-blue-600 border-blue-500 text-white shadow-[0_0_25px_rgba(37,99,235,0.4)]" 
+                                : "bg-white/5 border-white/10 text-gray-400 hover:border-blue-500/50 hover:text-white"
+                            }`}
                         >
-                            {projects.filter((p: any) => p.isFeatured).slice(0, 2).map((project: any) => (
+                            <ind.icon size={14} className={selectedIndustry === ind.id ? "text-white" : "text-blue-500/50 group-hover:text-blue-400"} />
+                            {ind.label}
+                        </button>
+                    ))}
+                </div>
+
+                <AnimatePresence mode="wait">
+                    <m.div
+                        key={selectedIndustry}
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        className="space-y-20 lg:space-y-32"
+                    >
+                        {/* 1. Hero Project (Large Impact) */}
+                        {heroProject && (
+                            <div className="relative">
                                 <ProjectCard 
-                                    key={project.id} 
-                                    project={project} 
-                                    isFeatured={true} 
+                                    project={heroProject} 
+                                    isHero={true}
                                     onViewCaseStudy={setSelectedProject}
                                 />
-                            ))}
-                        </m.div>
-
-                        {/* Live System Status Panel (Bonus Trick) */}
-                        <m.div 
-                            variants={containerVariants}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            className="mb-24 p-6 lg:p-10 rounded-[2.5rem] lg:rounded-[3rem] bg-[#050505] border border-white/10 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 relative overflow-hidden group"
-                        >
-                            {/* Animated Background Line */}
-                            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
-                            
-                            <div className="flex items-center gap-4 md:w-1/3">
-                                <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 shrink-0 relative">
-                                    <div className="absolute inset-0 bg-blue-500/20 rounded-2xl animate-ping opacity-20" />
-                                    <Cpu size={24} />
-                                </div>
-                                <div>
-                                    <h3 className="text-white font-black uppercase tracking-widest text-sm">System Status</h3>
-                                    <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Live Developer Dashboard</p>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full md:w-2/3 md:border-l border-white/10 md:pl-8">
-                                <div className="space-y-1">
-                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Projects Built</p>
-                                    <p className="text-2xl font-black text-white">3</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Systems Online</p>
-                                    <p className="text-2xl font-black text-white">{projects.filter((p:any) => p.demo && p.demo !== "#").length + 1}</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Currently Building</p>
-                                    <p className="text-2xl font-black text-white">2</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Open For Work</p>
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
-                                        <p className="text-2xl font-black text-white">Yes</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </m.div>
-
-                        {/* Standard Projects Grid */}
-                        {projects.filter((p: any) => !p.isFeatured || !projects.filter((fp: any) => fp.isFeatured).slice(0, 2).some((fp: any) => fp.id === p.id)).length > 0 && (
-                            <div className="space-y-16">
-                                <m.div 
-                                    variants={containerVariants}
-                                    initial="hidden"
-                                    whileInView="visible"
-                                    viewport={{ once: true }}
-                                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                                >
-                                    {projects.filter((p: any) => !p.isFeatured || !projects.filter((fp: any) => fp.isFeatured).slice(0, 2).some((fp: any) => fp.id === p.id)).map((project: any) => (
-                                        <ProjectCard 
-                                            key={project.id} 
-                                            project={project} 
-                                            onViewCaseStudy={setSelectedProject}
-                                        />
-                                    ))}
-                                </m.div>
-
-                                {showAllProjects && (
-                                    <m.div 
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: "auto" }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12"
-                                    >
-                                        {[
-                                            { name: "ValeKash", description: "comprehensive operation system for kashmir", color: "from-blue-600/20 to-blue-900/10" },
-                                            { name: "NESTQ AI", description: "complete management for business and accountant for financial sector", color: "from-blue-600/20 to-blue-900/10" },
-                                            { name: "Quebook", description: "ai suggest social media platform", color: "from-blue-600/20 to-blue-900/10" },
-                                            { name: "Cue AI", description: "AI personal assistant chatbot and suggestion", color: "from-blue-600/20 to-blue-900/10" }
-                                        ].map((p) => (
-                                            <div key={p.name} className={`p-8 rounded-3xl bg-gradient-to-br ${p.color} border border-blue-500/30 backdrop-blur-xl group hover:border-blue-500 transition-all`}>
-                                                <h4 className="text-2xl font-black text-white mb-2 group-hover:text-blue-400 transition-colors">{p.name}</h4>
-                                                <p className="text-gray-400 text-sm italic">&quot;{p.description}&quot;</p>
-                                            </div>
-                                        ))}
-                                    </m.div>
-                                )}
-
-                                {/* See More Projects Button */}
-                                <div className="flex justify-center mt-12">
-                                    <button 
-                                        onClick={() => setShowAllProjects(!showAllProjects)}
-                                        className="group relative px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-[10px] uppercase tracking-widest hover:border-blue-500/30 overflow-hidden"
-                                    >
-                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        <span className="relative z-10">{showAllProjects ? "Collapse Intel" : "See More Projects"}</span>
-                                        <ArrowRight size={14} className={`relative z-10 group-hover:translate-x-1 transition-transform ${showAllProjects ? "rotate-90" : ""}`} />
-                                    </button>
-                                </div>
                             </div>
                         )}
 
-                        {/* Call To Action Section */}
+                        {/* 2. Systems Efficiency Panel (Social Proof) */}
                         <m.div 
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                            className="mt-32 p-12 lg:p-16 rounded-[3.5rem] bg-gradient-to-br from-blue-600/10 via-blue-900/5 to-transparent border border-blue-500/20 text-center relative overflow-hidden group"
+                            variants={containerVariants}
+                            className="p-8 lg:p-12 rounded-[3rem] bg-gradient-to-br from-[#050505] to-[#080808] border border-white/10 shadow-3xl relative overflow-hidden group"
                         >
-                            {/* Animated Background Glow */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none group-hover:bg-blue-500/20 transition-colors duration-1000" />
+                            <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity">
+                                <Cpu size={200} className="text-blue-500" />
+                            </div>
                             
-                            <div className="relative z-10 flex flex-col items-center">
-                                <div className="w-20 h-20 rounded-[2rem] bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-8 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
-                                    <Rocket size={32} />
+                            <div className="flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
+                                <div className="max-w-md text-center lg:text-left">
+                                    <div className="flex items-center gap-3 mb-4 justify-center lg:justify-start">
+                                        <div className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
+                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500">Global Performance Metrics</span>
+                                    </div>
+                                    <h3 className="text-3xl lg:text-4xl font-black text-white mb-4 leading-tight">
+                                        Performance is <span className="italic text-blue-500">Conversion.</span>
+                                    </h3>
+                                    <p className="text-gray-500 text-sm leading-relaxed">
+                                        Across every industry, speed remains the #1 indicator of revenue. All systems are engineered for sub-second delivery.
+                                    </p>
                                 </div>
-                                
-                                <h3 className="text-4xl lg:text-5xl font-black text-white tracking-tight mb-4">
-                                    Need something similar <span className="text-blue-500 italic block sm:inline mt-2 sm:mt-0">built?</span>
-                                </h3>
-                                
-                                <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-12">
-                                    Let&apos;s collaborate to build a high-performance system tailored to your specific needs.
-                                </p>
-                                
-                                <div className="flex flex-col sm:flex-row items-center gap-6">
-                                    <button 
-                                        onClick={() => openModal()}
-                                        className="btn-primary py-4 px-10 text-sm w-full sm:w-auto hover:scale-105 transition-transform"
-                                    >
-                                        Hire Me
-                                    </button>
-                                    <button 
-                                        onClick={() => openModal()}
-                                        className="w-full sm:w-auto px-10 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl flex items-center justify-center gap-3 transition-all font-black text-[10px] uppercase tracking-widest hover:border-blue-500/30 min-h-[48px]"
-                                    >
-                                        Start a Project
-                                    </button>
+
+                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 w-full lg:w-auto">
+                                    {[
+                                        { label: "AOV Growth", value: "+22%", sub: "Avg. across E-comm" },
+                                        { label: "Load Time", value: "320ms", sub: "Global Average" },
+                                        { label: "LCP Score", value: "98/100", sub: "Lighthouse Standard" },
+                                        { label: "Lead Gen", value: "10x", sub: "Real Estate Focus" },
+                                    ].map((stat, i) => (
+                                        <div key={i} className="flex flex-col items-center lg:items-start space-y-2">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{stat.label}</p>
+                                            <p className="text-4xl font-black text-white tracking-tighter">{stat.value}</p>
+                                            <p className="text-[9px] font-bold uppercase tracking-widest text-blue-500/70">{stat.sub}</p>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </m.div>
-                    </>
-                )}
+
+                        {/* 3. Secondary Projects Grid */}
+                        {secondaryProjects.length > 0 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {secondaryProjects.map((project) => (
+                                    <ProjectCard 
+                                        key={project.id} 
+                                        project={project} 
+                                        onViewCaseStudy={setSelectedProject}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </m.div>
+                </AnimatePresence>
+
+                {/* Call To Action Section */}
+                <SectionReveal>
+                    <div className="mt-32 p-12 lg:p-20 rounded-[4rem] bg-gradient-to-br from-blue-600/10 via-blue-900/5 to-transparent border border-blue-500/20 text-center relative overflow-hidden group">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-blue-500/10 blur-[150px] rounded-full pointer-events-none group-hover:bg-blue-500/20 transition-all duration-1000" />
+                        
+                        <div className="relative z-10 flex flex-col items-center">
+                            <div className="w-24 h-24 rounded-[2.5rem] bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-700 shadow-2xl">
+                                <Rocket size={40} />
+                            </div>
+                            
+                            <h3 className="text-5xl lg:text-7xl font-black text-white tracking-tighter mb-6 leading-none">
+                                Your project is <span className="text-blue-500 italic block mt-2">next.</span>
+                            </h3>
+                            
+                            <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-16 leading-relaxed">
+                                Don&apos;t settle for a generic template. Get a high-fidelity system designed for your industry and conversion goals.
+                            </p>
+                            
+                            <div className="flex flex-col sm:flex-row items-center gap-8">
+                                <button 
+                                    onClick={() => openModal()}
+                                    className="px-12 py-5 bg-blue-600 text-white font-black text-xs uppercase tracking-[0.2em] rounded-3xl hover:bg-blue-500 transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(37,99,235,0.4)]"
+                                >
+                                    Initiate Deployment
+                                </button>
+                                <button 
+                                    onClick={() => openModal()}
+                                    className="px-12 py-5 bg-white/5 text-white border border-white/10 font-black text-xs uppercase tracking-[0.2em] rounded-3xl hover:bg-white/10 transition-all hover:border-blue-500/30 flex items-center gap-3"
+                                >
+                                    Review Terms <ArrowRight size={16} />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </SectionReveal>
             </div>
 
-            {/* Modal Orchestration */}
             <ProjectCaseStudyModal 
                 isOpen={!!selectedProject} 
                 project={selectedProject} 
