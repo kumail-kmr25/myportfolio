@@ -7,6 +7,11 @@ import DevLog from "./features/DevLog";
 import TechRadar from "./features/TechRadar";
 import CodeSnippets from "./features/CodeSnippets";
 import FitScore from "./features/FitScore";
+import ProposalGen from "./features/ProposalGen";
+import PaymentLinks from "./features/PaymentLinks";
+import MilestoneTracker from "./features/MilestoneTracker";
+import BusinessCard from "./features/BusinessCard";
+import ABTesting from "./features/ABTesting";
 
 export default function About() {
     const itemVariants: Variants = {
@@ -168,6 +173,10 @@ export default function About() {
                 </div>
 
                 <div className="mt-32">
+                    <ABTesting />
+                </div>
+
+                <div className="mt-32">
                     <CodeSnippets />
                 </div>
 
@@ -175,8 +184,21 @@ export default function About() {
                     <DevLog />
                 </div>
 
+                <div className="mt-32">
+                    <MilestoneTracker />
+                </div>
+
+                <div className="mt-48 lg:mt-64 space-y-32">
+                    <ProposalGen />
+                    <PaymentLinks />
+                </div>
+
                 <div className="mt-32 lg:mt-48">
                     <FitScore />
+                </div>
+
+                <div className="mt-32 lg:mt-48">
+                    <BusinessCard />
                 </div>
             </m.div>
         </section>
