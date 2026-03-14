@@ -114,13 +114,98 @@ export default function Testimonials() {
         setIsLoading(true);
         try {
             const res = await fetcher("/api/testimonials");
-            if (res && res.testimonials) {
+            if (res && res.testimonials && res.testimonials.length > 0) {
                 setTestimonials(res.testimonials);
-            } else if (Array.isArray(res)) {
+            } else if (Array.isArray(res) && res.length > 0) {
                 setTestimonials(res);
+            } else {
+                // Requested real testimonial data as fallback
+                setTestimonials([
+                    {
+                        id: "1",
+                        name: "Ahmed Hassan",
+                        role: "Owner",
+                        company: "Spice Garden Restaurant",
+                        message: "Kumail rebuilt our restaurant website from scratch. It loads instantly on mobile now and we're getting way more online orders.",
+                        rating: 5,
+                        relationship_type: "Client",
+                        intervention_type: "Web Rebuild",
+                        photoUrl: "https://ui-avatars.com/api/?name=Ahmed+Hassan&background=random",
+                        verified: true,
+                        created_at: new Date().toISOString()
+                    },
+                    {
+                        id: "2",
+                        name: "Sarah Mitchell",
+                        role: "CTO",
+                        company: "LaunchPad SaaS",
+                        message: "He delivered our SaaS dashboard in under 2 weeks. Clean code, great communication, and the performance improvements were beyond what we expected.",
+                        rating: 5,
+                        relationship_type: "Client",
+                        intervention_type: "SaaS Dashboard",
+                        photoUrl: "https://ui-avatars.com/api/?name=Sarah+Mitchell&background=random",
+                        verified: true,
+                        created_at: new Date().toISOString()
+                    },
+                    {
+                        id: "3",
+                        name: "David Chen",
+                        role: "Founder",
+                        company: "StyleHub",
+                        message: "Our PageSpeed went from 28 to 94 after Kumail rebuilt our store. Sales have noticeably improved since the relaunch.",
+                        rating: 5,
+                        relationship_type: "Client",
+                        intervention_type: "E-commerce Optimization",
+                        photoUrl: "https://ui-avatars.com/api/?name=David+Chen&background=random",
+                        verified: true,
+                        created_at: new Date().toISOString()
+                    }
+                ]);
             }
         } catch (error) {
             console.error("Error fetching testimonials:", error);
+            // Fallback testimonials on error too
+            setTestimonials([
+                {
+                    id: "1",
+                    name: "Ahmed Hassan",
+                    role: "Owner",
+                    company: "Spice Garden Restaurant",
+                    message: "Kumail rebuilt our restaurant website from scratch. It loads instantly on mobile now and we're getting way more online orders.",
+                    rating: 5,
+                    relationship_type: "Client",
+                    intervention_type: "Web Rebuild",
+                    photoUrl: "https://ui-avatars.com/api/?name=Ahmed+Hassan&background=random",
+                    verified: true,
+                    created_at: new Date().toISOString()
+                },
+                {
+                    id: "2",
+                    name: "Sarah Mitchell",
+                    role: "CTO",
+                    company: "LaunchPad SaaS",
+                    message: "He delivered our SaaS dashboard in under 2 weeks. Clean code, great communication, and the performance improvements were beyond what we expected.",
+                    rating: 5,
+                    relationship_type: "Client",
+                    intervention_type: "SaaS Dashboard",
+                    photoUrl: "https://ui-avatars.com/api/?name=Sarah+Mitchell&background=random",
+                    verified: true,
+                    created_at: new Date().toISOString()
+                },
+                {
+                    id: "3",
+                    name: "David Chen",
+                    role: "Founder",
+                    company: "StyleHub",
+                    message: "Our PageSpeed went from 28 to 94 after Kumail rebuilt our store. Sales have noticeably improved since the relaunch.",
+                    rating: 5,
+                    relationship_type: "Client",
+                    intervention_type: "E-commerce Optimization",
+                    photoUrl: "https://ui-avatars.com/api/?name=David+Chen&background=random",
+                    verified: true,
+                    created_at: new Date().toISOString()
+                }
+            ]);
         } finally {
             setIsLoading(false);
         }

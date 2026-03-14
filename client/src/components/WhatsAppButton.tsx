@@ -12,7 +12,7 @@ export default function WhatsAppButton() {
         <m.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1, duration: 0.5 }}
+            transition={{ delay: 1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="fixed bottom-8 right-8 z-[100]"
         >
             <a

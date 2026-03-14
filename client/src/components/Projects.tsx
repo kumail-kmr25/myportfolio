@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { m, AnimatePresence } from "framer-motion";
@@ -25,45 +25,55 @@ const fetcher = async (url: string) => {
 export default function Projects() {
     const { data, isLoading } = useSWR("/api/projects", fetcher);
     
-    // Premium fallback data for when API is empty or failing
+    // Updated Premium fallback data with requested projects
     const fallbackProjects = [
         {
-            id: "valekash-mock",
-            title: "ValeKash",
-            summary: "Decoupled Operation System for Kashmir",
-            description: "A large-scale operation system designed to streamline digital identity and financial transactions in the region.",
+            id: "restaurant-booking",
+            title: "Restaurant Booking Platform",
+            summary: "Client had a static HTML site with no online reservations. Built a full-stack booking system with real-time availability.",
+            result: "Online bookings increased by 60% in first month",
             isFeatured: true,
             status: "Production",
-            tags: ["Next.js", "PostgreSQL", "Microservices"],
-            image: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=1200&q=80",
+            tags: ["Next.js", "Node.js", "PostgreSQL", "Stripe"],
+            image: "https://picsum.photos/seed/restaurant/800/500",
             demo: "#",
             github: "#"
         },
         {
-            id: "nestq-mock",
-            title: "NESTQ AI",
-            summary: "Intelligent Business Management & Accounting",
-            description: "AI-driven platform for financial sector management, providing deep insights into corporate accounting and tax compliance.",
+            id: "saas-dashboard",
+            title: "SaaS Dashboard UI",
+            summary: "Startup needed a scalable admin dashboard for their B2B product. Built a fully responsive dashboard with real-time analytics.",
+            result: "Reduced page load time from 6s to 1.3s",
             isFeatured: true,
-            status: "Beta",
-            tags: ["React", "AI/ML", "Enterprise"],
-            image: "https://images.unsplash.com/photo-1551288049-bbdac8a28a1e?auto=format&fit=crop&w=1200&q=80",
+            status: "Production",
+            tags: ["React", "TypeScript", "TailwindCSS", "Chart.js"],
+            image: "https://picsum.photos/seed/dashboard/800/500",
             demo: "#",
             github: "#"
         },
         {
-            id: "quebook-mock",
-            title: "Quebook",
-            summary: "AI-Driven Social Interaction Platform",
-            description: "Next-gen social network utilizing behavioral AI to suggest meaningful connections and curated content streams.",
+            id: "ecommerce-rebuild",
+            title: "E-Commerce Store Rebuild",
+            summary: "Client's WooCommerce store was scoring 28 on PageSpeed. Rebuilt in Next.js with optimized images and CDN.",
+            result: "PageSpeed score improved from 28 to 94",
             isFeatured: false,
             status: "Production",
-            tags: ["Node.js", "WebSocket", "BigData"],
-            image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80",
+            tags: ["Next.js", "Shopify API", "TailwindCSS", "Vercel"],
+            image: "https://picsum.photos/seed/ecommerce/800/500",
             demo: "#",
             github: "#"
         }
     ];
+
+    // Added a loading timeout state to avoid indefinite loaders
+    const [loadingTimeout, setLoadingTimeout] = useState(false);
+    
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoadingTimeout(true);
+        }, 1500);
+        return () => clearTimeout(timer);
+    }, []);
 
     // Handle both direct array (legacy) and object-wrapped array (Standard API)
     const projectsData = data?.projects || (Array.isArray(data) ? data : null);
@@ -71,6 +81,8 @@ export default function Projects() {
     const [selectedProject, setSelectedProject] = useState<any>(null);
     const [showAllProjects, setShowAllProjects] = useState(false);
     const { openModal } = useHireModal();
+
+    const isCurrentlyLoading = isLoading && !loadingTimeout;
 
     const containerVariants: any = {
         hidden: { opacity: 0 },
@@ -100,7 +112,7 @@ export default function Projects() {
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 blur-[120px] rounded-full" />
 
             <div className="section-container relative z-10">
-                {isLoading ? (
+                {isCurrentlyLoading ? (
                     <div className="py-32 flex flex-col items-center justify-center space-y-4">
                         <Loader2 className="w-10 h-10 text-blue-500 animate-spin opacity-20" />
                         <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Compiling Product Matrix...</p>

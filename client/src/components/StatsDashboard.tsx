@@ -172,16 +172,26 @@ export default function StatsDashboard() {
                         <div>
                             <h4 className="text-xl font-bold text-white mb-2">System Operations</h4>
                             <p className="text-gray-400 mb-6 leading-relaxed">Infrastructure monitoring maintaining critical uptime for deployments and client-side assets.</p>
-                            <div className="flex gap-6">
+                            <div className="flex flex-wrap gap-6">
                                 <div className="flex items-center gap-3">
                                     <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Core Engine: OPTIMAL</span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">⚡ Avg. Page Load: 1.2s</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <span className={`w-2.5 h-2.5 rounded-full ${availability?.status === 'booked' ? 'bg-red-500' : 'bg-green-500'} animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]`}></span>
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                                        DB Node: {availability?.status?.toUpperCase() || 'ACTIVE'}
-                                    </span>
+                                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">🚀 15+ Projects Delivered</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">📈 Avg. PageSpeed Improvement: +45 pts</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">✅ 100% On-Time Delivery</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">🛡️ 30-Day Post-Launch Support</span>
                                 </div>
                             </div>
                         </div>

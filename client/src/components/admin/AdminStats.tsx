@@ -10,6 +10,8 @@ export interface SiteStats {
     featureRequestsCompleted: number;
     yearsLearning: number;
     deploymentCount: number;
+    auditCount: number;
+    auditLeads: number;
 }
 
 export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | null, onUpdate: () => void }) {
@@ -18,7 +20,9 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
         caseStudiesWritten: 0,
         featureRequestsCompleted: 0,
         yearsLearning: 0,
-        deploymentCount: 0
+        deploymentCount: 0,
+        auditCount: 0,
+        auditLeads: 0
     });
     const [loading, setLoading] = useState(false);
 
@@ -51,6 +55,8 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
         { label: "Features Completed", key: "featureRequestsCompleted", description: "Automatically aggregated from Feature Requests" },
         { label: "Years Learning", key: "yearsLearning", description: "Manual count of years in the field" },
         { label: "Deployment Count", key: "deploymentCount", description: "Total production deployments" },
+        { label: "Total Audits", key: "auditCount", description: "Total website audits performed" },
+        { label: "Audit Leads", key: "auditLeads", description: "Total leads generated via audits" },
     ];
 
     return (

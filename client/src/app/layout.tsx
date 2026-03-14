@@ -21,19 +21,19 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL('https://kumailkmr.com'),
   title: {
-    default: "Kumail Kmr | Full Stack Developer & DevOps Engineer",
+    default: "Kumail Kmr | Premium Full-Stack Developer & SaaS Expert",
     template: "%s | Kumail Kmr"
   },
-  description: "Portfolio of Kumail Kmr - Expert Full Stack Developer, DevOps Engineer, and UI/UX Designer. Specializing in high-performance Next.js applications and scalable cloud architecture.",
-  keywords: ["Full Stack Developer", "DevOps Engineer", "Next.js Expert", "Kumail Kmr", "Web Development", "MERN Stack", "SaaS Developer", "Performance Optimization"],
+  description: "I build high-performance, scalable web applications that drive results. Specializing in Next.js, Node.js, and DevOps for startups and businesses.",
+  keywords: ["Full Stack Developer", "SaaS Developer", "Next.js Expert", "React Developer", "DevOps Engineer", "Premium Web Design", "Startup Developer", "Performance Optimization"],
   authors: [{ name: "Kumail Kmr" }],
   creator: "Kumail Kmr",
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: "Kumail Kmr | Full Stack Developer",
-    description: "Building high-performance, premium web applications with Next.js and DevOps best practices.",
+    title: "Kumail Kmr | Full-Stack Engineering & SaaS Development",
+    description: "Launch your next production-ready platform with an expert Next.js & DevOps engineer.",
     url: "https://kumailkmr.com",
     siteName: "Kumail Kmr Portfolio",
     images: [
@@ -49,8 +49,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kumail Kmr | Full Stack Developer",
-    description: "Building high-performance, premium web applications.",
+    title: "Kumail Kmr | Premium Full-Stack Developer",
+    description: "Building fast, scalable web apps that drive real business results.",
     images: ["/og-image.jpg"],
     creator: "@kumailkmr",
   },

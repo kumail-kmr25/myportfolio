@@ -174,6 +174,8 @@ model SiteStats {
   featureRequestsCompleted Int      @default(0)
   yearsLearning            Int      @default(0)
   deploymentCount          Int      @default(0)
+  auditCount               Int      @default(0)
+  auditLeads               Int      @default(0)
   lastUpdated              DateTime @default(now())
 }
 
@@ -258,4 +260,33 @@ model Resume {
   visible   Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+model AuditRequest {
+  id              String    @id @default(uuid())
+  websiteUrl      String
+  email           String?
+  
+  // Scores
+  performance     Int?
+  accessibility   Int?
+  seo             Int?
+  bestPractices   Int?
+  
+  // Metrics
+  loadTime        Float?
+  fcp             String?
+  lcp             String?
+  tti             String?
+  
+  // Meta
+  hasSSL          Boolean   @default(false)
+  isMobileFriendly Boolean  @default(false)
+  
+  // Lead management
+  contacted       Boolean   @default(false)
+  notes           String?
+  leadScore       Int?      @default(0)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }

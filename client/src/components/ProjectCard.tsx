@@ -1,7 +1,7 @@
 "use client";
 
 import { m } from "framer-motion";
-import { Github, ExternalLink, ArrowUpRight, Code2, Globe, Database, Terminal } from "lucide-react";
+import { Github, ExternalLink, ArrowUpRight, Code2, Globe, Database, Terminal, Sparkles } from "lucide-react";
 import Image from "next/image";
 
 interface ProjectCardProps {
@@ -60,6 +60,13 @@ export default function ProjectCard({ project, isFeatured = false, onViewCaseStu
                         <p className="text-lg lg:text-xl text-gray-400 font-medium leading-relaxed italic border-l-2 border-white/10 pl-6 group-hover:border-blue-500/50 group-hover:text-gray-300 transition-all duration-500">
                             {project.summary || project.description}
                         </p>
+                        {project.result && (
+                            <div className="mt-4 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-xl inline-block">
+                                <p className="text-xs font-black text-green-400 uppercase tracking-widest flex items-center gap-2">
+                                    <Sparkles size={12} /> {project.result}
+                                </p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Tech Stack Highlighting */}
@@ -151,6 +158,11 @@ export default function ProjectCard({ project, isFeatured = false, onViewCaseStu
                     <p className="text-sm text-gray-400 font-medium leading-relaxed italic line-clamp-2 pr-4 group-hover:text-gray-300 transition-colors duration-300">
                         {project.summary || project.description}
                     </p>
+                    {project.result && (
+                        <div className="mt-2 text-[10px] font-black text-green-400 uppercase tracking-widest flex items-center gap-1.5">
+                            <Sparkles size={10} /> {project.result}
+                        </div>
+                    )}
                 </div>
 
                 {/* Tags Grid */}

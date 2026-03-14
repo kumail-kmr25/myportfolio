@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, Download, Search } from "lucide-react";
 import { m, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useHireModal } from "@/context/HireModalContext";
@@ -150,55 +150,18 @@ export default function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.2, ease: premiumEase as any }}
-                            className="text-6xl sm:text-7xl lg:text-8xl font-black font-display text-white mb-6 tracking-tighter leading-[0.9] select-none"
+                            className="text-5xl sm:text-6xl lg:text-7xl font-black font-display text-white mb-6 tracking-tighter leading-[1.1] select-none"
                         >
-                            <m.span
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ staggerChildren: 0.05, delayChildren: 0.2 }}
-                                className="flex flex-wrap"
-                            >
-                                {"Kumail".split("").map((char, i) => (
-                                    <m.span
-                                        key={i}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.8, ease: premiumEase as any }}
-                                    >
-                                        {char}
-                                    </m.span>
-                                ))}
-                                <m.span className="text-blue-500 italic ml-4 flex">
-                                    {"KMR".split("").map((char, i) => (
-                                        <m.span
-                                            key={i}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.8, ease: premiumEase as any }}
-                                        >
-                                            {char}
-                                        </m.span>
-                                    ))}
-                                </m.span>
-                            </m.span>
+                            I Build <span className="text-blue-500 italic">Fast, Scalable</span> Web Apps That Drive Real Results
                         </m.h1>
-
-                        <m.h2
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2, duration: 1.2, ease: premiumEase as any }}
-                            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-400 mb-6 tracking-tight"
-                        >
-                            Building <span className="text-white">Scalable</span> Web Platforms
-                        </m.h2>
 
                         <m.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3, duration: 1.2, ease: premiumEase as any }}
-                            className="text-gray-500 text-lg sm:text-xl max-w-xl mb-12 font-medium leading-relaxed"
+                            className="text-gray-400 text-lg sm:text-xl max-w-xl mb-12 font-medium leading-relaxed"
                         >
-                            I design and develop modern web applications with reliable architecture, secure systems, and production-ready deployment.
+                            Full-Stack Developer specializing in Next.js, Node.js & DevOps — helping startups and businesses launch production-ready platforms that perform.
                         </m.p>
 
                         <m.div
@@ -214,15 +177,29 @@ export default function Hero() {
                                 }}
                                 className="group relative w-full sm:w-auto px-8 py-4 bg-blue-600 border border-blue-500 text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-500/20 hover:scale-[1.05] active:scale-[0.95] flex items-center justify-center gap-2"
                             >
-                                View Projects <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                View My Work <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                             </button>
 
-                            <Link
-                                href="/hire"
+                            <button
+                                onClick={() => {
+                                    const el = document.getElementById('contact');
+                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                }}
                                 className="group relative w-full sm:w-auto px-8 py-4 bg-white/[0.03] border border-white/[0.08] text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-white/[0.06] hover:border-white/20 hover:scale-[1.05] active:scale-[0.95] backdrop-blur-3xl"
                             >
                                 <span className="flex items-center justify-center gap-2">
                                     Hire Me
+                                </span>
+                            </button>
+
+                            <Link
+                                href="/audit"
+                                prefetch={true}
+                                className="group relative w-full sm:w-auto px-8 py-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-emerald-500 hover:text-white hover:scale-[1.05] active:scale-[0.95]"
+                            >
+                                <span className="flex items-center justify-center gap-2">
+                                    <Search size={14} className="group-hover:rotate-12 transition-transform" />
+                                    Free Site Audit
                                 </span>
                             </Link>
 

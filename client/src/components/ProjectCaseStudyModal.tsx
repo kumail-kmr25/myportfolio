@@ -106,7 +106,7 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                     initial={{ opacity: 0, scale: 0.9, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     className="relative w-full max-w-6xl max-h-[90vh] bg-[#080808] border border-white/10 rounded-[2.5rem] sm:rounded-[4rem] overflow-hidden shadow-2xl flex flex-col"
                 >
                     {/* Header Controls */}

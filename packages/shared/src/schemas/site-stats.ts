@@ -5,4 +5,6 @@ export const siteStatsSchema = z.object({
     bugsFixed: z.number().int().nonnegative().optional(),
     yearsLearning: z.number().int().nonnegative().optional(),
     deploymentCount: z.number().int().nonnegative().optional(),
+    auditCount: z.number().int().nonnegative().optional(),
+    auditLeads: z.number().int().nonnegative().optional(),
 });

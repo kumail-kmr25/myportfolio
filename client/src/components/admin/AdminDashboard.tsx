@@ -26,6 +26,8 @@ import AdminResume from "@/components/admin/AdminResume";
 import AdminJourney from "@/components/admin/AdminJourney";
 import AdminCaseStudies from "./AdminCaseStudies";
 import AdminActivityLog from "./AdminActivityLog";
+import AdminAudit from "./AdminAudit";
+import AdminAuditRequests from "./AdminAuditRequests";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
 
 const fetcher = async (url: string) => {
@@ -56,7 +58,7 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ initialActivities = [], initialAvailability = null }: AdminDashboardProps) {
-    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey" | "activity" | "case-studies">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey" | "activity" | "case-studies" | "audit" | "audit-requests">("overview");
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -65,7 +67,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     useEffect(() => {
         const tab = searchParams?.get("tab");
-        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey", "activity", "case-studies"];
+        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey", "activity", "case-studies", "audit", "audit-requests"];
         if (tab && validTabs.includes(tab as any)) {
             setActiveTab(tab as any);
         }
@@ -87,6 +89,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
     const { data: journeyPhases, mutate: mutateJourney } = useSWR<any[]>(isAuthenticated ? "/api/admin/journey" : null, fetcher);
     const { data: caseStudies, mutate: mutateCaseStudies } = useSWR<AdminCaseStudy[]>(isAuthenticated ? "/api/admin/case-studies" : null, fetcher);
     const { data: activityLogs, mutate: mutateActivityLogs } = useSWR<any[]>(isAuthenticated ? "/api/admin/activity-log" : null, fetcher);
+    const { data: auditRequests, mutate: mutateAuditRequests } = useSWR<any>(isAuthenticated ? "/api/admin/audit-requests" : null, fetcher);
 
 
     useEffect(() => {
@@ -340,6 +343,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                 newHireCount={Array.isArray(hireRequests) ? hireRequests.filter((h) => h.status === "new").length : 0}
                 pendingFeaturesCount={Array.isArray(featureRequests) ? featureRequests.filter((f) => f.status === "pending").length : 0}
                 newLogsCount={Array.isArray(diagLogs) ? diagLogs.filter((l) => !l.matchedPatternId).length : 0}
+                newAuditCount={auditRequests?.analytics?.pending || 0}
             />
 
             <main className="flex-grow lg:ml-72 p-8 lg:p-16">
@@ -382,7 +386,9 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                             diagRuns: (statsData as any)?.diagRuns ?? (statsData as any)?.data?.diagRuns ?? 0, 
                                             leadGenTotal: (statsData as any)?.leadGenTotal ?? (statsData as any)?.data?.leadGenTotal ?? 0, 
                                             hireRequests: (statsData as any)?.hireRequests ?? (statsData as any)?.data?.hireRequests ?? 0, 
-                                            patternsMatched: (statsData as any)?.patternsMatched ?? (statsData as any)?.data?.patternsMatched ?? 0 
+                                            patternsMatched: (statsData as any)?.patternsMatched ?? (statsData as any)?.data?.patternsMatched ?? 0,
+                                            auditCount: (statsData as any)?.auditCount ?? (statsData as any)?.data?.auditCount ?? 0,
+                                            auditLeads: (statsData as any)?.auditLeads ?? (statsData as any)?.data?.auditLeads ?? 0
                                         }} />
                                         <DashboardOverview
                                             stats={{ 
@@ -396,7 +402,8 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                                 ...(Array.isArray(hireRequests) ? hireRequests : (hireRequests as any)?.requests || (hireRequests as any)?.hireRequests || []).map((h: any) => ({ id: h.id, type: "hire", title: `Hire Request: ${h.name}`, subtitle: h.projectType, timestamp: h.createdAt, status: h.status })),
                                                 ...(Array.isArray(allTestimonials) ? allTestimonials : (allTestimonials as any)?.testimonials || []).map((t: any) => ({ id: t.id, type: "testimonial", title: `Testimonial: ${t.name}`, subtitle: `${t.rating} Stars`, timestamp: t.created_at, status: t.approved ? "approved" : "pending" })),
                                                 ...(Array.isArray(messages) ? messages : (messages as any)?.messages || []).map((m: any) => ({ id: m.id, type: "message", title: `Message: ${m.name}`, subtitle: m.inquiryType || "Inquiry", timestamp: m.created_at, status: m.replied ? "replied" : "new" })),
-                                                ...(Array.isArray(diagLogs) ? diagLogs : (diagLogs as any)?.logs || []).map((l: any) => ({ id: l.id, type: "diagnostic", title: "Diagnostic Run", subtitle: l.description, timestamp: l.createdAt, status: "completed" }))
+                                                ...(Array.isArray(diagLogs) ? diagLogs : (diagLogs as any)?.logs || []).map((l: any) => ({ id: l.id, type: "diagnostic", title: "Diagnostic Run", subtitle: l.description, timestamp: l.createdAt, status: "completed" })),
+                                                ...(Array.isArray(auditRequests?.data) ? auditRequests.data : []).map((a: any) => ({ id: a.id, type: "audit", title: `Audit: ${a.websiteUrl}`, subtitle: `${a.performance}% Score`, timestamp: a.createdAt, status: a.contacted ? "contacted" : "new" }))
                                             ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 10)}
                                             availabilityStatus={(availabilityData as any)?.status ?? (availabilityData as any)?.data?.status ?? "Available"}
                                             onUpdateAvailability={handleUpdateAvailability}
@@ -426,6 +433,9 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "journey" && <AdminJourney phases={(journeyPhases as any)?.phases || (Array.isArray(journeyPhases) ? journeyPhases : [])} onAdd={handleAddJourney} onUpdate={handleJourneyUpdate} onDelete={handleJourneyDelete} />}
                                 {activeTab === "case-studies" && <AdminCaseStudies studies={(caseStudies as any)?.caseStudies || (Array.isArray(caseStudies) ? caseStudies : [])} onUpdate={() => mutateCaseStudies()} />}
                                 {activeTab === "activity" && <AdminActivityLog logs={(activityLogs as any)?.logs || (Array.isArray(activityLogs) ? activityLogs : [])} onUpdate={() => mutateActivityLogs()} />}
+                                                                 {activeTab === "audit" && <AdminAudit />}
+                                 {activeTab === "audit-requests" && <AdminAuditRequests />}
+
                             </ErrorBoundary>
                         </m.div>
                     </AnimatePresence>

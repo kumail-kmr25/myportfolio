@@ -151,7 +151,7 @@ export default function CaseStudies() {
                                 </div>
 
                                 <div className="flex flex-wrap gap-2 mt-auto">
-                                    {study.techStack.slice(0, 3).map(tech => (
+                                    {study.techStack.slice(0, 3).map((tech: string) => (
                                         <span key={tech} className="px-3 py-1 bg-white/5 text-gray-400 text-[9px] font-black uppercase tracking-widest rounded-full border border-white/5 group-hover:border-blue-500/20 group-hover:text-blue-300 transition-colors">
                                             {tech}
                                         </span>

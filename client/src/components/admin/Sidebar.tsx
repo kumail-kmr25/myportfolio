@@ -18,7 +18,8 @@ import {
     Zap,
     History,
     FileText,
-    Milestone
+    Milestone,
+    Search
 } from "lucide-react";
 import { useState } from "react";
 
@@ -30,9 +31,10 @@ interface SidebarProps {
     pendingFeaturesCount?: number;
     newHireCount?: number;
     newLogsCount?: number;
+    newAuditCount?: number;
 }
 
-export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCount, pendingFeaturesCount, newHireCount, newLogsCount }: SidebarProps) {
+export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCount, pendingFeaturesCount, newHireCount, newLogsCount, newAuditCount }: SidebarProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     const menuItems = [
@@ -50,6 +52,8 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
         { id: "capacity", label: "Work Capacity", icon: Settings },
         { id: "activity", label: "Login Activity", icon: History },
         { id: "resume", label: "Resume Hub", icon: FileText },
+        { id: "audit", label: "Site Audit", icon: Search },
+        { id: "audit-requests", label: "Audit Requests", icon: Mail, count: newAuditCount },
         { id: "blog", label: "Blog Posts", icon: PenLine },
     ];
 

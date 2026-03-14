@@ -8,6 +8,9 @@ import TechMarquee from "./TechMarquee";
 import ViewportReveal from "./ViewportReveal";
 
 // Dynamic imports for below-the-fold components to improve initial load performance
+const About = dynamic(() => import("@/components/About"), {
+    loading: () => <SectionSkeleton minHeight="400px" />
+});
 const Projects = dynamic(() => import("@/components/Projects"), {
     loading: () => <SectionSkeleton minHeight="600px" />
 });
@@ -41,6 +44,15 @@ const MyJourney = dynamic(() => import("@/components/MyJourney"), {
 const Contact = dynamic(() => import("@/components/Contact"), {
     loading: () => <SectionSkeleton minHeight="600px" />
 });
+const WhyWorkWithMe = dynamic(() => import("@/components/WhyWorkWithMe"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
+const Process = dynamic(() => import("@/components/Process"), {
+    loading: () => <SectionSkeleton minHeight="800px" />
+});
+const Pricing = dynamic(() => import("@/components/Pricing"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
 const Footer = dynamic(() => import("@/components/Footer"), {
     loading: () => <div className="h-40 bg-black/20 animate-pulse" />
 });
@@ -58,6 +70,7 @@ export default function MainContent() {
 
     return (
         <>
+            <ViewportReveal><About /></ViewportReveal>
             <ViewportReveal><CaseStudies /></ViewportReveal>
             <ViewportReveal><Projects /></ViewportReveal>
             <ViewportReveal><HireMeCTA /></ViewportReveal>
@@ -66,6 +79,9 @@ export default function MainContent() {
             <ViewportReveal><Skills /></ViewportReveal>
             <ViewportReveal><StatsDashboard /></ViewportReveal>
             <ViewportReveal><Services /></ViewportReveal>
+            <ViewportReveal><WhyWorkWithMe /></ViewportReveal>
+            <ViewportReveal><Process /></ViewportReveal>
+            <ViewportReveal><Pricing /></ViewportReveal>
             <ViewportReveal><Blog /></ViewportReveal>
             <ViewportReveal><FeatureSuggestion /></ViewportReveal>
             <ViewportReveal><MyJourney /></ViewportReveal>

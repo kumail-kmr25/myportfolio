@@ -70,14 +70,14 @@ export default function About() {
                                 variants={itemVariants}
                                 className="text-blue-500 font-mono text-sm tracking-widest uppercase mb-2 block"
                             >
-                                My Journey
+                                Get to know me
                             </m.span>
                             <m.h2
                                 variants={itemVariants}
                                 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight"
                             >
-                                From Class 12th to <br />
-                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Web Engineering Excellence</span>
+                                Specialized in <br />
+                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">High-Performance Engineering</span>
                             </m.h2>
                         </div>
 
@@ -86,13 +86,11 @@ export default function About() {
                             className="space-y-6 text-gray-400 text-lg leading-relaxed max-w-2xl"
                         >
                             <p>
-                                My journey in the tech world began in <span className="text-blue-400 font-semibold">2024</span>, right in the middle of my <span className="text-white font-medium">Class 12th session</span>.
-                                What started as a curiosity quickly evolved into an obsessive passion for learning by building and solving complex architectural puzzles.
+                                I&apos;m Kumail, a Full-Stack Developer specializing in fast, scalable web applications for startups and growing businesses.
+                                I&apos;ve helped clients go from slow, outdated websites to modern platforms that actually drive revenue.
                             </p>
                             <p>
-                                I specialize in transforming complex business requirements into high-performance SaaS architectures.
-                                With a focus on <span className="text-white font-medium">Full-Stack Scalability</span> and <span className="text-white font-medium">Clean Design Systems</span>,
-                                I lead technical projects from inception to production-hardened deployments.
+                                I obsess over performance, clean code, and shipping on time. When I&apos;m not building, I&apos;m deep in DevOps and cloud architecture. Let&apos;s build something great together.
                             </p>
                         </m.div>
 
@@ -101,8 +99,8 @@ export default function About() {
                             className="flex flex-wrap gap-4 pt-4"
                         >
                             <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex-1 hover:bg-white/10 transition-colors">
-                                <div className="text-2xl font-bold text-white">3+</div>
-                                <div className="text-xs text-gray-500 uppercase tracking-wider">Years Learning</div>
+                                <div className="text-2xl font-bold text-white">4+</div>
+                                <div className="text-xs text-gray-500 uppercase tracking-wider">Years Exp</div>
                             </div>
                             <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex-1 hover:bg-white/10 transition-colors">
                                 <div className="text-2xl font-bold text-white">SaaS</div>
@@ -110,23 +108,35 @@ export default function About() {
                             </div>
                         </m.div>
 
-                        {/* Dedicated CTA Button */}
+                        {/* Dedicated CTA Buttons */}
                         <m.div
                             variants={itemVariants}
-                            className="pt-8"
+                            className="flex flex-col sm:flex-row gap-4 pt-8"
                         >
                             <button
-                                onClick={() => document.getElementById('my-journey')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl font-bold text-white transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] active:scale-95 flex items-center gap-3 overflow-hidden shadow-2xl shadow-blue-500/20"
+                                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl font-bold text-white transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] active:scale-95 flex items-center justify-center gap-3 overflow-hidden shadow-2xl shadow-blue-500/20"
                             >
                                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                <span className="relative z-10 text-lg">👉 View My Journey</span>
+                                <span className="relative z-10 text-lg">View My Work</span>
                                 <div className="relative z-10 p-1 bg-white/20 rounded-lg group-hover:translate-x-1 transition-transform">
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                     </svg>
                                 </div>
                             </button>
+
+                            <a
+                                href="#"
+                                className="group relative px-8 py-4 bg-white/5 border border-white/10 rounded-2xl font-bold text-white transition-all duration-300 hover:bg-white/10 active:scale-95 flex items-center justify-center gap-3 overflow-hidden"
+                            >
+                                <span className="relative z-10 text-lg">Download CV</span>
+                                <div className="relative z-10 p-1 bg-white/10 rounded-lg group-hover:translate-y-1 transition-transform">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                    </svg>
+                                </div>
+                            </a>
                         </m.div>
                     </div>
                 </div>

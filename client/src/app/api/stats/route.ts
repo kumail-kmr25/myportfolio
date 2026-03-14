@@ -27,7 +27,9 @@ export async function GET() {
             diagRuns,
             leadGenTotal,
             hireRequests,
-            patternsMatched
+            patternsMatched,
+            auditCount,
+            auditLeads
         ] = await Promise.all([
             prisma.project.count({ where: { isVisible: true } }),
             prisma.featureRequest.count({ where: { status: "completed" } }),
@@ -35,7 +37,9 @@ export async function GET() {
             prisma.diagnosticLog.count(),
             prisma.hireRequest.count({ where: { source: "diag_bridge" } }),
             prisma.hireRequest.count(),
-            prisma.diagnosticLog.count({ where: { matchedPatternId: { not: null } } })
+            prisma.diagnosticLog.count({ where: { matchedPatternId: { not: null } } }),
+            prisma.auditRequest.count(),
+            prisma.auditRequest.count({ where: { contacted: true } })
         ]);
 
         const stats = {
@@ -48,7 +52,9 @@ export async function GET() {
             diagRuns,
             leadGenTotal,
             hireRequests,
-            patternsMatched
+            patternsMatched,
+            auditCount: (siteStats?.auditCount && siteStats.auditCount > 0) ? siteStats.auditCount : auditCount,
+            auditLeads: (siteStats?.auditLeads && siteStats.auditLeads > 0) ? siteStats.auditLeads : auditLeads
         };
 
         return apiResponse({ ...stats, deployment_version: "v1.0.2-stable" });

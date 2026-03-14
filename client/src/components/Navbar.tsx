@@ -32,7 +32,9 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
     { name: "Case Studies", href: "/#case-studies" },
-    { name: "Projects", href: "/portfolio" },
+    { name: "Portfolio", href: "/portfolio" },
+    { name: "Playground", href: "/playground" },
+    { name: "Audit Tool", href: "/audit" },
     { name: "Testimonials", href: "/testimonials" },
     { name: "Contact", href: "/#contact" },
     { name: "Hire Me", href: "/#contact", isCTA: true },
@@ -44,9 +46,14 @@ export default function Navbar() {
     const [activeSection, setActiveSection] = useState("");
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [resumeUrl, setResumeUrl] = useState<string | null>(null);
+    const [isMounted, setIsMounted] = useState(false);
     const { openModal } = useHireModal();
 
     const premiumEase = [0.16, 1, 0.3, 1];
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     useEffect(() => {
         const fetchResume = async () => {
@@ -69,41 +76,7 @@ export default function Navbar() {
         ...navLinks.filter(l => l.isCTA)
     ];
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
-
-        const observerOptions = {
-            root: null,
-            rootMargin: '-20% 0px -70% 0px',
-            threshold: 0
-        };
-
-        const observerCallback = (entries: IntersectionObserverEntry[]) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    setActiveSection(entry.target.id);
-                }
-            });
-        };
-
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-        // Observe all sections
-        navLinks.forEach(link => {
-            if (link.href.startsWith("#")) {
-                const section = document.getElementById(link.href.substring(1));
-                if (section) observer.observe(section);
-            }
-        });
-
-        window.addEventListener("scroll", handleScroll);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-            observer.disconnect();
-        };
-    }, []);
+    if (!isMounted) return null;
 
     return (
         <nav

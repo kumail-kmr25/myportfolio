@@ -9,6 +9,8 @@ interface AnalyticsProps {
         leadGenTotal: number;
         hireRequests: number;
         patternsMatched: number;
+        auditCount: number;
+        auditLeads: number;
     }
 }
 
@@ -21,6 +23,8 @@ export default function AdminAnalytics({ stats }: AnalyticsProps) {
         { label: "Hire Efficiency", value: `${hireChannelMix}%`, subtitle: "Bridge Contribution to Hires", icon: Briefcase, bg: "bg-indigo-500/10", text: "text-indigo-400" },
         { label: "Knowledge Depth", value: stats.patternsMatched, subtitle: "Total Matched Issues", icon: MousePointer2, bg: "bg-purple-500/10", text: "text-purple-400" },
         { label: "Network Growth", value: stats.leadGenTotal, subtitle: "Bridge-generated Leads", icon: Users, bg: "bg-green-500/10", text: "text-green-400" },
+        { label: "Audit Performance", value: stats.auditCount, subtitle: "Total Site Audits", icon: Zap, bg: "bg-emerald-500/10", text: "text-emerald-400" },
+        { label: "Audit Reach", value: `${stats.auditCount > 0 ? ((stats.auditLeads / stats.auditCount) * 100).toFixed(1) : 0}%`, subtitle: "Audit Conversion Rate", icon: TrendingUp, bg: "bg-orange-500/10", text: "text-orange-400" },
     ];
 
     return (

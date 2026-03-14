@@ -2,7 +2,7 @@ import { prisma } from "@portfolio/database";
 
 export async function fetchActivities() {
     try {
-        const [hireRequests, messages, diagLogs, testimonials] = await Promise.all([
+        const [hireRequests, messages, diagLogs, testimonials, audits] = await Promise.all([
             prisma.hireRequest.findMany({
                 orderBy: { createdAt: "desc" },
                 take: 10
@@ -17,6 +17,10 @@ export async function fetchActivities() {
             }),
             prisma.testimonial.findMany({
                 orderBy: { created_at: "desc" },
+                take: 10
+            }),
+            prisma.auditRequest.findMany({
+                orderBy: { createdAt: "desc" },
                 take: 10
             })
         ]);
@@ -40,6 +44,23 @@ export async function fetchActivities() {
                 status: m.replied ? "replied" : "new",
                 color: "indigo"
             })),
+            ...audits.map(a => {
+                let hostname = a.websiteUrl;
+                try {
+                    hostname = new URL(a.websiteUrl.startsWith('http') ? a.websiteUrl : `https://${a.websiteUrl}`).hostname;
+                } catch (e) {
+                    // Fallback to raw URL if parsing fails
+                }
+                return {
+                    id: a.id,
+                    type: "audit" as const,
+                    title: `Website Audit: ${hostname}`,
+                    subtitle: `Score: ${a.performance || '??'}% • ${a.hasSSL ? 'SSL' : 'No SSL'}`,
+                    timestamp: a.createdAt.toISOString(),
+                    status: a.contacted ? "contacted" : "new",
+                    color: "emerald"
+                };
+            }),
             ...diagLogs.map(l => ({
                 id: l.id,
                 type: "diagnostic" as const,

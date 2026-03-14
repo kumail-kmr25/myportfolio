@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Github, Twitter, Linkedin, Instagram, ShieldCheck, Plus, Minus, LayoutGrid, Sparkles } from "lucide-react";
+import { Github, Twitter, Linkedin, Instagram, ShieldCheck, Plus, Minus, LayoutGrid, Sparkles, Search } from "lucide-react";
 import { m, AnimatePresence, Variants } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
 import { useState } from "react";
@@ -116,6 +116,14 @@ export default function Footer() {
                             {showProjects ? <Minus size={14} /> : <Plus size={14} />}
                             <span>More Projects</span>
                         </button>
+
+                        <Link 
+                            href="/audit" 
+                            className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-emerald-500 hover:text-emerald-400 transition-all py-3 px-6 rounded-2xl border border-emerald-500/10 hover:border-emerald-500/30 hover:bg-emerald-500/5"
+                        >
+                            <Search size={14} />
+                            <span>Free Audit</span>
+                        </Link>
 
                         <Link 
                             href="/admin" 
