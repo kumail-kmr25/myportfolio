@@ -35,7 +35,7 @@ export default function AuditForm({ onSuccess, onError, onStart }: AuditFormProp
             setStatusIdx(0);
         }
         return () => clearInterval(interval);
-    }, [loading]);
+    }, [loading, statusMessages.length]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

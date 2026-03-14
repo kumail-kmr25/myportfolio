@@ -210,7 +210,7 @@ export default function AdminAudit() {
                                                 </div>
                                                 {item.content && (
                                                     <p className="text-xs text-gray-500 italic mt-1 bg-black/20 p-3 rounded-xl border border-white/5 line-clamp-2">
-                                                        "{item.content}"
+                                                        &quot;{item.content}&quot;
                                                     </p>
                                                 )}
                                             </div>

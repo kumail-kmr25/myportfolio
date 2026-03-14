@@ -1,7 +1,8 @@
 "use client";
 
-import { CheckCircle2, XCircle, AlertTriangle, Info, Globe, Shield, Zap, BarChart3 } from "lucide-react";
+import { CheckCircle2, XCircle, AlertTriangle, Info, Globe, Shield, Zap, BarChart3, ArrowRight, Sparkles } from "lucide-react";
 import { m, Variants } from "framer-motion";
+import Link from "next/link";
 
 interface AuditResult {
     url: string;
@@ -140,7 +141,7 @@ export default function AuditResults({ result }: { result: AuditResult }) {
                                 {detail.content && (
                                     <div className="bg-black/40 p-4 rounded-2xl border border-white/5 mt-2">
                                         <p className="text-[11px] text-gray-500 leading-relaxed font-medium line-clamp-2 italic">
-                                            "{detail.content}"
+                                            &quot;{detail.content}&quot;
                                         </p>
                                     </div>
                                 )}
@@ -194,6 +195,61 @@ export default function AuditResults({ result }: { result: AuditResult }) {
                     </div>
                 </m.div>
             </div>
+
+            {/* Conversion CTA */}
+            <m.div 
+                variants={item}
+                className="relative mt-20"
+            >
+                <div className="absolute inset-0 bg-blue-600/5 blur-[100px] -z-10" />
+                <div className="glass-effect rounded-[3.5rem] border border-blue-500/10 p-12 md:p-16 text-center space-y-8 relative overflow-hidden">
+                    {/* Decorative Elements */}
+                    <div className="absolute top-0 right-0 p-8 opacity-10">
+                        <Sparkles size={120} className="text-blue-500" />
+                    </div>
+                    
+                    <div className="max-w-2xl mx-auto space-y-6">
+                        <div className="inline-flex items-center gap-3 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-[0.3em] mb-4">
+                            <Sparkles size={14} />
+                            Strategic Optimization Required
+                        </div>
+                        
+                        <h3 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight leading-none">
+                            Ready to <span className="text-blue-500 italic">Optimize</span> Your Deployment?
+                        </h3>
+                        
+                        <p className="text-gray-400 text-lg leading-relaxed font-medium">
+                            {result.performance && result.performance.performance < 70 
+                                ? "Significant performance bottlenecks were detected. Let's engineer a solution to boost your metrics and user experience."
+                                : "Your site has a solid foundation. Let's take it to the next level with precision engineering and advanced optimizations."}
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
+                        <Link 
+                            href={`/hire?service=Bug%20Fix%20/%20Optimization&source=audit_tool&website=${encodeURIComponent(result.url)}`}
+                            className="w-full sm:w-auto px-12 py-6 bg-blue-600 hover:bg-blue-700 text-white rounded-[2rem] flex items-center justify-center gap-4 text-sm font-black uppercase tracking-[0.2em] group shadow-[0_20px_40px_rgba(37,99,235,0.3)] transition-all"
+                        >
+                            Execute Optimization
+                            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                        
+                        <Link 
+                            href="/"
+                            className="text-gray-500 hover:text-white text-[11px] font-black uppercase tracking-[0.3em] transition-colors"
+                        >
+                            Return to Dashboard
+                        </Link>
+                    </div>
+
+                    {/* Technical Footnote */}
+                    <div className="pt-8 flex items-center justify-center gap-8 text-[9px] font-black uppercase tracking-widest text-gray-600 border-t border-white/5">
+                        <span className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-500" /> Lead Sync Active</span>
+                        <span className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-500" /> Technical Data Attached</span>
+                        <span className="flex items-center gap-2"><CheckCircle2 size={12} className="text-blue-500" /> 24h Response SLA</span>
+                    </div>
+                </div>
+            </m.div>
         </m.div>
     );
 }

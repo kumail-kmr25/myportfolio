@@ -155,7 +155,7 @@ function ContactInner() {
                                         </div>
                                         <h3 className="text-3xl font-bold text-white mb-3 tracking-tight">Inquiry Received!</h3>
                                         <p className="text-gray-400 text-lg">
-                                            Thank you, <span className="text-white font-bold">{submittedData.name}</span>. I'll get back to you shortly.
+                                            Thank you, <span className="text-white font-bold">{submittedData.name}</span>. I&apos;ll get back to you shortly.
                                         </p>
                                     </div>
 

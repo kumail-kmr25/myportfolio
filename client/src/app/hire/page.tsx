@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Suspense } from "react";
 import { m, AnimatePresence, Variants } from "framer-motion";
 import {
     ChevronRight,
@@ -13,12 +13,13 @@ import {
     Send,
     ArrowRight,
     AlertCircle,
-    ArrowLeft
+    ArrowLeft,
+    Loader2
 } from "lucide-react";
 import useSWR from "swr";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { hireSchema, type HireFormData } from "@portfolio/shared";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
@@ -113,8 +114,9 @@ const services = [
     }
 ] as const;
 
-export default function HirePage() {
+function HireContent() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [step, setStep] = useState<Step>("services");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -137,16 +139,35 @@ export default function HirePage() {
             name: "",
             email: "",
             company: "",
-            description: "",
-            referenceLink: "",
+            description: searchParams.get("website") ? `I need optimization for my website: ${searchParams.get("website")}. The audit tool identified some bottlenecks that need addressing.` : "",
+            referenceLink: searchParams.get("website") || "",
             contactMethod: "Email",
-            source: "hire_page",
-            selectedService: "Website Development",
+            source: searchParams.get("source") || "hire_page",
+            selectedService: (searchParams.get("service") as any) || "Website Development",
             budgetRange: "$500 – $1000",
             timeline: "1 month",
-            projectType: "Website Development"
+            projectType: (searchParams.get("service") as any) || "Website Development"
         }
     });
+
+    // Handle parameter changes if needed (e.g. user navigates back and forth)
+    React.useEffect(() => {
+        const service = searchParams.get("service");
+        const source = searchParams.get("source");
+        const website = searchParams.get("website");
+        
+        if (service) {
+            setValue("selectedService", service as any);
+            setValue("projectType", service as any);
+        }
+        if (source) setValue("source", source);
+        if (website) {
+            setValue("referenceLink", website);
+            if (!watch("description")) {
+                setValue("description", `I need optimization for my website: ${website}. The audit tool identified some bottlenecks that need addressing.`);
+            }
+        }
+    }, [searchParams, setValue]);
 
     const selectedService = watch("selectedService");
     const formData = watch();
@@ -560,5 +581,18 @@ export default function HirePage() {
                 </div>
             </div>
         </main>
+    );
+}
+
+export default function HirePage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center space-y-4">
+                <Loader2 className="w-12 h-12 text-blue-500 animate-spin opacity-20" />
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-700 animate-pulse">Initializing Interface</p>
+            </div>
+        }>
+            <HireContent />
+        </Suspense>
     );
 }
