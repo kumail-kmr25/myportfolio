@@ -31,11 +31,8 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-    { name: "Case Studies", href: "/#case-studies" },
-    { name: "My Works", href: "/portfolio" },
-    { name: "Playground", href: "/playground" },
+    { name: "My Works", href: "/#case-studies" },
     { name: "Audit Tool", href: "/audit" },
-    { name: "Testimonials", href: "/testimonials" },
     { name: "Contact", href: "/#contact" },
     { name: "Hire Me", href: "/#contact", isCTA: true },
 ];
@@ -125,9 +122,9 @@ export default function Navbar() {
                                 rel={link.isExternal ? "noopener noreferrer" : undefined}
                                 onMouseEnter={() => setHoveredIndex(index)}
                                 onMouseLeave={() => setHoveredIndex(null)}
-                                className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all relative z-10
+                                className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all relative z-10
                                     ${link.isCTA
-                                        ? "bg-blue-600 text-white hover:bg-blue-500 shadow-xl shadow-blue-500/20 ml-2 overflow-hidden group/cta"
+                                        ? "bg-blue-600 text-white hover:bg-blue-500 shadow-xl shadow-blue-500/20 ml-4 overflow-hidden group/cta"
                                         : isActive ? (scrolled ? "text-blue-600" : "text-white") : (scrolled ? "text-gray-600 hover:text-black" : "text-gray-400 hover:text-white")}`}
                             >
                                 <span className="relative z-10">
@@ -199,17 +196,16 @@ export default function Navbar() {
                             }}
                             className="flex flex-col p-10 space-y-8"
                         >
-                            {dynamicLinks.map((link) => (
+                            {dynamicLinks.map((link, index) => (
                                 <m.div
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: 20 }}
+                                    transition={{ delay: index * 0.1 }}
                                     key={link.name}
-                                    variants={{
-                                        open: { opacity: 1, x: 0, filter: "blur(0px)" },
-                                        closed: { opacity: 0, x: -20, filter: "blur(10px)" }
-                                    }}
-                                    transition={{ duration: 0.5, ease: premiumEase as any }}
                                 >
                                     <Link
-                                        href={link.isCTA ? "/hire" : link.href}
+                                        href={link.href}
                                         target={link.isExternal ? "_blank" : undefined}
                                         rel={link.isExternal ? "noopener noreferrer" : undefined}
                                         className={`text-3xl font-black tracking-tighter uppercase flex items-center justify-between group

@@ -180,8 +180,8 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                                         </a>
                                     )}
                                     {project.github && (
-                                        <a href={project.github} target="_blank" className="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 text-white text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-3">
-                                            <Github size={18} /> Source Intelligence
+                                        <a href={project.github} target="_blank" className="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-3">
+                                            <Github size={18} /> View Source
                                         </a>
                                     )}
                                 </m.div>
@@ -256,7 +256,7 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                                     <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
                                         <Workflow size={20} />
                                     </div>
-                                    <h3 className="text-xl font-bold text-white tracking-tight uppercase">Engineering Workflow</h3>
+                                    <h3 className="text-xl font-bold text-white tracking-tight uppercase">Technical Architecture</h3>
                                 </div>
                                 <div className="relative pt-8 pb-12">
                                     <div className="absolute top-1/2 left-0 w-full h-px bg-white/5 -translate-y-1/2 hidden md:block" />
@@ -324,7 +324,7 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                                     <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
                                         <Cpu size={20} />
                                     </div>
-                                    <h3 className="text-xl font-bold text-white tracking-tight uppercase">Technical Depth Analysis</h3>
+                                    <h3 className="text-xl font-bold text-white tracking-tight uppercase">Execution Metrics</h3>
                                 </div>
                                 
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -359,7 +359,7 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                                 {/* Engineering Insight Card */}
                                 <div className="p-10 rounded-[3rem] bg-[#050505] border border-white/10 relative overflow-hidden">
                                     <div className="absolute top-0 right-0 p-8 opacity-5">
-                                        <Terminal size={120} />
+                                        <Code2 size={120} />
                                     </div>
                                     <div className="relative z-10 flex flex-col lg:flex-row gap-10 items-center">
                                         <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-500 shrink-0">
@@ -405,9 +405,9 @@ export default function ProjectCaseStudyModal({ project, isOpen, onClose }: Proj
                             <div className="flex gap-4">
                                 <button 
                                     onClick={onClose}
-                                    className="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 text-white text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all"
+                                    className="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all"
                                 >
-                                    Dismiss Case
+                                    Close Case
                                 </button>
                                 <a href="#hire" onClick={onClose} className="btn-primary py-4 px-8">
                                     Start Collaboration

@@ -75,7 +75,7 @@ export default function CaseStudies() {
                             viewport={{ once: true }}
                             className="text-blue-500 font-mono text-[10px] font-black uppercase tracking-[0.3em] mb-4 block"
                         >
-                            Engineering Methodology
+                            Engineering Approach
                         </m.span>
                         <m.h2
                             initial={{ opacity: 0, y: 20 }}
@@ -102,7 +102,7 @@ export default function CaseStudies() {
                         className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-blue-500/5 border border-blue-500/10 text-[10px] text-blue-400 font-black uppercase tracking-widest backdrop-blur-md"
                     >
                         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.5)]"></span>
-                        Production Case Archive
+                        Technical Project Archive
                     </m.div>
                 </div>
 
@@ -144,7 +144,7 @@ export default function CaseStudies() {
                                 </m.h3>
 
                                 <div className="mb-8">
-                                    <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-black mb-3">Interception Message</p>
+                                    <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-black mb-3">Diagnostic report</p>
                                     <div className="font-mono text-xs p-4 rounded-2xl bg-black/60 border border-white/5 text-red-500/90 overflow-hidden text-ellipsis whitespace-nowrap shadow-inner">
                                         {study.errorMessage}
                                     </div>
@@ -164,7 +164,7 @@ export default function CaseStudies() {
                                 </div>
 
                                 <div className="mt-8 flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 group-hover:text-blue-400 transition-colors">
-                                    Decrypt Case Breakdown <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                                    View Detailed Breakdown <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                                 </div>
                             </m.div>
                         ))}
@@ -188,7 +188,7 @@ export default function CaseStudies() {
                             initial={{ scale: 0.95, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border border-white/10 rounded-[2.5rem] shadow-2xl p-8 md:p-12 custom-scrollbar"
+                            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border border-white/10 rounded-[2.5rem] shadow-2xl p-8 md:p-12 custom-scrollbar overflow-x-hidden"
                         >
                             <button
                                 onClick={() => setSelectedCase(null)}

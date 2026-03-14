@@ -132,15 +132,10 @@ export default function Hero() {
                             className="flex flex-col items-center lg:items-start gap-6 mb-8"
                         >
                             <div className="relative">
-                                <m.div
-                                    animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                    className="absolute -inset-4 bg-blue-500/10 blur-xl rounded-full"
-                                />
-                                <span className="relative inline-block py-2 px-5 rounded-full bg-white/[0.03] border border-white/[0.08] text-[9px] font-black uppercase tracking-[0.4em] text-blue-400 backdrop-blur-2xl transition-all hover:border-blue-500/30 hover:bg-blue-500/5 group">
+                                <span className="relative inline-block py-2 px-5 rounded-full bg-white/[0.03] border border-white/[0.08] text-[10px] font-black uppercase tracking-[0.4em] text-blue-400 backdrop-blur-2xl transition-all">
                                     <span className="flex items-center gap-3">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                                        Full-Stack Developer
+                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                        Engineering & Design
                                     </span>
                                 </span>
                             </div>
@@ -150,9 +145,9 @@ export default function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.2, ease: premiumEase as any }}
-                            className="text-5xl sm:text-6xl lg:text-7xl font-black font-display text-white mb-6 tracking-tighter leading-[1.1] select-none"
+                            className="text-fluid-h1 font-black font-display text-white mb-8 tracking-tighter leading-[0.95] select-none text-center lg:text-left"
                         >
-                            I Build <span className="text-blue-500 italic">Fast, Scalable</span> Web Apps That Drive Real Results
+                            Building <span className="text-blue-500 italic">High-Performance</span> Digital Ecosystems.
                         </m.h1>
 
                         <m.p
@@ -168,49 +163,25 @@ export default function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 1, ease: premiumEase as any }}
-                            className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start w-full sm:w-auto"
+                            className="flex flex-col sm:flex-row flex-wrap gap-6 justify-center lg:justify-start w-full sm:w-auto"
                         >
                             <button
                                 onClick={() => {
                                     const el = document.getElementById('projects');
                                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                                 }}
-                                className="group relative w-full sm:w-auto px-8 py-4 bg-blue-600 border border-blue-500 text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-500/20 hover:scale-[1.05] active:scale-[0.95] flex items-center justify-center gap-2"
+                                className="group relative w-full sm:w-auto px-10 py-5 bg-blue-600 border border-blue-500 text-white rounded-2xl font-bold text-xs tracking-widest uppercase transition-all hover:bg-blue-500 hover:shadow-2xl hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
                             >
-                                View My Works <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                            </button>
-
-                            <button
-                                onClick={() => {
-                                    const el = document.getElementById('contact');
-                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                                }}
-                                className="group relative w-full sm:w-auto px-8 py-4 bg-white/[0.03] border border-white/[0.08] text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-white/[0.06] hover:border-white/20 hover:scale-[1.05] active:scale-[0.95] backdrop-blur-3xl"
-                            >
-                                <span className="flex items-center justify-center gap-2">
-                                    Hire Me
-                                </span>
+                                Explorer Work <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                             </button>
 
                             <Link
                                 href="/audit"
                                 prefetch={true}
-                                className="group relative w-full sm:w-auto px-8 py-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:bg-emerald-500 hover:text-white hover:scale-[1.05] active:scale-[0.95]"
+                                className="group relative w-full sm:w-auto px-10 py-5 bg-white/5 border border-white/10 text-white rounded-2xl font-bold text-xs tracking-widest uppercase transition-all hover:bg-white/10 hover:border-white/20 hover:scale-[1.02] active:scale-[0.98] backdrop-blur-3xl flex items-center justify-center gap-2"
                             >
-                                <span className="flex items-center justify-center gap-2">
-                                    <Search size={14} className="group-hover:rotate-12 transition-transform" />
-                                    Free Site Audit
-                                </span>
-                            </Link>
-
-                            <Link
-                                href="#journey"
-                                prefetch={false}
-                                className="group relative w-full sm:w-auto px-8 py-4 bg-transparent border border-white/10 text-gray-400 rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase transition-all hover:text-white hover:border-white/20 hover:scale-[1.05] active:scale-[0.95]"
-                            >
-                                <span className="flex items-center justify-center gap-2">
-                                    My Journey
-                                </span>
+                                <Search size={16} className="text-blue-500" />
+                                Audit Site
                             </Link>
                         </m.div>
 
@@ -291,29 +262,18 @@ export default function Hero() {
                                 className="absolute -inset-8 border border-dashed border-purple-500/10 rounded-full"
                             />
                             
-                            <div className="relative w-full h-full rounded-full overflow-hidden border border-white/10 shadow-2xl group">
+                            <div className="relative w-full h-full rounded-full overflow-hidden border border-white/10 shadow-2xl group ring-8 ring-white/[0.02]">
                                 <Image
                                     src="/profile.jpg"
-                                    alt="Kumail KMR"
+                                    alt="KK"
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                                     priority
-                                    quality={90}
+                                    quality={100}
                                     sizes="(max-width: 768px) 256px, (max-width: 1024px) 320px, 450px"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-transparent to-transparent opacity-40" />
                             </div>
-
-
-                            <m.div
-                                animate={{ y: [0, -10, 0] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute -top-4 -right-4 hidden sm:block cursor-pointer hover:scale-105 transition-transform"
-                            >
-                                <Link href="/hire">
-                                    <LiveStatusBadge variant="hero" />
-                                </Link>
-                            </m.div>
                         </m.div>
                     </div>
                 </div>
