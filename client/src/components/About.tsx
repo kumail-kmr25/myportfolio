@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { m, Variants } from "framer-motion";
+import VoiceIntro from "./features/VoiceIntro";
+import RevenueDashboard from "./features/RevenueDashboard";
 
 export default function About() {
     const itemVariants: Variants = {
@@ -86,26 +88,33 @@ export default function About() {
                             className="space-y-6 text-gray-400 text-lg leading-relaxed max-w-2xl"
                         >
                             <p>
-                                I&apos;m Kumail, a Full-Stack Developer specializing in fast, scalable web applications for startups and growing businesses.
-                                I&apos;ve helped clients go from slow, outdated websites to modern platforms that actually drive revenue.
+                                I&apos;m Kumail, a Full-Stack Engineer specializing in high-performance digital solutions that drive business growth. 
+                                I bridge the gap between complex technical requirements and commercial results, ensuring your platform isn&apos;t just code—it&apos;s a revenue-generating asset.
                             </p>
                             <p>
-                                I obsess over performance, clean code, and shipping on time. When I&apos;m not building, I&apos;m deep in DevOps and cloud architecture. Let&apos;s build something great together.
+                                With a focus on Next.js, Cloud Architecture, and DevOps, I build systems that are fast, secure, and ready to scale. No jargon, no fluff—just engineering excellence delivered on time.
                             </p>
                         </m.div>
 
                         <m.div
                             variants={itemVariants}
-                            className="flex flex-wrap gap-4 pt-4"
+                            className="grid grid-cols-2 gap-4 pt-4"
                         >
-                            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex-1 hover:bg-white/10 transition-colors">
-                                <div className="text-2xl font-bold text-white">4+</div>
-                                <div className="text-xs text-gray-500 uppercase tracking-wider">Years Exp</div>
-                            </div>
-                            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex-1 hover:bg-white/10 transition-colors">
-                                <div className="text-2xl font-bold text-white">SaaS</div>
-                                <div className="text-xs text-gray-500 uppercase tracking-wider">Specialty</div>
-                            </div>
+                            {[
+                                { label: "Fast Delivery", value: "1-2 Weeks" },
+                                { label: "Performance", value: "90+ Score" },
+                                { label: "Support", value: "30 Days Free" },
+                                { label: "Direct Access", value: "No Middlemen" }
+                            ].map((stat) => (
+                                <div key={stat.label} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col justify-center hover:bg-white/[0.04] transition-colors">
+                                    <div className="text-xl font-bold text-white">{stat.value}</div>
+                                    <div className="text-[10px] text-gray-500 uppercase tracking-widest font-black">{stat.label}</div>
+                                </div>
+                            ))}
+                        </m.div>
+
+                        <m.div variants={itemVariants}>
+                            <VoiceIntro />
                         </m.div>
 
                         {/* Dedicated CTA Buttons */}
@@ -139,6 +148,10 @@ export default function About() {
                             </a>
                         </m.div>
                     </div>
+                </div>
+
+                <div className="mt-32">
+                    <RevenueDashboard />
                 </div>
             </m.div>
         </section>

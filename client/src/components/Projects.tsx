@@ -28,6 +28,8 @@ import SectionReveal from "./SectionReveal";
 import { useHireModal } from "@/context/HireModalContext";
 import { getApiUrl } from "@/lib/api";
 import { highConversionProjects } from "@/lib/projects-data";
+import VideoWalkthrough from "./features/VideoWalkthrough";
+import LiveSitePreview from "./features/LiveSitePreview";
 
 const fetcher = async (url: string) => {
     try {
@@ -199,7 +201,6 @@ export default function Projects() {
                                 </div>
                             </div>
                         </m.div>
-
                         {/* 3. Secondary Projects Grid */}
                         {secondaryProjects.length > 0 && (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -212,6 +213,16 @@ export default function Projects() {
                                 ))}
                             </div>
                         )}
+
+                        {/* Feature: Video Walkthroughs */}
+                        <div className="mt-32">
+                            <VideoWalkthrough />
+                        </div>
+
+                        {/* Feature: Live Site Previews */}
+                        <div className="mt-32">
+                            <LiveSitePreview initialPreviews={[]} />
+                        </div>
                     </m.div>
                 </AnimatePresence>
 
@@ -238,13 +249,13 @@ export default function Projects() {
                                     onClick={() => openModal()}
                                     className="px-12 py-5 bg-blue-600 text-white font-black text-xs uppercase tracking-[0.2em] rounded-3xl hover:bg-blue-500 transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(37,99,235,0.4)]"
                                 >
-                                    Initiate Deployment
+                                    Start Project
                                 </button>
                                 <button 
                                     onClick={() => openModal()}
                                     className="px-12 py-5 bg-white/5 text-white border border-white/10 font-black text-xs uppercase tracking-[0.2em] rounded-3xl hover:bg-white/10 transition-all hover:border-blue-500/30 flex items-center gap-3"
                                 >
-                                    Review Terms <ArrowRight size={16} />
+                                    View Process <ArrowRight size={16} />
                                 </button>
                             </div>
                         </div>

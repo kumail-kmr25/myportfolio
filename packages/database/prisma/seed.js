@@ -8,23 +8,28 @@ async function main() {
     console.log("Starting seed process...");
 
     // 1. Create Admin
-    const adminEmail = "ka6307464@gmail.com";
-    const hashedPassword = "$2b$10$rosB3D8cPp8AdMT.dKdp2SHs7q7HQX62pX6ma7Ud"; // KUMAIL@admin25
+    const adminEmail = process.env.ADMIN_EMAIL || "ka6307464@gmail.com";
+    const adminPassword = process.env.ADMIN_PASSWORD || "KUMAIL@admin25?";
+    const adminName = process.env.ADMIN_NAME || "Kumail";
+    const adminPhone = process.env.ADMIN_PHONE || "6006121193";
+    
+    console.log(`Setting up admin: ${adminEmail}`);
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
     try {
         await prisma.user.upsert({
             where: { email: adminEmail },
             update: {
                 password: hashedPassword,
-                name: "Kumail",
-                phone: "6006121193",
+                name: adminName,
+                phone: adminPhone,
                 role: "admin",
             },
             create: {
                 email: adminEmail,
                 password: hashedPassword,
-                name: "Kumail",
-                phone: "6006121193",
+                name: adminName,
+                phone: adminPhone,
                 role: "admin",
             },
         });
