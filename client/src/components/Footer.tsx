@@ -70,7 +70,7 @@ export default function Footer() {
                         variants={itemVariants}
                         className="text-3xl font-black tracking-tighter text-white mb-4"
                     >
-                        KUMAIL <span className="text-blue-500 italic">KMR</span>
+                        <span className="text-white">K</span><span className="text-blue-500 italic">K</span>
                     </m.p>
                     <m.div
                         variants={itemVariants}

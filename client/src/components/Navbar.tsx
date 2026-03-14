@@ -32,7 +32,7 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
     { name: "Case Studies", href: "/#case-studies" },
-    { name: "Portfolio", href: "/portfolio" },
+    { name: "My Works", href: "/portfolio" },
     { name: "Playground", href: "/playground" },
     { name: "Audit Tool", href: "/audit" },
     { name: "Testimonials", href: "/testimonials" },
@@ -100,7 +100,7 @@ export default function Navbar() {
                         transition={{ duration: 0.8, ease: premiumEase as any }}
                         className={`text-2xl font-black tracking-tighter transition-colors ${scrolled ? "text-black" : "text-white"}`}
                     >
-                        KUMAIL <span className="text-blue-600 italic">KMR</span>
+                        <span className="text-white">K</span><span className="text-blue-600 italic">K</span>
                     </m.span>
                     <m.div
                         className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"
