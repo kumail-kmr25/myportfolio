@@ -32,26 +32,25 @@ export async function POST(request: Request) {
             return apiResponse({ message: "If this email is registered, a reset link will be sent." });
         }
 
-        const admin = await prisma.admin.findUnique({
-            where: { email: email.toLowerCase() },
+        const admin = await prisma.user.findFirst({
+            where: { email },
         });
 
         if (admin) {
-            const token = crypto.randomBytes(32).toString("hex");
-            const expiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+            const resetToken = crypto.randomBytes(32).toString("hex");
+            const resetTokenExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
 
-            await prisma.admin.update({
+            await prisma.user.update({
                 where: { id: admin.id },
                 data: {
-                    resetToken: token,
-                    resetTokenExpiry: expiry,
+                    resetToken,
+                    resetTokenExpiry,
                 },
             });
 
-            const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "http://localhost:3000";
-            const resetUrl = `${appUrl}/admin/reset-password?token=${token}`;
-
-            await sendPasswordResetEmail(admin.email, resetUrl);
+            const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+            const resetUrl = `${appUrl}/admin/reset-password?token=${resetToken}`;
+            await sendPasswordResetEmail(email, resetUrl);
         }
 
         // Always return generic success to prevent email enumeration

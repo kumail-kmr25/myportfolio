@@ -59,6 +59,12 @@ const Footer = dynamic(() => import("@/components/Footer"), {
 const HireMeCTA = dynamic(() => import("@/components/HireMeCTA"), {
     loading: () => <SectionSkeleton minHeight="400px" />
 });
+const ReferralSystem = dynamic(() => import("@/components/ReferralSystem"), {
+    loading: () => <SectionSkeleton minHeight="400px" />
+});
+const LeadMagnet = dynamic(() => import("@/components/LeadMagnet"), {
+    loading: () => <SectionSkeleton minHeight="400px" />
+});
 
 export default function MainContent() {
     const fetcher = async (url: string) => {
@@ -82,7 +88,9 @@ export default function MainContent() {
             <ViewportReveal><WhyWorkWithMe /></ViewportReveal>
             <ViewportReveal><Process /></ViewportReveal>
             <ViewportReveal><Pricing /></ViewportReveal>
+            <ViewportReveal><LeadMagnet /></ViewportReveal>
             <ViewportReveal><Blog /></ViewportReveal>
+            <ViewportReveal><ReferralSystem /></ViewportReveal>
             <ViewportReveal><FeatureSuggestion /></ViewportReveal>
             <ViewportReveal><MyJourney /></ViewportReveal>
             <ViewportReveal><DiagnosticTool /></ViewportReveal>

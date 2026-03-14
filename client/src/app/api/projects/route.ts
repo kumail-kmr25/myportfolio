@@ -14,7 +14,7 @@ export async function GET() {
             where: { isVisible: true },
             orderBy: [
                 { isFeatured: 'desc' },
-                { created_at: 'desc' }
+                { createdAt: 'desc' }
             ]
         });
         
@@ -39,7 +39,7 @@ export async function GET() {
                 demo: "https://edunova-saas.vercel.app",
                 isFeatured: true,
                 valuePoints: ["Reduces administrative overhead by 40%", "Real-time student lifecycle management"],
-                created_at: new Date().toISOString()
+                createdAt: new Date().toISOString()
             },
             {
                 id: "fallback-2",
@@ -54,7 +54,7 @@ export async function GET() {
                 demo: "https://gemini-med.vercel.app/",
                 isFeatured: true,
                 valuePoints: ["Streamlined clinical documentation", "HIPAA-compliant framework"],
-                created_at: new Date().toISOString()
+                createdAt: new Date().toISOString()
             }
         ];
         return apiResponse({ projects: fallback, version: "v1.0.2-fallback" });

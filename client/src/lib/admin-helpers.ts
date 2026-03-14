@@ -26,7 +26,7 @@ export async function fetchActivities() {
         ]);
 
         const activities = [
-            ...hireRequests.map(h => ({
+            ...hireRequests.map((h: any) => ({
                 id: h.id,
                 type: "hire" as const,
                 title: `New Hire Request: ${h.name}`,
@@ -35,7 +35,7 @@ export async function fetchActivities() {
                 status: h.status,
                 color: "blue"
             })),
-            ...messages.map(m => ({
+            ...messages.map((m: any) => ({
                 id: m.id,
                 type: "message" as const,
                 title: `Message from ${m.name}`,
@@ -44,7 +44,7 @@ export async function fetchActivities() {
                 status: m.replied ? "replied" : "new",
                 color: "indigo"
             })),
-            ...audits.map(a => {
+            ...audits.map((a: any) => {
                 let hostname = a.websiteUrl;
                 try {
                     hostname = new URL(a.websiteUrl.startsWith('http') ? a.websiteUrl : `https://${a.websiteUrl}`).hostname;
@@ -61,7 +61,7 @@ export async function fetchActivities() {
                     color: "emerald"
                 };
             }),
-            ...diagLogs.map(l => ({
+            ...diagLogs.map((l: any) => ({
                 id: l.id,
                 type: "diagnostic" as const,
                 title: "Diagnostic Run",
@@ -70,7 +70,7 @@ export async function fetchActivities() {
                 status: l.matchedPatternId ? "matched" : "no-match",
                 color: "purple"
             })),
-            ...testimonials.map(t => ({
+            ...testimonials.map((t: any) => ({
                 id: t.id,
                 type: "testimonial" as const,
                 title: `New Testimonial: ${t.name}`,

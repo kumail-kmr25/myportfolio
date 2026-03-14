@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
 }
 
 datasource db {
@@ -8,136 +9,138 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Admin {
-  id               String             @id @default(uuid())
-  name             String
+// ============================================
+// CORE AUTH & USER MODELS
+// ============================================
+
+model User {
+  id               String             @id @default(cuid())
   email            String             @unique
-  phone            String             @unique
-  userId           String             @unique
   password         String
+  name             String?
+  userId           String?            @unique
+  phone            String?            @unique
+  role             String             @default("admin")
+  twoFactorEnabled Boolean            @default(false)
   resetToken       String?
   resetTokenExpiry DateTime?
-  created_at       DateTime           @default(now())
-  updated_at       DateTime           @updatedAt
   activityLogs     AdminActivityLog[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 }
 
 model AdminActivityLog {
   id        String   @id @default(uuid())
-  adminId   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   action    String
   ip        String?
   userAgent String?
   createdAt DateTime @default(now())
-  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
 }
 
-model DeveloperStatus {
-  id                   String   @id @default(uuid())
-  status               String   @default("available")
-  capacityPercent      Int      @default(0)
-  nextAvailabilityDays Int      @default(0)
-  currentFocus         String   @default("Open to new projects")
-  customMessage        String?
-  updatedAt            DateTime @updatedAt
-}
-
-model ActiveProject {
-  id              String   @id @default(uuid())
-  clientName      String
-  projectTitle    String
-  status          String
-  startDate       DateTime
-  expectedEndDate DateTime
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-}
-
-model SystemConfig {
-  id                String   @id @default(uuid())
-  maxActiveProjects Int      @default(2)
-  manualOverride    String?
-  overrideMessage   String?
-  updatedAt         DateTime @updatedAt
-}
-
-model Testimonial {
-  id                  String   @id @default(uuid())
-  name                String
-  email               String
-  company             String?
-  relationship_type   String
-  intervention_type   String
-  message             String
-  rating              Int
-  about_delivery_lead String
-  permission          Boolean  @default(false)
-  approved            Boolean  @default(false)
-  created_at          DateTime @default(now())
-  updated_at          DateTime @updatedAt
-  featured            Boolean  @default(false)
-  photoUrl            String?
-  role                String?
-  verified            Boolean  @default(false)
-  deliveryRating      Int      @default(5)
-}
-
-model ContactSubmission {
-  id              String   @id @default(uuid())
-  name            String
-  email           String
-  company         String?
-  inquiryType     String?
-  serviceRequired String?
-  budgetRange     String?
-  timeline        String?
-  message         String
-  foundBy         String?
-  replied         Boolean  @default(false)
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
-}
+// ============================================
+// PORTFOLIO & CASE STUDIES (Enhanced)
+// ============================================
 
 model Project {
-  id                 String   @id @default(uuid())
-  title              String
-  description        String
-  tags               String[]
-  image              String
-  demo               String?
-  github             String?
-  beforeImageUrl     String?
-  afterImageUrl      String?
-  improvementDetails String?
-  metrics            String[]
-  created_at         DateTime @default(now())
-  updated_at         DateTime @updatedAt
-  decisionLogs       String[]
-  architecture       Json?
-  backendDepth       Int      @default(0)
-  challenges         String?
-  engineering        String?
-  isVisible          Boolean  @default(true)
-  lessons            String?
-  performance        String?
-  problem            String?
-  role               String?
-  scalability        String?
-  scalabilityDepth   Int      @default(0)
-  security           String?
-  securityDepth      Int      @default(0)
-  solution           String?
-  status             String   @default("Production")
-  summary            String?
-  targetAudience     String?
-  uiDepth            Int      @default(0)
-  valueProp          String?
-  category           String?
-  isFeatured         Boolean  @default(false)
-  results            String?
-  valuePoints        String[]
-  gallery            String[]
-  timeline           Json?
+  id String @id @default(uuid())
+
+  // Basic Info
+  title       String
+  slug        String  @unique
+  tagline     String?
+  summary     String?
+  description String
+  industry    String? // restaurant, hotel, saas, etc.
+  clientType  String?
+  location    String?
+
+  // Content & Narrative
+  problem     String?
+  solution    String?
+  challenge   String? // Requested field "challenge" maps to current "challenges"
+  results     String?
+  lessons     String?
+  engineering String?
+  performance String?
+  scalability String?
+  security    String?
+
+  // Depth Metrics (Technical)
+  uiDepth          Int @default(0)
+  backendDepth     Int @default(0)
+  securityDepth    Int @default(0)
+  scalabilityDepth Int @default(0)
+
+  // Media
+  image          String // Current primary image
+  heroImage      String?
+  heroVideo      String?
+  beforeImageUrl String?
+  afterImageUrl  String?
+  screenshots    String[]
+  gallery        String[]
+
+  // Metrics & Stats
+  primaryMetric    String? // "+185% bookings"
+  metricValue      String?
+  metricUnit       String?
+  metrics          String[] // Current metric list
+  secondaryMetrics Json?
+  beforeStats      Json?
+  afterStats       Json?
+  valuePoints      Json? // Enhanced current valuePoints
+
+  // Tech & Architecture
+  techStack    String[]
+  techReasons  Json?
+  architecture Json?
+  decisionLogs String[]
+
+  // Project Details
+  timeline       Json? // Current json timeline
+  timelineString String? // Requested "timeline" as string
+  budgetMin      Int?
+  budgetMax      Int?
+  status         String  @default("Production")
+
+  // Client Data (Embedded for social proof)
+  clientName    String?
+  clientRole    String?
+  clientCompany String?
+  clientQuote   String?
+  clientPhoto   String?
+  clientVideo   String?
+
+  // Features
+  features String[]
+
+  // Display & Visibility
+  isFeatured      Boolean @default(false)
+  isVisible       Boolean @default(true)
+  showInPortfolio Boolean @default(true)
+  order           Int     @default(0)
+  category        String?
+  targetAudience  String?
+  valueProp       String?
+
+  // Analytics
+  viewCount Int @default(0)
+  ctaClicks Int @default(0)
+
+  // SEO
+  metaTitle String?
+  metaDesc  String?
+  liveUrl   String?
+  demo      String? // Existing demo link
+  github    String? // Existing github link
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([industry])
+  @@index([slug])
 }
 
 model CaseStudy {
@@ -150,20 +153,399 @@ model CaseStudy {
   impact       String
   techStack    String[]
   isPublished  Boolean  @default(false)
+  architecture Json?
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
-  architecture Json?
 }
 
-model FeatureRequest {
-  id         String   @id @default(uuid())
-  name       String
-  email      String
-  message    String
-  category   String
-  status     String   @default("pending")
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+// ============================================
+// INTERACTIVE PLAYGROUND SYSTEM
+// ============================================
+
+model Playground {
+  id               String              @id @default(cuid())
+  title            String
+  slug             String              @unique
+  shortDesc        String
+  fullDesc         String?
+  difficulty       String
+  estimatedTime    Int
+  techStack        String[]
+  prerequisites    String?
+  learningOutcomes String?
+  codeSourceType   String
+  codeSourceUrl    String?
+  startingFiles    String[]
+  thumbnailUrl     String?
+  demoGifUrl       String?
+  livePreviewUrl   String?
+  screenshots      String[]
+  status           String              @default("draft")
+  featured         Boolean             @default(false)
+  allowDownload    Boolean             @default(true)
+  enableAI         Boolean             @default(true)
+  aiQuestionLimit  Int                 @default(5)
+  viewCount        Int                 @default(0)
+  sessionCount     Int                 @default(0)
+  completionCount  Int                 @default(0)
+  downloadCount    Int                 @default(0)
+  challenges       Challenge[]
+  sessions         PlaygroundSession[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  @@index([slug])
+}
+
+model Challenge {
+  id              String     @id @default(cuid())
+  playgroundId    String
+  playground      Playground @relation(fields: [playgroundId], references: [id], onDelete: Cascade)
+  title           String
+  description     String
+  difficulty      String
+  points          Int
+  order           Int
+  fileToModify    String
+  hint            String?
+  solutionCode    String?
+  validationType  String
+  validationRules Json?
+  attemptCount    Int        @default(0)
+  successCount    Int        @default(0)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@index([playgroundId])
+}
+
+model PlaygroundSession {
+  id                  String     @id @default(cuid())
+  playgroundId        String
+  playground          Playground @relation(fields: [playgroundId], references: [id], onDelete: Cascade)
+  userId              String?
+  email               String?
+  name                String?
+  anonymousId         String
+  startedAt           DateTime   @default(now())
+  completedAt         DateTime?
+  timeSpent           Int?
+  challengesCompleted Int        @default(0)
+  totalChallenges     Int
+  pointsEarned        Int        @default(0)
+  hintsUsed           Int        @default(0)
+  aiQuestionsAsked    Int        @default(0)
+  completed           Boolean    @default(false)
+  downloaded          Boolean    @default(false)
+  ipAddress           String?
+  userAgent           String?
+  consultBooked       Boolean    @default(false)
+  converted           Boolean    @default(false)
+  updatedAt           DateTime   @updatedAt
+
+  @@index([playgroundId])
+  @@index([email])
+}
+
+model LeaderboardEntry {
+  id                   String   @id @default(cuid())
+  email                String?
+  name                 String?
+  displayName          String
+  anonymousId          String   @unique
+  totalPoints          Int      @default(0)
+  playgroundsCompleted Int      @default(0)
+  currentStreak        Int      @default(0)
+  lastActive           DateTime @default(now())
+  achievements         String[]
+  showOnLeaderboard    Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([totalPoints])
+}
+
+// ============================================
+// SMART ESTIMATOR SYSTEM
+// ============================================
+
+model EstimateRequest {
+  id                 String   @id @default(cuid())
+  name               String
+  email              String
+  phone              String
+  company            String?
+  city               String
+  website            String?
+  heardFrom          String
+  projectType        String
+  numPages           String?
+  features           String[]
+  design             String
+  designExtras       String[]
+  timeline           String
+  support            String?
+  hostingExtras      String[]
+  baseCost           Int
+  featuresCost       Int
+  designCost         Int
+  timelineMultiplier Float
+  supportMonthly     Int?
+  subtotal           Int
+  gst                Int
+  total              Int
+  estimateLow        Int
+  estimateHigh       Int
+  leadScore          Int      @default(0)
+  leadQuality        String   @default("cold")
+  status             String   @default("new")
+  emailSent          Boolean  @default(false)
+  whatsappSent       Boolean  @default(false)
+  followUpCount      Int      @default(0)
+  notes              String?
+  consultBooked      Boolean  @default(false)
+  converted          Boolean  @default(false)
+  actualValue        Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+}
+
+model EstimatorPricing {
+  id                 String   @id @default(cuid())
+  landingPage        Int      @default(15000)
+  businessSite       Int      @default(35000)
+  ecommerce          Int      @default(50000)
+  webApp             Int      @default(80000)
+  fullPlatform       Int      @default(150000)
+  featurePricing     Json
+  rushMultiplier     Float    @default(1.4)
+  fastMultiplier     Float    @default(1.2)
+  standardMultiplier Float    @default(1.0)
+  flexibleDiscount   Float    @default(0.9)
+  basicSupport       Int      @default(2999)
+  businessSupport    Int      @default(5999)
+  premiumSupport     Int      @default(12999)
+  gstRate            Float    @default(18.0)
+  usdRate            Float    @default(83.0)
+  updatedAt          DateTime @updatedAt
+}
+
+// ============================================
+// WEBSITE AUDIT TOOL
+// ============================================
+
+model AuditRequest {
+  id               String   @id @default(uuid())
+  websiteUrl       String
+  email            String?
+  name             String?
+  company          String?
+  performance      Int?
+  accessibility    Int?
+  seo              Int?
+  bestPractices    Int?
+  loadTime         Float?
+  fcp              String?
+  lcp              String?
+  tti              String?
+  hasSSL           Boolean  @default(false)
+  isMobileFriendly Boolean  @default(false)
+  results          Json?
+  leadScore        Int?     @default(0)
+  contacted        Boolean  @default(false)
+  notes            String?
+  converted        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([email])
+}
+
+// ============================================
+// REFERRAL SYSTEM
+// ============================================
+
+model Referral {
+  id            String    @id @default(cuid())
+  referrerName  String
+  referrerEmail String
+  referrerPhone String?
+  referralCode  String    @unique
+  refereeName   String?
+  refereeEmail  String?
+  refereePhone  String?
+  clicks        Int       @default(0)
+  signups       Int       @default(0)
+  conversions   Int       @default(0)
+  rewardType    String?
+  rewardAmount  Int?
+  rewardClaimed Boolean   @default(false)
+  rewardPaidOut Boolean   @default(false)
+  status        String    @default("active")
+  createdAt     DateTime  @default(now())
+  expiresAt     DateTime?
+
+  @@index([referralCode])
+  @@index([referrerEmail])
+}
+
+model ReferralClick {
+  id           String   @id @default(cuid())
+  referralCode String
+  ipAddress    String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+
+  @@index([referralCode])
+}
+
+// ============================================
+// LEAD MAGNETS
+// ============================================
+
+model LeadMagnet {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  industry    String
+  pdfUrl      String
+  coverImage  String
+  description String
+  downloads   Int      @default(0)
+  conversions Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+}
+
+model LeadMagnetDownload {
+  id           String   @id @default(cuid())
+  leadMagnetId String
+  email        String
+  name         String?
+  company      String?
+  industry     String?
+  downloaded   Boolean  @default(false)
+  emailOpened  Boolean  @default(false)
+  converted    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([email])
+  @@index([leadMagnetId])
+}
+
+// ============================================
+// CLIENT & CRM MODELS
+// ============================================
+
+model Client {
+  id              String    @id @default(cuid())
+  name            String
+  email           String    @unique
+  phone           String?
+  company         String?
+  industry        String?
+  projectIds      String[]
+  totalSpent      Int       @default(0)
+  projectCount    Int       @default(0)
+  referralCode    String?   @unique
+  referralsCount  Int       @default(0)
+  lastContactDate DateTime?
+  nextFollowUp    DateTime?
+  status          String    @default("active")
+  tier            String? // bronze, silver, gold, platinum
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([email])
+  @@index([status])
+}
+
+model ContactSubmission {
+  id              String   @id @default(uuid())
+  name            String
+  email           String
+  phone           String?
+  company         String?
+  industry        String?
+  inquiryType     String?
+  serviceRequired String?
+  budgetRange     String?
+  timeline        String?
+  message         String
+  foundBy         String?
+  replied         Boolean  @default(false)
+  status          String   @default("new")
+  notes           String?
+  source          String?
+  referralCode    String?
+  contacted       Boolean  @default(false)
+  converted       Boolean  @default(false)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+}
+
+model Testimonial {
+  id                  String   @id @default(uuid())
+  name                String // Maps to clientName in request
+  email               String // Maps to clientEmail
+  company             String? // Maps to clientCompany
+  role                String? // Maps to clientRole
+  relationship_type   String?
+  intervention_type   String?
+  message             String // Maps to quote
+  rating              Int      @default(5)
+  about_delivery_lead String?
+  avatarUrl           String? // Maps to photoUrl
+  videoUrl            String?
+  projectId           String?
+  featured            Boolean  @default(false)
+  approved            Boolean  @default(false)
+  verified            Boolean  @default(false)
+  order               Int      @default(0)
+  status              String   @default("pending")
+  rewardGiven         Boolean  @default(false)
+  rewardAmount        Int?
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  @@index([approved])
+  @@index([featured])
+}
+
+// ============================================
+// TELEMETRY & SYSTEM MODELS
+// ============================================
+
+model DeveloperStatus {
+  id                   String   @id @default(uuid())
+  status               String   @default("available")
+  capacityPercent      Int      @default(0)
+  nextAvailabilityDays Int      @default(0)
+  currentFocus         String   @default("Open to new projects")
+  customMessage        String?
+  updatedAt            DateTime @updatedAt
+}
+
+model Availability {
+  id                String    @id @default(cuid())
+  status            String // available, limited, booked
+  slotsRemaining    Int?
+  nextAvailableDate String?
+  message           String?
+  showCountdown     Boolean   @default(false)
+  countdownEndDate  DateTime?
+  displayPages      String[]
+  urgentStyling     Boolean   @default(false)
+  updatedAt         DateTime  @updatedAt
 }
 
 model SiteStats {
@@ -176,19 +558,75 @@ model SiteStats {
   deploymentCount          Int      @default(0)
   auditCount               Int      @default(0)
   auditLeads               Int      @default(0)
+  leadGenTotal             Int      @default(0)
+  hireRequests             Int      @default(0)
+  patternsMatched          Int      @default(0)
   lastUpdated              DateTime @default(now())
 }
 
+model Metrics {
+  id                  String    @id @default(cuid())
+  totalProjects       Int?
+  totalProjectsAuto   Boolean   @default(true)
+  averageUptime       Float?
+  averagePageSpeed    Int?
+  activeProjects      Int?
+  githubUsername      String?
+  githubAutoSync      Boolean   @default(false)
+  githubContributions Int?
+  githubLastSynced    DateTime?
+  showTrends          Boolean   @default(false)
+  updatedAt           DateTime  @updatedAt
+}
+
+model ActivityFeed {
+  id        String   @id @default(cuid())
+  type      String
+  message   String
+  timestamp DateTime @default(now())
+  visible   Boolean  @default(true)
+
+  @@index([timestamp])
+}
+
+model ClientLogo {
+  id           String   @id @default(cuid())
+  clientName   String
+  logoUrl      String
+  websiteUrl   String?
+  industry     String
+  featured     Boolean  @default(false)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  @@index([industry])
+}
+
+// ============================================
+// CONTENT & UTILS
+// ============================================
+
 model BlogPost {
-  id         String   @id @default(uuid())
-  title      String
-  excerpt    String
-  content    String
-  category   String
-  readTime   String
-  published  Boolean  @default(false)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id          String    @id @default(uuid())
+  title       String
+  slug        String    @unique
+  excerpt     String?
+  content     String
+  coverImage  String?
+  tags        String[]
+  category    String?
+  published   Boolean   @default(false)
+  status      String    @default("draft")
+  readTime    String?
+  views       Int       @default(0)
+  metaTitle   String?
+  metaDesc    String?
+  publishedAt DateTime?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([status])
 }
 
 model IssuePattern {
@@ -213,22 +651,15 @@ model DiagnosticLog {
   updatedAt        DateTime @updatedAt
 }
 
-model HireRequest {
-  id              String   @id @default(uuid())
-  name            String
-  email           String
-  company         String?
-  description     String
-  selectedService String
-  budgetRange     String
-  timeline        String
-  projectType     String
-  source          String   @default("hire_me")
-  status          String   @default("new")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  contactMethod   String?
-  referenceLink   String?
+model FeatureRequest {
+  id         String   @id @default(uuid())
+  name       String
+  email      String
+  message    String
+  category   String
+  status     String   @default("pending")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model JourneyPhase {
@@ -262,32 +693,110 @@ model Resume {
   updatedAt DateTime @updatedAt
 }
 
-model AuditRequest {
-  id         String  @id @default(uuid())
-  websiteUrl String
-  email      String?
+model Settings {
+  id                String   @id @default(cuid())
+  heroHeadline      String?
+  heroSubheadline   String?
+  aboutText         String?
+  calendlyUrl       String?
+  emailAddress      String?
+  phoneNumber       String?
+  linkedinUrl       String?
+  twitterUrl        String?
+  githubUrl         String?
+  googleAnalyticsId String?
+  facebookPixelId   String?
+  resendApiKey      String?
+  sendgridApiKey    String?
+  updatedAt         DateTime @updatedAt
+}
 
-  // Scores
-  performance   Int?
-  accessibility Int?
-  seo           Int?
-  bestPractices Int?
+// ============================================
+// ANALYTICS & TRACKING
+// ============================================
 
-  // Metrics
-  loadTime Float?
-  fcp      String?
-  lcp      String?
-  tti      String?
-
-  // Meta
-  hasSSL           Boolean @default(false)
-  isMobileFriendly Boolean @default(false)
-
-  // Lead management
-  contacted Boolean @default(false)
-  notes     String?
-  leadScore Int?    @default(0)
-
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String?
+  userAgent String?
+  country   String?
+  city      String?
+  sessionId String?
+  userId    String?
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  @@index([path])
+  @@index([createdAt])
+}
+
+model ConversionEvent {
+  id        String   @id @default(cuid())
+  type      String // estimate, audit, contact, download, booking
+  source    String?
+  value     Int?
+  userId    String?
+  email     String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([type])
+  @@index([email])
+}
+
+model Promotion {
+  id              String   @id @default(cuid())
+  name            String
+  code            String   @unique
+  discount        Int
+  startDate       DateTime
+  endDate         DateTime
+  maxUses         Int?
+  currentUses     Int      @default(0)
+  industries      String[]
+  minProjectValue Int?
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([code])
+  @@index([active])
+}
+
+// Preservation of current logic models
+model HireRequest {
+  id              String   @id @default(uuid())
+  name            String
+  email           String
+  company         String?
+  description     String
+  selectedService String
+  budgetRange     String
+  timeline        String
+  projectType     String
+  source          String   @default("hire_me")
+  status          String   @default("new")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  contactMethod   String?
+  referenceLink   String?
+}
+
+model ActiveProject {
+  id              String   @id @default(uuid())
+  clientName      String
+  projectTitle    String
+  status          String
+  startDate       DateTime
+  expectedEndDate DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model SystemConfig {
+  id                String   @id @default(uuid())
+  maxActiveProjects Int      @default(2)
+  manualOverride    String?
+  overrideMessage   String?
+  updatedAt         DateTime @updatedAt
 }

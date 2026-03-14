@@ -6,13 +6,13 @@ export const runtime = "nodejs";
 
 export async function GET() {
     try {
-        const adminCount = await prisma.admin.count();
+        const adminExists = await (prisma as any).user.findFirst();
         const projectCount = await prisma.project.count();
         const blogCount = await prisma.blogPost.count();
         
         return apiResponse({
             counts: {
-                admins: adminCount,
+                adminExists: !!adminExists,
                 projects: projectCount,
                 blogs: blogCount
             },

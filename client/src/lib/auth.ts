@@ -12,25 +12,29 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                const admin = await prisma.admin.findFirst({
-                    where: { email: credentials?.email?.toLowerCase() || "" },
-                });
-
-                if (!admin) {
+                if (!credentials?.email || !credentials?.password) {
                     return null;
                 }
 
-                const isPasswordValid = await bcrypt.compare(credentials?.password || "", admin.password);
+                const user = await (prisma as any).user.findUnique({
+                    where: { email: credentials.email },
+                });
+
+                if (!user) {
+                    return null;
+                }
+
+                const isPasswordValid = await bcrypt.compare(credentials?.password || "", user.password);
 
                 if (!isPasswordValid) {
                     return null;
                 }
 
                 return {
-                    id: admin.id,
-                    name: admin.name,
-                    email: admin.email,
-                    userId: admin.userId,
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
                 };
             }
         })

@@ -186,7 +186,7 @@ export default function PlaygroundPage() {
                     <span className="flex items-center gap-1.5"><Zap size={14} className="text-yellow-500" /> {challenge.xp} XP</span>
                     <span>{challenge.time}</span>
                   </div>
-                  <Link href={`/playground/challenge/${i}`} className="p-2 rounded-xl bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all">
+                  <Link href={`/playground/${challenge.title.toLowerCase().replace(/ /g, "-")}`} className="p-2 rounded-xl bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all">
                     <ChevronRight size={20} />
                   </Link>
                 </div>

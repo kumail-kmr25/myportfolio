@@ -29,7 +29,10 @@ export async function GET() {
             hireRequests,
             patternsMatched,
             auditCount,
-            auditLeads
+            auditLeads,
+            referralsCount,
+            leadMagnetsCount,
+            playgroundSessions
         ] = await Promise.all([
             prisma.project.count({ where: { isVisible: true } }),
             prisma.featureRequest.count({ where: { status: "completed" } }),
@@ -39,7 +42,10 @@ export async function GET() {
             prisma.hireRequest.count(),
             prisma.diagnosticLog.count({ where: { matchedPatternId: { not: null } } }),
             prisma.auditRequest.count(),
-            prisma.auditRequest.count({ where: { contacted: true } })
+            prisma.auditRequest.count({ where: { contacted: true } }),
+            (prisma as any).referral.count(),
+            (prisma as any).leadMagnetDownload.count(),
+            (prisma as any).playgroundSession.count()
         ]);
 
         const stats = {
@@ -54,7 +60,10 @@ export async function GET() {
             hireRequests,
             patternsMatched,
             auditCount: (siteStats?.auditCount && siteStats.auditCount > 0) ? siteStats.auditCount : auditCount,
-            auditLeads: (siteStats?.auditLeads && siteStats.auditLeads > 0) ? siteStats.auditLeads : auditLeads
+            auditLeads: (siteStats?.auditLeads && siteStats.auditLeads > 0) ? siteStats.auditLeads : auditLeads,
+            referrals: referralsCount,
+            leadMagnets: leadMagnetsCount,
+            playgroundSessions: playgroundSessions
         };
 
         return apiResponse({ ...stats, deployment_version: "v1.0.2-stable" });

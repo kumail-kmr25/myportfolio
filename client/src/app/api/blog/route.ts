@@ -43,9 +43,12 @@ export async function POST(request: Request) {
             return apiError("Missing required blog parameters", 400);
         }
 
-        const post = await prisma.blogPost.create({
+        const slug = title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+
+        const post = await (prisma.blogPost as any).create({
             data: {
                 title,
+                slug,
                 excerpt,
                 content,
                 category,
