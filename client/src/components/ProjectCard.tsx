@@ -2,6 +2,7 @@
 
 import { m } from "framer-motion";
 import { Github, ExternalLink, ArrowUpRight, Code2, Globe, Database, Terminal, Sparkles } from "lucide-react";
+import Link from "next/link";
 import Image from "next/image";
 
 interface ProjectCardProps {
@@ -86,22 +87,23 @@ export default function ProjectCard({ project, isFeatured = false, isHero = fals
 
                     {/* Actions */}
                     <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-6 mt-auto">
-                        <button 
-                            onClick={() => onViewCaseStudy(project)}
+                        <Link 
+                            href={`/projects/${project.id.replace('mock-', '')}`}
                             className="btn-primary py-4 px-8 flex items-center justify-center gap-2 group/btn shadow-[0_0_20px_rgba(37,99,235,0.2)] hover:shadow-[0_0_30px_rgba(37,99,235,0.4)]"
                         >
-                            View Details <ArrowUpRight size={18} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-                        </button>
+                            Executive Briefing <ArrowUpRight size={18} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                        </Link>
                         
                         <div className="flex gap-4">
+                            <button 
+                                onClick={() => onViewCaseStudy(project)}
+                                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20 transition-all text-[11px] font-black uppercase tracking-widest group/peek"
+                            >
+                                <Sparkles size={16} className="group-hover/peek:text-blue-400 transition-colors" /> Quick Peek
+                            </button>
                             {project.demo && project.demo !== "#" && (
                                 <a href={project.demo} target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20 transition-all text-[11px] font-black uppercase tracking-widest tooltip-trigger group/demo">
                                     <Globe size={16} className="group-hover/demo:text-blue-400 transition-colors" /> Live Demo
-                                </a>
-                            )}
-                            {project.github && project.github !== "#" && (
-                                <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20 transition-all text-[11px] font-black uppercase tracking-widest tooltip-trigger group/git">
-                                    <Github size={16} className="group-hover/git:text-gray-300 transition-colors" /> View Code
                                 </a>
                             )}
                         </div>
@@ -115,14 +117,16 @@ export default function ProjectCard({ project, isFeatured = false, isHero = fals
     return (
         <m.div 
             variants={cardVariants}
-            onClick={() => onViewCaseStudy(project)}
-            className="group relative p-6 lg:p-8 rounded-[3rem] bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/5 hover:border-blue-500/20 hover:bg-gradient-to-b hover:from-white/[0.06] hover:to-white/[0.02] hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(59,130,246,0.1)] transition-all duration-500 flex flex-col h-full cursor-pointer"
+            className="group relative p-6 lg:p-8 rounded-[3rem] bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/5 hover:border-blue-500/20 hover:bg-gradient-to-b hover:from-white/[0.06] hover:to-white/[0.02] hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(59,130,246,0.1)] transition-all duration-500 flex flex-col h-full"
         >
             {/* Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-blue-500/10 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             {/* Image Collection */}
-            <div className="relative aspect-[16/10] rounded-[2rem] overflow-hidden mb-8 border border-white/10 bg-[#050505] shadow-xl group-hover:border-blue-500/20 transition-all duration-500">
+            <div 
+                className="relative aspect-[16/10] rounded-[2rem] overflow-hidden mb-8 border border-white/10 bg-[#050505] shadow-xl group-hover:border-blue-500/20 transition-all duration-500 cursor-pointer"
+                onClick={() => onViewCaseStudy(project)}
+            >
                 <Image 
                     src={project.image} 
                     alt={project.title} 
@@ -176,19 +180,14 @@ export default function ProjectCard({ project, isFeatured = false, isHero = fals
                                 {tag}
                             </span>
                         ))}
-                        {project.tags.length > 4 && (
-                            <span className="px-2.5 py-1 rounded-md bg-transparent text-[9px] font-bold text-gray-600">
-                                +{project.tags.length - 4}
-                            </span>
-                        )}
                     </div>
                     
-                    <button 
-                        onClick={() => onViewCaseStudy(project)}
+                    <Link 
+                        href={`/projects/${project.id.replace('mock-', '')}`}
                         className="w-full py-4 rounded-xl bg-white/[0.02] border border-white/10 text-[10px] font-black text-white uppercase tracking-widest hover:bg-blue-500 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 group/case"
                     >
-                        View Details <ArrowUpRight size={14} className="group-hover/case:translate-x-1 group-hover/case:-translate-y-1 transition-transform" />
-                    </button>
+                        Detailed Intelligence <ArrowUpRight size={14} className="group-hover/case:translate-x-1 group-hover/case:-translate-y-1 transition-transform" />
+                    </Link>
                 </div>
             </div>
         </m.div>

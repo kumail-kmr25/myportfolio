@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Download, Search } from "lucide-react";
+import { ArrowRight, Download, Search, Target, Cpu, Users, Briefcase } from "lucide-react";
 import { m, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useHireModal } from "@/context/HireModalContext";
@@ -212,6 +212,60 @@ export default function Hero() {
                                     My Journey
                                 </span>
                             </Link>
+                        </m.div>
+
+                        {/* Audience Intent Picker */}
+                        <m.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.6, duration: 1, ease: premiumEase as any }}
+                            className="mt-16 pt-16 border-t border-white/5"
+                        >
+                            <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] mb-8 lg:text-left text-center">
+                                UNLOCK THE STRIKE ZONE // SELECT YOUR INTENT
+                            </p>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                {[
+                                    { 
+                                        label: "Recruiters", 
+                                        desc: "Technical deep-dives & audits.", 
+                                        href: "/recruiters", 
+                                        icon: Cpu, 
+                                        color: "group-hover:text-blue-500",
+                                        borderColor: "hover:border-blue-500/30"
+                                    },
+                                    { 
+                                        label: "Clients", 
+                                        desc: "ROI metrics & business value.", 
+                                        href: "/clients", 
+                                        icon: Target, 
+                                        color: "group-hover:text-emerald-500",
+                                        borderColor: "hover:border-emerald-500/30"
+                                    },
+                                    { 
+                                        label: "HR Managers", 
+                                        desc: "Culture fit & tenure maps.", 
+                                        href: "/career", 
+                                        icon: Briefcase, 
+                                        color: "group-hover:text-purple-500",
+                                        borderColor: "hover:border-purple-500/30"
+                                    }
+                                ].map((intent) => (
+                                    <Link 
+                                        key={intent.label}
+                                        href={intent.href}
+                                        className={`group p-6 rounded-2xl bg-white/[0.02] border border-white/5 transition-all duration-300 flex flex-col items-center lg:items-start text-center lg:text-left gap-4 ${intent.borderColor} hover:bg-white/[0.04] hover:-translate-y-1`}
+                                    >
+                                        <div className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center transition-colors ${intent.color}`}>
+                                            <intent.icon size={20} />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-black text-white uppercase tracking-widest mb-1">{intent.label}</h4>
+                                            <p className="text-[10px] text-gray-500 font-medium">{intent.desc}</p>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
                         </m.div>
 
                     </div>

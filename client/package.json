@@ -6,11 +6,10 @@
         "node": "^22"
     },
     "scripts": {
-        "dev": "next dev",
+        "postinstall": "prisma generate --schema=../packages/database/prisma/schema.prisma",
         "build": "next build",
-        "start": "next start",
-        "lint": "next lint",
-        "postinstall": "prisma generate --schema=../packages/database/prisma/schema.prisma"
+        "dev": "next dev",
+        "lint": "next lint"
     },
     "dependencies": {
         "@hookform/resolvers": "^3.10.0",

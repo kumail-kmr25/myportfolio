@@ -9,21 +9,26 @@ async function main() {
 
     // 1. Create Admin
     const adminEmail = "ka6307464@gmail.com";
-    const hashedPassword = "$2b$12$mZWl6IrG1SR3Cur.hxVL.22ciZl.64GTDk.C2kEh"; // KUMAIL@admin25?.
+    const hashedPassword = "$2b$10$rosB3D8cPp8AdMT.dKdp2SHs7q7HQX62pX6ma7Ud"; // KUMAIL@admin25
 
     try {
-        await prisma.admin.upsert({
+        await prisma.user.upsert({
             where: { email: adminEmail },
-            update: {},
+            update: {
+                password: hashedPassword,
+                name: "Kumail",
+                phone: "6006121193",
+                role: "admin",
+            },
             create: {
                 email: adminEmail,
                 password: hashedPassword,
                 name: "Kumail",
                 phone: "6006121193",
-                userId: "admin-001",
+                role: "admin",
             },
         });
-        console.log("✅ Admin seeded.");
+        console.log("✅ Admin seeded (User model).");
     } catch (error) {
         console.error("❌ Admin seed failed:", error);
     }

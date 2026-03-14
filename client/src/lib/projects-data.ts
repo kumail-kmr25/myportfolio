@@ -1,5 +1,6 @@
+import { Project } from "./types";
 
-export const highConversionProjects = [
+export const highConversionProjects: Project[] = [
     {
       id: "artisans-table",
       title: "The Artisan's Table",

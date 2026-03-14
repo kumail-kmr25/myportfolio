@@ -109,14 +109,6 @@ export default function Footer() {
                     </div>
 
                     <m.div variants={itemVariants} className="flex items-center gap-6">
-                        <button
-                            onClick={() => setShowProjects(!showProjects)}
-                            className={`flex items-center gap-3 text-[10px] font-black uppercase tracking-widest transition-all py-3 px-6 rounded-2xl border ${showProjects ? 'bg-blue-600 border-blue-500 text-white' : 'bg-white/[0.03] border-white/8 text-gray-500 hover:text-white hover:border-blue-500/30'}`}
-                        >
-                            {showProjects ? <Minus size={14} /> : <Plus size={14} />}
-                            <span>More Projects</span>
-                        </button>
-
                         <Link 
                             href="/audit" 
                             className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-emerald-500 hover:text-emerald-400 transition-all py-3 px-6 rounded-2xl border border-emerald-500/10 hover:border-emerald-500/30 hover:bg-emerald-500/5"
@@ -135,85 +127,6 @@ export default function Footer() {
                     </m.div>
                 </div>
             </m.div>
-
-            {/* Expansion Section */}
-            <AnimatePresence>
-                {showProjects && (
-                    <m.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.8, ease: premiumEase as any }}
-                        className="overflow-hidden bg-[#050505]/50 border-t border-white/5"
-                    >
-                        <div className="max-w-7xl mx-auto px-6 py-24">
-                            <div className="flex flex-col items-center mb-16 text-center">
-                                <m.div 
-                                    initial={{ y: 20, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    className="flex items-center gap-4 mb-6"
-                                >
-                                    <span className="px-5 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-black text-blue-400 uppercase tracking-widest flex items-center gap-2">
-                                        <Sparkles size={12} /> Technical Showcase
-                                    </span>
-                                </m.div>
-                                <m.h3 
-                                    initial={{ y: 20, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    transition={{ delay: 0.1 }}
-                                    className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-8"
-                                >
-                                    Additional <span className="text-blue-500">Premium Builds</span>
-                                </m.h3>
-                                <m.p 
-                                    initial={{ y: 20, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    transition={{ delay: 0.2 }}
-                                    className="text-gray-500 text-sm uppercase tracking-widest font-black"
-                                >
-                                    Deep engineering across multiple domains
-                                </m.p>
-                            </div>
-
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                                {/* Highlighted Project Names */}
-                                <div className="space-y-12">
-                                    {[
-                                        { name: "CUE AI", color: "text-blue-500", shadow: "shadow-blue-500/20" },
-                                        { name: "Quebook", color: "text-purple-500", shadow: "shadow-purple-500/20" },
-                                        { name: "Clinkart", color: "text-emerald-500", shadow: "shadow-emerald-500/20" }
-                                    ].map((p, i) => (
-                                        <m.div
-                                            key={p.name}
-                                            initial={{ x: -20, opacity: 0 }}
-                                            animate={{ x: 0, opacity: 1 }}
-                                            transition={{ delay: 0.3 + (i * 0.1) }}
-                                            className="group cursor-default"
-                                        >
-                                            <h4 className={`text-6xl md:text-7xl lg:text-8xl font-black ${p.color} tracking-tighter filter blur-[1px] hover:blur-0 transition-all duration-700 opacity-40 hover:opacity-100 select-none`}>
-                                                {p.name}
-                                            </h4>
-                                        </m.div>
-                                    ))}
-                                </div>
-
-                                {/* Showcased Project */}
-                                <m.div
-                                    initial={{ scale: 0.9, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    transition={{ delay: 0.6 }}
-                                >
-                                    <ProjectCard 
-                                        project={MOCK_PROJECTS.find(p => p.id === "mock-edunova")} 
-                                        isFeatured={true}
-                                        onViewCaseStudy={setSelectedProject}
-                                    />
-                                </m.div>
-                            </div>
-                        </div>
-                    </m.div>
-                )}
-            </AnimatePresence>
 
             {/* Modal Orchestration */}
             <ProjectCaseStudyModal 
