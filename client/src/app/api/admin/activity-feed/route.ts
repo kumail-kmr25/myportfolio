@@ -1,9 +1,10 @@
+import { prisma } from "@portfolio/database";
+export const dynamic = "force-dynamic";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { fetchActivities } from "@/lib/admin-helpers";
 import { apiResponse } from "@/lib/rate-limit";
 
-export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function GET() {

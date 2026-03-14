@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
+export const dynamic = "force-dynamic";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { apiResponse, apiError } from "@/lib/rate-limit";
@@ -44,7 +45,7 @@ export async function PATCH(request: Request) {
                 featured,
                 relationship_type,
                 intervention_type,
-                deliveryRating,
+                rating: deliveryRating,
                 about_delivery_lead
             },
         });

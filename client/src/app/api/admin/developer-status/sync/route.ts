@@ -40,7 +40,7 @@ export async function GET() {
         }
 
         const currentFocus = activeProjects.length > 0
-            ? `Developing: ${activeProjects.map(p => p.projectTitle).join(", ")}`
+            ? `Developing: ${activeProjects.map((p: any) => p.projectTitle).join(", ")}`
             : "Open to strategic collaborations & new projects";
 
         return apiResponse({

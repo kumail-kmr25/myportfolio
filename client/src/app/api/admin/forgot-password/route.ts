@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
+export const dynamic = "force-dynamic";
+import { getServerSession } from "next-auth";
 import crypto from "crypto";
 import { sendPasswordResetEmail } from "@/lib/mail";
 import { apiResponse, apiError } from "@/lib/rate-limit";
@@ -12,7 +14,7 @@ export async function POST(request: Request) {
             return apiError("Email is required.", 400);
         }
 
-        const admin = await prisma.admin.findFirst({
+        const admin = await (prisma as any).user.findFirst({
             where: { email },
         });
 
@@ -27,7 +29,7 @@ export async function POST(request: Request) {
         const resetToken = crypto.randomBytes(32).toString("hex");
         const resetTokenExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
 
-        await prisma.admin.update({
+        await (prisma as any).user.update({
             where: { id: admin.id },
             data: {
                 resetToken,

@@ -49,11 +49,6 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     try {
-        const existingAdmin = await prisma.admin.findFirst();
-        if (existingAdmin) {
-            return apiError("Admin already registered. Registration is closed.", 403);
-        }
-
         const { name, email, phone, password } = await request.json();
 
         if (!name || !email || !phone || !password) {
@@ -64,21 +59,34 @@ export async function POST(request: Request) {
             return apiError("Password must be at least 8 characters.", 400);
         }
 
+        const existingAdmin = await (prisma as any).user.findFirst({
+            where: {
+                role: "admin"
+            }
+        });
+
+        if (existingAdmin) {
+            return apiResponse({ success: false, error: "Registrations are disabled. An administrator account already exists." }, 403);
+        }
+
         const verification = verifyCredentials(name, email, phone);
         if (!verification.allMatch) {
             return apiError("You cannot register. Only authorised admins can register.", 403);
         }
 
-        const userId = generateUserId();
+        // Hash password
         const hashedPassword = await bcrypt.hash(password, 12);
+        const userId = generateUserId();
 
-        const admin = await prisma.admin.create({
+        // Create admin
+        const admin = await (prisma as any).user.create({
             data: {
                 name: name.trim(),
                 email: email.toLowerCase().trim(),
                 phone: phone.trim(),
                 userId,
                 password: hashedPassword,
+                role: "admin"
             },
         });
 

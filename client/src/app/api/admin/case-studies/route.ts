@@ -1,4 +1,5 @@
 import { prisma } from "@portfolio/database";
+export const dynamic = "force-dynamic";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { caseStudySchema } from "@portfolio/shared";

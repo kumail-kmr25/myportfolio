@@ -3,6 +3,7 @@ import { prisma } from "@portfolio/database";
 import bcrypt from "bcryptjs";
 import { apiResponse, apiError } from "@/lib/rate-limit";
 
+export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
             return apiError("Password must be at least 8 characters long.", 400);
         }
 
-        const admin = await prisma.admin.findFirst({
+        const admin = await (prisma as any).user.findFirst({
             where: {
                 resetToken: token,
                 resetTokenExpiry: {
@@ -27,12 +28,12 @@ export async function POST(request: Request) {
         });
 
         if (!admin) {
-            return apiError("Invalid or expired reset token.", 400);
+            return apiResponse({ success: false, error: "Invalid or expired reset token." }, 400);
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 12);
 
-        await prisma.admin.update({
+        await (prisma as any).user.update({
             where: { id: admin.id },
             data: {
                 password: hashedPassword,
