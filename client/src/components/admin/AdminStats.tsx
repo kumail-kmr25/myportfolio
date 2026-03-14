@@ -1,8 +1,7 @@
-"use client";
-
 import { useState, useEffect } from "react";
-import { BarChart3, Save, RefreshCw, Loader2, Info } from "lucide-react";
+import { BarChart3, Save, RefreshCw, Loader2, Info, Target, Cpu, Zap, Activity, HardDrive } from "lucide-react";
 import { getApiUrl } from "@/lib/api";
+import { m } from "framer-motion";
 
 export interface SiteStats {
     bugsFixed: number;
@@ -50,42 +49,81 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
     };
 
     const statFields = [
-        { label: "Bugs Fixed", key: "bugsFixed", description: "Manual count of bugs resolved" },
-        { label: "Case Studies Written", key: "caseStudiesWritten", description: "Automatically aggregated from Case Studies" },
-        { label: "Features Completed", key: "featureRequestsCompleted", description: "Automatically aggregated from Feature Requests" },
-        { label: "Years Learning", key: "yearsLearning", description: "Manual count of years in the field" },
-        { label: "Deployment Count", key: "deploymentCount", description: "Total production deployments" },
-        { label: "Total Audits", key: "auditCount", description: "Total website audits performed" },
-        { label: "Audit Leads", key: "auditLeads", description: "Total leads generated via audits" },
+        { label: "Bugs Neutralized", key: "bugsFixed", description: "Verified resolutions", icon: Zap, color: "text-red-400", vectorId: "V-01" },
+        { label: "Case Engineering", key: "caseStudiesWritten", description: "Aggregated documentation", icon: HardDrive, color: "text-blue-400", vectorId: "V-02" },
+        { label: "Feature Pipeline", key: "featureRequestsCompleted", description: "Architectural enhancements", icon: Cpu, color: "text-purple-400", vectorId: "V-03" },
+        { label: "Engineering Tenure", key: "yearsLearning", description: "Professional experience", icon: Target, color: "text-green-400", vectorId: "V-04" },
+        { label: "Production Deploys", key: "deploymentCount", description: "CI/CD executions", icon: Activity, color: "text-orange-400", vectorId: "V-05" },
+        { label: "Security Audits", key: "auditCount", description: "Website evaluations", icon: BarChart3, color: "text-emerald-400", vectorId: "V-06" },
+        { label: "Conversion Delta", key: "auditLeads", description: "High-intent generation", icon: RefreshCw, color: "text-indigo-400", vectorId: "V-07" },
     ];
 
     return (
-        <div className="max-w-4xl space-y-8">
-            <div className="bg-white/5 p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/5 flex justify-between items-center gap-4">
-                <div>
-                    <h2 className="text-lg sm:text-xl font-bold text-white">System Performance Stats</h2>
-                    <p className="text-xs sm:text-sm text-gray-500 mt-1">Configure the metrics shown on your public dashboard.</p>
+        <div className="max-w-6xl space-y-12 animate-in fade-in duration-700">
+            <div className="glass-effect p-8 rounded-[2.5rem] border border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 bg-[#080808] relative overflow-hidden">
+                <div className="absolute inset-0 bg-blue-500/[0.02] pointer-events-none" />
+                <div className="space-y-3 relative z-10">
+                    <div className="flex items-center gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_#3b82f6]" />
+                        <h2 className="text-xl font-black text-white uppercase tracking-tighter italic">Performance_Vector_Controller</h2>
+                    </div>
+                    <p className="text-[9px] text-gray-700 font-black uppercase tracking-[0.4em] leading-relaxed max-w-md">
+                        Fine-tune global performance indicators. These values drive the trust-engine visualizations across the public interface.
+                    </p>
                 </div>
-                <BarChart3 className="text-blue-500 w-8 h-8 sm:w-10 sm:h-10 opacity-20 shrink-0" />
+                <div className="flex items-center gap-4 bg-white/[0.02] p-4 rounded-2xl border border-white/5 relative z-10">
+                    <div className="text-right">
+                        <div className="text-[8px] font-black text-gray-800 uppercase tracking-widest leading-none mb-1">Grid_State</div>
+                        <div className="text-[10px] font-mono font-black text-emerald-500 leading-none">NOMINAL_SYNC</div>
+                    </div>
+                    <div className="w-px h-8 bg-white/10" />
+                    <BarChart3 className="text-blue-500/40 w-8 h-8 shrink-0" />
+                </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} className="space-y-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {statFields.map((field) => (
-                        <div key={field.key} className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 space-y-3">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 block ml-2">
-                                {field.label}
-                            </label>
-                            <input
-                                type="number"
-                                className="input-field !bg-black/40"
-                                value={(formData as any)[field.key]}
-                                onChange={(e) => setFormData({ ...formData, [field.key]: parseInt(e.target.value) || 0 })}
-                            />
-                            <p className="text-[9px] text-gray-600 flex items-center gap-1 ml-2">
-                                <Info size={10} /> {field.description}
-                            </p>
-                        </div>
+                        <m.div 
+                            key={field.key} 
+                            whileHover={{ y: -5 }}
+                            className="p-8 rounded-[2rem] bg-white/[0.01] border border-white/5 hover:border-blue-500/20 hover:bg-white/[0.02] transition-all space-y-8 group relative overflow-hidden"
+                        >
+                            <div className="absolute top-0 right-0 p-4 text-[7px] font-black text-gray-900 font-mono tracking-tighter uppercase pointer-events-none">
+                                {field.vectorId} // READ_ACCESS
+                            </div>
+                            
+                            <div className="flex items-center gap-4">
+                                <div className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center ${field.color} border border-white/5 group-hover:rotate-12 transition-transform`}>
+                                    <field.icon size={18} />
+                                </div>
+                                <div className="space-y-0.5">
+                                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 block leading-none">
+                                        {field.label}
+                                    </label>
+                                    <p className="text-[7px] text-gray-800 font-black uppercase tracking-widest">{field.description}</p>
+                                </div>
+                            </div>
+                            
+                            <div className="relative">
+                                <input
+                                    type="number"
+                                    className="w-full bg-black/60 border border-white/[0.03] rounded-xl px-6 py-5 text-3xl font-black text-white focus:outline-none focus:border-blue-500/40 transition-all font-mono tracking-tighter italic"
+                                    value={(formData as any)[field.key]}
+                                    onChange={(e) => setFormData({ ...formData, [field.key]: parseInt(e.target.value) || 0 })}
+                                />
+                                <div className="absolute left-0 -bottom-2 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+
+                            <div className="flex items-center justify-between pt-2">
+                                <span className="text-[7px] font-mono text-gray-800">OFFSET // 000</span>
+                                <div className="flex gap-1">
+                                    {[1, 2, 3].map(i => (
+                                        <div key={i} className="w-1 h-3 bg-gray-900 group-hover:bg-blue-500/20 rounded-full transition-colors" />
+                                    ))}
+                                </div>
+                            </div>
+                        </m.div>
                     ))}
                 </div>
 
@@ -93,22 +131,30 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
                     <button
                         type="submit"
                         disabled={loading}
-                        className="btn-primary w-full py-6 text-sm font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3"
+                        className="w-full p-8 rounded-[2.5rem] bg-blue-600 text-white text-[10px] font-black uppercase tracking-[0.5em] flex items-center justify-center gap-8 hover:bg-blue-500 transition-all shadow-2xl shadow-blue-500/20 active:scale-95 group/btn relative overflow-hidden"
                     >
-                        {loading ? <Loader2 className="animate-spin w-5 h-5" /> : (
+                        <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
+                        
+                        {loading ? <Loader2 className="animate-spin" /> : (
                             <>
-                                <Save size={18} /> Update Engineering Metrics
+                                <Save size={18} className="group-hover/btn:scale-125 transition-transform relative z-10" />
+                                <span className="relative z-10">Synchronize Engineering Intelligence // V1.0</span>
                             </>
                         )}
                     </button>
                 </div>
             </form>
 
-            <div className="p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] bg-blue-500/5 border border-blue-500/10">
-                <h4 className="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-2">Note on Automation</h4>
-                <p className="text-gray-500 text-[11px] leading-relaxed">
-                    While some stats are manually configurable (like Years Learning), others are automatically calculated by the system daily. Manual overrides will be saved until the next automated aggregation cycle.
-                </p>
+            <div className="p-10 rounded-[3rem] bg-blue-500/[0.03] border border-blue-500/10 flex items-start gap-6">
+                <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0">
+                    <Activity size={24} />
+                </div>
+                <div className="space-y-2">
+                    <h4 className="text-blue-400 text-[10px] font-black uppercase tracking-[0.3em]">Operational Protocol</h4>
+                    <p className="text-gray-500 text-[11px] leading-relaxed font-medium uppercase tracking-tight">
+                        Aggregated metrics are recalibrated daily at 00:00 UTC. Manual overrides take precedence in the current epoch but may be superseded by verified system logs during the next synchronization cycle.
+                    </p>
+                </div>
             </div>
         </div>
     );

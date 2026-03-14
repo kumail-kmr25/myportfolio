@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import {
     CheckCircle2,
@@ -10,8 +8,28 @@ import {
     Building2,
     User2,
     BadgeCheck,
-    Bookmark
+    Bookmark,
+    Search,
+    ChevronRight,
+    Square,
+    CheckSquare,
+    Zap,
+    Mail,
+    Quote,
+    Loader2,
+    ShieldCheck,
+    ArrowUpRight,
+    MessageSquare,
+    Filter,
+    Layers,
+    Activity,
+    Lock,
+    Fingerprint
 } from "lucide-react";
+import Drawer from "./Drawer";
+import { useSelection } from "@/context/SelectionContext";
+import { getApiUrl } from "@/lib/api";
+import { m, AnimatePresence } from "framer-motion";
 
 interface Testimonial {
     id: string;
@@ -32,234 +50,434 @@ interface Testimonial {
 
 interface AdminTestimonialsProps {
     testimonials: Testimonial[];
-    onApprove: (id: string, approved: boolean, data?: any) => void;
-    onDelete: (id: string) => void;
-    onVerify?: (id: string, verified: boolean) => void;
-    onFeature?: (id: string, featured: boolean) => void;
+    onUpdate: () => Promise<void>;
 }
 
-export default function AdminTestimonials({ testimonials, onApprove, onDelete, onVerify, onFeature }: AdminTestimonialsProps) {
-    const [editingId, setEditingId] = useState<string | null>(null);
-    const [editForm, setEditForm] = useState<Partial<Testimonial>>({});
+export default function AdminTestimonials({ testimonials, onUpdate }: AdminTestimonialsProps) {
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filter, setFilter] = useState("all");
+    const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const { selectedIds, toggleSelection, clearSelection, isSelected, setSelection } = useSelection();
 
-    const handleEditStart = (t: Testimonial) => {
-        setEditingId(t.id);
-        setEditForm(t);
+    const [formData, setFormData] = useState<Partial<Testimonial>>({});
+
+    const filteredTestimonials = (Array.isArray(testimonials) ? testimonials : []).filter(t => {
+        const matchesSearch = t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                             t.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                             (t.company || "").toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesFilter = filter === "all" || 
+                             (filter === "pending" && !t.approved) || 
+                             (filter === "featured" && t.featured) ||
+                             (filter === "verified" && t.verified);
+        return matchesSearch && matchesFilter;
+    });
+
+    const handleEdit = (testimonial: Testimonial) => {
+        setFormData(testimonial);
+        setSelectedTestimonial(testimonial);
+        setIsEditing(true);
     };
 
-    const handleEditSave = () => {
-        if (editingId && onApprove) {
-            onApprove(editingId, editForm.approved ?? false, editForm);
-            setEditingId(null);
+    const handleSave = async (data: Partial<Testimonial>) => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(getApiUrl(`/api/admin/testimonials/${data.id}`), {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+            if (response.ok) {
+                await onUpdate();
+                setIsEditing(false);
+                setSelectedTestimonial(null);
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const safeTestimonials = Array.isArray(testimonials) ? testimonials : [];
-    const pending = safeTestimonials.filter(t => !t.approved);
-    const approved = safeTestimonials.filter(t => t.approved);
+    const handleDelete = async (id: string) => {
+        if (!confirm("Are you sure? This feedback unit will be permanently purged.")) return;
+        try {
+            const response = await fetch(getApiUrl(`/api/admin/testimonials/${id}`), { method: "DELETE" });
+            if (response.ok) {
+                await onUpdate();
+                setIsEditing(false);
+                setSelectedTestimonial(null);
+            }
+        } catch (err) { console.error(err); }
+    };
 
-    const renderTestimonial = (testimonial: Testimonial) => (
-        <div key={testimonial.id} className={`card p-6 sm:p-8 group relative flex flex-col border-white/5 transition-all ${testimonial.approved ? 'bg-green-500/5 hover:bg-green-500/[0.08]' : 'bg-white/5 hover:bg-white/[0.08]'}`}>
-            {/* Status Badge */}
-            <div className={`absolute top-4 left-4 sm:top-6 sm:left-6 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${testimonial.approved
-                ? 'bg-green-500/10 text-green-400 border-green-500/20'
-                : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
-                }`}>
-                {testimonial.approved ? 'Live' : 'Pending'}
-            </div>
+    const handleBulkAction = async (action: 'approve' | 'feature' | 'verify' | 'delete') => {
+        if (action === 'delete' && !confirm(`Purge ${selectedIds.length} testimonials?`)) return;
+        
+        await Promise.all(selectedIds.map(async (id) => {
+            if (action === 'delete') {
+                return fetch(getApiUrl(`/api/admin/testimonials/${id}`), { method: "DELETE" });
+            }
+            const t = testimonials.find(item => item.id === id);
+            if (!t) return;
+            
+            let data = {};
+            if (action === 'approve') data = { approved: !t.approved };
+            if (action === 'feature') data = { featured: !t.featured };
+            if (action === 'verify') data = { verified: !t.verified };
 
-            {/* Actions */}
-            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex flex-col sm:flex-row gap-2 sm:opacity-0 group-hover:opacity-100 transition-all sm:scale-95 group-hover:scale-100 z-10">
-                <button
-                    onClick={() => handleEditStart(testimonial)}
-                    className="p-3 sm:p-2.5 bg-[#0a0a0a]/80 sm:bg-blue-500/10 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center"
-                    title="Edit Testimonial"
-                >
-                    <Star size={18} className="sm:size-[18px]" />
-                </button>
-                <button
-                    onClick={() => onApprove(testimonial.id, !testimonial.approved)}
-                    className={`p-3 sm:p-2.5 rounded-xl transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center ${testimonial.approved
-                        ? "bg-[#0a0a0a]/80 sm:bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500 hover:text-white"
-                        : "bg-[#0a0a0a]/80 sm:bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-white"
-                        }`}
-                    title={testimonial.approved ? "Revoke" : "Approve"}
-                >
-                    {testimonial.approved ? <XCircle size={18} className="sm:size-[18px]" /> : <CheckCircle2 size={18} className="sm:size-[18px]" />}
-                </button>
-                {onVerify && (
-                    <button
-                        onClick={() => onVerify(testimonial.id, !testimonial.verified)}
-                        className={`p-3 sm:p-2.5 rounded-xl transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center ${testimonial.verified ? "bg-[#0a0a0a]/80 sm:bg-blue-500/20 text-blue-400" : "bg-[#0a0a0a]/80 sm:bg-white/5 text-gray-400 sm:text-gray-500 hover:bg-blue-500/20 hover:text-blue-400"}`}
-                        title={testimonial.verified ? "Remove Verified" : "Mark Verified Client"}
-                    >
-                        <BadgeCheck size={18} className="sm:size-[18px]" />
-                    </button>
-                )}
-                {onFeature && (
-                    <button
-                        onClick={() => onFeature(testimonial.id, !testimonial.featured)}
-                        className={`p-3 sm:p-2.5 rounded-xl transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center ${testimonial.featured ? "bg-[#0a0a0a]/80 sm:bg-amber-500/20 text-amber-400" : "bg-[#0a0a0a]/80 sm:bg-white/5 text-gray-400 sm:text-gray-500 hover:bg-amber-500/20 hover:text-amber-400"}`}
-                        title={testimonial.featured ? "Unfeature" : "Feature this testimonial"}
-                    >
-                        <Bookmark size={18} className="sm:size-[18px]" />
-                    </button>
-                )}
-                <button
-                    onClick={() => onDelete(testimonial.id)}
-                    className="p-3 sm:p-2.5 bg-[#0a0a0a]/80 sm:bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-lg sm:shadow-none min-w-[44px] min-h-[44px] flex items-center justify-center"
-                >
-                    <Trash2 size={18} className="sm:size-[18px]" />
-                </button>
-            </div>
+            return fetch(getApiUrl(`/api/admin/testimonials/${id}`), {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+        }));
 
-            <div className="mt-8 sm:mt-12 space-y-4 sm:space-y-6 flex-grow">
-                <div className="flex items-center justify-between">
-                    <div className="flex gap-1">
-                        {[1, 2, 3, 4, 5].map((s) => (
-                            <Star
-                                key={s}
-                                size={14}
-                                className={s <= testimonial.rating ? "text-yellow-500 fill-yellow-500" : "text-white/10"}
-                            />
-                        ))}
-                    </div>
-                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-tight">
-                        {new Date(testimonial.created_at).toLocaleDateString()}
-                    </span>
-                </div>
-
-                <p className="text-gray-300 leading-relaxed italic text-sm">
-                    &quot;{testimonial.message}&quot;
-                </p>
-
-                <div className="space-y-4 pt-4 border-t border-white/5 mt-auto">
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-white/10 to-transparent flex items-center justify-center text-white font-bold text-xl border border-white/10">
-                            {testimonial.name[0]}
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-white text-sm">{testimonial.name}</h4>
-                            <p className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">
-                                {testimonial.role ? `${testimonial.role} @ ` : ""}{testimonial.intervention_type}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="flex items-center gap-2 text-[10px] text-gray-500 font-bold uppercase tracking-widest">
-                            <Building2 size={12} className="text-white/20" />
-                            {testimonial.company || "N/A"}
-                        </div>
-                        <div className="flex items-center gap-2 text-[10px] text-gray-500 font-bold uppercase tracking-widest">
-                            <User2 size={12} className="text-white/20" />
-                            {testimonial.relationship_type.split(' ')[0]}
-                        </div>
-                    </div>
-
-                    <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                        <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em] mb-2">Delivery Feedback</p>
-                        <p className="text-xs text-gray-400 line-clamp-2">{testimonial.about_delivery_lead}</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Edit Modal Overlay */}
-            {editingId === testimonial.id && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl">
-                    <div className="w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-[2rem] p-8 space-y-6 overflow-y-auto max-h-[90vh]">
-                        <div className="flex justify-between items-center">
-                            <h3 className="text-xl font-black text-white uppercase tracking-tight">Edit Testimonial</h3>
-                            <button onClick={() => setEditingId(null)} className="p-2 hover:bg-white/5 rounded-lg transition-colors">
-                                <XCircle size={20} className="text-gray-500" />
-                            </button>
-                        </div>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Name</label>
-                                <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-blue-500" value={editForm.name || ""} onChange={e => setEditForm({ ...editForm, name: e.target.value })} />
-                            </div>
-                            <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Message</label>
-                                <textarea className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-blue-500 min-h-[100px] resize-none" value={editForm.message || ""} onChange={e => setEditForm({ ...editForm, message: e.target.value })} />
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Role</label>
-                                    <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-blue-500" value={editForm.role || ""} onChange={e => setEditForm({ ...editForm, role: e.target.value })} />
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Company</label>
-                                    <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-blue-500" value={editForm.company || ""} onChange={e => setEditForm({ ...editForm, company: e.target.value })} />
-                                </div>
-                            </div>
-                            <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 block">Delivery Feedback</label>
-                                <textarea className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-blue-500 min-h-[80px] resize-none" value={editForm.about_delivery_lead || ""} onChange={e => setEditForm({ ...editForm, about_delivery_lead: e.target.value })} />
-                            </div>
-                        </div>
-                        <div className="flex gap-4 pt-4">
-                            <button onClick={handleEditSave} className="flex-1 bg-blue-600 text-white py-4 text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-blue-700 transition-all font-bold">Save Changes</button>
-                            <button onClick={() => setEditingId(null)} className="flex-1 bg-white/5 text-white py-4 text-[10px] font-black uppercase tracking-widest rounded-2xl border border-white/10 hover:bg-white/10 transition-all">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
+        await onUpdate();
+        clearSelection();
+    };
 
     return (
-        <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Pending Section */}
-            <section className="space-y-8">
-                <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <div className="flex items-center gap-4 w-full">
-                        <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20">
-                            <Clock size={20} className="text-yellow-500" />
-                        </div>
-                        <div>
-                            <h2 className="text-lg sm:text-xl font-bold text-white">Pending Approval</h2>
-                            <p className="text-[10px] sm:text-xs text-gray-500">Endorsements waiting for review</p>
-                        </div>
-                    </div>
-                    {pending.length > 0 && (
-                        <span className="shrink-0 px-4 py-1.5 bg-yellow-500 text-black font-black text-[10px] rounded-full uppercase tracking-widest w-full sm:w-auto text-center">
-                            {pending.length} Action Required
-                        </span>
-                    )}
+        <div className="space-y-12">
+            {/* Control Matrix */}
+            <m.div 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col lg:flex-row gap-6 justify-between items-center bg-white/[0.02] border border-white/5 p-8 rounded-[3rem] relative overflow-hidden group"
+            >
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                
+                <div className="w-full lg:max-w-xl relative">
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition-colors" size={20} />
+                    <input 
+                        type="text" 
+                        placeholder="SEARCH_SENTIMENT_NODES..."
+                        className="w-full bg-white/[0.03] border border-white/10 rounded-[2rem] py-5 pl-16 pr-8 text-[11px] text-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all font-black uppercase tracking-[0.2em]"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {pending.map(renderTestimonial)}
-                    {pending.length === 0 && (
-                        <div className="col-span-full py-20 text-center border-2 border-dashed border-white/5 rounded-[3rem]">
-                            <p className="text-gray-500 font-medium">All caught up! No pending testimonials.</p>
-                        </div>
-                    )}
-                </div>
-            </section>
-
-            {/* Live Section */}
-            <section className="space-y-8">
-                <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center border border-green-500/20">
-                        <CheckCircle2 size={20} className="text-green-500" />
+                <div className="flex items-center gap-4 w-full lg:w-auto">
+                    <div className="relative flex-grow lg:flex-grow-0 min-w-[200px]">
+                        <Filter className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-700" size={16} />
+                        <select
+                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-4 pl-14 pr-6 text-[10px] text-white font-black uppercase tracking-widest outline-none focus:border-blue-500 appearance-none cursor-pointer"
+                            value={filter}
+                            onChange={(e) => setFilter(e.target.value)}
+                        >
+                            <option value="all" className="bg-[#050505]">ALL_FEEDBACK</option>
+                            <option value="pending" className="bg-[#050505]">PENDING_AUDIT</option>
+                            <option value="featured" className="bg-[#050505]">FEATURED_NODES</option>
+                            <option value="verified" className="bg-[#050505]">VERIFIED_CLIENTS</option>
+                        </select>
                     </div>
-                    <div>
-                        <h2 className="text-xl font-bold text-white">Live Feedback</h2>
-                        <p className="text-xs text-gray-500">Testimonials currently visible on your portfolio</p>
+
+                    <button 
+                        onClick={() => {
+                            if (selectedIds.length === filteredTestimonials.length) clearSelection();
+                            else setSelection(filteredTestimonials.map(t => t.id));
+                        }}
+                        className="p-5 bg-white/[0.05] border border-white/10 rounded-2xl text-gray-500 hover:text-white hover:bg-white/10 transition-all active:scale-95"
+                    >
+                        {selectedIds.length === filteredTestimonials.length ? <CheckSquare size={20} className="text-blue-500" /> : <Square size={20} />}
+                    </button>
+                </div>
+            </m.div>
+
+            {/* Mass Operations Console */}
+            <AnimatePresence>
+                {selectedIds.length > 0 && (
+                    <m.div 
+                        initial={{ opacity: 0, height: 0, y: -20 }}
+                        animate={{ opacity: 1, height: "auto", y: 0 }}
+                        exit={{ opacity: 0, height: 0, y: -20 }}
+                        className="overflow-hidden"
+                    >
+                        <div className="flex flex-col sm:flex-row items-center gap-6 p-8 bg-blue-600/10 border border-blue-500/20 rounded-[2.5rem] relative group/bulk">
+                            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover/bulk:opacity-20 transition-opacity">
+                                <Layers size={100} className="text-blue-500" />
+                            </div>
+                            
+                            <div className="flex items-center gap-6 relative z-10">
+                                <div className="w-12 h-12 rounded-2xl bg-blue-600/20 border border-blue-600/30 flex items-center justify-center text-blue-500">
+                                    <Activity size={24} className="animate-pulse" />
+                                </div>
+                                <div>
+                                    <span className="text-lg font-black text-white italic tracking-tighter uppercase whitespace-nowrap">
+                                        Batch_Target: {selectedIds.length} Nodes
+                                    </span>
+                                    <p className="text-[9px] text-blue-400 font-black uppercase tracking-[0.3em]">Mass modification sequence active</p>
+                                </div>
+                            </div>
+
+                            <div className="h-10 w-px bg-blue-500/20 hidden sm:block" />
+
+                            <div className="flex flex-wrap gap-3 relative z-10">
+                                {[
+                                    { label: "Approve_All", action: 'approve', icon: ShieldCheck, color: "blue" },
+                                    { label: "Feature_All", action: 'feature', icon: Bookmark, color: "blue" },
+                                    { label: "Purge_Selected", action: 'delete', icon: Trash2, color: "red" }
+                                ].map((btn, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => handleBulkAction(btn.action as any)}
+                                        className={`flex items-center gap-3 px-6 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest border transition-all active:scale-95 ${
+                                            btn.color === 'red' 
+                                            ? 'bg-red-600/10 border-red-500/20 text-red-400 hover:bg-red-600 hover:text-white' 
+                                            : 'bg-blue-600/10 border-blue-500/20 text-blue-400 hover:bg-blue-600 hover:text-white'
+                                        }`}
+                                    >
+                                        <btn.icon size={14} />
+                                        {btn.label}
+                                    </button>
+                                ))}
+                                <button
+                                    onClick={clearSelection}
+                                    className="px-6 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition-all"
+                                >
+                                    ABORT_SEQUENCE
+                                </button>
+                            </div>
+                        </div>
+                    </m.div>
+                )}
+            </AnimatePresence>
+
+            {/* Endorsement Grid */}
+            <div className="space-y-6">
+                {filteredTestimonials.length === 0 ? (
+                    <m.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center py-40 border-2 border-dashed border-white/5 rounded-[4rem] bg-white/[0.01]"
+                    >
+                        <Quote size={64} className="text-white/5 mx-auto mb-10" />
+                        <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic">Sentiment_Aura_Void</h3>
+                        <p className="text-[10px] text-gray-700 font-black uppercase tracking-[0.4em] mt-3">No matching endorsement archives found in current parity</p>
+                    </m.div>
+                ) : (
+                    <div className="grid grid-cols-1 gap-6">
+                        {filteredTestimonials.map((testimonial, i) => (
+                            <m.div 
+                                key={testimonial.id}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: i * 0.05 }}
+                                className={`group relative flex flex-col lg:flex-row lg:items-center gap-8 p-10 glass-effect rounded-[3rem] border transition-all duration-500 ${
+                                    isSelected(testimonial.id) 
+                                    ? "bg-blue-600/[0.03] border-blue-500/40 shadow-2xl shadow-blue-500/10" 
+                                    : "bg-white/[0.01] border-white/5 hover:border-white/10 hover:bg-white/[0.02]"
+                                }`}
+                            >
+                                {/* Selection Hub */}
+                                <div className="absolute top-10 left-10 lg:relative lg:top-0 lg:left-0">
+                                    <div 
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleSelection(testimonial.id);
+                                        }}
+                                        className={`w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer transition-all border ${
+                                            isSelected(testimonial.id)
+                                            ? "bg-blue-600/20 border-blue-500/40 text-blue-500"
+                                            : "bg-white/5 border-white/10 text-gray-700 group-hover:text-gray-400 group-hover:border-white/20"
+                                        }`}
+                                    >
+                                        {isSelected(testimonial.id) ? <CheckSquare size={24} /> : <Square size={24} />}
+                                    </div>
+                                </div>
+
+                                {/* Profiling Unit */}
+                                <div 
+                                    onClick={() => handleEdit(testimonial)}
+                                    className="flex-grow flex flex-col lg:flex-row lg:items-center gap-10 cursor-pointer"
+                                >
+                                    <div className="flex items-center gap-6 lg:w-80 shrink-0">
+                                        <div className="relative group/avatar">
+                                            <div className="absolute inset-0 bg-blue-500 rounded-[2rem] blur opacity-0 group-hover/avatar:opacity-20 transition-opacity" />
+                                            <div className="relative w-20 h-20 rounded-[2rem] bg-gradient-to-br from-indigo-600 to-blue-600 border border-white/10 flex items-center justify-center text-3xl font-black text-white italic group-hover/avatar:scale-110 transition-transform">
+                                                {testimonial.name[0]}
+                                            </div>
+                                            <div className={`absolute -bottom-1 -right-1 w-8 h-8 rounded-2xl bg-[#050505] border border-white/10 flex items-center justify-center ${testimonial.verified ? 'text-blue-500' : 'text-gray-800'}`}>
+                                                <BadgeCheck size={18} />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <h3 className="text-2xl font-black text-white tracking-tighter uppercase italic">{testimonial.name}</h3>
+                                            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.3em] truncate max-w-[200px]">{testimonial.company || "Independent_Identity"}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex-1 space-y-4">
+                                        <div className="flex items-center gap-6">
+                                            <div className="flex gap-1">
+                                                {[1,2,3,4,5].map(idx => (
+                                                    <Star key={idx} size={14} className={idx <= testimonial.rating ? "text-blue-500 fill-blue-500" : "text-white/5"} />
+                                                ))}
+                                            </div>
+                                            <div className="h-px w-12 bg-white/5" />
+                                            <span className="text-[10px] text-gray-700 font-black uppercase tracking-[0.2em]">{testimonial.intervention_type}</span>
+                                        </div>
+                                        <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 italic font-medium group-hover:text-white transition-colors">
+                                            &quot;{testimonial.message}&quot;
+                                        </p>
+                                    </div>
+
+                                    <div className="flex flex-wrap items-center gap-4 lg:ml-auto">
+                                        {testimonial.featured && (
+                                            <div className="px-4 py-2 bg-amber-500/5 border border-amber-500/20 rounded-xl flex items-center gap-3">
+                                                <Bookmark size={14} className="text-amber-500" fill="currentColor" />
+                                                <span className="text-[9px] font-black text-amber-500 uppercase tracking-widest">Featured</span>
+                                            </div>
+                                        )}
+                                        <div className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest border transition-all ${
+                                            testimonial.approved 
+                                            ? 'bg-emerald-500/5 text-emerald-500 border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]' 
+                                            : 'bg-red-500/5 text-red-500 border-red-500/20'
+                                        }`}>
+                                            {testimonial.approved ? 'Live_Sync' : 'Quarantined'}
+                                        </div>
+                                        <div className="p-4 bg-white/5 rounded-2xl text-gray-700 group-hover:text-white group-hover:bg-white/10 transition-all">
+                                            <ChevronRight size={20} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </m.div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {/* Testimonial Intelligence Drawer */}
+            <Drawer
+                isOpen={isEditing}
+                onClose={() => {
+                    setIsEditing(false);
+                    setSelectedTestimonial(null);
+                }}
+                title="Sentiment_Dossier"
+                subtitle="High-fidelity client endorsement forensic archive"
+                footer={
+                    <div className="flex gap-6 mt-12">
+                        <m.button 
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => handleDelete(formData.id!)}
+                            className="p-6 bg-red-600/10 text-red-500 rounded-[2rem] hover:bg-red-600 hover:text-white transition-all border border-red-600/20"
+                        >
+                            <Trash2 size={24} />
+                        </m.button>
+                        <m.button 
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => handleSave(formData)}
+                            disabled={isLoading}
+                            className="flex-grow flex items-center justify-center gap-4 bg-blue-600 py-6 rounded-[2rem] text-sm font-black text-white uppercase tracking-[0.3em] shadow-2xl shadow-blue-500/20 hover:bg-blue-500 transition-all disabled:opacity-50"
+                        >
+                            {isLoading ? <Loader2 className="animate-spin text-white/50" size={20} /> : <Zap size={20} className="text-white" />}
+                            Commit_Parity_Changes
+                        </m.button>
+                    </div>
+                }
+            >
+                <div className="space-y-12">
+                    {/* Identity Matrix */}
+                    <div className="space-y-6">
+                        <div className="flex items-center gap-4">
+                            <Fingerprint className="text-blue-500" size={18} />
+                            <h4 className="text-[11px] font-black text-white uppercase tracking-[0.3em]">Identity_Parity</h4>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {[
+                                { label: "Client_Name", key: "name", icon: User2 },
+                                { label: "Security_Mail", key: "email", icon: Mail },
+                                { label: "Corporate_Entity", key: "company", icon: Building2 },
+                                { label: "Identity_Token", key: "role", icon: BadgeCheck }
+                            ].map((field) => (
+                                <div key={field.key} className="space-y-2">
+                                    <label className="text-[9px] text-gray-700 font-black uppercase tracking-[0.4em] ml-6">{field.label}</label>
+                                    <div className="relative group">
+                                        <field.icon className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition-colors" size={16} />
+                                        <input 
+                                            type="text"
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-5 pl-16 pr-6 text-[12px] text-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all font-bold"
+                                            value={(formData as any)[field.key] || ""}
+                                            onChange={e => setFormData({...formData, [field.key]: e.target.value})}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Narrative Stream */}
+                    <div className="space-y-6">
+                        <div className="flex items-center gap-4">
+                            <MessageSquare className="text-blue-500" size={18} />
+                            <h4 className="text-[11px] font-black text-white uppercase tracking-[0.3em]">Operational_Sentiment</h4>
+                        </div>
+                        <div className="p-8 bg-white/[0.02] border border-white/5 rounded-[3rem] space-y-8">
+                            <div className="space-y-2">
+                                <label className="text-[9px] text-gray-700 font-black uppercase tracking-[0.4em] ml-2">Public_Endorsement_Stream</label>
+                                <textarea 
+                                    className="w-full bg-white/[0.03] border border-white/10 rounded-[2rem] p-8 text-sm text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 min-h-[180px] italic font-medium leading-relaxed"
+                                    value={formData.message || ""}
+                                    onChange={e => setFormData({...formData, message: e.target.value})}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] text-gray-700 font-black uppercase tracking-[0.4em] ml-2">Internal_Telemetry (Non-Public)</label>
+                                <textarea 
+                                    className="w-full bg-white/[0.03] border border-white/10 rounded-[2rem] p-8 text-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 min-h-[120px]"
+                                    value={formData.about_delivery_lead || ""}
+                                    onChange={e => setFormData({...formData, about_delivery_lead: e.target.value})}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Authorization Matrix */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        {[
+                            { label: "SATISFACTION", val: formData.rating, color: "blue", type: "number" },
+                            { label: "BROADCAST", val: formData.approved, color: "emerald", type: "toggle" },
+                            { label: "VERIFIED", val: formData.verified, color: "blue", type: "toggle" },
+                            { label: "FEATURED", val: formData.featured, color: "amber", type: "toggle" }
+                        ].map((stat, idx) => (
+                            <div key={idx} className="p-6 bg-white/[0.03] border border-white/5 rounded-3xl space-y-4">
+                                <label className="text-[9px] text-gray-700 font-black uppercase tracking-widest">{stat.label}</label>
+                                {stat.type === 'number' ? (
+                                    <div className="flex items-center justify-between">
+                                        <input 
+                                            type="number" min="1" max="5"
+                                            className="bg-transparent text-3xl font-black text-white italic outline-none w-16"
+                                            value={stat.val as number}
+                                            onChange={e => setFormData({...formData, rating: parseInt(e.target.value)})}
+                                        />
+                                        <Star size={20} className="text-blue-500 fill-blue-500" />
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center justify-between">
+                                        <button 
+                                            type="button" 
+                                            onClick={() => {
+                                                if (stat.label === "BROADCAST") setFormData({...formData, approved: !formData.approved});
+                                                if (stat.label === "VERIFIED") setFormData({...formData, verified: !formData.verified});
+                                                if (stat.label === "FEATURED") setFormData({...formData, featured: !formData.featured});
+                                            }}
+                                            className={`w-12 h-6 rounded-full relative transition-all duration-300 ${stat.val ? `bg-${stat.color}-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]` : 'bg-white/10'}`}
+                                        >
+                                            <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow-xl transition-all ${stat.val ? 'left-7' : 'left-1'}`} />
+                                        </button>
+                                        <span className={`text-[10px] font-black uppercase italic ${stat.val ? `text-${stat.color}-500` : 'text-gray-700'}`}>
+                                            {stat.val ? 'ACTIVE' : 'OFF'}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                     </div>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {approved.map(renderTestimonial)}
-                    {approved.length === 0 && (
-                        <div className="col-span-full py-20 text-center border-2 border-dashed border-white/5 rounded-[3rem]">
-                            <p className="text-gray-500 font-medium">No live testimonials yet.</p>
-                        </div>
-                    )}
-                </div>
-            </section>
+            </Drawer>
         </div>
     );
 }

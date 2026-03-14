@@ -7,15 +7,15 @@ import useSWR from "swr";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { getApiUrl } from "@/lib/api";
+import dynamic from "next/dynamic";
 
 // Admin Components
 import Sidebar from "@/components/admin/Sidebar";
+import MobileNav from "@/components/admin/MobileNav";
 import DashboardOverview from "@/components/admin/DashboardOverview";
-import AdminTestimonials from "@/components/admin/AdminTestimonials";
 import AdminProjects from "@/components/admin/AdminProjects";
 import AdminContact from "@/components/admin/AdminContact";
 import AdminHireRequests from "@/components/admin/AdminHireRequests";
-import AdminBlog from "@/components/admin/AdminBlog";
 import AdminFeatureRequests from "@/components/admin/AdminFeatureRequests";
 import AdminStats, { type SiteStats } from "@/components/admin/AdminStats";
 import AdminDiagnostics from "@/components/admin/AdminDiagnostics";
@@ -28,6 +28,11 @@ import AdminCaseStudies from "./AdminCaseStudies";
 import AdminActivityLog from "./AdminActivityLog";
 import AdminAudit from "./AdminAudit";
 import AdminAuditRequests from "./AdminAuditRequests";
+import AdminTestimonials from "./AdminTestimonials";
+import AdminBlog from "./AdminBlog";
+import AdminClients from "./AdminClients";
+import AdminPromotions from "./AdminPromotions";
+import AdminROIEngine from "./AdminROIEngine";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
 
 const fetcher = async (url: string) => {
@@ -50,15 +55,18 @@ interface AdminBlogPost { id: string; title: string; excerpt: string; content: s
 interface AdminDiagnosticLog { id: string; description: string; techStack?: string; createdAt: string; matchedPatternId?: string; environment: string; errorMessage?: string; }
 interface AdminProject { id: string; title: string; summary?: string; description: string; status: string; role?: string; tags: string[]; image: string; demo?: string; github?: string; problem?: string; solution?: string; targetAudience?: string; valueProp?: string; architecture?: any; challenges?: string; engineering?: string; performance?: string; scalability?: string; security?: string; lessons?: string; uiDepth: number; backendDepth: number; securityDepth: number; scalabilityDepth: number; timeline?: any; gallery: string[]; results?: string; metrics: string[]; category?: string; isFeatured: boolean; isVisible: boolean; created_at: string; updated_at: string; }
 interface AdminCaseStudy { id: string; title: string; errorMessage: string; rootCause: string; steps: string[]; solution: string; impact: string; techStack: string[]; isPublished: boolean; created_at: string; }
-interface AdminStats extends SiteStats { diagRuns: number; leadGenTotal: number; hireRequests: number; patternsMatched: number; }
+interface AdminStats extends SiteStats { diagRuns: number; leadGenTotal: number; hireRequests: number; patternsMatched: number; referrals: number; leadMagnets: number; playgroundSessions: number; }
 
 interface AdminDashboardProps {
     initialActivities?: any[];
     initialAvailability?: any;
 }
 
+import { SelectionProvider } from "@/context/SelectionContext";
+
 export default function AdminDashboard({ initialActivities = [], initialAvailability = null }: AdminDashboardProps) {
-    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey" | "activity" | "case-studies" | "audit" | "audit-requests">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey" | "activity" | "case-studies" | "audit" | "audit-requests" | "clients" | "referrals" | "leads" | "roi-engine">("overview");
+    const [isNavOpen, setIsNavOpen] = useState(false);
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -67,7 +75,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     useEffect(() => {
         const tab = searchParams?.get("tab");
-        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey", "activity", "case-studies", "audit", "audit-requests"];
+        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey", "activity", "case-studies", "audit", "audit-requests", "clients", "referrals", "leads", "roi-engine"];
         if (tab && validTabs.includes(tab as any)) {
             setActiveTab(tab as any);
         }
@@ -90,14 +98,22 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
     const { data: caseStudies, mutate: mutateCaseStudies } = useSWR<AdminCaseStudy[]>(isAuthenticated ? "/api/admin/case-studies" : null, fetcher);
     const { data: activityLogs, mutate: mutateActivityLogs } = useSWR<any[]>(isAuthenticated ? "/api/admin/activity-log" : null, fetcher);
     const { data: auditRequests, mutate: mutateAuditRequests } = useSWR<any>(isAuthenticated ? "/api/admin/audit-requests" : null, fetcher);
+    const { data: promotionsData, mutate: mutatePromotions } = useSWR<any>(isAuthenticated ? "/api/admin/promotions" : null, fetcher);
 
 
     useEffect(() => {
         const handleUnauthorized = () => {
             router.push("/admin/login");
         };
+        const handleOpenMenu = () => {
+            setIsNavOpen(true);
+        };
         window.addEventListener('auth-unauthorized', handleUnauthorized);
-        return () => window.removeEventListener('auth-unauthorized', handleUnauthorized);
+        window.addEventListener('open-admin-menu', handleOpenMenu);
+        return () => {
+            window.removeEventListener('auth-unauthorized', handleUnauthorized);
+            window.removeEventListener('open-admin-menu', handleOpenMenu);
+        };
     }, [router]);
 
     const handleLogout = async () => {
@@ -334,7 +350,8 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
     }
 
     return (
-        <div className="min-h-screen bg-[#050505] flex font-[family-name:var(--font-outfit)]">
+        <SelectionProvider>
+            <div className="min-h-screen bg-[#050505] flex font-[family-name:var(--font-outfit)]">
             <Sidebar
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
@@ -344,44 +361,80 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                 pendingFeaturesCount={Array.isArray(featureRequests) ? featureRequests.filter((f) => f.status === "pending").length : 0}
                 newLogsCount={Array.isArray(diagLogs) ? diagLogs.filter((l) => !l.matchedPatternId).length : 0}
                 newAuditCount={auditRequests?.analytics?.pending || 0}
+                isOpen={isNavOpen}
+                setIsOpen={setIsNavOpen}
             />
 
-            <main className="flex-grow lg:ml-72 p-8 lg:p-16">
-                <div className="max-w-7xl mx-auto space-y-12">
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-white/5 pb-12 gap-6">
-                        <div>
-                            <p className="text-[10px] text-blue-400 font-black uppercase tracking-[0.3em] mb-3">Viewing System</p>
-                            <h1 className="text-4xl lg:text-5xl font-black text-white capitalize tracking-tighter">
-                                {activeTab === 'overview' ? 'Dashboard' : activeTab.replace('-', ' ')}
+            <MobileNav 
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                menuItems={[]} // Can be used for deeper sub-menus later
+                newHireCount={Array.isArray(hireRequests) ? hireRequests.filter((h) => h.status === "new").length : 0}
+                newAuditCount={auditRequests?.analytics?.pending || 0}
+                messageCount={Array.isArray(messages) ? messages.filter((m) => !m.replied).length : 0}
+            />
+
+            <main className="flex-grow lg:ml-72 p-8 lg:p-20 relative overflow-hidden">
+                {/* Background Decor */}
+                <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-blue-500/[0.02] rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-indigo-500/[0.01] rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4 pointer-events-none" />
+
+                <div className="max-w-7xl mx-auto space-y-16 relative z-10">
+                    {/* Integrated Command Header */}
+                    <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 border-b border-white/5 pb-16">
+                        <div className="space-y-4">
+                             <div className="flex items-center gap-3">
+                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] animate-pulse" />
+                                <p className="text-[10px] text-blue-400 font-black uppercase tracking-[0.4em]">Kernel_Link_Active</p>
+                                <div className="h-px w-20 bg-gradient-to-r from-blue-500/20 to-transparent" />
+                            </div>
+                            <h1 className="text-5xl lg:text-7xl font-black text-white italic tracking-tighter leading-none uppercase">
+                                {activeTab === 'overview' ? 'COMMAND_UNIT' : activeTab.replace('-', '_')}
                             </h1>
+                            <div className="flex items-center gap-6 pt-2">
+                                <div className="flex items-center gap-2 group cursor-default">
+                                    <div className="w-1 h-1 rounded-full bg-white/20 group-hover:bg-blue-500 transition-colors" />
+                                    <p className="text-[9px] text-gray-700 font-black uppercase tracking-[0.2em]">PERSISTENCE: V2.8.4_STABLE</p>
+                                </div>
+                                <div className="flex items-center gap-2 group cursor-default">
+                                    <div className="w-1 h-1 rounded-full bg-white/20 group-hover:bg-emerald-500 transition-colors" />
+                                    <p className="text-[9px] text-gray-700 font-black uppercase tracking-[0.2em]">NODE: VERCEL_EDGE_PRODUCTION</p>
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <div className="hidden sm:flex items-center gap-4 text-[10px] font-black text-gray-500 uppercase tracking-widest mr-4">
-                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                                Live System Analytics
+
+                        <div className="flex flex-col sm:flex-row items-center gap-6">
+                            <div className="flex flex-col items-end gap-1.5">
+                                <div className="flex items-center gap-3 px-6 py-3 bg-white/[0.02] border border-white/5 rounded-2xl shadow-xl">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest italic">Live_Sync_Established</span>
+                                </div>
+                                <p className="text-[8px] text-gray-800 font-black uppercase tracking-[0.4em] mr-4">SECURE_CHANNEL_ACTIVE</p>
                             </div>
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all shadow-lg shadow-red-500/10"
+                                className="group relative flex items-center gap-4 px-8 py-4 rounded-3xl bg-red-600/10 border border-red-500/20 text-red-500 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-red-600 hover:text-white transition-all shadow-2xl active:scale-95 overflow-hidden"
                             >
-                                <LogOut size={14} />
-                                <span>Terminate Session</span>
+                                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                                <LogOut size={16} className="group-hover:rotate-12 transition-transform" />
+                                <span>TERMINATE_SESSION</span>
                             </button>
                         </div>
                     </div>
 
+                    {/* Operational Viewport */}
                     <AnimatePresence mode="wait">
                         <m.div
                             key={activeTab}
-                            initial={{ opacity: 0, y: 10 }}
+                            initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.3, ease: "easeOut" }}
-                            className="min-h-[60vh]"
+                            exit={{ opacity: 0, y: -30 }}
+                            transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+                            className="min-h-[70vh] relative"
                         >
                             <ErrorBoundary>
                                 {activeTab === "overview" && (
-                                    <div className="space-y-12">
+                                    <div className="space-y-16">
                                         <AdminAnalytics stats={{ 
                                             diagRuns: (statsData as any)?.diagRuns ?? (statsData as any)?.data?.diagRuns ?? 0, 
                                             leadGenTotal: (statsData as any)?.leadGenTotal ?? (statsData as any)?.data?.leadGenTotal ?? 0, 
@@ -396,7 +449,10 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                                 testimonials: (allTestimonials as any)?.testimonials?.length ?? (allTestimonials as any)?.length ?? 0, 
                                                 messages: (messages as any)?.messages?.length ?? (messages as any)?.length ?? 0, 
                                                 hireRequests: (hireRequests as any)?.requests?.length ?? (hireRequests as any)?.hireRequests?.length ?? (hireRequests as any)?.length ?? 0, 
-                                                blogPosts: (blogPosts as any)?.posts?.length ?? (blogPosts as any)?.length ?? 0 
+                                                blogPosts: (blogPosts as any)?.posts?.length ?? (blogPosts as any)?.length ?? 0,
+                                                referrals: (statsData as any)?.referrals ?? (statsData as any)?.data?.referrals ?? 0,
+                                                leadMagnets: (statsData as any)?.leadMagnets ?? (statsData as any)?.data?.leadMagnets ?? 0,
+                                                playgroundSessions: (statsData as any)?.playgroundSessions ?? (statsData as any)?.data?.playgroundSessions ?? 0
                                             }}
                                             recentActivity={[
                                                 ...(Array.isArray(hireRequests) ? hireRequests : (hireRequests as any)?.requests || (hireRequests as any)?.hireRequests || []).map((h: any) => ({ id: h.id, type: "hire", title: `Hire Request: ${h.name}`, subtitle: h.projectType, timestamp: h.createdAt, status: h.status })),
@@ -419,10 +475,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "testimonials" && (
                                     <AdminTestimonials 
                                         testimonials={(allTestimonials as any)?.testimonials || (Array.isArray(allTestimonials) ? allTestimonials : [])} 
-                                        onApprove={handleTestimonialApproval} 
-                                        onDelete={handleTestimonialDelete}
-                                        onVerify={handleTestimonialVerify}
-                                        onFeature={handleTestimonialFeature}
+                                        onUpdate={async () => { await mutateTestimonials(); }}
                                     />
                                 )}
                                 {activeTab === "projects" && <AdminProjects projects={(projects as any)?.projects || (Array.isArray(projects) ? projects : [])} onUpdate={handleProjectAction} />}
@@ -433,22 +486,39 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                 {activeTab === "journey" && <AdminJourney phases={(journeyPhases as any)?.phases || (Array.isArray(journeyPhases) ? journeyPhases : [])} onAdd={handleAddJourney} onUpdate={handleJourneyUpdate} onDelete={handleJourneyDelete} />}
                                 {activeTab === "case-studies" && <AdminCaseStudies studies={(caseStudies as any)?.caseStudies || (Array.isArray(caseStudies) ? caseStudies : [])} onUpdate={() => mutateCaseStudies()} />}
                                 {activeTab === "activity" && <AdminActivityLog logs={(activityLogs as any)?.logs || (Array.isArray(activityLogs) ? activityLogs : [])} onUpdate={() => mutateActivityLogs()} />}
-                                                                 {activeTab === "audit" && <AdminAudit />}
+                                                                 {activeTab === "referrals" && <AdminPromotions data={promotionsData?.referrals || []} type="referrals" />}
+                                        {activeTab === "leads" && <AdminPromotions data={promotionsData?.leadMagnets || []} type="leads" />}
+                                        {activeTab === "roi-engine" && <AdminROIEngine />}
+                                 {activeTab === "clients" && <AdminClients />}
+                                 {activeTab === "audit" && <AdminAudit />}
                                  {activeTab === "audit-requests" && <AdminAuditRequests />}
 
                             </ErrorBoundary>
                         </m.div>
                     </AnimatePresence>
 
-                    <footer className="pt-20 border-t border-white/5 flex justify-between items-center opacity-40">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Kumail KMR Portfolio Engine v2.0</p>
-                        <div className="flex gap-8">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">System Secure</span>
-                            <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Encryption Active</span>
+                    {/* Integrated System Footer */}
+                    <footer className="pt-24 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-10 opacity-30 group-hover:opacity-50 transition-opacity">
+                        <div className="flex items-center gap-4">
+                             <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center font-black text-[10px] text-gray-400">K</div>
+                             <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 italic">Kumail_KMR_Operational_Framework_V2.0</p>
+                        </div>
+                        <div className="flex flex-wrap items-center justify-center gap-12">
+                            {[
+                                { label: "Security", val: "AES_256_GCM" },
+                                { label: "Persistence", val: "POSTGRES_DENSE" },
+                                { label: "Latency", val: "NODE_STABLE" }
+                            ].map((hub, i) => (
+                                <div key={i} className="flex items-baseline gap-3">
+                                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-700">{hub.label}:</span>
+                                    <span className="text-[9px] font-mono font-black text-gray-500">{hub.val}</span>
+                                </div>
+                            ))}
                         </div>
                     </footer>
                 </div>
             </main>
-        </div>
+            </div>
+        </SelectionProvider>
     );
 }
