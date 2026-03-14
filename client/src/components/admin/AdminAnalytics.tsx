@@ -46,7 +46,7 @@ export default function AdminAnalytics({ stats }: AnalyticsProps) {
                                     <item.icon size={20} />
                                 </div>
                                 <div className="space-y-0.5">
-                                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-700">{item.id} // ANALYTIC_NODE</span>
+                                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-700">{item.id} {/* ANALYTIC_NODE */}</span>
                                     <h3 className="text-3xl font-black text-white italic tracking-tighter leading-none">{item.value}</h3>
                                 </div>
                             </div>
@@ -96,7 +96,7 @@ export default function AdminAnalytics({ stats }: AnalyticsProps) {
                                 <h3 className="text-4xl font-black text-white italic tracking-tighter uppercase leading-none">Strategic_Control_Unit</h3>
                                 <div className="flex items-center gap-3 mt-1.5 text-blue-500">
                                     <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                                    <p className="text-[10px] font-black uppercase tracking-[0.4em]">Integrated_Growth_Logic // v1.2</p>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.4em]">Integrated_Growth_Logic {/* v1.2 */}</p>
                                 </div>
                             </div>
                         </div>

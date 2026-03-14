@@ -33,6 +33,7 @@ import AdminBlog from "./AdminBlog";
 import AdminClients from "./AdminClients";
 import AdminPromotions from "./AdminPromotions";
 import AdminROIEngine from "./AdminROIEngine";
+import AdminFeatureManager from "./AdminFeatureManager";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
 
 const fetcher = async (url: string) => {
@@ -65,7 +66,7 @@ interface AdminDashboardProps {
 import { SelectionProvider } from "@/context/SelectionContext";
 
 export default function AdminDashboard({ initialActivities = [], initialAvailability = null }: AdminDashboardProps) {
-    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey" | "activity" | "case-studies" | "audit" | "audit-requests" | "clients" | "referrals" | "leads" | "roi-engine">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey" | "activity" | "case-studies" | "audit" | "audit-requests" | "clients" | "referrals" | "leads" | "roi-engine" | "features">("overview");
     const [isNavOpen, setIsNavOpen] = useState(false);
 
     const router = useRouter();
@@ -75,7 +76,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     useEffect(() => {
         const tab = searchParams?.get("tab");
-        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey", "activity", "case-studies", "audit", "audit-requests", "clients", "referrals", "leads", "roi-engine"];
+        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey", "activity", "case-studies", "audit", "audit-requests", "clients", "referrals", "leads", "roi-engine", "features"];
         if (tab && validTabs.includes(tab as any)) {
             setActiveTab(tab as any);
         }
@@ -99,6 +100,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
     const { data: activityLogs, mutate: mutateActivityLogs } = useSWR<any[]>(isAuthenticated ? "/api/admin/activity-log" : null, fetcher);
     const { data: auditRequests, mutate: mutateAuditRequests } = useSWR<any>(isAuthenticated ? "/api/admin/audit-requests" : null, fetcher);
     const { data: promotionsData, mutate: mutatePromotions } = useSWR<any>(isAuthenticated ? "/api/admin/promotions" : null, fetcher);
+    const { data: featureToggles, mutate: mutateFeatureToggles } = useSWR<any[]>(isAuthenticated ? "/api/admin/features" : null, fetcher);
 
 
     useEffect(() => {
@@ -492,6 +494,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                  {activeTab === "clients" && <AdminClients />}
                                  {activeTab === "audit" && <AdminAudit />}
                                  {activeTab === "audit-requests" && <AdminAuditRequests />}
+                                 {activeTab === "features" && <AdminFeatureManager features={featureToggles || []} onUpdate={() => mutateFeatureToggles()} />}
 
                             </ErrorBoundary>
                         </m.div>

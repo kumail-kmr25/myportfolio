@@ -45,8 +45,13 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-outfit), sans-serif;
+  font-family: var(--font-inter), sans-serif;
 }
+
+/* 8px Grid Helpers */
+.gap-8 { gap: 2rem; }
+.p-8 { padding: 2rem; }
+.m-8 { margin: 2rem; }
 
 /* Fluid Typography Utilities */
 @layer utilities {

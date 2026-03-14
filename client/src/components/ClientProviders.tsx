@@ -10,6 +10,7 @@ import { LazyMotion, domMax, AnimatePresence, m } from "framer-motion";
 import Preloader from "./Preloader";
 import Navbar from "./Navbar";
 import { SelectionProvider } from "@/context/SelectionContext";
+import AIChatAssistant from "./features/AIChatAssistant";
 
 export default function ClientProviders({ children }: { children: React.ReactNode }) {
     return (
@@ -32,6 +33,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
                         </AnimatePresence>
                     </LazyMotion>
                     <QuickNav />
+                    <AIChatAssistant />
                 </HireModalProvider>
             </SelectionProvider>
         </SessionProvider>

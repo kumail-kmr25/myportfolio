@@ -18,7 +18,7 @@ import ClientShell from "@/components/ClientShell";
 import Projects from "@/components/Projects";
 import Services from "@/components/Services";
 import Pricing from "@/components/Pricing";
-import WhyWorkWithMe from "@/components/WhyWorkWithMe";
+import About from "@/components/About";
 import LeadMagnet from "@/components/LeadMagnet";
 import { useHireModal } from "@/context/HireModalContext";
 import QualificationQuiz from "@/components/specialized/QualificationQuiz";
@@ -41,7 +41,7 @@ export default function ClientsPage() {
                         className="relative z-10 space-y-8"
                     >
                         <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-4">
-                            <Target size={12} /> Strategic Business Growth Unit
+                            <Target size={12} /> Strategic Business Growth & ROI
                         </div>
                         <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none mb-4">
                             BUILD FOR <span className="text-emerald-500 italic block">REVENUE.</span>
@@ -95,14 +95,14 @@ export default function ClientsPage() {
                 {/* High-Impact Proof */}
                 <Projects />
 
-                {/* Why Strategic Dev Matters */}
-                <WhyWorkWithMe />
+                {/* Professional Foundation */}
+                <About />
 
                  {/* Lead Qualification Quiz */}
                 <section className="py-32 bg-[#020202] border-t border-white/5">
                     <div className="max-w-7xl mx-auto px-6">
                         <div className="text-center mb-16">
-                            <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.3em] mb-4 block">Strategic Alignment v1.0</span>
+                            <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.3em] mb-4 block">Strategic Alignment</span>
                             <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">Qualify your <span className="text-emerald-500 italic">Project Intensity</span></h2>
                         </div>
                         <QualificationQuiz />
@@ -130,7 +130,7 @@ export default function ClientsPage() {
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                             <button onClick={() => openModal({ service: "Project Initiation", description: "Inquiry to initiate a new project with focus on ROI and conversion optimization." })} className="btn-primary py-6 px-16 text-xs uppercase tracking-widest font-black shadow-2xl bg-emerald-600 hover:bg-emerald-500 border-emerald-500/50">
-                                Initiate Project
+                                Start Project
                             </button>
                             <Link href="/audit" className="px-16 py-6 rounded-full bg-white/5 border border-white/10 text-white text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all">
                                 Free Technical Audit

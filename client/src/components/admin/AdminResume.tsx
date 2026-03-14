@@ -267,7 +267,7 @@ export default function AdminResume() {
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-white">Validation Protocol</h4>
                         </div>
                         <p className="text-xs text-gray-400 leading-relaxed">
-                            Adding a new resource will automatically set it as \"Active\" in the public navbar registry unless manually toggled after hydration.
+                            Adding a new resource will automatically set it as &quot;Active&quot; in the public navbar registry unless manually toggled after hydration.
                         </p>
                     </div>
                 </div>

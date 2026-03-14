@@ -17,7 +17,7 @@ import Link from "next/link";
 import ClientShell from "@/components/ClientShell";
 import About from "@/components/About";
 import MyJourney from "@/components/MyJourney";
-import WhyWorkWithMe from "@/components/WhyWorkWithMe";
+import Testimonials from "@/components/Testimonials";
 import Skills from "@/components/Skills";
 import { useHireModal } from "@/context/HireModalContext";
 
@@ -42,7 +42,7 @@ export default function CareerPage() {
                             <Briefcase size={12} /> Talent Acquisition Executive Briefing
                         </div>
                         <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none mb-4">
-                            ELITE <span className="text-purple-500 italic block underline decoration-purple-500/30 underline-offset-8">TENURE.</span>
+                            ELITE <span className="text-purple-500 italic block underline decoration-purple-500/30 underline-offset-8">EXPERIENCE.</span>
                         </h1>
                         <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto font-medium italic">
                             Dedicated to building high-performance engineering culture. A comprehensive overview of professional journey, core ethics, and long-term value.
@@ -68,8 +68,8 @@ export default function CareerPage() {
                 {/* Professional Journey */}
                 <MyJourney />
 
-                {/* Value Proposition */}
-                <WhyWorkWithMe />
+                {/* Professional Endorsements */}
+                <Testimonials />
 
                 {/* HR CTA */}
                 <section className="py-40 bg-black text-center relative overflow-hidden border-t border-white/5">

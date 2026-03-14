@@ -80,7 +80,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                         
                         <div className="flex justify-between items-start mb-10 relative z-10">
                             <div className="flex flex-col gap-1">
-                                <span className={`text-[8px] font-mono font-black ${card.text} opacity-60 tracking-widest`}>{card.id} // TELEMETRY</span>
+                                <span className={`text-[8px] font-mono font-black ${card.text} opacity-60 tracking-widest`}>{card.id} {/* TELEMETRY */}</span>
                                 <div className={`w-12 h-12 rounded-2xl ${card.bg} border border-white/5 flex items-center justify-center group-hover:rotate-[360deg] transition-all duration-1000`}>
                                     <card.icon className={card.text} size={20} />
                                 </div>
@@ -109,7 +109,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                                 <div className="flex items-center justify-between text-[7px] font-mono text-gray-700">
                                     <span className="flex items-center gap-2">
                                         <div className="w-1 h-1 rounded-full bg-gray-900 group-hover:bg-blue-500 transition-colors" />
-                                        BUFFER // {card.buffer}
+                                        BUFFER {/* // {card.buffer} */} {card.buffer}
                                     </span>
                                     <span className="flex items-center gap-2">
                                         LOAD // {card.load}

@@ -105,9 +105,7 @@ export default function Navbar() {
                     />
                 </Link>
 
-                <div className="flex-1 px-8 hidden md:block">
-                    <LiveStatusBadge variant="navbar" />
-                </div>
+                <div className="flex-1 px-8 hidden md:block" />
 
 
                 {/* Desktop Menu */}

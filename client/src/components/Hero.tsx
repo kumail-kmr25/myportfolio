@@ -81,43 +81,12 @@ export default function Hero() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020202]/80 to-[#020202] z-10" />
 
-                    {/* Orbital Light Sources */}
                     <m.div
-                        animate={{
-                            x: [0, 50, -50, 0],
-                            y: [0, -30, 30, 0],
-                            scale: [1, 1.2, 0.9, 1],
-                            opacity: [0.1, 0.2, 0.1]
-                        }}
-                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                        className="absolute top-1/4 left-1/4 h-[800px] w-[800px] bg-blue-600/10 blur-[120px] rounded-full mix-blend-screen"
-                    />
-                    <m.div
-                        animate={{
-                            x: [0, -50, 50, 0],
-                            y: [0, 30, -30, 0],
-                            scale: [1.1, 0.9, 1.2, 1.1],
-                            opacity: [0.05, 0.15, 0.05]
-                        }}
-                        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                        className="absolute bottom-1/4 right-1/4 h-[800px] w-[800px] bg-purple-600/10 blur-[120px] rounded-full mix-blend-screen"
-                    />
-
-                    <m.div
-                        initial={{ opacity: 0, scale: 1.1 }}
-                        animate={{ opacity: 0.03, scale: 1 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.05 }}
                         transition={{ duration: 1.5, ease: premiumEase as any }}
-                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none"
-                    >
-                        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <pattern id="grid-hero" width="100" height="100" patternUnits="userSpaceOnUse">
-                                    <path d="M 100 0 L 0 0 0 100" fill="none" stroke="white" strokeWidth="0.5" />
-                                </pattern>
-                            </defs>
-                            <rect width="100%" height="100%" fill="url(#grid-hero)" />
-                        </svg>
-                    </m.div>
+                        className="absolute inset-0 bg-gradient-to-b from-blue-600/5 to-transparent z-10"
+                    />
                 </m.div>
             </div>
 
@@ -133,10 +102,7 @@ export default function Hero() {
                         >
                             <div className="relative">
                                 <span className="relative inline-block py-2 px-5 rounded-full bg-white/[0.03] border border-white/[0.08] text-[10px] font-black uppercase tracking-[0.4em] text-blue-400 backdrop-blur-2xl transition-all">
-                                    <span className="flex items-center gap-3">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                        Engineering & Design
-                                    </span>
+                                    Full-Stack Engineer & Architect
                                 </span>
                             </div>
                         </m.div>
@@ -193,7 +159,7 @@ export default function Hero() {
                             className="mt-16 pt-16 border-t border-white/5"
                         >
                             <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] mb-8 lg:text-left text-center">
-                                UNLOCK THE STRIKE ZONE // SELECT YOUR INTENT
+                                Select Your Focus
                             </p>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 {[

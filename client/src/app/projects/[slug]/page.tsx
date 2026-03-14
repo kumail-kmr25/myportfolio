@@ -251,7 +251,7 @@ export default function ProjectDetailPage() {
                                             <div className="p-10 rounded-[3rem] bg-[#050505] border border-white/10 relative overflow-hidden space-y-6">
                                                 {project.engineering && (
                                                     <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
-                                                        <p className="text-gray-400 leading-relaxed italic">"{project.engineering}"</p>
+                                                        <p className="text-gray-400 leading-relaxed italic">&quot;{project.engineering}&quot;</p>
                                                     </div>
                                                 )}
 

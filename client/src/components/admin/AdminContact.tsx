@@ -204,7 +204,7 @@ export default function AdminContact({ messages, onToggleReplied, onDelete }: Ad
                                     </div>
                                     <div className="flex-grow">
                                         <p className="text-[8px] text-gray-500 font-black uppercase tracking-widest mb-1">Preview</p>
-                                        <p className="text-[10px] text-gray-400 truncate max-w-sm italic">"{msg.message}"</p>
+                                        <p className="text-[10px] text-gray-400 truncate max-w-sm italic">&quot;{msg.message}&quot;</p>
                                     </div>
                                 </div>
 
@@ -278,7 +278,7 @@ export default function AdminContact({ messages, onToggleReplied, onDelete }: Ad
                             <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em]">Raw Transmission Content</p>
                             <div className="p-8 bg-white/[0.02] border border-white/10 rounded-[2.5rem] relative overflow-hidden group">
                                 <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap relative z-10 font-medium italic">
-                                    "{selectedMessage.message}"
+                                    &quot;{selectedMessage.message}&quot;
                                 </p>
                                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
                                     <Mail size={120} />

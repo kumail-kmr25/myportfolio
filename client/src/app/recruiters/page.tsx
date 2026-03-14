@@ -18,7 +18,7 @@ import ClientShell from "@/components/ClientShell";
 import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import StatsDashboard from "@/components/StatsDashboard";
-import TechMarquee from "@/components/TechMarquee";
+import Testimonials from "@/components/Testimonials";
 import { useHireModal } from "@/context/HireModalContext";
 import SkillMatcher from "@/components/specialized/SkillMatcher";
 
@@ -32,21 +32,6 @@ export default function RecruitersPage() {
                 {/* Technical Hero */}
                 <section className="relative h-[70vh] flex flex-col justify-center items-center overflow-hidden px-6 text-center">
                     <div className="absolute inset-0 bg-blue-500/5 blur-[120px] pointer-events-none" />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-5 pointer-events-none">
-                        <pre className="text-[10px] leading-tight font-mono whitespace-pre opacity-20">
-                            {`
-                                protocol Trinity {
-                                    func optimizePerformance() -> ROI
-                                    func scaleHorizontal() -> Growth
-                                    func secureArchitecture() -> Trust
-                                }
-                                
-                                extension Engineering: Trinity {
-                                    // High-velocity implementation
-                                }
-                            `}
-                        </pre>
-                    </div>
 
                     <m.div
                         initial={{ opacity: 0, y: 20 }}
@@ -55,10 +40,10 @@ export default function RecruitersPage() {
                         className="relative z-10 space-y-8"
                     >
                         <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4">
-                            <Terminal size={12} /> Engineering Talent Unit // L6
+                            <Cpu size={12} /> Full-Stack Engineering & Architecture
                         </div>
                         <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none mb-4">
-                            TECHNICAL <span className="text-blue-500 italic block">DEEP_DIVE.</span>
+                            TECHNICAL <span className="text-blue-500 italic block">EXPERTISE.</span>
                         </h1>
                         <p className="text-xl text-gray-400 max-w-2xl mx-auto font-medium italic">
                             ATS-optimized briefing for technical recruiters and engineering managers. Focusing on performance, scalability, and clean architecture.
@@ -75,7 +60,7 @@ export default function RecruitersPage() {
                     </m.div>
                 </section>
 
-                <TechMarquee />
+                <Testimonials />
 
                 {/* Core Competencies Matrix */}
                 <div id="stack">
@@ -91,7 +76,7 @@ export default function RecruitersPage() {
                 <section className="py-32 bg-[#020202] border-t border-white/5">
                     <div className="max-w-7xl mx-auto px-6">
                         <div className="text-center mb-16">
-                            <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 block">Recruitment Automation v1.0</span>
+                            <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 block">Technical Match</span>
                             <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">Automated <span className="text-blue-500 italic">Skill Alignment</span></h2>
                         </div>
                         <SkillMatcher />
@@ -111,7 +96,7 @@ export default function RecruitersPage() {
                             <Cpu size={32} />
                         </div>
                         <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none mb-8">
-                            READY FOR THE <span className="text-blue-500 italic">NEXT STACK.</span>
+                            READY FOR THE <span className="text-blue-500 italic">NEXT CHALLENGE.</span>
                         </h2>
                         <p className="text-gray-500 text-xl font-medium tracking-tight mb-12">
                             Recruiters — get a direct line for high-priority placement or technical collaboration.

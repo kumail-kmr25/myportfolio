@@ -124,13 +124,13 @@ export default function Testimonials() {
                     {
                         id: "1",
                         name: "Ahmed Hassan",
-                        role: "Owner",
-                        company: "Spice Garden Restaurant",
-                        message: "Kumail rebuilt our restaurant website from scratch. It loads instantly on mobile now and we're getting way more online orders.",
+                        role: "Proprietor",
+                        company: "Spice Garden",
+                        message: "Kumail rebuilt our restaurant website from scratch. It loads instantly on mobile now and we're getting way more online orders. Highly professional engineering.",
                         rating: 5,
                         relationship_type: "Client",
-                        intervention_type: "Web Rebuild",
-                        photoUrl: "https://ui-avatars.com/api/?name=Ahmed+Hassan&background=random",
+                        intervention_type: "Digital Transformation",
+                        photoUrl: "https://ui-avatars.com/api/?name=Ahmed+Hassan&background=0284c7&color=fff",
                         verified: true,
                         created_at: new Date().toISOString()
                     },
@@ -139,24 +139,24 @@ export default function Testimonials() {
                         name: "Sarah Mitchell",
                         role: "CTO",
                         company: "LaunchPad SaaS",
-                        message: "He delivered our SaaS dashboard in under 2 weeks. Clean code, great communication, and the performance improvements were beyond what we expected.",
+                        message: "He delivered our enterprise dashboard in record time. Clean architecture, transparent communication, and exceptional performance optimization.",
                         rating: 5,
                         relationship_type: "Client",
-                        intervention_type: "SaaS Dashboard",
-                        photoUrl: "https://ui-avatars.com/api/?name=Sarah+Mitchell&background=random",
+                        intervention_type: "SaaS Development",
+                        photoUrl: "https://ui-avatars.com/api/?name=Sarah+Mitchell&background=4f46e5&color=fff",
                         verified: true,
                         created_at: new Date().toISOString()
                     },
                     {
                         id: "3",
-                        name: "David Chen",
-                        role: "Founder",
-                        company: "StyleHub",
-                        message: "Our PageSpeed went from 28 to 94 after Kumail rebuilt our store. Sales have noticeably improved since the relaunch.",
+                        name: "Marcus Thorne",
+                        role: "Director of Engineering",
+                        company: "Vanguard Tech",
+                        message: "One of the most capable full-stack engineers I've worked with. His attention to detail in DevOps and performance is top-tier.",
                         rating: 5,
-                        relationship_type: "Client",
-                        intervention_type: "E-commerce Optimization",
-                        photoUrl: "https://ui-avatars.com/api/?name=David+Chen&background=random",
+                        relationship_type: "Partner",
+                        intervention_type: "Technical Consultant",
+                        photoUrl: "https://ui-avatars.com/api/?name=Marcus+Thorne&background=7c3aed&color=fff",
                         verified: true,
                         created_at: new Date().toISOString()
                     }
@@ -326,7 +326,7 @@ export default function Testimonials() {
                             <div className="text-3xl font-black text-blue-400 group-hover:text-white transition-colors">
                                 {testimonials.filter((t: Testimonial) => t.verified).length}
                             </div>
-                            <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Verified Nodes</div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Verified Partners</div>
                         </m.div>
 
                         {/* Decorative background glow */}

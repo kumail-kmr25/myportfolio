@@ -81,7 +81,7 @@ export default function StatsDashboard() {
                         viewport={{ once: true }}
                         className="text-blue-500 font-mono text-[10px] font-black uppercase tracking-[0.3em] mb-4 block"
                     >
-                        Real-time Analytics
+                        Performance Metrics
                     </m.span>
                     <m.h2
                         initial={{ opacity: 0, y: 20 }}
@@ -89,7 +89,7 @@ export default function StatsDashboard() {
                         viewport={{ once: true }}
                         className="text-4xl md:text-5xl font-bold tracking-tight text-white !mb-4"
                     >
-                        Live Developer <span className="text-gray-500 italic">Stats</span>
+                        Project <span className="text-gray-500 italic">Impact</span>
                     </m.h2>
                     <m.p
                         initial={{ opacity: 0, y: 20 }}
@@ -98,7 +98,7 @@ export default function StatsDashboard() {
                         transition={{ delay: 0.1 }}
                         className="text-gray-400 max-w-xl text-lg"
                     >
-                        Quantitative metrics reflecting technical output, architectural contributions, and continuous learning iteration.
+                        Quantitative results from years of full-stack engineering, performance optimization, and architectural delivery.
                     </m.p>
                 </div>
 
@@ -139,59 +139,31 @@ export default function StatsDashboard() {
                     </m.div>
                 )}
 
-                <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="mt-20">
                     <m.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="p-10 rounded-[3rem] bg-gradient-to-br from-gray-900/50 to-black border border-white/5 flex flex-col md:flex-row items-center gap-10 group hover:border-white/10 transition-all backdrop-blur-md"
-                    >
-                        <div className="w-24 h-24 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-blue-500/50 group-hover:scale-110 transition-all duration-500">
-                            <Github className="w-12 h-12 text-white" />
-                        </div>
-                        <div>
-                            <h4 className="text-xl font-bold text-white mb-2">GitHub Architecture</h4>
-                            <p className="text-gray-400 mb-6 leading-relaxed">Systematically tracking commits, branch merges, and technical contributions in real-time.</p>
-                            <a href="https://github.com/kumail-kmr25" target="_blank" className="inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.2em] text-blue-400 hover:text-blue-300 transition-colors group/link">
-                                Expand Intelligence <ExternalLink size={16} className="group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" />
-                            </a>
-                        </div>
-                    </m.div>
-
-                    <m.div
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                         className="p-10 rounded-[3rem] bg-gradient-to-br from-blue-950/20 to-black border border-white/5 flex flex-col md:flex-row items-center gap-10 group hover:border-white/10 transition-all backdrop-blur-md"
                     >
                         <div className="w-24 h-24 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center group-hover:border-blue-500/50 group-hover:scale-110 transition-all duration-500">
                             <Code2 className="w-12 h-12 text-blue-400" />
                         </div>
                         <div>
-                            <h4 className="text-xl font-bold text-white mb-2">System Operations</h4>
-                            <p className="text-gray-400 mb-6 leading-relaxed">Infrastructure monitoring maintaining critical uptime for deployments and client-side assets.</p>
+                            <h4 className="text-xl font-bold text-white mb-2">Systems Delivery</h4>
+                            <p className="text-gray-400 mb-6 leading-relaxed">Infrastructure and performance standards maintained across all production deployments.</p>
                             <div className="flex flex-wrap gap-6">
                                 <div className="flex items-center gap-3">
-                                    <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">⚡ Avg. Page Load: 1.2s</span>
+                                    <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">⚡ Optimized Page Load Paths</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">🚀 15+ Projects Delivered</span>
+                                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">🚀 15+ Production Launches</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">📈 Avg. PageSpeed Improvement: +45 pts</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">✅ 100% On-Time Delivery</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <span className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">🛡️ 30-Day Post-Launch Support</span>
+                                    <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-left">📈 SEO & UX Improvements</span>
                                 </div>
                             </div>
                         </div>

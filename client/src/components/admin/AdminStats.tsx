@@ -65,16 +65,16 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
                 <div className="space-y-3 relative z-10">
                     <div className="flex items-center gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_#3b82f6]" />
-                        <h2 className="text-xl font-black text-white uppercase tracking-tighter italic">Performance_Vector_Controller</h2>
+                        <h2 className="text-xl font-black text-white uppercase tracking-tighter italic">Platform Impact Metrics</h2>
                     </div>
                     <p className="text-[9px] text-gray-700 font-black uppercase tracking-[0.4em] leading-relaxed max-w-md">
-                        Fine-tune global performance indicators. These values drive the trust-engine visualizations across the public interface.
+                        Fine-tune global business indicators. These values drive the impact visualizations across the public interface.
                     </p>
                 </div>
                 <div className="flex items-center gap-4 bg-white/[0.02] p-4 rounded-2xl border border-white/5 relative z-10">
                     <div className="text-right">
                         <div className="text-[8px] font-black text-gray-800 uppercase tracking-widest leading-none mb-1">Grid_State</div>
-                        <div className="text-[10px] font-mono font-black text-emerald-500 leading-none">NOMINAL_SYNC</div>
+                        <div className="text-[10px] font-mono font-black text-emerald-500 leading-none">CONNECTED</div>
                     </div>
                     <div className="w-px h-8 bg-white/10" />
                     <BarChart3 className="text-blue-500/40 w-8 h-8 shrink-0" />
@@ -90,7 +90,7 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
                             className="p-8 rounded-[2rem] bg-white/[0.01] border border-white/5 hover:border-blue-500/20 hover:bg-white/[0.02] transition-all space-y-8 group relative overflow-hidden"
                         >
                             <div className="absolute top-0 right-0 p-4 text-[7px] font-black text-gray-900 font-mono tracking-tighter uppercase pointer-events-none">
-                                {field.vectorId} // READ_ACCESS
+                                {field.vectorId} {/* READ_ACCESS */}
                             </div>
                             
                             <div className="flex items-center gap-4">
@@ -138,7 +138,7 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
                         {loading ? <Loader2 className="animate-spin" /> : (
                             <>
                                 <Save size={18} className="group-hover/btn:scale-125 transition-transform relative z-10" />
-                                <span className="relative z-10">Synchronize Engineering Intelligence // V1.0</span>
+                                <span className="relative z-10">Save Statistics</span>
                             </>
                         )}
                     </button>
@@ -152,7 +152,7 @@ export default function AdminStats({ stats, onUpdate }: { stats: SiteStats | nul
                 <div className="space-y-2">
                     <h4 className="text-blue-400 text-[10px] font-black uppercase tracking-[0.3em]">Operational Protocol</h4>
                     <p className="text-gray-500 text-[11px] leading-relaxed font-medium uppercase tracking-tight">
-                        Aggregated metrics are recalibrated daily at 00:00 UTC. Manual overrides take precedence in the current epoch but may be superseded by verified system logs during the next synchronization cycle.
+                        Aggregated metrics are updated daily. Hand-entered values here will be reflected across the site immediately.
                     </p>
                 </div>
             </div>

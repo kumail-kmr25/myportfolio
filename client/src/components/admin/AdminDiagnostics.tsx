@@ -317,7 +317,7 @@ export default function AdminDiagnostics({ patterns = [], logs = [], onUpdate }:
                                         <div className="flex-grow space-y-3">
                                             <p className="text-[9px] text-gray-700 font-black uppercase tracking-[0.3em]">Primary_Etiology</p>
                                             <p className="text-gray-400 text-[11px] font-medium italic line-clamp-1 group-hover:text-white transition-colors">
-                                                "{pattern.possibleCauses[0] || 'UNMAPPED_ORIGIN'}"
+                                                &quot;{pattern.possibleCauses[0] || 'UNMAPPED_ORIGIN'}&quot;
                                             </p>
                                         </div>
                                     </div>

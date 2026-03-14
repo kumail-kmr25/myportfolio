@@ -127,7 +127,7 @@ export default function AdminROIEngine() {
                                 </button>
                             </div>
                             <p className="text-xs text-gray-500 font-medium leading-relaxed italic">
-                                "The proposed technical architecture optimizes for a {efficiencyGain}% efficiency baseline. At your current operational surface, this yields a {formatCurrency(calculatedSavings)} surplus over the next {timeline} months, fundamentally neutralizing implementation debt within {Math.ceil(timeline / (roiPercent/100 + 1))} months."
+                                &quot;The proposed technical architecture optimizes for a {efficiencyGain}% efficiency baseline. At your current operational surface, this yields a {formatCurrency(calculatedSavings)} surplus over the next {timeline} months, fundamentally neutralizing implementation debt within {Math.ceil(timeline / (roiPercent/100 + 1))} months.&quot;
                             </p>
                         </div>
                     </div>

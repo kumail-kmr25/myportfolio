@@ -24,9 +24,9 @@ const services = [
         delay: 0.2,
     },
     {
-        icon: Terminal,
-        title: "Bug Fixing & Optimization",
-        description: "Debugging complex issues, resolving runtime errors, and optimizing application performance.",
+        icon: Code,
+        title: "Technical Consulting",
+        description: "Strategic advice on architecture, scalability, and technical debt reduction.",
         delay: 0.3,
     },
     {
@@ -125,6 +125,41 @@ export default function Services() {
                         </m.div>
                     ))}
                 </m.div>
+
+                {/* Strategic Workflow Consolidation */}
+                <div className="mt-32 pt-32 border-t border-white/5">
+                    <div className="text-center mb-16">
+                        <m.span
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            className="text-blue-500 font-mono text-[10px] font-black uppercase tracking-[0.3em] mb-4 block"
+                        >
+                            Execution Framework
+                        </m.span>
+                        <h3 className="text-3xl font-bold text-white">How I <span className="text-gray-500 italic">Deliver</span></h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {[
+                            { title: "Audit", desc: "Technical bottleneck analysis." },
+                            { title: "Strategy", desc: "Scope & architecture definition." },
+                            { title: "Build", desc: "Iterative development with updates." },
+                            { title: "Launch", desc: "Deployment & 30-day support." }
+                        ].map((step, i) => (
+                            <m.div 
+                                key={step.title}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                                className="p-6 rounded-2xl bg-white/[0.01] border border-white/5 flex flex-col items-center text-center group hover:border-blue-500/20 transition-all"
+                            >
+                                <div className="text-blue-500 text-xs font-black mb-3">0{i+1}</div>
+                                <h4 className="text-white font-bold mb-2 group-hover:text-blue-400 transition-colors">{step.title}</h4>
+                                <p className="text-gray-500 text-xs leading-relaxed">{step.desc}</p>
+                            </m.div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </section>
     );

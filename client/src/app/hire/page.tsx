@@ -167,7 +167,7 @@ function HireContent() {
                 setValue("description", `I need optimization for my website: ${website}. The audit tool identified some bottlenecks that need addressing.`);
             }
         }
-    }, [searchParams, setValue]);
+    }, [searchParams, setValue, watch]);
 
     const selectedService = watch("selectedService");
     const formData = watch();

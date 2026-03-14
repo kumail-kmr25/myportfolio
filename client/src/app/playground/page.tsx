@@ -79,7 +79,7 @@ export default function PlaygroundPage() {
             transition={{ delay: 0.2 }}
             className="max-w-2xl mx-auto text-gray-500 text-lg md:text-xl font-medium leading-relaxed"
           >
-            Don't just look at my work. <span className="text-white">Break it, fix it, and build upon it.</span> Experience high-end engineering firsthand with live-running code environments.
+            Don&apos;t just look at my work. <span className="text-white">Break it, fix it, and build upon it.</span> Experience high-end engineering firsthand with live-running code environments.
           </m.p>
 
           <m.div 
@@ -235,7 +235,7 @@ export default function PlaygroundPage() {
                   </div>
                   <div className="space-y-4 font-mono text-sm">
                     <p className="text-blue-400"># Suggestion from AI Mentor</p>
-                    <p className="text-gray-500 italic">"I noticed you're using a standard array for this high-frequency list. Consider using a Map for O(1) lookups..."</p>
+                    <p className="text-gray-500 italic">&quot;I noticed you&apos;re using a standard array for this high-frequency list. Consider using a Map for O(1) lookups...&quot;</p>
                     <div className="pt-4 flex items-center gap-3 text-xs">
                       <span className="text-green-400 font-bold border border-green-400/20 px-2 py-0.5 rounded-md">+200 Performance Score</span>
                     </div>

@@ -212,7 +212,7 @@ export default function AdminPromotions({ data = [], type = "referrals" }: { dat
                    <div className="p-8 bg-black/40 rounded-[2.5rem] border border-white/5 relative group/advice">
                       <div className="absolute inset-0 bg-indigo-500/[0.02] opacity-0 group-hover/advice:opacity-100 transition-opacity" />
                       <p className="text-[13px] text-gray-500 font-black leading-relaxed italic text-center uppercase tracking-widest leading-loose">
-                         "Viral propagation is performing <span className="text-white">12%</span> above average. Recommendation: Focus on scaling the <span className="text-indigo-400 italic font-black">'Scaling Arch Playbook'</span> lead magnet to high-intensity US nodes."
+                         &quot;Viral propagation is performing <span className="text-white">12%</span> above average. Recommendation: Focus on scaling the <span className="text-indigo-400 italic font-black">&apos;Scaling Arch Playbook&apos;</span> lead magnet to high-intensity US nodes.&quot;
                       </p>
                    </div>
 

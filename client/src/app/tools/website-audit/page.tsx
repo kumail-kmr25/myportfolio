@@ -67,7 +67,7 @@ export default function WebsiteAuditPage() {
                             Free Website Audit Tool
                         </h1>
                         <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
-                            Get an instant analysis of your website's performance, SEO, mobile-friendliness, and security in under 60 seconds.
+                            Get an instant analysis of your website&apos;s performance, SEO, mobile-friendliness, and security in under 60 seconds.
                         </p>
                     </m.div>
 

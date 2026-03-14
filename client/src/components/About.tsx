@@ -2,6 +2,11 @@ import Image from "next/image";
 import { m, Variants } from "framer-motion";
 import VoiceIntro from "./features/VoiceIntro";
 import RevenueDashboard from "./features/RevenueDashboard";
+import Certifications from "./features/Certifications";
+import DevLog from "./features/DevLog";
+import TechRadar from "./features/TechRadar";
+import CodeSnippets from "./features/CodeSnippets";
+import FitScore from "./features/FitScore";
 
 export default function About() {
     const itemVariants: Variants = {
@@ -152,6 +157,26 @@ export default function About() {
 
                 <div className="mt-32">
                     <RevenueDashboard />
+                </div>
+
+                <div className="mt-32">
+                    <Certifications />
+                </div>
+
+                <div className="mt-32">
+                    <TechRadar />
+                </div>
+
+                <div className="mt-32">
+                    <CodeSnippets />
+                </div>
+
+                <div className="mt-32">
+                    <DevLog />
+                </div>
+
+                <div className="mt-32 lg:mt-48">
+                    <FitScore />
                 </div>
             </m.div>
         </section>

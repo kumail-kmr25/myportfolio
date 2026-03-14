@@ -64,6 +64,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
         { id: "status", label: "Live Telemetry", icon: Zap, category: "System", modId: "M-13" },
         { id: "activity", label: "Temporal Sync", icon: History, category: "System", modId: "M-14" },
         { id: "stats", label: "Performance Matrix", icon: BarChart3, category: "System", modId: "M-15" },
+        { id: "features", label: "Feature Forge", icon: Settings, category: "System", modId: "M-16" },
     ];
 
     const categories = ["Core", "Growth", "Inbound", "System"];
@@ -139,7 +140,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
                                             
                                             <div className="flex flex-col items-start relative z-10 overflow-hidden">
                                                 <span className="font-black text-[9px] uppercase tracking-widest truncate leading-none mb-0.5">{item.label}</span>
-                                                <span className={`text-[7px] font-mono tracking-tighter ${activeTab === item.id ? 'text-blue-200/60' : 'text-gray-800'}`}>{item.modId} // EXECUTION_READY</span>
+                                                <span className={`text-[7px] font-mono tracking-tighter ${activeTab === item.id ? 'text-blue-200/60' : 'text-gray-800'}`}>{item.modId} {/* EXECUTION_READY */}</span>
                                             </div>
                                             
                                             {item.count !== undefined && item.count > 0 && (
