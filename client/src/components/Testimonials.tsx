@@ -81,8 +81,8 @@ function TestimonialCard({ t }: { t: Testimonial }) {
 }
 
 function Marquee({ items, reverse = false }: { items: Testimonial[]; reverse?: boolean }) {
-    const items = Array.isArray(data) ? data : (data?.testimonials || []);
-    const duplicated = [...items, ...items, ...items];
+    const safeItems = Array.isArray(items) ? items : [];
+    const duplicated = [...safeItems, ...safeItems, ...safeItems];
 
     return (
         <div className="overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}>
