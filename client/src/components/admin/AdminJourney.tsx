@@ -48,6 +48,9 @@ interface JourneyPhase {
     description: string;
     icon: string;
     color: string;
+    ecoIcon: string;
+    ecoStage: string;
+    technologies: string[];
     order: number;
 }
 
@@ -70,8 +73,11 @@ export default function AdminJourney({ phases, onAdd, onUpdate, onDelete }: Admi
         title: "",
         description: "",
         icon: "Code2",
+        ecoIcon: "🌱",
+        ecoStage: "Seed",
         color: "from-blue-500/20 to-indigo-500/20",
-        order: (phases?.length || 0) + 1
+        order: (phases?.length || 0) + 1,
+        technologies: []
     });
 
     const filteredPhases = (Array.isArray(phases) ? phases : []).filter(p => 
@@ -278,6 +284,32 @@ export default function AdminJourney({ phases, onAdd, onUpdate, onDelete }: Admi
                 }
             >
                 <div className="space-y-10">
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-4">
+                            <label className="text-[10px] text-gray-500 font-black uppercase tracking-widest ml-4">Eco Icon (Emoji)</label>
+                            <input 
+                                type="text"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-4 px-6 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                                value={formData.ecoIcon}
+                                onChange={e => setFormData({...formData, ecoIcon: e.target.value})}
+                                placeholder="🌱"
+                            />
+                        </div>
+                        <div className="space-y-4">
+                            <label className="text-[10px] text-gray-500 font-black uppercase tracking-widest ml-4">Growth Stage</label>
+                            <select 
+                                className="w-full bg-[#0a0a0a] border border-white/10 rounded-2xl py-4 px-6 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none"
+                                value={formData.ecoStage}
+                                onChange={e => setFormData({...formData, ecoStage: e.target.value})}
+                            >
+                                <option value="Seed">Seed</option>
+                                <option value="Sprout">Sprout</option>
+                                <option value="Sapling">Sapling</option>
+                                <option value="Tree">Tree</option>
+                                <option value="Fruit">Fruit</option>
+                            </select>
+                        </div>
+                    </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-4">
                             <label className="text-[10px] text-gray-500 font-black uppercase tracking-widest ml-4">Internal Phase Key</label>

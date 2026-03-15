@@ -27,7 +27,7 @@ interface FeatureRequest {
     message: string;
     category: string;
     status: string;
-    created_at: string;
+    createdAt: string;
 }
 
 export default function AdminFeatureRequests({ requests, onUpdate }: { requests: FeatureRequest[], onUpdate: () => void }) {
@@ -248,7 +248,7 @@ export default function AdminFeatureRequests({ requests, onUpdate }: { requests:
                                             <p className="text-[8px] text-gray-500 font-black uppercase tracking-widest mb-1">Timestamp</p>
                                             <div className="flex items-center gap-2 text-[10px] text-gray-400">
                                                 <Clock size={12} />
-                                                {new Date(request.created_at).toLocaleDateString()}
+                                                {new Date(request.createdAt).toLocaleDateString()}
                                             </div>
                                         </div>
                                     </div>
@@ -351,7 +351,7 @@ export default function AdminFeatureRequests({ requests, onUpdate }: { requests:
                                 </div>
                                 <div>
                                     <p className="text-[8px] text-gray-600 font-black uppercase tracking-widest">Received On</p>
-                                    <p className="text-sm text-white font-bold">{new Date(formData.created_at || '').toLocaleDateString()}</p>
+                                    <p className="text-sm text-white font-bold">{new Date(formData.createdAt || '').toLocaleDateString()}</p>
                                 </div>
                              </div>
                         </div>

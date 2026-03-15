@@ -42,7 +42,7 @@ interface BlogPost {
     category: string;
     readTime: string;
     published: boolean;
-    created_at: string;
+    createdAt: string;
 }
 
 interface AdminBlogProps {
@@ -307,7 +307,7 @@ export default function AdminBlog({ posts, onAdd, onUpdate, onDelete }: AdminBlo
                                             <p className="text-[9px] text-gray-700 font-black uppercase tracking-[0.3em]">Chronology_Mark</p>
                                             <div className="flex items-center gap-3">
                                                 <Calendar size={14} className="text-purple-500" />
-                                                <span className="text-[11px] text-white font-bold">{new Date(post.created_at).toLocaleDateString()}</span>
+                                                <span className="text-[11px] text-white font-bold">{new Date(post.createdAt).toLocaleDateString()}</span>
                                             </div>
                                         </div>
 

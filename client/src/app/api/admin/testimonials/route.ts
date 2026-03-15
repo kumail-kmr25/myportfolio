@@ -13,7 +13,7 @@ export async function GET() {
         if (!session) return apiError("Unauthorized", 401);
 
         const testimonials = await prisma.testimonial.findMany({
-            orderBy: { created_at: "desc" }
+            orderBy: { createdAt: "desc" }
         });
 
         return apiResponse(testimonials);
@@ -29,7 +29,7 @@ export async function PATCH(request: Request) {
         if (!session) return apiError("Unauthorized", 401);
 
         const body = await request.json();
-        const { id, approved, name, message, role, company, verified, featured, relationship_type, intervention_type, deliveryRating, about_delivery_lead } = body;
+        const { id, approved, name, message, role, company, verified, featured, relationshipType, interventionType, deliveryRating, aboutDeliveryLead } = body;
 
         if (!id) return apiError("Testimonial ID is required", 400);
 
@@ -43,10 +43,10 @@ export async function PATCH(request: Request) {
                 company,
                 verified,
                 featured,
-                relationship_type,
-                intervention_type,
+                relationshipType,
+                interventionType,
                 rating: deliveryRating,
-                about_delivery_lead
+                aboutDeliveryLead
             },
         });
 

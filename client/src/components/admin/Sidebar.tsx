@@ -25,7 +25,9 @@ import {
     Target,
     ShieldCheck,
     Cpu,
-    Boxes
+    Boxes,
+    Globe,
+    Layers
 } from "lucide-react";
 import { useState } from "react";
 import { m, AnimatePresence } from "framer-motion";
@@ -48,11 +50,18 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
     const menuItems = [
         { id: "overview", label: "Kernel Hub", icon: LayoutDashboard, category: "Core", modId: "M-01" },
         { id: "projects", label: "Engineering Repository", icon: FolderPlus, category: "Core", modId: "M-02" },
+        { id: "journey", label: "Roadmap Flow", icon: Milestone, category: "Core", modId: "M-02.1" },
+        { id: "services", label: "Service Architecture", icon: Zap, category: "Core", modId: "M-02.2" },
+        { id: "process", label: "Operational Flow", icon: History, category: "Core", modId: "M-02.3" },
         { id: "blog", label: "Intelligence Feed", icon: PenLine, category: "Core", modId: "M-03" },
         
+        { id: "opensource", label: "Open Source Forge", icon: Globe, category: "Growth", modId: "M-07.1" },
+        { id: "components", label: "Showcase Library", icon: Layers, category: "Growth", modId: "M-07.2" },
+        { id: "adrs", label: "Architecture Logs", icon: ShieldCheck, category: "Growth", modId: "M-07.3" },
         { id: "clients", label: "Client Lifecycle", icon: Users, category: "Growth", modId: "M-04" },
         { id: "referrals", label: "Viral Propagation", icon: Gift, category: "Growth", modId: "M-05" },
         { id: "leads", label: "Lead Magnets", icon: Target, category: "Growth", modId: "M-06" },
+        { id: "subscribers", label: "Node Subscribers", icon: Mail, category: "Growth", modId: "M-06.1" },
         { id: "roi-engine", label: "Yield Intelligence", icon: BarChart3, category: "Growth", modId: "M-07" },
         { id: "hire", label: "Deployment Requests", icon: Briefcase, count: newHireCount, category: "Growth", modId: "M-08" },
         
@@ -65,6 +74,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
         { id: "activity", label: "Temporal Sync", icon: History, category: "System", modId: "M-14" },
         { id: "stats", label: "Performance Matrix", icon: BarChart3, category: "System", modId: "M-15" },
         { id: "features", label: "Feature Forge", icon: Settings, category: "System", modId: "M-16" },
+        { id: "settings", label: "Kernel Config", icon: Settings, category: "System", modId: "M-17" },
     ];
 
     const categories = ["Core", "Growth", "Inbound", "System"];
@@ -178,7 +188,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
                         <div className="flex items-center justify-between px-2 relative z-10">
                             <div className="flex flex-col">
                                 <span className="text-[9px] font-black text-gray-700 uppercase tracking-widest">Operator_Session</span>
-                                <span className="text-[11px] font-bold text-white uppercase italic tracking-tighter">Kumail_KMR // S-01</span>
+                                <span className="text-[11px] font-bold text-white uppercase italic tracking-tighter">Kumale_Ali_Bhat // S-01</span>
                             </div>
                             <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center relative">
                                 <div className="absolute inset-0 bg-blue-500/20 blur-lg rounded-full animate-pulse" />

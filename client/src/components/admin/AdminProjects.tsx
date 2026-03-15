@@ -72,8 +72,8 @@ interface Project {
     category?: string;
     isFeatured: boolean;
     isVisible: boolean;
-    created_at: string;
-    updated_at: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 interface AdminProjectsProps {

@@ -34,6 +34,13 @@ import AdminClients from "./AdminClients";
 import AdminPromotions from "./AdminPromotions";
 import AdminROIEngine from "./AdminROIEngine";
 import AdminFeatureManager from "./AdminFeatureManager";
+import AdminOpenSource from "./AdminOpenSource";
+import AdminComponents from "./AdminComponents";
+import AdminADRs from "./AdminADRs";
+import AdminSubscribers from "./AdminSubscribers";
+import AdminServices from "./AdminServices";
+import AdminProcess from "./AdminProcess";
+import AdminSettings from "./AdminSettings";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
 
 const fetcher = async (url: string) => {
@@ -49,13 +56,13 @@ const fetcher = async (url: string) => {
     return json.success ? json.data : json;
 };
 
-interface AdminTestimonial { id: string; name: string; email: string; company?: string | null; relationship_type: string; intervention_type: string; message: string; rating: number; about_delivery_lead: string; approved: boolean; featured: boolean; verified: boolean; created_at: string; }
-interface AdminContactMessage { id: string; name: string; email: string; message: string; replied: boolean; created_at: string; inquiryType: string; company?: string | null; serviceRequired: string; budgetRange?: string | null; timeline?: string | null; }
+interface AdminTestimonial { id: string; name: string; email: string; company?: string | null; relationshipType: string; interventionType: string; message: string; rating: number; aboutDeliveryLead: string; approved: boolean; featured: boolean; verified: boolean; createdAt: string; }
+interface AdminContactMessage { id: string; name: string; email: string; message: string; replied: boolean; createdAt: string; inquiryType: string; company?: string | null; serviceRequired: string; budgetRange?: string | null; timeline?: string | null; }
 interface AdminHireRequest { id: string; name: string; email: string; company: string | null; description: string; selectedService: string; budgetRange: string; timeline: string; projectType: string; status: string; source?: string; createdAt: string; }
-interface AdminBlogPost { id: string; title: string; excerpt: string; content: string; category: string; readTime: string; published: boolean; created_at: string; }
+interface AdminBlogPost { id: string; title: string; excerpt: string; content: string; category: string; readTime: string; published: boolean; createdAt: string; }
 interface AdminDiagnosticLog { id: string; description: string; techStack?: string; createdAt: string; matchedPatternId?: string; environment: string; errorMessage?: string; }
-interface AdminProject { id: string; title: string; summary?: string; description: string; status: string; role?: string; tags: string[]; image: string; demo?: string; github?: string; problem?: string; solution?: string; targetAudience?: string; valueProp?: string; architecture?: any; challenges?: string; engineering?: string; performance?: string; scalability?: string; security?: string; lessons?: string; uiDepth: number; backendDepth: number; securityDepth: number; scalabilityDepth: number; timeline?: any; gallery: string[]; results?: string; metrics: string[]; category?: string; isFeatured: boolean; isVisible: boolean; created_at: string; updated_at: string; }
-interface AdminCaseStudy { id: string; title: string; errorMessage: string; rootCause: string; steps: string[]; solution: string; impact: string; techStack: string[]; isPublished: boolean; created_at: string; }
+interface AdminProject { id: string; title: string; summary?: string; description: string; status: string; role?: string; tags: string[]; image: string; demo?: string; github?: string; problem?: string; solution?: string; targetAudience?: string; valueProp?: string; architecture?: any; challenges?: string; engineering?: string; performance?: string; scalability?: string; security?: string; lessons?: string; uiDepth: number; backendDepth: number; securityDepth: number; scalabilityDepth: number; timeline?: any; gallery: string[]; results?: string; metrics: string[]; category?: string; isFeatured: boolean; isVisible: boolean; createdAt: string; updatedAt: string; }
+interface AdminCaseStudy { id: string; title: string; errorMessage: string; rootCause: string; steps: string[]; solution: string; impact: string; techStack: string[]; isPublished: boolean; createdAt: string; }
 interface AdminStats extends SiteStats { diagRuns: number; leadGenTotal: number; hireRequests: number; patternsMatched: number; referrals: number; leadMagnets: number; playgroundSessions: number; }
 
 interface AdminDashboardProps {
@@ -66,7 +73,7 @@ interface AdminDashboardProps {
 import { SelectionProvider } from "@/context/SelectionContext";
 
 export default function AdminDashboard({ initialActivities = [], initialAvailability = null }: AdminDashboardProps) {
-    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey" | "activity" | "case-studies" | "audit" | "audit-requests" | "clients" | "referrals" | "leads" | "roi-engine" | "features">("overview");
+    const [activeTab, setActiveTab] = useState<"overview" | "projects" | "status" | "messages" | "hire" | "testimonials" | "services" | "process" | "blog" | "feature-requests" | "stats" | "diagnostics" | "capacity" | "resume" | "journey" | "activity" | "case-studies" | "audit" | "audit-requests" | "clients" | "referrals" | "leads" | "roi-engine" | "features" | "opensource" | "components" | "adrs" | "subscribers" | "settings">("overview");
     const [isNavOpen, setIsNavOpen] = useState(false);
 
     const router = useRouter();
@@ -76,7 +83,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
 
     useEffect(() => {
         const tab = searchParams?.get("tab");
-        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey", "activity", "case-studies", "audit", "audit-requests", "clients", "referrals", "leads", "roi-engine", "features"];
+        const validTabs = ["overview", "projects", "status", "messages", "hire", "testimonials", "services", "process", "blog", "feature-requests", "stats", "diagnostics", "capacity", "resume", "journey", "activity", "case-studies", "audit", "audit-requests", "clients", "referrals", "leads", "roi-engine", "features", "opensource", "components", "adrs", "subscribers", "settings"];
         if (tab && validTabs.includes(tab as any)) {
             setActiveTab(tab as any);
         }
@@ -85,6 +92,8 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
     // Data Fetching — keys are null until session is confirmed to prevent 401 flood
     const { data: projects, mutate: mutateProjects } = useSWR<AdminProject[]>(isAuthenticated ? "/api/projects" : null, fetcher);
     const { data: allTestimonials, mutate: mutateTestimonials } = useSWR<AdminTestimonial[]>(isAuthenticated ? "/api/admin/testimonials" : null, fetcher);
+    const { data: serviceTiers, mutate: mutateServices } = useSWR<any[]>(isAuthenticated ? "/api/admin/service-tiers" : null, fetcher);
+    const { data: processSteps, mutate: mutateProcess } = useSWR<any[]>(isAuthenticated ? "/api/admin/process" : null, fetcher);
     const { data: messages, mutate: mutateMessages } = useSWR<AdminContactMessage[]>(isAuthenticated ? "/api/contact" : null, fetcher);
     const { data: hireRequests, mutate: mutateHireRequests } = useSWR<AdminHireRequest[]>(isAuthenticated ? "/api/admin/hire" : null, fetcher);
     const { data: blogPosts, mutate: mutateBlogPosts } = useSWR<AdminBlogPost[]>(isAuthenticated ? "/api/blog" : null, fetcher);
@@ -101,6 +110,10 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
     const { data: auditRequests, mutate: mutateAuditRequests } = useSWR<any>(isAuthenticated ? "/api/admin/audit-requests" : null, fetcher);
     const { data: promotionsData, mutate: mutatePromotions } = useSWR<any>(isAuthenticated ? "/api/admin/promotions" : null, fetcher);
     const { data: featureToggles, mutate: mutateFeatureToggles } = useSWR<any[]>(isAuthenticated ? "/api/admin/features" : null, fetcher);
+    const { data: opensource, mutate: mutateOpensource } = useSWR<any[]>(isAuthenticated ? "/api/admin/opensource" : null, fetcher);
+    const { data: showcase, mutate: mutateShowcase } = useSWR<any[]>(isAuthenticated ? "/api/admin/showcase" : null, fetcher);
+    const { data: adrs, mutate: mutateAdrs } = useSWR<any[]>(isAuthenticated ? "/api/admin/adrs" : null, fetcher);
+    const { data: subscribers, mutate: mutateSubscribers } = useSWR<any[]>(isAuthenticated ? "/api/admin/subscribers" : null, fetcher);
 
 
     useEffect(() => {
@@ -332,6 +345,19 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
         if (res.ok) mutateJourney();
     };
 
+    const handleAddOpensource = async (data: any) => {
+        const res = await fetch("/api/admin/opensource", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+        if (res.ok) mutateOpensource();
+    };
+    const handleAddShowcase = async (data: any) => {
+        const res = await fetch("/api/admin/showcase", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+        if (res.ok) mutateShowcase();
+    };
+    const handleAddAdr = async (data: any) => {
+        const res = await fetch("/api/admin/adrs", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+        if (res.ok) mutateAdrs();
+    };
+
     const handleUpdateAvailability = async (status: string) => {
         try {
             const res = await fetch("/api/admin/availability", {
@@ -458,7 +484,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                             }}
                                             recentActivity={[
                                                 ...(Array.isArray(hireRequests) ? hireRequests : (hireRequests as any)?.requests || (hireRequests as any)?.hireRequests || []).map((h: any) => ({ id: h.id, type: "hire", title: `Hire Request: ${h.name}`, subtitle: h.projectType, timestamp: h.createdAt, status: h.status })),
-                                                ...(Array.isArray(allTestimonials) ? allTestimonials : (allTestimonials as any)?.testimonials || []).map((t: any) => ({ id: t.id, type: "testimonial", title: `Testimonial: ${t.name}`, subtitle: `${t.rating} Stars`, timestamp: t.created_at, status: t.approved ? "approved" : "pending" })),
+                                                ...(Array.isArray(allTestimonials) ? allTestimonials : (allTestimonials as any)?.testimonials || []).map((t: any) => ({ id: t.id, type: "testimonial", title: `Testimonial: ${t.name}`, subtitle: `${t.rating} Stars`, timestamp: t.createdAt, status: t.approved ? "approved" : "pending" })),
                                                 ...(Array.isArray(messages) ? messages : (messages as any)?.messages || []).map((m: any) => ({ id: m.id, type: "message", title: `Message: ${m.name}`, subtitle: m.inquiryType || "Inquiry", timestamp: m.created_at, status: m.replied ? "replied" : "new" })),
                                                 ...(Array.isArray(diagLogs) ? diagLogs : (diagLogs as any)?.logs || []).map((l: any) => ({ id: l.id, type: "diagnostic", title: "Diagnostic Run", subtitle: l.description, timestamp: l.createdAt, status: "completed" })),
                                                 ...(Array.isArray(auditRequests?.data) ? auditRequests.data : []).map((a: any) => ({ id: a.id, type: "audit", title: `Audit: ${a.websiteUrl}`, subtitle: `${a.performance}% Score`, timestamp: a.createdAt, status: a.contacted ? "contacted" : "new" }))
@@ -480,6 +506,8 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                         onUpdate={async () => { await mutateTestimonials(); }}
                                     />
                                 )}
+                                {activeTab === "services" && <AdminServices />}
+                                {activeTab === "process" && <AdminProcess />}
                                 {activeTab === "projects" && <AdminProjects projects={(projects as any)?.projects || (Array.isArray(projects) ? projects : [])} onUpdate={handleProjectAction} />}
                                 {activeTab === "blog" && <AdminBlog posts={(blogPosts as any)?.posts || (Array.isArray(blogPosts) ? blogPosts : [])} onAdd={handleAddBlog} onUpdate={handleBlogUpdate} onDelete={handleBlogDelete} />}
                                 {activeTab === "feature-requests" && <AdminFeatureRequests requests={(featureRequests as any)?.requests || (Array.isArray(featureRequests) ? featureRequests : [])} onUpdate={handleFeatureRequestAction} />}
@@ -494,7 +522,11 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                                  {activeTab === "clients" && <AdminClients />}
                                  {activeTab === "audit" && <AdminAudit />}
                                  {activeTab === "audit-requests" && <AdminAuditRequests />}
+                                 {activeTab === "opensource" && <AdminOpenSource contributions={opensource} onAdd={handleAddOpensource} onUpdate={async (id: string, data: any) => { await fetch(`/api/admin/opensource/${id}`, { method: 'PATCH', body: JSON.stringify(data) }); mutateOpensource(); }} onDelete={async (id: string) => { await fetch(`/api/admin/opensource/${id}`, { method: 'DELETE' }); mutateOpensource(); }} />}
+                                 {activeTab === "components" && <AdminComponents showcase={showcase} onAdd={handleAddShowcase} onUpdate={async (id: string, data: any) => { await fetch(`/api/admin/showcase/${id}`, { method: 'PATCH', body: JSON.stringify(data) }); mutateShowcase(); }} onDelete={async (id: string) => { await fetch(`/api/admin/showcase/${id}`, { method: 'DELETE' }); mutateShowcase(); }} />}
+                                 {activeTab === "adrs" && <AdminADRs adrs={adrs} onAdd={handleAddAdr} onUpdate={async (id: string, data: any) => { await fetch(`/api/admin/adrs/${id}`, { method: 'PATCH', body: JSON.stringify(data) }); mutateAdrs(); }} onDelete={async (id: string) => { await fetch(`/api/admin/adrs/${id}`, { method: 'DELETE' }); mutateAdrs(); }} />}
                                  {activeTab === "features" && <AdminFeatureManager features={featureToggles || []} onUpdate={() => mutateFeatureToggles()} />}
+                                 {activeTab === "settings" && <AdminSettings />}
 
                             </ErrorBoundary>
                         </m.div>
@@ -504,7 +536,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                     <footer className="pt-24 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-10 opacity-30 group-hover:opacity-50 transition-opacity">
                         <div className="flex items-center gap-4">
                              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center font-black text-[10px] text-gray-400">K</div>
-                             <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 italic">Kumail_KMR_Operational_Framework_V2.0</p>
+                             <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 italic">Kumale_Operational_Framework_V2.0</p>
                         </div>
                         <div className="flex flex-wrap items-center justify-center gap-12">
                             {[

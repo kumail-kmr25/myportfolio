@@ -37,15 +37,15 @@ interface Testimonial {
     email: string;
     company?: string | null;
     role?: string | null;
-    relationship_type: string;
-    intervention_type: string;
+    relationshipType: string;
+    interventionType: string;
     message: string;
     rating: number;
-    about_delivery_lead: string;
+    aboutDeliveryLead: string;
     approved: boolean;
     featured: boolean;
     verified: boolean;
-    created_at: string;
+    createdAt: string;
 }
 
 interface AdminTestimonialsProps {
@@ -317,7 +317,7 @@ export default function AdminTestimonials({ testimonials, onUpdate }: AdminTesti
                                                 ))}
                                             </div>
                                             <div className="h-px w-12 bg-white/5" />
-                                            <span className="text-[10px] text-gray-700 font-black uppercase tracking-[0.2em]">{testimonial.intervention_type}</span>
+                                            <span className="text-[10px] text-gray-700 font-black uppercase tracking-[0.2em]">{testimonial.interventionType}</span>
                                         </div>
                                         <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 italic font-medium group-hover:text-white transition-colors">
                                             &quot;{testimonial.message}&quot;
@@ -428,8 +428,8 @@ export default function AdminTestimonials({ testimonials, onUpdate }: AdminTesti
                                 <label className="text-[9px] text-gray-700 font-black uppercase tracking-[0.4em] ml-2">Internal_Telemetry (Non-Public)</label>
                                 <textarea 
                                     className="w-full bg-white/[0.03] border border-white/10 rounded-[2rem] p-8 text-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 min-h-[120px]"
-                                    value={formData.about_delivery_lead || ""}
-                                    onChange={e => setFormData({...formData, about_delivery_lead: e.target.value})}
+                                    value={formData.aboutDeliveryLead || ""}
+                                    onChange={e => setFormData({...formData, aboutDeliveryLead: e.target.value})}
                                 />
                             </div>
                         </div>

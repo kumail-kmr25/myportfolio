@@ -36,12 +36,12 @@ export async function POST(request: Request) {
 
         const phase = await prisma.journeyPhase.create({
             data: {
-                phase: data.phase,
                 title: data.title,
-                description: data.description,
-                icon: data.icon || "Code2",
-                color: data.color || "from-blue-500/20 to-indigo-500/20",
-                order: parseInt(data.order.toString()) || 0,
+                subtitle: data.description || "",
+                ecoIcon: data.ecoIcon || "🌱",
+                ecoStage: data.ecoStage || "Seed",
+                dateRange: data.phase || "",
+                order: parseInt(data.order?.toString()) || 0,
             },
         });
 

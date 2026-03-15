@@ -21,12 +21,12 @@ export async function PATCH(
         const phase = await prisma.journeyPhase.update({
             where: { id },
             data: {
-                phase: data.phase,
                 title: data.title,
-                description: data.description,
-                icon: data.icon,
-                color: data.color,
-                order: data.order !== undefined ? parseInt(data.order) : undefined,
+                subtitle: data.description,
+                ecoIcon: data.ecoIcon,
+                ecoStage: data.ecoStage,
+                dateRange: data.phase,
+                order: data.order !== undefined ? parseInt(data.order.toString()) : undefined,
             },
         });
 

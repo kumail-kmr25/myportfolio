@@ -30,7 +30,7 @@ interface CaseStudy {
     impact: string;
     techStack: string[];
     isPublished: boolean;
-    created_at: string;
+    createdAt: string;
 }
 
 export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseStudy[], onUpdate: () => void }) {
@@ -349,7 +349,7 @@ export default function AdminCaseStudies({ studies, onUpdate }: { studies: CaseS
                             checked={formData.isPublished}
                             onChange={(e) => setFormData({ ...formData, isPublished: e.target.checked })}
                         />
-                        <label htmlFor="published" className="text-xs font-black uppercase tracking-widest text-gray-400 cursor-pointer">Synchronize with Public Portfolio</label>
+                        <label htmlFor="published" className="text-xs font-black uppercase tracking-widest text-gray-400 cursor-pointer">Synchronize with Public My Projects</label>
                     </div>
 
                     <div className="pt-8 flex flex-col gap-4">

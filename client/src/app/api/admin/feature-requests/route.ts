@@ -12,7 +12,7 @@ export async function GET() {
         }
 
         const featureRequests = await prisma.featureRequest.findMany({
-            orderBy: { created_at: "desc" },
+            orderBy: { createdAt: "desc" },
         });
         return apiResponse(featureRequests);
     } catch (error) {

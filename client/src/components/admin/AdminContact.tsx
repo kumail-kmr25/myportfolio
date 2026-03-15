@@ -31,7 +31,7 @@ interface ContactMessage {
     timeline?: string | null;
     message: string;
     replied: boolean;
-    created_at: string;
+    createdAt: string;
 }
 
 interface AdminContactProps {
@@ -259,7 +259,7 @@ export default function AdminContact({ messages, onToggleReplied, onDelete }: Ad
                                 { label: "Budget Range", val: selectedMessage.budgetRange || "Not Specified", icon: IndianRupee, color: "text-emerald-400" },
                                 { label: "Exp. Timeline", val: selectedMessage.timeline || "TBD", icon: Clock, color: "text-orange-400" },
                                 { label: "Ingest Type", val: selectedMessage.inquiryType, icon: Filter, color: "text-pink-400" },
-                                { label: "Reception At", val: format(new Date(selectedMessage.created_at), 'MMM dd, yyyy'), icon: Calendar, color: "text-cyan-400" },
+                                { label: "Reception At", val: format(new Date(selectedMessage.createdAt), 'MMM dd, yyyy'), icon: Calendar, color: "text-cyan-400" },
                             ].map((item, idx) => (
                                 <div key={idx} className="p-4 bg-white/[0.03] border border-white/5 rounded-2xl flex items-center gap-4">
                                     <div className={`w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center ${item.color}`}>

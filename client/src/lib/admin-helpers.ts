@@ -8,7 +8,7 @@ export async function fetchActivities() {
                 take: 10
             }),
             prisma.contactSubmission.findMany({
-                orderBy: { created_at: "desc" },
+                orderBy: { createdAt: "desc" },
                 take: 10
             }),
             prisma.diagnosticLog.findMany({
@@ -16,7 +16,7 @@ export async function fetchActivities() {
                 take: 10
             }),
             prisma.testimonial.findMany({
-                orderBy: { created_at: "desc" },
+                orderBy: { createdAt: "desc" },
                 take: 10
             }),
             prisma.auditRequest.findMany({

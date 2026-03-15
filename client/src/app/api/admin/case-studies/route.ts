@@ -10,7 +10,7 @@ export async function GET() {
         const session = await getServerSession(authOptions);
         if (!session) return apiError("Unauthorized", 401);
 
-        const caseStudies = await prisma.caseStudy.findMany({ orderBy: { created_at: "desc" } });
+        const caseStudies = await prisma.caseStudy.findMany({ orderBy: { createdAt: "desc" } });
         return apiResponse(caseStudies);
     } catch (error) {
         return apiError("Failed to fetch");
