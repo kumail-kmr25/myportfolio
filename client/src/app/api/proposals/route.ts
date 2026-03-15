@@ -15,7 +15,8 @@ export async function GET() {
         return apiResponse({ templates });
     } catch (error) {
         console.error("GET_PROPOSAL_TEMPLATES_ERROR:", error);
-        return apiError("Failed to fetch proposal templates");
+        // Return empty array instead of 500 to prevent frontend crash
+        return apiResponse({ templates: [] });
     }
 }
 

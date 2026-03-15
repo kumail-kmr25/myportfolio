@@ -30,6 +30,13 @@ export async function GET() {
         });
     } catch (error) {
         console.error("GET_JOURNEY_ERROR:", error);
-        return apiError("Failed to fetch journey data");
+        // Return safe empty structure instead of 500 to prevent frontend crash
+        return apiResponse({ 
+            config: { enabled: false },
+            phases: [],
+            milestones: [],
+            goals: []
+        });
     }
 }
+

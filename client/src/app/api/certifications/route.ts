@@ -17,7 +17,8 @@ export async function GET() {
         return apiResponse({ certifications, version: "v1.0.0" });
     } catch (error) {
         console.error("GET_CERTIFICATIONS_ERROR:", error);
-        return apiError("Failed to fetch certifications");
+        // Return empty array instead of 500 to prevent frontend crash
+        return apiResponse({ certifications: [], version: "v1.0.0" });
     }
 }
 
