@@ -32,6 +32,8 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
     { name: "My Works", href: "/#case-studies" },
+    { name: "Dev Hub", href: "/#developer-hub" },
+    { name: "ROI Engine", href: "/#roi-engine" },
     { name: "Audit Tool", href: "/audit" },
     { name: "Contact", href: "/#contact" },
     { name: "Hire Me", href: "/#contact", isCTA: true },
@@ -97,7 +99,7 @@ export default function Navbar() {
                         transition={{ duration: 0.8, ease: premiumEase as any }}
                         className={`text-2xl font-black tracking-tighter transition-colors ${scrolled ? "text-black" : "text-white"}`}
                     >
-                        <span className="text-white">K</span><span className="text-blue-600 italic">K</span>
+                        <span className="text-white">K</span><span className="text-blue-600 italic">B</span>
                     </m.span>
                     <m.div
                         className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"
@@ -116,6 +118,16 @@ export default function Navbar() {
                             <Link
                                 key={link.name}
                                 href={link.isCTA ? "/hire" : link.href}
+                                onClick={(e) => {
+                                    if (link.href.startsWith("/#")) {
+                                        const id = link.href.split("#")[1];
+                                        const el = document.getElementById(id);
+                                        if (el && window.location.pathname === "/") {
+                                            e.preventDefault();
+                                            el.scrollIntoView({ behavior: "smooth" });
+                                        }
+                                    }
+                                }}
                                 target={link.isExternal ? "_blank" : undefined}
                                 rel={link.isExternal ? "noopener noreferrer" : undefined}
                                 onMouseEnter={() => setHoveredIndex(index)}
@@ -203,13 +215,23 @@ export default function Navbar() {
                                     key={link.name}
                                 >
                                     <Link
-                                        href={link.href}
+                                        href={link.isCTA ? "/hire" : link.href}
                                         target={link.isExternal ? "_blank" : undefined}
                                         rel={link.isExternal ? "noopener noreferrer" : undefined}
-                                        className={`text-3xl font-black tracking-tighter uppercase flex items-center justify-between group
+                                        className={`text-2xl sm:text-3xl font-black tracking-tighter uppercase flex items-center justify-between group
                                             ${link.isCTA ? "text-blue-600 pt-8 border-t border-black/[0.05] w-full" : (scrolled ? "text-black" : "text-white")}`}
-                                        onClick={() => {
+                                        onClick={(e) => {
                                             setIsOpen(false);
+                                            if (link.href.startsWith("/#")) {
+                                                const id = link.href.split("#")[1];
+                                                const el = document.getElementById(id);
+                                                if (el && window.location.pathname === "/") {
+                                                    e.preventDefault();
+                                                    setTimeout(() => {
+                                                        el.scrollIntoView({ behavior: "smooth" });
+                                                    }, 300); // Allow menu to close first
+                                                }
+                                            }
                                         }}
                                     >
                                         <span className="group-hover:translate-x-3 transition-transform duration-500 flex items-center gap-4">

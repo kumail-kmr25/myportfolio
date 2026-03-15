@@ -1,10 +1,15 @@
 "use client";
 
+import React from "react";
+
 import { ArrowRight, Calendar, Clock, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { m, Variants } from "framer-motion";
 import useSWR from "swr";
 import { getApiUrl } from "@/lib/api";
+import dynamic from "next/dynamic";
+
+const NewsletterHook = dynamic(() => import("./features/NewsletterHook"));
 
 const fetcher = async (url: string) => {
     const res = await fetch(getApiUrl(url));
@@ -21,7 +26,7 @@ const fallbackPosts = [
         excerpt: "Learn the architectural decisions and performance optimizations that made scaling possible.",
         category: "Development",
         readTime: "8 min read",
-        created_at: "2026-02-15T00:00:00Z",
+        createdAt: "2026-02-15T00:00:00Z",
     },
     {
         id: "fallback-2",
@@ -29,7 +34,7 @@ const fallbackPosts = [
         excerpt: "Exploring the latest UI trends and how to implement them effectively using Tailwind CSS.",
         category: "Design",
         readTime: "5 min read",
-        created_at: "2026-02-02T00:00:00Z",
+        createdAt: "2026-02-02T00:00:00Z",
     },
     {
         id: "fallback-3",
@@ -37,7 +42,7 @@ const fallbackPosts = [
         excerpt: "Streamline your workflow and deliver more value to clients with automated CI/CD pipelines.",
         category: "DevOps",
         readTime: "6 min read",
-        created_at: "2026-01-28T00:00:00Z",
+        createdAt: "2026-01-28T00:00:00Z",
     },
 ];
 
@@ -110,47 +115,56 @@ export default function Blog() {
                     variants={containerVariants}
                     className="grid grid-cols-1 md:grid-cols-3 gap-8"
                 >
-                    {posts.map((post: any) => (
-                        <m.div
-                            key={post.id}
-                            variants={itemVariants}
-                            className="group"
-                        >
-                            <Link href="/portfolio" className="h-full flex flex-col bg-white/[0.02] border border-white/5 group-hover:bg-white/[0.04] group-hover:border-white/10 transition-all duration-500 p-8 rounded-[2.5rem] relative overflow-hidden">
-                                {/* Glow Effect */}
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    {posts.map((post: any, index: number) => (
+                        <React.Fragment key={post.id}>
+                            <m.div
+                                variants={itemVariants}
+                                className="group"
+                            >
+                                <Link href="/portfolio" className="h-full flex flex-col bg-white/[0.02] border border-white/5 group-hover:bg-white/[0.04] group-hover:border-white/10 transition-all duration-500 p-8 rounded-[2.5rem] relative overflow-hidden">
+                                    {/* Glow Effect */}
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
-                                <div className="flex justify-between items-center mb-10">
-                                    <div className="flex items-center gap-2 px-3 py-1 bg-blue-500/5 border border-blue-500/20 rounded-full">
-                                        <Sparkles size={10} className="text-blue-500" />
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">{post.category}</span>
-                                    </div>
-                                    <div className="flex items-center text-[10px] text-gray-500 font-black uppercase tracking-widest">
-                                        <Clock className="w-3 h-3 mr-2 text-blue-500" />
-                                        {post.readTime}
-                                    </div>
-                                </div>
-
-                                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors line-clamp-2 leading-tight tracking-tight">
-                                    {post.title}
-                                </h3>
-
-                                <p className="text-gray-400 mb-10 line-clamp-3 text-sm leading-relaxed">
-                                    {post.excerpt}
-                                </p>
-
-                                <div className="mt-auto flex items-center justify-between pt-8 border-t border-white/5">
-                                    <div className="flex items-center text-[10px] font-black uppercase tracking-widest text-gray-500">
-                                        <Calendar className="w-3 h-3 mr-2" />
-                                        {new Date(post.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                                    <div className="flex justify-between items-center mb-10">
+                                        <div className="flex items-center gap-2 px-3 py-1 bg-blue-500/5 border border-blue-500/20 rounded-full">
+                                            <Sparkles size={10} className="text-blue-500" />
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">{post.category}</span>
+                                        </div>
+                                        <div className="flex items-center text-[10px] text-gray-500 font-black uppercase tracking-widest">
+                                            <Clock className="w-3 h-3 mr-2 text-blue-500" />
+                                            {post.readTime}
+                                        </div>
                                     </div>
 
-                                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white group-hover:bg-blue-600 transition-all transform group-hover:-translate-y-1">
-                                        <ArrowRight size={20} />
+                                    <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors line-clamp-2 leading-tight tracking-tight">
+                                        {post.title}
+                                    </h3>
+
+                                    <p className="text-gray-400 mb-10 line-clamp-3 text-sm leading-relaxed">
+                                        {post.excerpt}
+                                    </p>
+
+                                    <div className="mt-auto flex items-center justify-between pt-8 border-t border-white/5">
+                                        <div className="flex items-center text-[10px] font-black uppercase tracking-widest text-gray-500">
+                                            <Calendar className="w-3 h-3 mr-2" />
+                                            {new Date(post.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                                        </div>
+
+                                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white group-hover:bg-blue-600 transition-all transform group-hover:-translate-y-1">
+                                            <ArrowRight size={20} />
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                        </m.div>
+                                </Link>
+                            </m.div>
+                            {index === 1 && (
+                                <m.div 
+                                    variants={itemVariants}
+                                    className="md:col-span-3 my-12"
+                                >
+                                    <NewsletterHook />
+                                </m.div>
+                            )}
+                        </React.Fragment>
                     ))}
                 </m.div>
 

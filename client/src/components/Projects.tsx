@@ -114,23 +114,23 @@ export default function Projects() {
                             <Sparkles size={12} className="animate-pulse" /> Result-Driven Architecture
                         </m.div>
                         
-                        <h2 className="text-6xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter mb-8 leading-[0.85]">
-                            The <span className="text-blue-500 italic">Portfolio</span>
+                        <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter mb-8 leading-[0.85]">
+                            My <span className="text-blue-500 italic">Projects</span>
                         </h2>
                         
-                        <p className="text-xl text-gray-400 max-w-2xl leading-relaxed font-medium italic">
+                        <p className="text-lg sm:text-xl text-gray-400 max-w-2xl leading-relaxed font-medium italic">
                             &quot;I don&apos;t build features. I build business outcomes.&quot;
                         </p>
                     </div>
                 </SectionReveal>
 
                 {/* Industry Filter Controls */}
-                <div className="flex flex-wrap justify-center gap-2 mb-20 lg:mb-24">
+                <div className="flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-visible gap-2 mb-16 md:mb-24 pb-4 md:pb-0 no-scrollbar [-ms-overflow-style:none] [scrollbar-width:none]">
                     {industries.map((ind) => (
                         <button
                             key={ind.id}
                             onClick={() => setSelectedIndustry(ind.id)}
-                            className={`group flex items-center gap-2.5 px-6 py-3 rounded-2xl border transition-all duration-300 font-black text-[10px] uppercase tracking-widest ${
+                            className={`group flex items-center gap-2.5 px-5 py-2.5 md:px-6 md:py-3 rounded-xl md:rounded-2xl border transition-all duration-300 font-black text-[9px] md:text-[10px] uppercase tracking-widest whitespace-nowrap ${
                                 selectedIndustry === ind.id 
                                 ? "bg-blue-600 border-blue-500 text-white shadow-[0_0_25px_rgba(37,99,235,0.4)]" 
                                 : "bg-white/5 border-white/10 text-gray-400 hover:border-blue-500/50 hover:text-white"
@@ -165,7 +165,7 @@ export default function Projects() {
                         {/* 2. Systems Efficiency Panel (Social Proof) */}
                         <m.div 
                             variants={containerVariants}
-                            className="p-8 lg:p-12 rounded-[3rem] bg-gradient-to-br from-[#050505] to-[#080808] border border-white/10 shadow-3xl relative overflow-hidden group"
+                            className="p-6 md:p-8 lg:p-12 rounded-[2rem] md:rounded-[3rem] bg-gradient-to-br from-[#050505] to-[#080808] border border-white/10 shadow-3xl relative overflow-hidden group"
                         >
                             <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity">
                                 <Cpu size={200} className="text-blue-500" />

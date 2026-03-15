@@ -30,13 +30,13 @@ export async function sendContactNotification({
 
     try {
         const { data, error } = await resend.emails.send({
-            from: "Portfolio <onboarding@resend.dev>", // Transition to custom domain in production
+            from: "My Projects <onboarding@resend.dev>", // Transition to custom domain in production
             to: process.env.CONTACT_EMAIL || "ka6307464@gmail.com",
             subject: `💼 New Professional Inquiry from ${name}`,
             replyTo: email,
             html: `
         <div style="font-family: sans-serif; padding: 20px; color: #333; line-height: 1.6;">
-          <h2 style="color: #000; border-bottom: 2px solid #eee; padding-bottom: 10px;">New Portfolio Inquiry</h2>
+          <h2 style="color: #000; border-bottom: 2px solid #eee; padding-bottom: 10px;">New My Projects Inquiry</h2>
           
           <div style="margin-bottom: 20px;">
             <p style="margin: 5px 0;"><strong>Name:</strong> ${name}</p>
@@ -57,7 +57,7 @@ export async function sendContactNotification({
           </div>
 
           <p style="margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #eee; pt: 10px;">
-            Submitted via Portfolio Contact Form at ${new Date().toLocaleString()}
+            Submitted via My Projects Contact Form at ${new Date().toLocaleString()}
           </p>
         </div>
       `,
@@ -81,7 +81,7 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string) {
 
     try {
         const { data, error } = await resend.emails.send({
-            from: "Portfolio <onboarding@resend.dev>",
+            from: "My Projects <onboarding@resend.dev>",
             to: email,
             subject: "🔐 Password Reset Request",
             html: `
@@ -107,7 +107,7 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string) {
           </p>
 
           <p style="margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 10px;">
-            Submitted via Portfolio Admin System at ${new Date().toLocaleString()}
+            Submitted via My Projects Admin System at ${new Date().toLocaleString()}
           </p>
         </div>
       `,
@@ -131,9 +131,9 @@ export async function sendAutoReplyToClient(email: string, name: string) {
 
     try {
         const { data, error } = await resend.emails.send({
-            from: "Kumail Kmr <onboarding@resend.dev>", // Transition to your custom domain email
+            from: "Kumale Ali Bhat <onboarding@resend.dev>", // Transition to your custom domain email
             to: email,
-            subject: "Thanks for contacting Kumail Kmr 🚀",
+            subject: "Thanks for contacting Kumale Ali Bhat 🚀",
             html: `
         <div style="font-family: sans-serif; padding: 30px; color: #333; line-height: 1.8; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 12px;">
           <h2 style="color: #000; font-size: 24px; margin-bottom: 20px;">Hello ${name},</h2>
@@ -152,7 +152,7 @@ export async function sendAutoReplyToClient(email: string, name: string) {
           
           <p style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 14px; color: #666;">
             Best Regards,<br/>
-            <strong>Kumail Kmr</strong><br/>
+            <strong>Kumale Ali Bhat</strong><br/>
             Full-Stack Developer
           </p>
         </div>
@@ -195,7 +195,7 @@ export async function sendHireNotification({
 
     try {
         const { data, error } = await resend.emails.send({
-            from: "Portfolio Hire <onboarding@resend.dev>",
+            from: "My Projects Hire <onboarding@resend.dev>",
             to: process.env.CONTACT_EMAIL || "ka6307464@gmail.com",
             subject: `🚀 New Project Inquiry: ${selectedService} from ${name}`,
             replyTo: email,
@@ -222,7 +222,7 @@ export async function sendHireNotification({
           </div>
 
           <p style="margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 10px;">
-            Submitted via Portfolio "Hire Me" Flow at ${new Date().toLocaleString()}
+            Submitted via My Projects "Hire Me" Flow at ${new Date().toLocaleString()}
           </p>
         </div>
       `,
@@ -246,7 +246,7 @@ export async function sendHireAutoReply(email: string, name: string) {
 
     try {
         const { data, error } = await resend.emails.send({
-            from: "Kumail Kmr <onboarding@resend.dev>",
+            from: "Kumale Ali Bhat <onboarding@resend.dev>",
             to: email,
             subject: "Exciting! I've received your project request 🚀",
             html: `
@@ -267,7 +267,7 @@ export async function sendHireAutoReply(email: string, name: string) {
           
           <p style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 14px; color: #666;">
             Best Regards,<br/>
-            <strong>Kumail Kmr</strong><br/>
+            <strong>Kumale Ali Bhat</strong><br/>
             Full-Stack Developer & Technical Lead
           </p>
         </div>

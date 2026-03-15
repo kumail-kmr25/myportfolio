@@ -21,27 +21,27 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL('https://kumailkmr.com'),
   title: {
-    default: "Kumail Kmr | Premium Full-Stack Developer & SaaS Expert",
-    template: "%s | Kumail Kmr"
+    default: "Kumale Ali Bhat | Premium Full-Stack Developer & SaaS Expert",
+    template: "%s | Kumale Ali Bhat"
   },
   description: "I build high-performance, scalable web applications that drive results. Specializing in Next.js, Node.js, and DevOps for startups and businesses.",
   keywords: ["Full Stack Developer", "SaaS Developer", "Next.js Expert", "React Developer", "DevOps Engineer", "Premium Web Design", "Startup Developer", "Performance Optimization"],
-  authors: [{ name: "Kumail Kmr" }],
-  creator: "Kumail Kmr",
+  authors: [{ name: "Kumale Ali Bhat" }],
+  creator: "Kumale Ali Bhat",
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: "Kumail Kmr | Full-Stack Engineering & SaaS Development",
+    title: "Kumale Ali Bhat | Full-Stack Engineering & SaaS Development",
     description: "Launch your next production-ready platform with an expert Next.js & DevOps engineer.",
     url: "https://kumailkmr.com",
-    siteName: "Kumail Kmr Portfolio",
+    siteName: "Kumale Ali Bhat | Portfolio",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Kumail Kmr - Full Stack Engineering",
+        alt: "Kumale Ali Bhat - Full Stack Engineering",
       },
     ],
     locale: "en_US",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kumail Kmr | Premium Full-Stack Developer",
+    title: "Kumale Ali Bhat | Premium Full-Stack Developer",
     description: "Building fast, scalable web apps that drive real business results.",
     images: ["/og-image.jpg"],
     creator: "@kumailkmr",
@@ -77,7 +77,7 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Kumail Kmr",
+    "name": "Kumale Ali Bhat",
     "url": "https://kumailkmr.com",
     "jobTitle": "Full Stack Developer & DevOps Engineer",
     "description": "Expert Full Stack Developer specializing in Next.js, MERN stack, and cloud architecture.",

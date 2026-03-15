@@ -60,7 +60,7 @@ export default function Hero() {
 
     return (
         <section id="home" aria-label="Hero section" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#020202] selection:bg-blue-500/30 pt-24 lg:pt-20">
-            {/* Elite Technical Infrastructure */}
+            {/* Background Layer */}
             <div className="absolute inset-0 z-0">
                 {/* Noise Texture Overlay */}
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-50 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] filter contrast-150 brightness-150 mix-blend-overlay" />
@@ -107,14 +107,11 @@ export default function Hero() {
                             </div>
                         </m.div>
 
-                        <m.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.2, ease: premiumEase as any }}
-                            className="text-fluid-h1 font-black font-display text-white mb-8 tracking-tighter leading-[0.95] select-none text-center lg:text-left"
+                        <h1
+                            className="text-fluid-h1 font-black font-display text-white mb-6 md:mb-8 tracking-tighter leading-[0.95] select-none text-center lg:text-left"
                         >
                             Building <span className="text-blue-500 italic">High-Performance</span> Digital Ecosystems.
-                        </m.h1>
+                        </h1>
 
                         <m.p
                             initial={{ opacity: 0, y: 20 }}
@@ -138,7 +135,7 @@ export default function Hero() {
                                 }}
                                 className="group relative w-full sm:w-auto px-10 py-5 bg-blue-600 border border-blue-500 text-white rounded-2xl font-bold text-xs tracking-widest uppercase transition-all hover:bg-blue-500 hover:shadow-2xl hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
                             >
-                                Explorer Work <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                Explore My Work <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                             </button>
 
                             <Link

@@ -17,7 +17,7 @@ export const MOCK_PROJECTS: Project[] = [
         isFeatured: true,
         valuePoints: ["Deep contextual reasoning capabilities", "Vector-based semantic search", "Automated intelligent workflows"],
         metrics: ["Sub-500ms response time", "99.9% Uptime", "10k+ Daily Queries"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(),
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(),
         systemArchitecture: [
             { name: "Frontend", value: "Next.js (App Router)" },
             { name: "Backend", value: "FastAPI (Python)" },
@@ -66,7 +66,7 @@ export const MOCK_PROJECTS: Project[] = [
         isFeatured: true,
         valuePoints: ["Streamlined clinical documentation", "Predictive medical data entry", "HIPAA-compliant security framework"],
         metrics: ["Reduced entry time by 60%", "Zero data breaches", "Automated compliance checks"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(),
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(),
         systemArchitecture: [
             { name: "Frontend", value: "React.js (SPA)" },
             { name: "Backend", value: "Node.js (Express)" },
@@ -109,7 +109,7 @@ export const MOCK_PROJECTS: Project[] = [
         github: "https://github.com/kumail-kmr25/Edunova-saas.git",
         isFeatured: false,
         valuePoints: ["Reduces administrative overhead by 40%", "Real-time student lifecycle management", "Secure institution-wide orchestration"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14).toISOString(),
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14).toISOString(),
         systemArchitecture: [
             { name: "Frontend", value: "Next.js" },
             { name: "Backend", value: "Next API Routes (Serverless)" },
@@ -153,7 +153,7 @@ export const MOCK_PROJECTS: Project[] = [
         isFeatured: false,
         valuePoints: ["Atomic digital asset transactions", "Automated escrow verification", "High-integrity financial ledger"],
         metrics: ["0% Double Spend", "1ms Ledger Latency", "99.9% Security Audit"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 20).toISOString(),
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 20).toISOString(),
         systemArchitecture: [
             { name: "Frontend", value: "Next.js 15 UI" },
             { name: "Ledger", value: "PostgreSQL (ACID)" },
@@ -183,7 +183,7 @@ export const MOCK_PROJECTS: Project[] = [
         isFeatured: false,
         valuePoints: ["95% accurate cash-flow predictions", "Intelligent expense categorization", "SME financial optimization"],
         metrics: ["95% Prediction Accuracy", "60% Render Speedup", "30% Lower API Costs"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 25).toISOString(),
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 25).toISOString(),
         systemArchitecture: [
             { name: "Frontend", value: "React / Shadcn" },
             { name: "AI Engine", value: "Python / TensorFlow" },
@@ -206,7 +206,7 @@ export const MOCK_PROJECTS: Project[] = [
         isFeatured: false,
         valuePoints: ["100/100 Lighthouse performance", "Hyper-optimized conversion funnel", "Scalable headless commerce"],
         metrics: ["100/100 Lighthouse", "15% Conversion Boost", "70% Payload Reduction"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString(),
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString(),
         systemArchitecture: [
             { name: "Store", value: "Next.js Static" },
             { name: "Orders", value: "GraphQL / Node" },
@@ -229,7 +229,7 @@ export const MOCK_PROJECTS: Project[] = [
         isFeatured: false,
         valuePoints: ["Real-time document sync", "Interactive system diagrams", "Markdown-first technical writing"],
         metrics: ["0ms Navigation Delay", "100% SEO Score", "50+ Microservices Configured"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 35).toISOString(),
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 35).toISOString(),
         systemArchitecture: [
             { name: "Engine", value: "Next.js Static" },
             { name: "Storage", value: "MongoDB Atlas" }
@@ -251,7 +251,7 @@ export const MOCK_PROJECTS: Project[] = [
         isFeatured: false,
         valuePoints: ["Structured knowledge architecture", "Advanced semantic search", "Intuitive learning interfaces"],
         metrics: ["98% Search Accuracy", "30% Faster Research Time", "100+ Categories Mapped"],
-        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 40).toISOString(),
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 40).toISOString(),
         systemArchitecture: [
             { name: "Portal", value: "React / Vite" },
             { name: "Archive", value: "PostgreSQL" }

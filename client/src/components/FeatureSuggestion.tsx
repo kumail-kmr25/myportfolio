@@ -21,7 +21,7 @@ interface FeatureRequest {
     message: string;
     category: string;
     status: string;
-    created_at: string;
+    createdAt: string;
 }
 
 export default function FeatureSuggestion() {

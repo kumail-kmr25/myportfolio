@@ -29,7 +29,7 @@ export async function POST(request: Request) {
             name,
             email,
             message,
-            company,
+            company, // Honeypot
             inquiryType,
             serviceRequired,
             budgetRange,
@@ -37,15 +37,20 @@ export async function POST(request: Request) {
             foundBy
         } = result.data;
 
+        // Honeypot check: If "company" is filled, it's likely a bot (real users don't see it)
+        if (company) {
+            console.warn("[BOT_PREVENTION] Honeypot triggered by", email);
+            return apiResponse({ message: "Your message has been sent successfully!" }); // Fake success for bots
+        }
+
         const sanitizedMessage = xss(message);
         const sanitizedName = xss(name);
-        const sanitizedCompany = company ? xss(company) : null;
 
         await prisma.contactSubmission.create({
             data: {
                 name: sanitizedName,
                 email,
-                company: sanitizedCompany,
+                company: null, // Always null as the field is a honeypot
                 inquiryType,
                 serviceRequired,
                 budgetRange: budgetRange || null,
@@ -58,7 +63,7 @@ export async function POST(request: Request) {
         sendContactNotification({
             name: sanitizedName,
             email,
-            company: sanitizedCompany,
+            company: null,
             inquiryType: inquiryType || "General Inquiry",
             serviceRequired: serviceRequired || "Not specified",
             budgetRange: budgetRange || "Not specified",
@@ -84,7 +89,7 @@ export async function GET() {
         }
 
         const messages = await prisma.contactSubmission.findMany({
-            orderBy: { created_at: "desc" },
+            orderBy: { createdAt: "desc" },
         });
         return apiResponse(messages);
     } catch (error: any) {

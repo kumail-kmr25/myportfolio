@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { m, Variants } from "framer-motion";
+import { FileText } from "lucide-react";
 import VoiceIntro from "./features/VoiceIntro";
 import RevenueDashboard from "./features/RevenueDashboard";
 import Certifications from "./features/Certifications";
@@ -63,7 +65,7 @@ export default function About() {
                                 <div className="w-full h-full rounded-full overflow-hidden relative">
                                     <Image
                                         src="https://github.com/kumail-kmr25.png"
-                                        alt="Kumail Kmr"
+                                        alt="Kumale Ali Bhat"
                                         fill
                                         priority
                                         className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -101,7 +103,7 @@ export default function About() {
                             className="space-y-6 text-gray-400 text-lg leading-relaxed max-w-2xl"
                         >
                             <p>
-                                I&apos;m Kumail, a Full-Stack Engineer specializing in high-performance digital solutions that drive business growth. 
+                                I&apos;m Kumale, a Full-Stack Engineer specializing in high-performance digital solutions that drive business growth. 
                                 I bridge the gap between complex technical requirements and commercial results, ensuring your platform isn&apos;t just code—it&apos;s a revenue-generating asset.
                             </p>
                             <p>
@@ -148,17 +150,15 @@ export default function About() {
                                 </div>
                             </button>
 
-                            <a
-                                href="#"
+                            <Link
+                                href="/resume"
                                 className="group relative px-8 py-4 bg-white/5 border border-white/10 rounded-2xl font-bold text-white transition-all duration-300 hover:bg-white/10 active:scale-95 flex items-center justify-center gap-3 overflow-hidden"
                             >
-                                <span className="relative z-10 text-lg">Download CV</span>
+                                <span className="relative z-10 text-lg">View Professional Resume</span>
                                 <div className="relative z-10 p-1 bg-white/10 rounded-lg group-hover:translate-y-1 transition-transform">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                    </svg>
+                                    <FileText className="w-5 h-5" />
                                 </div>
-                            </a>
+                            </Link>
                         </m.div>
                     </div>
                 </div>

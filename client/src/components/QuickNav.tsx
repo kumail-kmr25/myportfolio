@@ -102,7 +102,7 @@ export default function QuickNav() {
                         </div>
 
                         <div className="p-6 bg-white/[0.02] border-t border-white/5 flex items-center justify-between">
-                            <p className="text-[10px] text-gray-500 font-medium uppercase tracking-[0.2em]">Crafted by Kumail KMR</p>
+                            <p className="text-[10px] text-gray-500 font-medium uppercase tracking-[0.2em]">Crafted by Kumale Ali Bhat</p>
                             <div className="flex gap-2">
                                 <Search size={12} className="text-gray-600" />
                             </div>

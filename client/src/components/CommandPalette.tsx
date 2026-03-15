@@ -32,7 +32,7 @@ const navItems = [
 const actions = [
     { name: "Hire Me Now", icon: Briefcase, action: "hire", category: "Quick Actions" },
     { name: "Suggest a Feature", icon: Trophy, href: "#suggest-feature", category: "Quick Actions" },
-    { name: "Run Diagnostics", icon: Activity, href: "#diagnose", category: "Quick Actions" },
+    { name: "Site Performance Audit", icon: Activity, href: "#diagnose", category: "Quick Actions" },
 ];
 
 function Activity(props: any) {
@@ -216,7 +216,7 @@ export default function CommandPalette() {
                                 </div>
                             </div>
                             <div className="text-[10px] text-gray-600 font-black uppercase tracking-widest flex items-center gap-2">
-                                <Command size={10} /> kumail-kmr.dev
+                                <Command size={10} /> kumale-ali.dev
                             </div>
                         </div>
                     </m.div>

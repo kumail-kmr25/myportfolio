@@ -25,13 +25,13 @@ export default function ProjectCard({ project, isFeatured = false, isHero = fals
             <m.div 
                 variants={cardVariants}
                 onClick={() => onViewCaseStudy(project)}
-                className={`group relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 p-8 lg:p-12 rounded-[3.5rem] bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/5 hover:border-blue-500/30 transition-all duration-700 overflow-hidden cursor-pointer ${isHero ? 'lg:col-span-1' : ''}`}
+                className={`group relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 p-6 md:p-8 lg:p-12 rounded-[2.5rem] md:rounded-[3.5rem] bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/5 hover:border-blue-500/30 transition-all duration-700 overflow-hidden cursor-pointer ${isHero ? 'lg:col-span-1' : ''}`}
             >
                 {/* Background Glow */}
                 <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500/20 blur-[120px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 
                 {/* Image Showcase */}
-                <div className="relative aspect-[16/10] lg:aspect-auto rounded-[2.5rem] overflow-hidden border border-white/10 group-hover:border-blue-500/30 transition-all duration-700 bg-[#050505] shadow-2xl">
+                <div className="relative aspect-[16/10] lg:aspect-auto rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden border border-white/10 group-hover:border-blue-500/30 transition-all duration-700 bg-[#050505] shadow-2xl">
                     <Image 
                         src={project.image} 
                         alt={project.title} 
@@ -43,25 +43,25 @@ export default function ProjectCard({ project, isFeatured = false, isHero = fals
                     <div className="absolute inset-0 bg-gradient-to-t from-[#020202]/90 via-[#020202]/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700" />
                     
                     {/* Status Badge */}
-                    <div className="absolute top-6 left-6 px-4 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-black text-white uppercase tracking-widest flex items-center gap-2">
+                    <div className="absolute top-4 left-4 md:top-6 md:left-6 px-4 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] md:text-[10px] font-black text-white uppercase tracking-widest flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                         {project.status || "Production"}
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col justify-center space-y-8 relative z-10 w-full">
+                <div className="flex flex-col justify-center space-y-6 md:space-y-8 relative z-10 w-full">
                     <div className="space-y-4">
                         <div className="flex items-center gap-3">
-                            <span className="w-10 h-[2px] bg-blue-500 rounded-full" />
-                            <span className="text-blue-500 text-[10px] font-black uppercase tracking-[0.3em] group-hover:text-blue-400 transition-colors duration-500">
+                            <span className="w-8 md:w-10 h-[2px] bg-blue-500 rounded-full" />
+                            <span className="text-blue-500 text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] group-hover:text-blue-400 transition-colors duration-500">
                                 Hero Project
                             </span>
                         </div>
-                        <h3 className="text-4xl lg:text-6xl font-black text-white tracking-tighter leading-none group-hover:text-blue-50 transition-colors duration-500">
+                        <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-none group-hover:text-blue-50 transition-colors duration-500">
                             {project.title}
                         </h3>
-                        <p className="text-lg lg:text-xl text-gray-400 font-medium leading-relaxed italic border-l-2 border-white/10 pl-6 group-hover:border-blue-500/50 group-hover:text-gray-300 transition-all duration-500">
+                        <p className="text-base sm:text-lg lg:text-xl text-gray-400 font-medium leading-relaxed italic border-l-2 border-white/10 pl-5 md:pl-6 group-hover:border-blue-500/50 group-hover:text-gray-300 transition-all duration-500">
                             {project.summary || project.description}
                         </p>
                         {project.result && (
@@ -117,14 +117,14 @@ export default function ProjectCard({ project, isFeatured = false, isHero = fals
     return (
         <m.div 
             variants={cardVariants}
-            className="group relative p-6 lg:p-8 rounded-[3rem] bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/5 hover:border-blue-500/20 hover:bg-gradient-to-b hover:from-white/[0.06] hover:to-white/[0.02] hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(59,130,246,0.1)] transition-all duration-500 flex flex-col h-full"
+            className="group relative p-5 md:p-8 rounded-[2rem] md:rounded-[3rem] bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/5 hover:border-blue-500/20 hover:bg-gradient-to-b hover:from-white/[0.06] hover:to-white/[0.02] hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(59,130,246,0.1)] transition-all duration-500 flex flex-col h-full"
         >
             {/* Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-blue-500/10 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             {/* Image Collection */}
             <div 
-                className="relative aspect-[16/10] rounded-[2rem] overflow-hidden mb-8 border border-white/10 bg-[#050505] shadow-xl group-hover:border-blue-500/20 transition-all duration-500 cursor-pointer"
+                className="relative aspect-[16/10] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden mb-6 md:mb-8 border border-white/10 bg-[#050505] shadow-xl group-hover:border-blue-500/20 transition-all duration-500 cursor-pointer"
                 onClick={() => onViewCaseStudy(project)}
             >
                 <Image 
@@ -137,7 +137,7 @@ export default function ProjectCard({ project, isFeatured = false, isHero = fals
                 <div className="absolute inset-0 bg-gradient-to-t from-[#020202]/90 via-[#020202]/30 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-500" />
                 
                 <div className="absolute top-4 left-4 flex gap-2">
-                    <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-black text-white uppercase tracking-widest">
+                    <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[8px] md:text-[9px] font-black text-white uppercase tracking-widest">
                         {project.category || "Development"}
                     </span>
                 </div>

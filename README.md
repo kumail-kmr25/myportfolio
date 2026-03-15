@@ -1,4 +1,4 @@
-# Kumail KMR | Portfolio Studio & Lead Magnet 🚀
+# Kumale Ali Bhat | My Projects Studio & Lead Magnet 🚀
 
 A high-performance, engineering-first portfolio architecture re-engineered as a **Conversion-Optimized Client Magnet**. This project is a robust **npm workspaces monorepo** designed for elite performance, tactical transparency, and premium client generation.
 
@@ -81,4 +81,4 @@ The **Admin Command Center** provides industrial-grade control over the portfoli
 All tactical endpoints are protected via **JWT (HTTP-only)**, CSRF guards, and a secure **Control Session** protocol to ensure data integrity.
 
 ---
-*Re-engineered with precision by Kumail Kmr.*
+*Re-engineered with precision by Kumale Ali Bhat.*

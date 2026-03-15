@@ -3,16 +3,38 @@ import Link from "next/link";
 import { Github, Twitter, Linkedin, Instagram, ShieldCheck, Plus, Minus, LayoutGrid, Sparkles, Search } from "lucide-react";
 import { m, AnimatePresence, Variants } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProjectCard from "./ProjectCard";
 import ProjectCaseStudyModal from "./ProjectCaseStudyModal";
 import { MOCK_PROJECTS } from "@/lib/mock-data";
 
 export default function Footer() {
     const { openModal } = useHireModal();
-    const [showProjects, setShowProjects] = useState(false);
+    const [settings, setSettings] = useState<any>(null);
     const [selectedProject, setSelectedProject] = useState<any>(null);
     const premiumEase = [0.16, 1, 0.3, 1];
+
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                const res = await fetch("/api/admin/settings");
+                const data = await res.json();
+                if (data.success) {
+                    setSettings(data.data);
+                }
+            } catch (err) {
+                console.error("Failed to fetch settings:", err);
+            }
+        };
+        fetchSettings();
+    }, []);
+
+    const socialLinks = [
+        { href: settings?.githubUrl || "https://github.com/kumail-kmr25", icon: Github, label: "GitHub" },
+        { href: settings?.twitterUrl || "https://x.com/KumailKmr", icon: Twitter, label: "Twitter" },
+        { href: settings?.linkedinUrl || "https://www.linkedin.com/in/kumale-ali-bhat-6196a0384/", icon: Linkedin, label: "LinkedIn" },
+        { href: settings?.instagramUrl || "https://www.instagram.com/kumail.kmr", icon: Instagram, label: "Instagram" }
+    ];
 
     const containerVariants: Variants = {
         hidden: { opacity: 0, y: 20 },
@@ -70,14 +92,14 @@ export default function Footer() {
                         variants={itemVariants}
                         className="text-3xl font-black tracking-tighter text-white mb-4"
                     >
-                        <span className="text-white">K</span><span className="text-blue-500 italic">K</span>
+                        <span className="text-white">K</span><span className="text-blue-500 italic">B</span>
                     </m.p>
                     <m.div
                         variants={itemVariants}
                         className="flex flex-col gap-2"
                     >
                         <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.3em]">
-                            © {new Date().getFullYear()} Technical Engineering Unit
+                            © {new Date().getFullYear()} Kumale Ali Bhat Studio
                         </p>
                         <p className="text-gray-800 text-[9px] font-black uppercase tracking-[0.2em]">
                             Built for peak performance & horizontal scalability
@@ -87,12 +109,7 @@ export default function Footer() {
 
                 <div className="flex flex-col items-center md:items-end gap-10">
                     <div className="flex items-center gap-4">
-                        {[
-                            { href: "https://github.com/kumail-kmr25", icon: Github, label: "GitHub" },
-                            { href: "https://x.com/KumailKmr", icon: Twitter, label: "Twitter" },
-                            { href: "https://www.linkedin.com/in/kumale-ali-bhat-6196a0384/", icon: Linkedin, label: "LinkedIn" },
-                            { href: "https://www.instagram.com/kumail.kmr", icon: Instagram, label: "Instagram" }
-                        ].map((social) => (
+                        {socialLinks.map((social) => (
                             <m.div key={social.label} variants={itemVariants}>
                                 <Link
                                     href={social.href}
