@@ -14,7 +14,7 @@ export async function GET() {
         return apiResponse({ config, version: "v1.0.0" });
     } catch (error) {
         console.error("GET_FIT_SCORE_CONFIG_ERROR:", error);
-        return apiError("Failed to fetch fit score config");
+        return apiResponse({ config: null, version: "v1.0.0" });
     }
 }
 
