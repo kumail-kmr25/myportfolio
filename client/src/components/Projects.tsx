@@ -64,7 +64,7 @@ export default function Projects() {
     
     // Merge real data with our high-conversion drafts
     const allProjects = useMemo(() => {
-        const merged = [...(projectsData || [])];
+        const merged = [...(Array.isArray(projectsData) ? projectsData : [])];
         // Add draft projects if they don't exist by ID
         highConversionProjects.forEach(draft => {
             if (!merged.find(p => p.id === draft.id || p.title === draft.title)) {
