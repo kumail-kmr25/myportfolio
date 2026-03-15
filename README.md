@@ -75,6 +75,13 @@ The **Admin Command Center** provides industrial-grade control over the portfoli
     npm run build
     ```
 
+## 🔄 Database Synchronization
+
+This project is engineered for automatic production synchronization via Vercel:
+- **Auto-Migrate**: `npx prisma migrate deploy` is executed as a build prerequisite.
+- **Auto-Seed**: `npm run db:seed:production` initializes the admin account and feature toggles.
+- **Manual Control**: Use `npm run db:migrate` for explicit production schema updates.
+
 ---
 
 ## 🛡️ Operational Security
