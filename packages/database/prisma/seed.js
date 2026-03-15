@@ -10,7 +10,7 @@ async function main() {
     // 1. Create Admin
     const adminEmail = process.env.ADMIN_EMAIL || "ka6307464@gmail.com";
     const adminPassword = process.env.ADMIN_PASSWORD || "KUMAIL@admin25?";
-    const adminName = process.env.ADMIN_NAME || "Kumail";
+    const adminName = process.env.ADMIN_NAME || "Kumale";
     const adminPhone = process.env.ADMIN_PHONE || "6006121193";
     
     console.log(`Setting up admin: ${adminEmail}`);
@@ -494,7 +494,7 @@ async function main() {
     try {
         await prisma.siteStats.create({
             data: {
-                totalProjects: 6,
+                totalProjects: 8,
                 bugsFixed: 142,
                 caseStudiesWritten: 2,
                 featureRequestsCompleted: 0,

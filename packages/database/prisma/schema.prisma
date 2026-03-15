@@ -143,6 +143,35 @@ model Project {
   @@index([slug])
 }
 
+model ServiceTier {
+  id          String   @id @default(cuid())
+  name        String
+  price       String
+  description String?
+  features    String[]
+  icon        String?  // Lucide icon name
+  delay       Float?   @default(0)
+  featured    Boolean  @default(false)
+  isVisible   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+}
+
+model ProcessStep {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  order       Int      @default(0)
+  icon        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([order])
+}
+
 model CaseStudy {
   id           String   @id @default(uuid())
   title        String
@@ -154,8 +183,8 @@ model CaseStudy {
   techStack    String[]
   isPublished  Boolean  @default(false)
   architecture Json?
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 // ============================================
@@ -486,36 +515,36 @@ model ContactSubmission {
   referralCode    String?
   contacted       Boolean  @default(false)
   converted       Boolean  @default(false)
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@index([email])
   @@index([status])
 }
 
 model Testimonial {
-  id                  String   @id @default(uuid())
-  name                String // Maps to clientName in request
-  email               String // Maps to clientEmail
-  company             String? // Maps to clientCompany
-  role                String? // Maps to clientRole
-  relationship_type   String?
-  intervention_type   String?
-  message             String // Maps to quote
-  rating              Int      @default(5)
-  about_delivery_lead String?
-  avatarUrl           String? // Maps to photoUrl
-  videoUrl            String?
-  projectId           String?
-  featured            Boolean  @default(false)
-  approved            Boolean  @default(false)
-  verified            Boolean  @default(false)
-  order               Int      @default(0)
-  status              String   @default("pending")
-  rewardGiven         Boolean  @default(false)
-  rewardAmount        Int?
-  created_at          DateTime @default(now())
-  updated_at          DateTime @updatedAt
+  id               String   @id @default(uuid())
+  name             String // Maps to clientName in request
+  email            String // Maps to clientEmail
+  company          String? // Maps to clientCompany
+  role             String? // Maps to clientRole
+  relationshipType String?
+  interventionType String?
+  message          String // Maps to quote
+  rating           Int      @default(5)
+  aboutDeliveryLead String?
+  avatarUrl        String? // Maps to photoUrl
+  videoUrl         String?
+  projectId        String?
+  featured         Boolean  @default(false)
+  approved         Boolean  @default(false)
+  verified         Boolean  @default(false)
+  order            Int      @default(0)
+  status           String   @default("pending")
+  rewardGiven      Boolean  @default(false)
+  rewardAmount     Int?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@index([approved])
   @@index([featured])
@@ -622,8 +651,8 @@ model BlogPost {
   metaTitle   String?
   metaDesc    String?
   publishedAt DateTime?
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([slug])
   @@index([status])
@@ -658,29 +687,15 @@ model FeatureRequest {
   message    String
   category   String
   status     String   @default("pending")
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-}
-
-model JourneyPhase {
-  id          String   @id @default(uuid())
-  phase       String
-  title       String
-  description String
-  icon        String
-  color       String
-  order       Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  actionLabel String?
-  actionUrl   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Skill {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   name      String
-  status    String
-  order     Int
+  status    String    @default("expert") // expert, intermediate, learning
+  order     Int       @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -826,7 +841,7 @@ model FeatureToggle {
 model AIChatConfig {
   id                  String   @id @default(cuid())
   enabled             Boolean  @default(false)
-  botName             String   @default("Kumail's Assistant")
+  botName             String   @default("Kumale's Assistant")
   welcomeMessage      String   @default("Hi! How can I help you today?")
   widgetPosition      String   @default("bottom-right") // bottom-right, bottom-left
   widgetColor         String   @default("#2563eb")
@@ -1138,7 +1153,7 @@ model ABTest {
 model BusinessCard {
   id          String   @id @default(cuid())
   enabled     Boolean  @default(false)
-  name        String   @default("Kumail Kumar")
+  name        String   @default("Kumale Ali Bhat")
   title       String   @default("Full-Stack Developer")
   email       String?
   phone       String?
@@ -1182,7 +1197,7 @@ model LanguageConfig {
 model EmailSignature {
   id          String   @id @default(cuid())
   enabled     Boolean  @default(false)
-  name        String   @default("Kumail Kumar")
+  name        String   @default("Kumale Ali Bhat")
   title       String   @default("Full-Stack Web Developer")
   email       String?
   phone       String?
@@ -1686,4 +1701,163 @@ model FeatureAnalytics {
   @@index([featureKey])
   @@index([event])
   @@index([createdAt])
+}
+// ═══════════════════════════════════════
+// ECO-FRIENDLY JOURNEY SYSTEM
+// ═══════════════════════════════════════
+
+model JourneyConfig {
+  id              String   @id @default(cuid())
+  
+  enabled         Boolean  @default(false)
+  
+  // Theme
+  theme           String   @default("tree") // tree, garden, river, mountain
+  
+  // Title & Description
+  title           String   @default("My Growth Journey")
+  subtitle        String   @default("Every project planted a seed. Every challenge grew a branch.")
+  
+  // Visual Settings
+  backgroundColor String   @default("#f0fdf4")
+  primaryColor    String   @default("#059669")
+  accentColor     String   @default("#f59e0b")
+  
+  // Animation Settings
+  enableAnimations Boolean @default(true)
+  enableParticles  Boolean @default(true)
+  animationSpeed   String  @default("normal") // slow, normal, fast
+  
+  // Layout
+  layout          String   @default("vertical") // vertical, horizontal, zigzag
+  showConnectors  Boolean  @default(true)
+  
+  // Display
+  showOnHomepage  Boolean  @default(true)
+  showOnAbout     Boolean  @default(true)
+  
+  updatedAt       DateTime @updatedAt
+}
+
+model JourneyPhase {
+  id              String   @id @default(cuid())
+  
+  // Phase Info
+  title           String   // "The Seed" , "First Sprout", etc.
+  subtitle        String?  // "Where it all began"
+  
+  // Eco Theme
+  ecoIcon         String   @default("🌱") // 🌱🌿🌳🍃🌸🌻🍎☀️🌍
+  ecoStage        String   // seed, sprout, sapling, tree, fruit, forest
+  
+  // Timeline
+  dateRange       String   // "2017-2020", "Jan 2021", etc.
+  year            Int?     // For sorting
+  
+  // Display
+  order           Int      @default(0)
+  visible         Boolean  @default(true)
+  
+  // Relations
+  steps           JourneyStep[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([order])
+}
+
+model JourneyStep {
+  id              String   @id @default(cuid())
+  
+  phaseId         String
+  phase           JourneyPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  
+  // Step Content
+  title           String   // "Learned HTML & CSS"
+  description     String   // Brief description (2-3 sentences)
+  
+  // Eco Theme
+  icon            String   @default("🍃") // Nature emoji
+  growthLevel     Int      @default(1)    // 1-5 (bigger = more growth shown)
+  
+  // Category
+  category        String   // education, skill, project, achievement, milestone, certification
+  
+  // Visual
+  color           String?  // Override phase color
+  size            String   @default("medium") // small, medium, large, highlight
+  
+  // Optional Details
+  organization    String?  // Company/School name
+  location        String?  // City
+  technologies    String[] // Tech learned/used
+  achievement     String?  // Key metric or achievement
+  projectLink     String?  // Link to project
+  certificateLink String?  // Link to certificate
+  imageUrl        String?  // Photo/screenshot
+  
+  // Impact Metrics (eco-themed)
+  impactMetric    String?  // "Planted 5 project seeds"
+  growthMetric    String?  // "Skills grew 200%"
+  
+  // Display
+  order           Int      @default(0)
+  visible         Boolean  @default(true)
+  featured        Boolean  @default(false) // Highlighted step
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([phaseId])
+  @@index([category])
+  @@index([order])
+}
+
+model JourneyMilestone {
+  id              String   @id @default(cuid())
+  
+  // Milestone Content
+  title           String   // "First Client Project"
+  description     String
+  date            DateTime
+  
+  // Eco Theme
+  icon            String   @default("🌸") // Bloom icon for milestones
+  celebration     String?  // "🎉 Major bloom!"
+  
+  // Impact
+  metric          String?  // "Revenue: ₹50L+ generated"
+  
+  // Visual
+  size            String   @default("large") // medium, large, highlight
+  color           String?
+  
+  // Display
+  order           Int      @default(0)
+  visible         Boolean  @default(true)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model JourneyFutureGoal {
+  id              String   @id @default(cuid())
+  
+  title           String   // "Grow into Full-Stack Forest"
+  description     String
+  targetDate      String?  // "2026", "Q4 2025"
+  
+  // Eco Theme
+  icon            String   @default("☀️")
+  
+  // Progress
+  progress        Int      @default(0) // 0-100
+  
+  // Display
+  order           Int      @default(0)
+  visible         Boolean  @default(true)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

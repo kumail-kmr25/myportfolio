@@ -12,7 +12,9 @@
     "dev": "next dev client",
     "lint": "next lint client",
     "db:push": "npx prisma db push --schema=packages/database/prisma/schema.prisma",
-    "db:seed": "node packages/database/prisma/seed.js"
+    "db:seed": "node packages/database/prisma/seed.js",
+    "db:seed:features": "node packages/database/prisma/seed_features.js",
+    "db:seed:journey": "node packages/database/prisma/seed_journey.js"
   },
   "devDependencies": {
     "prisma": "^6.2.1",
