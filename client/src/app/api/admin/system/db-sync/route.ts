@@ -14,8 +14,31 @@ export async function GET(request: Request) {
     }
 
     try {
-        const sqlPath = path.join(process.cwd(), 'src/lib/recovery.sql');
-        const sql = fs.readFileSync(sqlPath, 'utf8');
+        // Try multiple potential paths for monorepo/vercel flexibility
+        const possiblePaths = [
+            path.join(process.cwd(), 'client/src/lib/recovery.sql'),
+            path.join(process.cwd(), 'src/lib/recovery.sql'),
+            path.join(process.cwd(), 'recovery.sql'),
+            path.join(process.cwd(), '.next/server/recovery.sql')
+        ];
+
+        let sql = '';
+        let foundPath = '';
+        for (const p of possiblePaths) {
+            if (fs.existsSync(p)) {
+                sql = fs.readFileSync(p, 'utf8');
+                foundPath = p;
+                break;
+            }
+        }
+
+        if (!sql) {
+            return NextResponse.json({ 
+                error: 'Recovery SQL not found', 
+                cwd: process.cwd(),
+                checked: possiblePaths
+            }, { status: 500 });
+        }
         
         // Split by ; but handle case where ; is inside a string (overly simplified for emergency)
         // More robust: Split by the characteristic -- statements or just use a transaction if possible
