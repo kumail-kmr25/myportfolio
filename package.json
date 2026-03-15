@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "postinstall": "prisma generate --schema=packages/database/prisma/schema.prisma && npx prisma migrate deploy --schema=packages/database/prisma/schema.prisma",
+    "postinstall": "prisma generate --schema=packages/database/prisma/schema.prisma",
     "build": "next build client",
     "dev": "next dev client",
     "lint": "next lint client",
