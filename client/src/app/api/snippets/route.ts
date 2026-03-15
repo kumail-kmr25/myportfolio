@@ -17,7 +17,8 @@ export async function GET() {
         return apiResponse({ snippets, version: "v1.0.0" });
     } catch (error) {
         console.error("GET_SNIPPETS_ERROR:", error);
-        return apiError("Failed to fetch snippets");
+        // Return empty array instead of error to prevent frontend crash
+        return apiResponse({ snippets: [], version: "v1.0.0-fallback" });
     }
 }
 

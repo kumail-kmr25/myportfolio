@@ -1,6 +1,4 @@
 {
-    "version": 2,
-    "framework": "nextjs",
-    "buildCommand": "npm run build",
-    "outputDirectory": "client/.next"
+  "buildCommand": "npx prisma migrate deploy --schema=packages/database/prisma/schema.prisma && npm run build",
+  "framework": "nextjs"
 }

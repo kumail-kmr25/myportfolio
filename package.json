@@ -12,11 +12,14 @@
     "dev": "next dev client",
     "lint": "next lint client",
     "db:push": "npx prisma db push --schema=packages/database/prisma/schema.prisma",
+    "db:migrate": "npx prisma migrate deploy --schema=packages/database/prisma/schema.prisma",
     "db:seed": "node packages/database/prisma/seed.js",
+    "db:seed:production": "npx ts-node --compiler-options '{\"module\":\"CommonJS\"}' packages/database/prisma/seed-production.ts",
     "db:seed:features": "node packages/database/prisma/seed_features.js",
     "db:seed:journey": "node packages/database/prisma/seed_journey.js"
   },
   "devDependencies": {
+    "bcryptjs": "^3.0.3",
     "prisma": "^6.2.1",
     "typescript": "^5"
   },
