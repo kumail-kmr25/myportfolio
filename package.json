@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "postinstall": "prisma generate --schema=packages/database/prisma/schema.prisma",
-    "build": "npm run db:push && next build client",
+    "build": "next build client",
     "dev": "next dev client",
     "lint": "next lint client",
     "db:push": "npx prisma db push --schema=packages/database/prisma/schema.prisma --accept-data-loss",
