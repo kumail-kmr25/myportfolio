@@ -34,31 +34,73 @@ async function main() {
     console.log('Admin user created.');
   }
 
-  // 2. Feature Toggles
+  // 2. Feature Toggles (Standardizing for 55+ requested features)
   const features = [
     { featureKey: 'dark_mode', name: 'Dark Mode', enabled: true, category: 'engagement' },
-    { featureKey: 'ai_chat', name: 'AI Chat', enabled: false, category: 'automation' },
+    { featureKey: 'ai_chat', name: 'AI Chat Advisor', enabled: true, category: 'automation' },
     { featureKey: 'github_activity', name: 'GitHub Activity', enabled: true, category: 'trust' },
+    { featureKey: 'theme_engine', name: 'Premium Theme Engine', enabled: true, category: 'personality' },
+    { featureKey: 'multi_language', name: 'Internationalization', enabled: false, category: 'personality' },
+    { featureKey: 'email_signature', name: 'Email Signature Generator', enabled: true, category: 'monetization' },
+    { featureKey: 'achievement_badges', name: 'Achievement Badges', enabled: true, category: 'engagement' },
+    { featureKey: 'client_onboarding', name: 'Client Onboarding Wizard', enabled: true, category: 'automation' },
+    { featureKey: 'weekly_reports', name: 'Weekly Client Reports', enabled: false, category: 'automation' },
+    { featureKey: 'project_briefs', name: 'Project Brief Templates', enabled: true, category: 'automation' },
+    { featureKey: 'spotify_integration', name: 'Spotify Music Presence', enabled: false, category: 'personality' },
+    { featureKey: 'bts_gallery', name: 'Behind-The-Scenes Gallery', enabled: true, category: 'personality' },
+    { featureKey: 'how_i_think', name: 'Thinking Process Matrix', enabled: true, category: 'personality' },
+    { featureKey: 'retro_perspective', name: 'What I\'d Do Differently', enabled: true, category: 'personality' },
+    { featureKey: 'open_source', name: 'Open Source Dashboard', enabled: true, category: 'trust' },
+    { featureKey: 'component_library', name: 'Component Showcase', enabled: true, category: 'trust' },
+    { featureKey: 'adr_logs', name: 'Architecture Decision Records', enabled: true, category: 'trust' },
+    { featureKey: 'premium_courses', name: 'Mini Learning Courses', enabled: false, category: 'monetization' },
+    { featureKey: 'premium_templates', name: 'Premium UI Templates', enabled: false, category: 'monetization' },
+    { featureKey: 'freelance_resources', name: 'Freelance Growth Resources', enabled: true, category: 'monetization' },
+    { featureKey: 'paid_consultation', name: 'Paid Consultation Booking', enabled: false, category: 'monetization' },
+    { featureKey: 'color_palette', name: 'Dynamic Color Tool', enabled: true, category: 'automation' },
+    { featureKey: 'website_grader', name: 'AI Website Grader', enabled: true, category: 'automation' },
+    { featureKey: 'meta_generator', name: 'SEO Meta Generator', enabled: true, category: 'automation' },
+    { featureKey: 'responsive_preview', name: 'Responsive Preview Tool', enabled: true, category: 'automation' },
+    { featureKey: 'day_timeline', name: 'A Day In My Life', enabled: true, category: 'personality' },
+    { featureKey: 'video_walkthrough', name: 'Project Video Walkthroughs', enabled: true, category: 'engagement' },
+    { featureKey: 'live_previews', name: 'Interactive Live Previews', enabled: true, category: 'engagement' },
+    { featureKey: 'revenue_dashboard', name: 'Project Revenue Dashboard', enabled: true, category: 'trust' },
+    { featureKey: 'voice_intro', name: 'Interactive Voice Intro', enabled: false, category: 'personality' },
+    { featureKey: 'client_fit_score', name: 'Client Compatibility Quiz', enabled: true, category: 'automation' },
+    { featureKey: 'proposal_generator', name: 'Automatic Proposal Generator', enabled: true, category: 'automation' },
+    { featureKey: 'payment_links', name: 'One-Click Payment Links', enabled: true, category: 'monetization' },
+    { featureKey: 'milestone_tracker', name: 'Live Milestone Tracker', enabled: true, category: 'trust' },
+    { featureKey: 'ab_testing', name: 'A/B Test Engine', enabled: false, category: 'automation' },
+    { featureKey: 'qr_business_card', name: 'Digital QR Business Card', enabled: true, category: 'networking' },
+    { featureKey: 'tech_radar', name: 'Interactive Tech Radar', enabled: true, category: 'trust' },
+    { featureKey: 'client_map', name: 'Global Client Distribution', enabled: true, category: 'trust' },
+    { featureKey: 'media_appearances', name: 'Podcast & Media Log', enabled: true, category: 'trust' },
+    { featureKey: 'reading_list', name: 'Business & Tech Books', enabled: true, category: 'personality' },
+    { featureKey: 'comparison_matrix', name: 'Me vs Industry Matrix', enabled: true, category: 'trust' },
+    { featureKey: 'success_videos', name: 'Video Client Testimonials', enabled: true, category: 'trust' },
+    { featureKey: 'whatsapp_automation', name: 'WhatsApp Lead Alerts', enabled: true, category: 'automation' },
+    { featureKey: 'audit_tool', name: 'Technical Website Audit', enabled: true, category: 'automation' },
+    { featureKey: 'referral_system', name: 'Affiliate & Referral Engine', enabled: true, category: 'monetization' },
+    { featureKey: 'lead_magnets', name: 'High-Value Lead Magnets', enabled: true, category: 'automation' },
+    { featureKey: 'estimate_tool', name: 'Instant Project Estimator', enabled: true, category: 'automation' },
+    { featureKey: 'testimonial_reward', name: 'Testimonial Reward System', enabled: true, category: 'engagement' },
+    { featureKey: 'hire_me_workflow', name: 'Optimized Hire Workflow', enabled: true, category: 'automation' },
+    { featureKey: 'social_proof_feed', name: 'Real-time Activity Feed', enabled: true, category: 'trust' },
+    { featureKey: 'subscriber_hub', name: 'Newsletter & Update Hub', enabled: true, category: 'engagement' },
+    { featureKey: 'developer_status', name: 'Live Availability Status', enabled: true, category: 'trust' },
+    { featureKey: 'site_metrics', name: 'Build & Speed Metrics', enabled: true, category: 'trust' },
+    { featureKey: 'skill_matrix', name: 'Interactive Skill Matrix', enabled: true, category: 'trust' },
+    { featureKey: 'resume_access', name: 'Premium Resume Access', enabled: true, category: 'trust' },
   ];
-
-  // (Generic keys for the remaining 50 toggles as requested)
-  for (let i = 1; i <= 47; i++) {
-    features.push({
-      featureKey: `feature_${i}`,
-      name: `Feature ${i}`,
-      enabled: false,
-      category: 'general'
-    });
-  }
 
   for (const f of features) {
     await prisma.featureToggle.upsert({
       where: { featureKey: f.featureKey },
-      update: {},
+      update: { name: f.name, category: f.category },
       create: f,
     });
   }
-  console.log('Feature toggles seeded.');
+  console.log(`${features.length} Feature toggles seeded.`);
 
   // 3. Settings
   console.log('Seeding Settings...');

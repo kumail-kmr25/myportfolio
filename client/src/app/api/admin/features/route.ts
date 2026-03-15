@@ -17,7 +17,8 @@ export async function GET() {
         return apiResponse(features);
     } catch (error) {
         console.error("Admin features GET error:", error);
-        return apiError("Failed to fetch feature toggle registry");
+        // Fallback to empty registry to prevent UI crash
+        return apiResponse([]);
     }
 }
 

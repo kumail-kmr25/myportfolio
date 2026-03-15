@@ -48,7 +48,7 @@ model Project {
 
   // Basic Info
   title       String
-  slug        String  @unique
+  slug        String? @unique
   tagline     String?
   summary     String?
   description String
@@ -299,45 +299,43 @@ model LeaderboardEntry {
 // ============================================
 
 model EstimateRequest {
-  id                 String   @id @default(cuid())
-  name               String
-  email              String
-  phone              String
-  company            String?
-  city               String
-  website            String?
-  heardFrom          String
-  projectType        String
-  numPages           String?
-  features           String[]
-  design             String
-  designExtras       String[]
-  timeline           String
-  support            String?
-  hostingExtras      String[]
-  baseCost           Int
-  featuresCost       Int
-  designCost         Int
-  timelineMultiplier Float
-  supportMonthly     Int?
-  subtotal           Int
-  gst                Int
-  total              Int
-  estimateLow        Int
-  estimateHigh       Int
-  leadScore          Int      @default(0)
-  leadQuality        String   @default("cold")
-  status             String   @default("new")
-  emailSent          Boolean  @default(false)
-  whatsappSent       Boolean  @default(false)
-  followUpCount      Int      @default(0)
-  notes              String?
-  consultBooked      Boolean  @default(false)
-  converted          Boolean  @default(false)
-  actualValue        Int?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-
+  id                  String    @id @default(cuid())
+  name                String
+  email               String
+  phone               String
+  company             String?
+  city                String
+  website             String?
+  heardFrom           String?
+  projectType         String
+  numPages            String?
+  features            String[]
+  design              String?
+  designExtras        String[]
+  timeline            String?
+  support             String?
+  hostingExtras       String[]
+  baseCost            Int       @default(0)
+  featuresCost        Int       @default(0)
+  designCost          Int       @default(0)
+  timelineMultiplier  Float     @default(1.0)
+  supportMonthly      Int?
+  subtotal            Int       @default(0)
+  gst                 Int       @default(0)
+  total               Int       @default(0)
+  estimateLow         Int       @default(0)
+  estimateHigh        Int       @default(0)
+  leadScore           Int       @default(0)
+  leadQuality         String    @default("cold")
+  status              String    @default("new")
+  emailSent           Boolean   @default(false)
+  followUpCount       Int       @default(0)
+  notes               String?
+  consultBooked       Boolean   @default(false)
+  converted           Boolean   @default(false)
+  actualValue         Int?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
   @@index([email])
   @@index([status])
 }
@@ -367,29 +365,27 @@ model EstimatorPricing {
 // ============================================
 
 model AuditRequest {
-  id               String   @id @default(uuid())
-  websiteUrl       String
-  email            String?
-  name             String?
-  company          String?
-  performance      Int?
-  accessibility    Int?
-  seo              Int?
-  bestPractices    Int?
-  loadTime         Float?
-  fcp              String?
-  lcp              String?
-  tti              String?
-  hasSSL           Boolean  @default(false)
-  isMobileFriendly Boolean  @default(false)
-  results          Json?
-  leadScore        Int?     @default(0)
-  contacted        Boolean  @default(false)
-  notes            String?
-  converted        Boolean  @default(false)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
+  id                String    @id @default(cuid())
+  websiteUrl        String
+  email             String?
+  name              String?
+  company           String?
+  performance       Int?
+  accessibility     Int?
+  seo               Int?
+  bestPractices     Int?
+  loadTime          Float?
+  fcp               Float?
+  lcp               Float?
+  hasSSL            Boolean   @default(false)
+  isMobileFriendly  Boolean   @default(false)
+  results           Json?
+  leadScore         Int?
+  contacted         Boolean   @default(false)
+  notes             String?
+  converted         Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
   @@index([email])
 }
 
@@ -436,33 +432,29 @@ model ReferralClick {
 // ============================================
 
 model LeadMagnet {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
-  slug        String   @unique
+  slug        String    @unique
   industry    String
   pdfUrl      String
-  coverImage  String
+  coverImage  String?
   description String
-  downloads   Int      @default(0)
-  conversions Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([slug])
+  downloads   Int       @default(0)
+  conversions Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model LeadMagnetDownload {
-  id           String   @id @default(cuid())
-  leadMagnetId String
-  email        String
-  name         String?
-  company      String?
-  industry     String?
-  downloaded   Boolean  @default(false)
-  emailOpened  Boolean  @default(false)
-  converted    Boolean  @default(false)
-  createdAt    DateTime @default(now())
-
+  id            String    @id @default(cuid())
+  leadMagnetId  String
+  email         String
+  name          String?
+  company       String?
+  industry      String?
+  downloaded    Boolean   @default(false)
+  converted     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
   @@index([email])
   @@index([leadMagnetId])
 }
@@ -638,7 +630,7 @@ model ClientLogo {
 model BlogPost {
   id          String    @id @default(uuid())
   title       String
-  slug        String    @unique
+  slug        String?   @unique
   excerpt     String?
   content     String
   coverImage  String?
@@ -709,26 +701,23 @@ model Resume {
 }
 
 model Settings {
-  id                String   @id @default(cuid())
-  heroHeadline      String?
-  heroSubheadline   String?
-  aboutText         String?
-  calendlyUrl       String?
-  githubUsername    String?
-  emailAddress      String?
-  phoneNumber       String?
-  linkedinUrl       String?
-  twitterUrl        String?
-  githubUrl         String?
-  siteName          String?
-  siteUrl           String?
-  metaTitle         String?
-  metaDescription   String?
-  googleAnalyticsId String?
-  facebookPixelId   String?
-  resendApiKey      String?
-  sendgridApiKey    String?
-  updatedAt         DateTime @updatedAt
+  id                    String    @id @default(cuid())
+  siteName              String?   @default("Kumail KMR")
+  siteUrl               String?   @default("https://kumailkmr.vercel.app")
+  heroHeadline          String?
+  heroSubheadline       String?
+  aboutText             String?
+  calendlyUrl           String?
+  emailAddress          String?   @default("ka6307464@gmail.com")
+  linkedinUrl           String?
+  githubUrl             String?
+  twitterUrl            String?
+  whatsappNumber        String?
+  metaTitle             String?
+  metaDescription       String?
+  googleAnalyticsId     String?
+  facebookPixelId       String?
+  updatedAt             DateTime  @updatedAt
 }
 
 // ============================================
@@ -832,9 +821,8 @@ model FeatureToggle {
   description String?
   enabled     Boolean  @default(false)
   config      Json?
-  category    String // engagement, trust, monetization, automation, personality
-  updatedAt   DateTime @updatedAt
-
+  category    String    @default("general")
+  updatedAt   DateTime  @updatedAt
   @@index([featureKey])
   @@index([category])
 }
@@ -845,45 +833,42 @@ model FeatureToggle {
 
 // Feature 1: AI Chat Assistant
 model AIChatConfig {
-  id                    String   @id @default(cuid())
-  enabled               Boolean  @default(false)
-  botName               String   @default("Kumale's Assistant")
-  welcomeMessage        String   @default("Hi! How can I help you today?")
-  widgetPosition        String   @default("bottom-right") // bottom-right, bottom-left
-  widgetColor           String   @default("#2563eb")
+  id                    String    @id @default(cuid())
+  enabled               Boolean   @default(false)
+  botName               String    @default("Kumail KMR Assistant")
+  welcomeMessage        String    @default("Hi! How can I help you today?")
+  widgetPosition        String    @default("bottom-right")
+  widgetColor           String    @default("#2563eb")
   avatarUrl             String?
-  showAfterSeconds      Int      @default(30)
-  showOnPages           String[] @default(["all"])
-  maxMessagesPerSession Int      @default(20)
-  systemPrompt          String? // Custom AI personality
-  quickQuestions        String[] @default(["What services do you offer?", "How much does a website cost?", "What is your availability?", "Can I see your work?"])
-  customResponses       Json? // FAQ override: {question: answer}
-  updatedAt             DateTime @updatedAt
+  showAfterSeconds      Int       @default(30)
+  showOnPages           String[]  @default(["all"])
+  maxMessagesPerSession Int       @default(10)
+  systemPrompt          String?
+  quickQuestions        String[]
+  customResponses       Json?
+  updatedAt             DateTime  @updatedAt
 }
 
 model AIChatConversation {
-  id            String   @id @default(cuid())
-  sessionId     String
-  visitorEmail  String?
-  visitorName   String?
-  visitorPhone  String?
-  messages      Json // [{role, content, timestamp}]
-  messageCount  Int      @default(0)
-  emailCaptured Boolean  @default(false)
-  leadScore     Int?
-  leadQuality   String? // hot, warm, cold
-  resolved      Boolean  @default(false)
-  adminNotes    String?
-  ipAddress     String?
-  userAgent     String?
-  pageUrl       String?
-  city          String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
+  id              String    @id @default(cuid())
+  sessionId       String
+  visitorEmail    String?
+  visitorName     String?
+  visitorPhone    String?
+  messages        Json
+  messageCount    Int       @default(0)
+  emailCaptured   Boolean   @default(false)
+  leadScore       Int?
+  leadQuality     String?
+  resolved        Boolean   @default(false)
+  adminNotes      String?
+  ipAddress       String?
+  userAgent       String?
+  pageUrl         String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   @@index([sessionId])
   @@index([visitorEmail])
-  @@index([leadQuality])
 }
 
 // Feature 2: Video Walkthroughs
@@ -1035,36 +1020,34 @@ model TechRadarItem {
 
 // Feature 10: Client Fit Score
 model FitScoreConfig {
-  id               String   @id @default(cuid())
-  enabled          Boolean  @default(false)
-  questions        Json // [{question, options: [{text, weight}]}]
-  excellentMin     Int      @default(80)
-  goodMin          Int      @default(60)
-  fairMin          Int      @default(40)
-  excellentMessage String   @default("Perfect match! Let's build something amazing.")
-  goodMessage      String   @default("Great fit! Let's discuss your project.")
-  fairMessage      String   @default("Could work! Let's chat to find out.")
-  poorMessage      String   @default("Might not be ideal, but let's explore options.")
-  updatedAt        DateTime @updatedAt
+  id               String    @id @default(cuid())
+  enabled          Boolean   @default(false)
+  questions        Json      @default("[]")
+  excellentMin     Int       @default(80)
+  goodMin          Int       @default(60)
+  fairMin          Int       @default(40)
+  excellentMessage String    @default("Perfect match!")
+  goodMessage      String    @default("Great fit!")
+  fairMessage      String    @default("Let's discuss further")
+  poorMessage      String    @default("Might not be ideal")
+  updatedAt        DateTime  @updatedAt
 }
 
 model FitScoreResponse {
-  id         String   @id @default(cuid())
-  answers    Json
-  score      Int
-  category   String // excellent, good, fair, poor
-  email      String?
-  name       String?
-  company    String?
-  phone      String?
-  followedUp Boolean  @default(false)
-  converted  Boolean  @default(false)
-  notes      String?
-  createdAt  DateTime @default(now())
-
+  id          String    @id @default(cuid())
+  answers     Json
+  score       Int
+  category    String
+  email       String?
+  name        String?
+  company     String?
+  phone       String?
+  followedUp  Boolean   @default(false)
+  converted   Boolean   @default(false)
+  notes       String?
+  createdAt   DateTime  @default(now())
   @@index([email])
   @@index([score])
-  @@index([category])
 }
 
 // ═══════════════════════════════════════
@@ -1226,22 +1209,21 @@ model EmailSignature {
 
 // Feature 19: Mini Learning Section
 model Article {
-  id             String    @id @default(cuid())
-  title          String
-  slug           String    @unique
-  excerpt        String?
-  content        String // Markdown
-  coverImage     String?
-  category       String // for-restaurants, for-startups, general
-  targetAudience String? // restaurant_owners, startup_founders, etc.
-  readingTime    Int? // minutes
-  tags           String[]
-  published      Boolean   @default(false)
-  views          Int       @default(0)
-  publishedAt    DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  excerpt         String?
+  content         String
+  coverImage      String?
+  category        String    @default("general")
+  targetAudience  String?
+  readingTime     Int?
+  tags            String[]
+  published       Boolean   @default(false)
+  views           Int       @default(0)
+  publishedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   @@index([slug])
   @@index([category])
   @@index([published])
@@ -1734,157 +1716,93 @@ model FeatureAnalytics {
 // ═══════════════════════════════════════
 
 model JourneyConfig {
-  id String @id @default(cuid())
-
-  enabled Boolean @default(false)
-
-  // Theme
-  theme String @default("tree") // tree, garden, river, mountain
-
-  // Title & Description
-  title    String @default("My Growth Journey")
-  subtitle String @default("Every project planted a seed. Every challenge grew a branch.")
-
-  // Visual Settings
-  backgroundColor String @default("#f0fdf4")
-  primaryColor    String @default("#059669")
-  accentColor     String @default("#f59e0b")
-
-  // Animation Settings
-  enableAnimations Boolean @default(true)
-  enableParticles  Boolean @default(true)
-  animationSpeed   String  @default("normal") // slow, normal, fast
-
-  // Layout
-  layout         String  @default("vertical") // vertical, horizontal, zigzag
-  showConnectors Boolean @default(true)
-
-  // Display
-  showOnHomepage Boolean @default(true)
-  showOnAbout    Boolean @default(true)
-
-  updatedAt DateTime @updatedAt
+  id                String    @id @default(cuid())
+  enabled           Boolean   @default(false)
+  theme             String    @default("tree")
+  title             String    @default("My Growth Journey")
+  subtitle          String?
+  backgroundColor   String    @default("#f0fdf4")
+  primaryColor      String    @default("#059669")
+  accentColor       String    @default("#f59e0b")
+  enableAnimations  Boolean   @default(true)
+  enableParticles   Boolean   @default(true)
+  animationSpeed    String    @default("normal")
+  layout            String    @default("vertical")
+  showConnectors    Boolean   @default(true)
+  showOnHomepage    Boolean   @default(true)
+  showOnAbout       Boolean   @default(true)
+  updatedAt         DateTime  @updatedAt
 }
 
 model JourneyPhase {
-  id String @id @default(cuid())
-
-  // Phase Info
-  title    String // "The Seed" , "First Sprout", etc.
-  subtitle String? // "Where it all began"
-
-  // Eco Theme
-  ecoIcon  String @default("🌱") // 🌱🌿🌳🍃🌸🌻🍎☀️🌍
-  ecoStage String // seed, sprout, sapling, tree, fruit, forest
-
-  // Timeline
-  dateRange String // "2017-2020", "Jan 2021", etc.
-  year      Int? // For sorting
-
-  // Display
-  order   Int     @default(0)
-  visible Boolean @default(true)
-
-  // Relations
-  steps JourneyStep[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id          String        @id @default(cuid())
+  title       String
+  subtitle    String?
+  ecoIcon     String        @default("🌱")
+  ecoStage    String        @default("seed")
+  dateRange   String?
+  year        Int?
+  order       Int           @default(0)
+  visible     Boolean       @default(true)
+  steps       JourneyStep[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
   @@index([order])
 }
 
 model JourneyStep {
-  id String @id @default(cuid())
-
-  phaseId String
-  phase   JourneyPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
-
-  // Step Content
-  title       String // "Learned HTML & CSS"
-  description String // Brief description (2-3 sentences)
-
-  // Eco Theme
-  icon        String @default("🍃") // Nature emoji
-  growthLevel Int    @default(1) // 1-5 (bigger = more growth shown)
-
-  // Category
-  category String // education, skill, project, achievement, milestone, certification
-
-  // Visual
-  color String? // Override phase color
-  size  String  @default("medium") // small, medium, large, highlight
-
-  // Optional Details
-  organization    String? // Company/School name
-  location        String? // City
-  technologies    String[] // Tech learned/used
-  achievement     String? // Key metric or achievement
-  projectLink     String? // Link to project
-  certificateLink String? // Link to certificate
-  imageUrl        String? // Photo/screenshot
-
-  // Impact Metrics (eco-themed)
-  impactMetric String? // "Planted 5 project seeds"
-  growthMetric String? // "Skills grew 200%"
-
-  // Display
-  order    Int     @default(0)
-  visible  Boolean @default(true)
-  featured Boolean @default(false) // Highlighted step
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id              String       @id @default(cuid())
+  phaseId         String
+  phase           JourneyPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  title           String
+  description     String
+  icon            String       @default("🍃")
+  growthLevel     Int          @default(1)
+  category        String       @default("milestone")
+  color           String?
+  size            String       @default("medium")
+  organization    String?
+  location        String?
+  technologies    String[]
+  achievement     String?
+  impactMetric    String?
+  growthMetric    String?
+  projectLink     String?
+  certificateLink String?
+  imageUrl        String?
+  order           Int          @default(0)
+  visible         Boolean      @default(true)
+  featured        Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
   @@index([phaseId])
-  @@index([category])
-  @@index([order])
 }
 
 model JourneyMilestone {
-  id String @id @default(cuid())
-
-  // Milestone Content
-  title       String // "First Client Project"
+  id          String    @id @default(cuid())
+  title       String
   description String
   date        DateTime
-
-  // Eco Theme
-  icon        String  @default("🌸") // Bloom icon for milestones
-  celebration String? // "🎉 Major bloom!"
-
-  // Impact
-  metric String? // "Revenue: ₹50L+ generated"
-
-  // Visual
-  size  String  @default("large") // medium, large, highlight
-  color String?
-
-  // Display
-  order   Int     @default(0)
-  visible Boolean @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  icon        String    @default("🌸")
+  celebration String?
+  metric      String?
+  size        String    @default("large")
+  color       String?
+  order       Int       @default(0)
+  visible     Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model JourneyFutureGoal {
-  id String @id @default(cuid())
-
-  title       String // "Grow into Full-Stack Forest"
+  id          String    @id @default(cuid())
+  title       String
   description String
-  targetDate  String? // "2026", "Q4 2025"
-
-  // Eco Theme
-  icon String @default("☀️")
-
-  // Progress
-  progress Int @default(0) // 0-100
-
-  // Display
-  order   Int     @default(0)
-  visible Boolean @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  targetDate  String?
+  icon        String    @default("☀️")
+  progress    Int       @default(0)
+  order       Int       @default(0)
+  visible     Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

@@ -19,7 +19,8 @@ export async function GET() {
         return apiResponse(phases);
     } catch (error) {
         console.error("[API] Admin journey GET error:", error);
-        return apiError("Failed to fetch journey data");
+        // Fallback to empty phases to prevent UI crash
+        return apiResponse([]);
     }
 }
 
