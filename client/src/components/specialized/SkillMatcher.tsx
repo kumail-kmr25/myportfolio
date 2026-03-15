@@ -56,7 +56,7 @@ export default function SkillMatcher() {
                 {/* Left side: Role Selection */}
                 <div className="flex-1 space-y-8">
                     <div>
-                        <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 block">Automated Alignment Engine</span>
+                        <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 block">Candidate Match Engine</span>
                         <h3 className="text-3xl font-black text-white uppercase tracking-tight">Select <span className="text-blue-500 italic">Target Role</span></h3>
                     </div>
 
@@ -73,7 +73,7 @@ export default function SkillMatcher() {
                                     </div>
                                     <div>
                                         <p className={`font-black text-sm uppercase tracking-widest ${selectedRole.id === role.id ? "text-white" : "text-gray-400"}`}>{role.name}</p>
-                                        <p className="text-[10px] text-gray-500 font-medium">Auto-matching optimized.</p>
+                                        <p className="text-[10px] text-gray-500 font-medium">Auto-match optimization active.</p>
                                     </div>
                                 </div>
                                 <CheckCircle2 size={20} className={`transition-opacity ${selectedRole.id === role.id ? "opacity-100 text-blue-500" : "opacity-0 text-gray-800"}`} />
@@ -98,7 +98,7 @@ export default function SkillMatcher() {
                 {/* Right side: Results */}
                 <div className="flex-1 space-y-8 lg:border-l lg:border-white/5 lg:pl-12">
                     <div className="text-center lg:text-left">
-                        <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] mb-4">Alignment Analysis</p>
+                        <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] mb-4">Qualification Match Analysis</p>
                         <div className="relative inline-block lg:block">
                             <h4 className="text-6xl font-black text-white tracking-tighter">
                                 {matchStats.score}<span className="text-blue-500">%</span>
@@ -115,7 +115,7 @@ export default function SkillMatcher() {
                     </div>
 
                     <div className="space-y-6">
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Critical Requirements Matrix</p>
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Requirement Breakdown</p>
                         <div className="space-y-3">
                             {selectedRole.required.map((skill) => (
                                 <div key={skill} className="flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/5 group hover:bg-white/[0.04] transition-colors">

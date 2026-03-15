@@ -43,14 +43,63 @@ const IconMap: { [key: string]: React.ReactNode } = {
     "Cloud": <Cloud className="w-5 h-5 text-sky-400" />,
 };
 
+import JourneyTree from "./features/JourneyTree";
+
+const FALLBACK_PHASES = [
+    {
+        title: "The Seed",
+        subtitle: "Foundation & First Lines",
+        ecoIcon: "🌱",
+        dateRange: "2017 - 2019",
+        order: 1,
+        steps: [
+            { title: "HTML & CSS Mastery", description: "Semantic structure and styling foundations." },
+            { title: "JavaScript Basics", description: "Breathed life into static pages." }
+        ]
+    },
+    {
+        title: "The Sprout",
+        subtitle: "Full-Stack Emergence",
+        ecoIcon: "🌿",
+        dateRange: "2020 - 2021",
+        order: 2,
+        steps: [
+            { title: "React Ecosystem", description: "Component-based architecture and state management." },
+            { title: "Node.js & MongoDB", description: "Building scalable backend services." }
+        ]
+    },
+    {
+        title: "The Sapling",
+        subtitle: "Architectural Strengthening",
+        ecoIcon: "🌳",
+        dateRange: "2022 - 2023",
+        order: 3,
+        steps: [
+            { title: "Next.js & TypeScript", description: "Enterprise-grade type safety and performance." },
+            { title: "Cloud & DevOps", description: "Automation and resilient infrastructure." }
+        ]
+    },
+    {
+        title: "The Fruit",
+        subtitle: "Innovation & Leadership",
+        ecoIcon: "🍎",
+        dateRange: "2024 - Present",
+        order: 4,
+        steps: [
+            { title: "AI Engineering", description: "RAG pipelines and LLM integration." },
+            { title: "Technical Strategy", description: "Orchestrating complex system visions." }
+        ]
+    }
+];
+
 export default function MyJourney() {
-    const [isVisible, setIsVisible] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Fallback data while loading
-    const { data: phases = [] } = useSWR('/api/journey', fetcher);
+    // Fallback data while loading or if API fails
+    const { data: journeyData, error: journeyError } = useSWR('/api/journey', fetcher);
     const { data: skills = [] } = useSWR('/api/skills', fetcher);
     const { data: resume } = useSWR('/api/resume', fetcher);
+    
     const { openModal } = useHireModal();
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -63,6 +112,9 @@ export default function MyJourney() {
         restDelta: 0.001
     });
 
+    const displayPhases = journeyData?.phases?.length > 0 ? journeyData.phases : FALLBACK_PHASES;
+    const config = journeyData?.config || { enabled: true, primaryColor: "#3b82f6" };
+
     return (
         <section id="my-journey" ref={containerRef} className="py-24 lg:py-16 bg-[#050505] relative overflow-hidden">
             {/* Background Animated Gradient */}
@@ -72,7 +124,7 @@ export default function MyJourney() {
             </div>
 
             <div className="section-container relative z-10">
-                <div className="text-center mb-24 lg:mb-16">
+                <div className="text-center mb-12">
                     <m.span
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -127,138 +179,71 @@ export default function MyJourney() {
                     </m.div>
                 </div>
 
-                <div className="overflow-hidden relative pb-20">
-                    {/* Vertical Line */}
-                    <div className="absolute left-8 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px bg-white/10">
-                        <m.div
-                            style={{ scaleY: scrollYProgress, transformOrigin: "top" }}
-                            className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-b from-blue-600 via-purple-600 to-pink-600 origin-top"
-                        />
+                {/* The Interactive Tree visualization */}
+                <div className="relative">
+                    <JourneyTree phases={displayPhases} config={config} />
+                </div>
+
+                {/* Skills Highlight Block */}
+                <div className="mt-24 max-w-4xl mx-auto">
+                    <div className="text-center mb-12">
+                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">What I Work With</h3>
+                        <div className="w-12 h-1 bg-blue-600 mx-auto rounded-full" />
                     </div>
 
-                    {/* Phases */}
-                    <div className="space-y-24 lg:space-y-16">
-                        {Array.isArray(phases) && phases.map((phase: any, index: number) => (
-                            <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
-                                {/* Timeline Dot */}
-                                <div className="absolute left-8 md:left-1/2 md:-translate-x-1/2 w-4 h-4 rounded-full bg-[#050505] border-2 border-white/20 z-20">
-                                    <m.div
-                                        initial={{ scale: 0 }}
-                                        whileInView={{ scale: 1 }}
-                                        viewport={{ once: true }}
-                                        className="w-full h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
-                                    />
+                    <div className="flex flex-wrap justify-center gap-4">
+                        {Array.isArray(skills) && [...skills].sort((a: any, b: any) => a.order - b.order).map((skill: any, index: number) => (
+                            <m.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ scale: 1.05 }}
+                                className="relative group"
+                            >
+                                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-0 group-hover:opacity-30 transition-all blur-sm" />
+                                <div className="relative px-6 py-3 rounded-full bg-white/5 border border-white/10 text-gray-300 text-sm font-medium backdrop-blur-sm transition-all flex items-center gap-3">
+                                    {skill.name}
+                                    {skill.status === "learning" && (
+                                        <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] text-blue-400 uppercase tracking-tighter">
+                                            <span className="w-1 h-1 rounded-full bg-blue-400 animate-pulse" />
+                                            Learning
+                                        </span>
+                                    )}
                                 </div>
-
-                                {/* Content Card */}
-                                <div className={`ml-20 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-16' : 'md:pl-16'}`}>
-                                    <m.div
-                                        initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true, margin: "-100px" }}
-                                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                                        whileHover={{ scale: 1.02 }}
-                                        className="p-10 rounded-[2.5rem] bg-white/[0.02] border border-white/10 backdrop-blur-xl hover:border-blue-500/20 transition-all duration-500 group relative overflow-hidden"
-                                    >
-                                        <div className={`absolute inset-0 bg-gradient-to-br ${phase.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-                                            <div className="relative z-10">
-                                                <div className="flex items-center gap-4 mb-4">
-                                                    <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                                                        {IconMap[phase.icon] || <Code2 className="w-5 h-5 text-blue-400" />}
-                                                    </div>
-                                                </div>
-                                                <h3 className="text-2xl font-bold text-white mb-3">{phase.title}</h3>
-                                                <p className="text-gray-400 leading-relaxed mb-6">{phase.description}</p>
-                                                
-                                                {phase.actionLabel && (
-                                                    <m.button
-                                                        whileHover={{ x: 5 }}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            if (phase.actionUrl?.startsWith('#')) {
-                                                                const el = document.getElementById(phase.actionUrl.substring(1));
-                                                                if (el) el.scrollIntoView({ behavior: 'smooth' });
-                                                            } else if (phase.actionUrl) {
-                                                                window.open(phase.actionUrl, '_blank');
-                                                            } else {
-                                                                openModal();
-                                                            }
-                                                        }}
-                                                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 hover:text-blue-300 transition-colors group/btn"
-                                                    >
-                                                        {phase.actionLabel}
-                                                        <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
-                                                    </m.button>
-                                                )}
-                                            </div>
-                                    </m.div>
-                                </div>
-                            </div>
+                            </m.div>
                         ))}
                     </div>
+                </div>
 
-                    {/* Skills Highlight Block */}
-                    <div className="mt-40 lg:mt-24 max-w-4xl mx-auto">
-                        <div className="text-center mb-12">
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">What I Work With</h3>
-                            <div className="w-12 h-1 bg-blue-600 mx-auto rounded-full" />
-                        </div>
-
-                        <div className="flex flex-wrap justify-center gap-4">
-                            {Array.isArray(skills) && [...skills].sort((a: any, b: any) => a.order - b.order).map((skill: any, index: number) => (
-                                <m.div
-                                    key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.1 }}
-                                    whileHover={{ scale: 1.05 }}
-                                    className="relative group"
-                                >
-                                    <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-0 group-hover:opacity-30 transition-all blur-sm" />
-                                    <div className="relative px-6 py-3 rounded-full bg-white/5 border border-white/10 text-gray-300 text-sm font-medium backdrop-blur-sm transition-all flex items-center gap-3">
-                                        {skill.name}
-                                        {skill.status === "learning" && (
-                                            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] text-blue-400 uppercase tracking-tighter">
-                                                <span className="w-1 h-1 rounded-full bg-blue-400 animate-pulse" />
-                                                Learning
-                                            </span>
-                                        )}
-                                    </div>
-                                </m.div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* CTAs */}
-                    <div className="mt-40 lg:mt-32 max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-center gap-6">
-                        <m.button
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            onClick={() => {
-                                const el = document.getElementById('projects');
-                                if (el) el.scrollIntoView({ behavior: 'smooth' });
-                            }}
-                            className="w-full md:w-auto px-10 py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] text-white flex items-center justify-center gap-4 transition-all group"
-                        >
-                            View Projects
-                            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform text-blue-500" />
-                        </m.button>
-                        
-                        <m.button
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.1 }}
-                            onClick={() => openModal()}
-                            className="w-full md:w-auto px-10 py-5 bg-blue-600 hover:bg-blue-700 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] text-white flex items-center justify-center gap-4 transition-all shadow-xl shadow-blue-500/20 group"
-                        >
-                            Hire Me
-                            <Briefcase size={18} />
-                        </m.button>
-                    </div>
+                {/* CTAs */}
+                <div className="mt-40 lg:mt-32 max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-center gap-6">
+                    <m.button
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        onClick={() => {
+                            const el = document.getElementById('projects');
+                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="w-full md:w-auto px-10 py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] text-white flex items-center justify-center gap-4 transition-all group"
+                    >
+                        View Projects
+                        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform text-blue-500" />
+                    </m.button>
+                    
+                    <m.button
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        onClick={() => openModal()}
+                        className="w-full md:w-auto px-10 py-5 bg-blue-600 hover:bg-blue-700 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] text-white flex items-center justify-center gap-4 transition-all shadow-xl shadow-blue-500/20 group"
+                    >
+                        Hire Me
+                        <Briefcase size={18} />
+                    </m.button>
                 </div>
             </div>
 

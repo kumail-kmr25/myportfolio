@@ -266,7 +266,7 @@ export default function TestimonialModal({ isOpen, onClose, onSuccess }: Props) 
                                             <label className="flex items-start gap-3 cursor-pointer">
                                                 <input type="checkbox" className="mt-0.5 accent-blue-500" checked={form.permission} onChange={e => set("permission", e.target.checked)} />
                                                 <span className="text-xs text-gray-400 leading-relaxed">
-                                                    I confirm this is my genuine experience and give permission to display this testimonial publicly on this portfolio.
+                                                    I confirm this is my genuine experience and give permission to display this testimonial publicly on this projects showcase.
                                                 </span>
                                             </label>
                                             {errors.permission && <p className="text-[10px] text-red-400 mt-1">{errors.permission}</p>}

@@ -17,9 +17,9 @@ const FALLBACK_TESTIMONIALS = [
         role: "Software Architect",
         message: "Kumail is an exceptional engineer who delivers high-performance, scalable solutions with precision.",
         rating: 5,
-        relationship_type: "Client",
-        intervention_type: "Full Stack Development",
-        created_at: new Date().toISOString()
+        relationshipType: "Client",
+        interventionType: "Full Stack Development",
+        createdAt: new Date().toISOString()
     },
     {
         id: "fallback-t-2",
@@ -27,9 +27,9 @@ const FALLBACK_TESTIMONIALS = [
         role: "CEO & Product Lead",
         message: "The architecture Kumail designed for our orchestration engine is rock solid. He transformed a complex problem into a clean, performant system.",
         rating: 5,
-        relationship_type: "Partner",
-        intervention_type: "System Architecture",
-        created_at: new Date().toISOString()
+        relationshipType: "Partner",
+        interventionType: "System Architecture",
+        createdAt: new Date().toISOString()
     }
 ];
 
@@ -38,7 +38,7 @@ export async function GET() {
         const testimonials = await prisma.testimonial.findMany({
             where: { approved: true },
             orderBy: {
-                created_at: "desc",
+                createdAt: "desc",
             },
         });
 
@@ -46,7 +46,7 @@ export async function GET() {
             const { email, ...rest } = t;
             return {
                 ...rest,
-                created_at: rest.created_at.toISOString(),
+                createdAt: rest.createdAt.toISOString(),
             };
         });
 
@@ -91,7 +91,7 @@ export async function POST(request: Request) {
         const { email, ...rest } = testimonial as any;
         const sanitizedTestimonial = {
             ...rest,
-            created_at: rest.created_at.toISOString(),
+            createdAt: rest.createdAt.toISOString(),
         };
 
         return apiResponse(sanitizedTestimonial, 201);

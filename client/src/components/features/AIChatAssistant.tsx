@@ -36,7 +36,7 @@ export default function AIChatAssistant() {
             setMessages([
                 {
                     role: "assistant",
-                    content: config.welcomeMessage || "Hi! I'm Kumail's AI assistant. How can I help you build something amazing today?",
+                    content: config.welcomeMessage || "Hi! I'm Kumale's AI assistant. How can I help you build something amazing today?",
                     timestamp: new Date()
                 }
             ]);
@@ -81,7 +81,7 @@ export default function AIChatAssistant() {
         } catch (err) {
             setMessages(prev => [...prev, {
                 role: "assistant",
-                content: "I'm having a bit of trouble connecting right now. Feel free to reach out to Kumail directly via the contact form!",
+                content: "I'm having a bit of trouble connecting right now. Feel free to reach out to Kumale directly via the contact form!",
                 timestamp: new Date()
             }]);
         } finally {
@@ -107,11 +107,11 @@ export default function AIChatAssistant() {
                                 </div>
                                 <div>
                                     <h3 className="text-white font-black text-sm uppercase tracking-widest leading-none mb-1 italic">
-                                        {config.botName || "Kumail_AI"}
+                                        {config.botName || "Kumale AI"}
                                     </h3>
                                     <div className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Active_Node</span>
+                                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Systems Online</span>
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +167,7 @@ export default function AIChatAssistant() {
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyPress={(e) => e.key === "Enter" && handleSend()}
-                                    placeholder="Type your transmission..."
+                                    placeholder="Type your message..."
                                     className="w-full bg-white/[0.02] border border-white/10 rounded-2xl py-4 pl-6 pr-14 text-[13px] text-white placeholder:text-gray-700 focus:outline-none focus:border-blue-500/50 transition-all"
                                 />
                                 <button 
@@ -179,7 +179,7 @@ export default function AIChatAssistant() {
                                 </button>
                             </div>
                             <p className="text-[9px] text-center mt-4 text-gray-700 font-bold uppercase tracking-widest italic opacity-40">
-                                Powered by Kumail_Core_Neural_Engine
+                                Powered by Kumale's Knowledge Base
                             </p>
                         </div>
                     </m.div>

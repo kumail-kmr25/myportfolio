@@ -9,7 +9,7 @@ export const BusinessCard: React.FC = () => {
     const [isFlipped, setIsFlipped] = useState(false);
     
     const profile = {
-        name: "Kumail Kumar",
+        name: "Kumale Ali Bhat",
         title: "Full-Stack Developer",
         email: "ka6307464@gmail.com",
         phone: "+91 1234567890",

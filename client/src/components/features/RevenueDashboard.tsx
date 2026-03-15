@@ -60,7 +60,7 @@ export default function RevenueDashboard({ initialData }: RevenueDashboardProps)
                     <div className="absolute -right-4 -top-4 opacity-10">
                         <TrendingUp size={120} />
                     </div>
-                    <span className="text-[10px] text-blue-100 font-black uppercase tracking-widest italic">Cumulative_Impact</span>
+                    <span className="text-[10px] text-blue-100 font-black uppercase tracking-widest italic">Cumulative Impact</span>
                     <div className="mt-4">
                         <h3 className="text-4xl font-black text-white italic tracking-tighter">
                             ₹{(totalGenerated / 1000000).toFixed(1)}M+
@@ -117,17 +117,17 @@ export default function RevenueDashboard({ initialData }: RevenueDashboardProps)
                     >
                         <div className="flex items-start justify-between">
                             <div>
-                                <span className="text-[10px] text-blue-500 font-black uppercase tracking-widest italic">{client.industry}_SECTOR</span>
+                                <span className="text-[10px] text-blue-500 font-black uppercase tracking-widest italic">{client.industry} Sector</span>
                                 <h4 className="text-2xl font-black text-white italic tracking-tighter mt-1 uppercase">{client.clientName}</h4>
                             </div>
                             <div className="px-4 py-2 bg-emerald-500/10 rounded-full border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-widest">
-                                Live_Impact
+                                Live Results
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-10">
                             <div className="space-y-4">
-                                <span className="text-[8px] text-gray-600 font-black uppercase tracking-[0.2em]">Monthly_Revenue_Delta</span>
+                                <span className="text-[8px] text-gray-600 font-black uppercase tracking-[0.2em]">Monthly Revenue Growth</span>
                                 <div className="flex items-end gap-3">
                                     <div className="text-gray-700 font-black line-through text-lg italic opacity-40">
                                         ₹{client.monthlyRevenueBefore?.toLocaleString()}
@@ -146,7 +146,7 @@ export default function RevenueDashboard({ initialData }: RevenueDashboardProps)
                             </div>
 
                             <div className="space-y-4">
-                                <span className="text-[8px] text-gray-600 font-black uppercase tracking-[0.2em]">Conversion_Optimization</span>
+                                <span className="text-[8px] text-gray-600 font-black uppercase tracking-[0.2em]">Conversion Rate Optimization</span>
                                 <div className="flex items-center gap-4">
                                     <div className="flex flex-col">
                                         <span className="text-[10px] text-gray-500 font-bold">PRE</span>
@@ -166,12 +166,12 @@ export default function RevenueDashboard({ initialData }: RevenueDashboardProps)
                         <div className="pt-8 border-t border-white/5 flex items-center justify-between">
                             <div className="flex items-center gap-6">
                                 <div className="flex flex-col">
-                                    <span className="text-[8px] text-gray-700 font-black uppercase italic">Traffic_Delta</span>
+                                <span className="text-[8px] text-gray-700 font-black uppercase italic">Traffic Growth</span>
                                     <span className="text-sm font-black text-white italic">+{((client.trafficAfter || 0) - (client.trafficBefore || 0)).toLocaleString()} users</span>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3">
-                                <span className="text-[10px] text-gray-600 font-black uppercase tracking-widest">Efficiency_Score</span>
+                                <span className="text-[10px] text-gray-600 font-black uppercase tracking-widest">Performance Score</span>
                                 <div className="flex gap-1">
                                     {[1, 2, 3, 4, 5].map(s => (
                                         <div key={s} className={`w-3 h-1 rounded-full ${s <= 4 ? 'bg-blue-500' : 'bg-gray-800'}`} />

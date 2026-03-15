@@ -36,7 +36,7 @@ export const ArticleList: React.FC = () => {
                 <div className="space-y-4">
                     <div className="flex items-center gap-3 text-emerald-500 bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/20 text-xs font-bold uppercase tracking-widest w-fit">
                         <Brain size={16} />
-                        Mini Learning
+                        Technical Insights
                     </div>
                     <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight">Enterprise <span className="text-emerald-500">Insights</span></h2>
                     <p className="text-gray-500 max-w-xl text-lg">Condensed technical and business strategies for modern scaling founders.</p>

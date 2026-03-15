@@ -2,41 +2,34 @@ import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
 import { apiResponse, apiError } from "@/lib/rate-limit";
 
-export const runtime = "nodejs";
-
-const FALLBACK_PHASES = [
-    {
-        id: "fallback-journey-1",
-        phase: "Phase 1",
-        title: "Foundation & Core Engineering",
-        description: "Mastering complex data structures and specialized algorithms to build high-performance foundations.",
-        icon: "Brain",
-        color: "from-blue-600/20 to-indigo-600/20",
-        order: 1,
-        actionLabel: "Explore Foundation",
-        actionUrl: "#skills"
-    },
-    {
-        id: "fallback-journey-2",
-        phase: "Phase 2",
-        title: "Full-Stack Orchestration",
-        description: "Architecting end-to-end systems that bridge sophisticated backend logic with intuitive interfaces.",
-        icon: "Code2",
-        color: "from-indigo-600/20 to-purple-600/20",
-        order: 2,
-        actionLabel: "View Case Studies",
-        actionUrl: "#projects"
-    }
-];
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export async function GET() {
     try {
+        const config = await prisma.journeyConfig.findFirst();
         const phases = await prisma.journeyPhase.findMany({
-            orderBy: { order: "asc" },
+            where: { visible: true },
+            include: { steps: { where: { visible: true }, orderBy: { order: 'asc' } } },
+            orderBy: { order: 'asc' }
         });
-        return apiResponse(phases);
+        const milestones = await prisma.journeyMilestone.findMany({
+            where: { visible: true },
+            orderBy: { date: 'desc' }
+        });
+        const goals = await prisma.journeyFutureGoal.findMany({
+            where: { visible: true },
+            orderBy: { order: 'asc' }
+        });
+
+        return apiResponse({ 
+            config: config || { enabled: false },
+            phases,
+            milestones,
+            goals
+        });
     } catch (error) {
-        console.error("[API] Error fetching journey phases:", error);
-        return apiResponse(FALLBACK_PHASES);
+        console.error("GET_JOURNEY_ERROR:", error);
+        return apiError("Failed to fetch journey data");
     }
 }

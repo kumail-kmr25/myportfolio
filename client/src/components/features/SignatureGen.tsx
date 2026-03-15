@@ -9,7 +9,7 @@ export const SignatureGen: React.FC = () => {
     const [template, setTemplate] = useState<'modern' | 'minimal' | 'corporate'>('modern');
     
     const profile = {
-        name: "Kumail Kumar",
+        name: "Kumale Ali Bhat",
         title: "Full-Stack Developer",
         email: "ka6307464@gmail.com",
         phone: "+91 1234567890",

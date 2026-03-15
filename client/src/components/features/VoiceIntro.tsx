@@ -110,8 +110,8 @@ export default function VoiceIntro() {
 
             <div className="flex-grow space-y-4">
                 <div className="space-y-1 text-center md:text-left">
-                    <span className="text-[10px] text-blue-500 font-black uppercase tracking-widest italic">Aural_Mission_Briefing</span>
-                    <h4 className="text-xl font-black text-white italic tracking-tighter uppercase">Briefing_Transmission_01</h4>
+                    <span className="text-[10px] text-blue-500 font-black uppercase tracking-widest italic">Audio Introduction</span>
+                    <h4 className="text-xl font-black text-white italic tracking-tighter uppercase">Philosophy & Mission</h4>
                     <p className="text-[11px] text-gray-500 font-medium">Hear a personal message about my philosophy and current mission focus.</p>
                 </div>
 

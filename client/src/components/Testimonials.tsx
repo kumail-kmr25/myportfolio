@@ -13,14 +13,14 @@ interface Testimonial {
     name: string;
     company?: string | null;
     role?: string | null;
-    relationship_type: string;
-    intervention_type: string;
+    relationshipType: string;
+    interventionType: string;
     message: string;
     rating: number;
     photoUrl?: string | null;
     verified?: boolean;
     featured?: boolean;
-    created_at: string;
+    createdAt: string;
 }
 
 function TestimonialCard({ t }: { t: Testimonial }) {
@@ -72,7 +72,7 @@ function TestimonialCard({ t }: { t: Testimonial }) {
                         )}
                     </div>
                     <div className="text-[10px] text-gray-500 truncate uppercase tracking-tighter">
-                        {t.company ? t.company : t.intervention_type}
+                        {t.company ? t.company : t.interventionType}
                     </div>
                 </div>
             </div>
@@ -126,13 +126,13 @@ export default function Testimonials() {
                         name: "Ahmed Hassan",
                         role: "Proprietor",
                         company: "Spice Garden",
-                        message: "Kumail rebuilt our restaurant website from scratch. It loads instantly on mobile now and we're getting way more online orders. Highly professional engineering.",
+                        message: "Kumale rebuilt our restaurant website from scratch. It loads instantly on mobile now and we're getting way more online orders. Highly professional engineering.",
                         rating: 5,
-                        relationship_type: "Client",
-                        intervention_type: "Digital Transformation",
+                        relationshipType: "Client",
+                        interventionType: "Digital Transformation",
                         photoUrl: "https://ui-avatars.com/api/?name=Ahmed+Hassan&background=0284c7&color=fff",
                         verified: true,
-                        created_at: new Date().toISOString()
+                        createdAt: new Date().toISOString()
                     },
                     {
                         id: "2",
@@ -141,11 +141,11 @@ export default function Testimonials() {
                         company: "LaunchPad SaaS",
                         message: "He delivered our enterprise dashboard in record time. Clean architecture, transparent communication, and exceptional performance optimization.",
                         rating: 5,
-                        relationship_type: "Client",
-                        intervention_type: "SaaS Development",
+                        relationshipType: "Client",
+                        interventionType: "SaaS Development",
                         photoUrl: "https://ui-avatars.com/api/?name=Sarah+Mitchell&background=4f46e5&color=fff",
                         verified: true,
-                        created_at: new Date().toISOString()
+                        createdAt: new Date().toISOString()
                     },
                     {
                         id: "3",
@@ -154,11 +154,11 @@ export default function Testimonials() {
                         company: "Vanguard Tech",
                         message: "One of the most capable full-stack engineers I've worked with. His attention to detail in DevOps and performance is top-tier.",
                         rating: 5,
-                        relationship_type: "Partner",
-                        intervention_type: "Technical Consultant",
+                        relationshipType: "Partner",
+                        interventionType: "Technical Consultant",
                         photoUrl: "https://ui-avatars.com/api/?name=Marcus+Thorne&background=7c3aed&color=fff",
                         verified: true,
-                        created_at: new Date().toISOString()
+                        createdAt: new Date().toISOString()
                     }
                 ]);
             }
@@ -171,13 +171,13 @@ export default function Testimonials() {
                     name: "Ahmed Hassan",
                     role: "Owner",
                     company: "Spice Garden Restaurant",
-                    message: "Kumail rebuilt our restaurant website from scratch. It loads instantly on mobile now and we're getting way more online orders.",
+                    message: "Kumale rebuilt our restaurant website from scratch. It loads instantly on mobile now and we're getting way more online orders.",
                     rating: 5,
-                    relationship_type: "Client",
-                    intervention_type: "Web Rebuild",
+                    relationshipType: "Client",
+                    interventionType: "Web Rebuild",
                     photoUrl: "https://ui-avatars.com/api/?name=Ahmed+Hassan&background=random",
                     verified: true,
-                    created_at: new Date().toISOString()
+                    createdAt: new Date().toISOString()
                 },
                 {
                     id: "2",
@@ -186,24 +186,24 @@ export default function Testimonials() {
                     company: "LaunchPad SaaS",
                     message: "He delivered our SaaS dashboard in under 2 weeks. Clean code, great communication, and the performance improvements were beyond what we expected.",
                     rating: 5,
-                    relationship_type: "Client",
-                    intervention_type: "SaaS Dashboard",
+                    relationshipType: "Client",
+                    interventionType: "SaaS Dashboard",
                     photoUrl: "https://ui-avatars.com/api/?name=Sarah+Mitchell&background=random",
                     verified: true,
-                    created_at: new Date().toISOString()
+                    createdAt: new Date().toISOString()
                 },
                 {
                     id: "3",
                     name: "David Chen",
                     role: "Founder",
                     company: "StyleHub",
-                    message: "Our PageSpeed went from 28 to 94 after Kumail rebuilt our store. Sales have noticeably improved since the relaunch.",
+                    message: "Our PageSpeed went from 28 to 94 after Kumale rebuilt our store. Sales have noticeably improved since the relaunch.",
                     rating: 5,
-                    relationship_type: "Client",
-                    intervention_type: "E-commerce Optimization",
+                    relationshipType: "Client",
+                    interventionType: "E-commerce Optimization",
                     photoUrl: "https://ui-avatars.com/api/?name=David+Chen&background=random",
                     verified: true,
-                    created_at: new Date().toISOString()
+                    createdAt: new Date().toISOString()
                 }
             ]);
         } finally {

@@ -22,6 +22,9 @@ const Skills = dynamic(() => import("@/components/Skills"), {
 const Services = dynamic(() => import("@/components/Services"), {
     loading: () => <SectionSkeleton minHeight="600px" />
 });
+const Process = dynamic(() => import("@/components/Process"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
 const StatsDashboard = dynamic(() => import("@/components/StatsDashboard"), {
     loading: () => <SectionSkeleton minHeight="400px" hasSubtitle={false} />
 });
@@ -46,12 +49,28 @@ const HireMeCTA = dynamic(() => import("@/components/HireMeCTA"), {
 const Testimonials = dynamic(() => import("@/components/Testimonials"), {
     loading: () => <SectionSkeleton minHeight="400px" />
 });
+const DeveloperHub = dynamic(() => import("@/components/features/DeveloperHub"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
+const RecruiterView = dynamic(() => import("@/components/features/RecruiterView"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
+const ViralROIEngine = dynamic(() => import("@/components/features/ViralROIEngine"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
+const NewsletterHook = dynamic(() => import("@/components/features/NewsletterHook"), {
+    loading: () => <SectionSkeleton minHeight="300px" />
+});
+const ReferralHook = dynamic(() => import("@/components/features/ReferralHook"), {
+    loading: () => <SectionSkeleton minHeight="400px" />
+});
 
 export default function MainContent() {
     return (
         <>
             <ViewportReveal><About /></ViewportReveal>
             <ViewportReveal><Services /></ViewportReveal>
+            <ViewportReveal><Process /></ViewportReveal>
             <ViewportReveal><CaseStudies /></ViewportReveal>
             <ViewportReveal><Projects /></ViewportReveal>
             <ViewportReveal><HireMeCTA /></ViewportReveal>
@@ -61,6 +80,11 @@ export default function MainContent() {
             <ViewportReveal><Testimonials /></ViewportReveal>
             <ViewportReveal><Pricing /></ViewportReveal>
             <ViewportReveal><MyJourney /></ViewportReveal>
+            <ViewportReveal><DeveloperHub /></ViewportReveal>
+            <ViewportReveal><ViralROIEngine /></ViewportReveal>
+            <ViewportReveal><RecruiterView /></ViewportReveal>
+            <ViewportReveal><NewsletterHook /></ViewportReveal>
+            <ViewportReveal><ReferralHook /></ViewportReveal>
             <ViewportReveal><Contact /></ViewportReveal>
             <Footer />
         </>
