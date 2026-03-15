@@ -101,8 +101,8 @@ async function main() {
             create: {
                 id: "default-ai-config",
                 enabled: true,
-                botName: "Kumail's Assistant",
-                welcomeMessage: "Hi! I'm Kumail's AI assistant. How can I help you build something amazing today?",
+                botName: "Kumale's Assistant",
+                welcomeMessage: "Hi! I'm Kumale's AI assistant. How can I help you build something amazing today?",
                 quickQuestions: ["What services do you offer?", "How much does a website cost?", "Are you available for hire?"],
             }
         });
@@ -113,8 +113,8 @@ async function main() {
 
     // Feature 2: Project Videos
     const videos = [
-        { title: "CUE AI: Neural Reasoning Architecture", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", videoType: "youtube", description: "Deep dive into the contextual reasoning engine.", featured: true, duration: 342 },
-        { title: "MedQ AI: HIPAA Data Flow", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", videoType: "youtube", description: "Architectural overview of medical data security.", featured: true, duration: 258 }
+        { title: "CUE AI: Contextual Reasoning Architecture", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", videoType: "youtube", description: "Deep dive into the contextual reasoning engine.", featured: true, duration: 342 },
+        { title: "MedQ AI: Secure Data Flow", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", videoType: "youtube", description: "Architectural overview of medical data security.", featured: true, duration: 258 }
     ];
     for (const v of videos) {
         await prisma.projectVideo.upsert({
@@ -139,7 +139,7 @@ async function main() {
 
     // Feature 4: Client Revenue
     const revenue = [
-        { clientName: "Quantum Retail", industry: "ecommerce", monthlyRevenueBefore: 1200000, monthlyRevenueAfter: 4500000, totalRevenueGenerated: 25000000, conversionBefore: 1.2, conversionAfter: 3.8, trafficBefore: 50000, trafficAfter: 125000 },
+        { clientName: "Global Retail", industry: "ecommerce", monthlyRevenueBefore: 1200000, monthlyRevenueAfter: 4500000, totalRevenueGenerated: 25000000, conversionBefore: 1.2, conversionAfter: 3.8, trafficBefore: 50000, trafficAfter: 125000 },
         { clientName: "Skyline Logistics", industry: "logistics", monthlyRevenueBefore: 8500000, monthlyRevenueAfter: 11200000, totalRevenueGenerated: 42000000, conversionBefore: 0.8, conversionAfter: 2.1, trafficBefore: 15000, trafficAfter: 42000 }
     ];
     for (const r of revenue) {
@@ -158,7 +158,7 @@ async function main() {
             id: "default-voice-intro",
             enabled: true,
             audioUrl: "/audio/intro.mp3",
-            transcript: "Hi, I'm Kumail. I build high-performance systems that drive real business impact. Welcome to my engineering repository."
+            transcript: "Hi, I'm Kumale. I build high-performance systems that drive real business impact. Welcome to my engineering repository."
         }
     });
 }
