@@ -34,8 +34,8 @@ interface Resume {
 }
 
 export default function ResumeContent() {
-    const { data: resumes } = useSWR<Resume[]>("/api/admin/resume", fetcher);
-    const activeResume = (Array.isArray(resumes) ? resumes : []).find(r => r.visible);
+    const { data: resumes } = useSWR<Resume[]>("/api/resume", fetcher);
+    const activeResume = (Array.isArray(resumes) ? resumes : (resumes && !Array.isArray(resumes) ? [resumes] : [])).find(r => (r as any).visible);
 
     const skills = [
         "React/Next.js", "TypeScript", "Node.js/Express", "Prisma/PostgreSQL", 

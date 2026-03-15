@@ -83,7 +83,7 @@ export const Certifications: React.FC = () => {
                         </div>
 
                         <div className="flex flex-wrap gap-2">
-                            {cert.skills.slice(0, 3).map(skill => (
+                            {(cert.skills || []).slice(0, 3).map(skill => (
                                 <span 
                                     key={skill}
                                     className="px-2 py-1 bg-white/5 rounded-md text-[10px] uppercase tracking-wider text-gray-300 font-semibold border border-white/5"

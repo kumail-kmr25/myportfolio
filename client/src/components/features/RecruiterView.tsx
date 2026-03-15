@@ -8,7 +8,7 @@ import { getApiUrl } from "@/lib/api";
 const fetcher = (url: string) => fetch(getApiUrl(url)).then(res => res.json()).then(json => json.success ? json.data : json);
 
 export default function RecruiterView() {
-    const { data: resume } = useSWR("/api/admin/resume", fetcher);
+    const { data: resume } = useSWR("/api/resume", fetcher);
     const { data: skills } = useSWR("/api/skills", fetcher);
     const { data: availability } = useSWR("/api/availability", fetcher);
     return (
@@ -50,7 +50,7 @@ export default function RecruiterView() {
                         <div className="space-y-8">
                             <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Core Competencies</h3>
                             <div className="grid grid-cols-1 gap-4">
-                                {skills?.slice(0, 5).map((skill: any) => (
+                                {(Array.isArray(skills) ? skills : []).slice(0, 5).map((skill: any) => (
                                     <div key={skill.id} className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl flex items-center justify-between group hover:bg-white/[0.05] transition-all">
                                         <span className="text-sm font-bold text-gray-300 group-hover:text-white transition-colors">{skill.name}</span>
                                         <div className="flex gap-1">
