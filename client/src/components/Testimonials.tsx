@@ -61,7 +61,7 @@ function TestimonialCard({ t }: { t: Testimonial }) {
                     </div>
                 ) : (
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-500/30 border border-white/10 flex items-center justify-center text-white font-black text-sm flex-shrink-0">
-                        {t.name[0]}
+                        {t.name?.[0] || "U"}
                     </div>
                 )}
                 <div className="min-w-0">
@@ -81,7 +81,7 @@ function TestimonialCard({ t }: { t: Testimonial }) {
 }
 
 function Marquee({ items, reverse = false }: { items: Testimonial[]; reverse?: boolean }) {
-    const duplicated = [...items, ...items, ...items];
+    const duplicated = [...(items || []), ...(items || []), ...(items || [])];
 
     return (
         <div className="overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}>
@@ -317,7 +317,9 @@ export default function Testimonials() {
                         <div className="hidden md:block w-px h-12 bg-white/10" />
                         <m.div variants={itemVariants} className="text-center group">
                             <div className="text-3xl font-black text-yellow-400 group-hover:scale-110 transition-transform">
-                                {(testimonials.reduce((sum: number, t: Testimonial) => sum + t.rating, 0) / testimonials.length).toFixed(1)}
+                                {testimonials.length > 0 
+                                    ? (testimonials.reduce((sum: number, t: Testimonial) => sum + (t.rating || 0), 0) / testimonials.length).toFixed(1)
+                                    : "0.0"}
                             </div>
                             <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-2">Avg Rating</div>
                         </m.div>

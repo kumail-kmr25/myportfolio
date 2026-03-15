@@ -2,6 +2,7 @@
 
 import { useScroll, useSpring, m, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useHydrated } from "@/lib/hooks/useHydrated";
 
 interface JourneyTreeProps {
     phases: any[];
@@ -10,6 +11,7 @@ interface JourneyTreeProps {
 
 export default function JourneyTree({ phases, config }: JourneyTreeProps) {
     const containerRef = useRef<HTMLDivElement>(null);
+    const hydrated = useHydrated();
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start end", "end start"]
@@ -98,7 +100,7 @@ export default function JourneyTree({ phases, config }: JourneyTreeProps) {
                             </m.g>
                             
                             {/* Floating "Growth Particles" */}
-                            {[...Array(3)].map((_, i) => (
+                            {hydrated && [...Array(3)].map((_, i) => (
                                 <m.circle
                                     key={i}
                                     cx={branchEndX}

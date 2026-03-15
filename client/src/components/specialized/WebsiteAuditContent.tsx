@@ -6,9 +6,11 @@ import { Search, Loader2, ArrowRight, ShieldCheck, Zap, Globe, Sparkles, AlertTr
 import AuditResults from "@/components/tools/AuditResults";
 import LeadCaptureCTA from "@/components/tools/LeadCaptureCTA";
 import AuditForm from "@/components/tools/AuditForm";
+import { useHydrated } from "@/lib/hooks/useHydrated";
 
 export default function WebsiteAuditContent() {
     const [result, setResult] = useState<any>(null);
+    const hydrated = useHydrated();
 
     const handleSuccess = (data: any) => {
         setResult(data);
@@ -95,8 +97,8 @@ export default function WebsiteAuditContent() {
             </AnimatePresence>
 
             <footer className="py-20 px-6 text-center border-t border-white/5 bg-white/[0.01]">
-                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-600">
-                    &copy; {new Date().getFullYear()} KK ENGINE &bull; ALL RIGHTS RESERVED
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-600" suppressHydrationWarning>
+                    &copy; {hydrated ? new Date().getFullYear() : 2026} KK ENGINE &bull; ALL RIGHTS RESERVED
                 </p>
             </footer>
 

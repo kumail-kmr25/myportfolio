@@ -12,6 +12,7 @@ import {
     Loader2
 } from "lucide-react";
 import { useFeatures } from "@/lib/features";
+import { useHydrated } from "@/lib/hooks/useHydrated";
 
 interface Message {
     role: "assistant" | "user";
@@ -21,6 +22,7 @@ interface Message {
 
 export default function AIChatAssistant() {
     const { isEnabled, getConfig } = useFeatures();
+    const hydrated = useHydrated();
     const config = getConfig("ai-chat");
     const enabled = isEnabled("ai-chat");
 
@@ -50,7 +52,7 @@ export default function AIChatAssistant() {
         }
     }, [messages, isTyping]);
 
-    if (!enabled) return null;
+    if (!enabled || !hydrated) return null;
 
     const handleSend = async () => {
         if (!input.trim()) return;

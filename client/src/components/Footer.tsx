@@ -4,6 +4,7 @@ import { Github, Twitter, Linkedin, Instagram, ShieldCheck, Plus, Minus, LayoutG
 import { m, AnimatePresence, Variants } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
 import { useState, useEffect } from "react";
+import { useHydrated } from "@/lib/hooks/useHydrated";
 import ProjectCard from "./ProjectCard";
 import ProjectCaseStudyModal from "./ProjectCaseStudyModal";
 import { MOCK_PROJECTS } from "@/lib/mock-data";
@@ -12,6 +13,7 @@ export default function Footer() {
     const { openModal } = useHireModal();
     const [settings, setSettings] = useState<any>(null);
     const [selectedProject, setSelectedProject] = useState<any>(null);
+    const hydrated = useHydrated();
     const premiumEase = [0.16, 1, 0.3, 1];
 
     useEffect(() => {
@@ -98,8 +100,8 @@ export default function Footer() {
                         variants={itemVariants}
                         className="flex flex-col gap-2"
                     >
-                        <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.3em]">
-                            © {new Date().getFullYear()} Kumail KMR Studio
+                        <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.3em]" suppressHydrationWarning>
+                            © {hydrated ? new Date().getFullYear() : 2026} Kumail KMR Studio
                         </p>
                         <p className="text-gray-800 text-[9px] font-black uppercase tracking-[0.2em]">
                             Built for peak performance & horizontal scalability

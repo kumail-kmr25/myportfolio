@@ -9,13 +9,13 @@ import { getApiUrl } from "@/lib/api";
 const fetcher = (url: string) => fetch(getApiUrl(url)).then(res => res.json()).then(json => json.success ? json.data : json);
 
 export default function DeveloperHub() {
-    const { data: opensource } = useSWR("/api/admin/opensource", fetcher);
-    const { data: components } = useSWR("/api/admin/showcase", fetcher);
-    const { data: adrs } = useSWR("/api/admin/adrs", fetcher);
+    const { data: opensource } = useSWR("/api/opensource", fetcher);
+    const { data: components } = useSWR("/api/showcase", fetcher);
+    const { data: adrs } = useSWR("/api/adrs", fetcher);
     const { data: blogPosts } = useSWR("/api/blog", fetcher);
 
-    const techInsights = blogPosts?.filter((post: any) => 
-        post.category === "Engineering" || post.category === "Development" || post.category === "Architecture"
+    const techInsights = (blogPosts || [])?.filter((post: any) => 
+        post?.category === "Engineering" || post?.category === "Development" || post?.category === "Architecture"
     ).slice(0, 2);
     return (
         <section id="developer-hub" className="py-32 px-6 bg-[#050505] relative overflow-hidden">
@@ -42,7 +42,7 @@ export default function DeveloperHub() {
                             <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Open Source</h3>
                         </div>
                         <div className="space-y-6">
-                            {opensource?.slice(0, 3).map((repo: any) => (
+                            {(opensource || [])?.slice(0, 3).map((repo: any) => (
                                 <m.div 
                                     key={repo.id}
                                     whileHover={{ x: 10 }}
@@ -68,7 +68,7 @@ export default function DeveloperHub() {
                             <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Showcase</h3>
                         </div>
                         <div className="grid grid-cols-1 gap-6">
-                            {components?.slice(0, 4).map((comp: any) => (
+                            {(components || [])?.slice(0, 4).map((comp: any) => (
                                 <m.div 
                                     key={comp.id}
                                     whileHover={{ scale: 1.02 }}
@@ -93,7 +93,7 @@ export default function DeveloperHub() {
                             <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Governance</h3>
                         </div>
                         <div className="space-y-4">
-                            {adrs?.slice(0, 5).map((adr: any) => (
+                            {(adrs || [])?.slice(0, 5).map((adr: any) => (
                                 <div key={adr.id} className="p-6 glass-effect rounded-3xl border border-white/5 flex items-center justify-between group cursor-pointer hover:bg-white/[0.02]">
                                     <div className="space-y-1">
                                         <h4 className="text-sm font-bold text-white group-hover:text-orange-400 transition-colors">{adr.title}</h4>

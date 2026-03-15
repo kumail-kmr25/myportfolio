@@ -134,8 +134,8 @@ export default function AuditResults({ result }: { result: AuditResult }) {
                                 <div className="flex justify-between items-center">
                                     <span className="text-xs font-bold text-gray-400">{detail.label}</span>
                                     <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest">
-                                        <StatusIcon text={detail.status} />
-                                        {detail.status.replace(/✅|❌/g, "").trim()}
+                                        <StatusIcon text={detail.status || "ℹ️"} />
+                                        {(detail.status || "").replace(/✅|❌/g, "").trim() || "N/A"}
                                     </span>
                                 </div>
                                 {detail.content && (
@@ -173,7 +173,7 @@ export default function AuditResults({ result }: { result: AuditResult }) {
                                         <StatusIcon text={stat.value} />
                                     </div>
                                     <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 underline underline-offset-4 decoration-white/10">{stat.label}</p>
-                                    <p className="text-xs font-bold text-white">{stat.value.replace(/✅|❌/g, "").trim()}</p>
+                                    <p className="text-xs font-bold text-white">{(stat.value || "").replace(/✅|❌/g, "").trim() || "N/A"}</p>
                                 </div>
                             ))}
                         </div>
@@ -187,7 +187,7 @@ export default function AuditResults({ result }: { result: AuditResult }) {
                                 ].map((stat, idx) => (
                                     <div key={idx} className="flex justify-between items-center px-4">
                                         <span className="text-xs font-bold text-gray-400">{stat.label}</span>
-                                        <span className="text-sm font-black text-white">{stat.value}</span>
+                                        <span className="text-sm font-black text-white">{stat.value || "N/A"}</span>
                                     </div>
                                 ))}
                             </div>

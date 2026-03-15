@@ -73,7 +73,7 @@ export default function BlogContent() {
 
                                 <div className="pt-6 border-t border-white/5 flex items-center justify-between">
                                     <span className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">
-                                        {new Date(post.createdAt).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}
+                                        {post.createdAt ? new Date(post.createdAt).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' }) : "Recently"}
                                     </span>
                                     <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all transform group-hover:translate-x-2">
                                         <ArrowRight size={18} />

@@ -5,6 +5,7 @@ import Link from "next/link";
 import "./globals.css";
 
 import ClientProviders from "@/components/ClientProviders";
+import GlobalErrorBoundary from "@/components/common/GlobalErrorBoundary";
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const inter = Inter({
@@ -66,6 +67,15 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
 };
 
 
@@ -91,7 +101,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#050505" />
         <meta name="color-scheme" content="dark" />
@@ -103,9 +113,11 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${outfit.variable} antialiased`}
       >
-        <ClientProviders>
-          {children}
-        </ClientProviders>
+        <GlobalErrorBoundary>
+          <ClientProviders>
+            {children}
+          </ClientProviders>
+        </GlobalErrorBoundary>
         {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
       </body>
     </html>
