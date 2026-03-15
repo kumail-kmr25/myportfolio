@@ -375,8 +375,9 @@ model AuditRequest {
   seo               Int?
   bestPractices     Int?
   loadTime          Float?
-  fcp               Float?
-  lcp               Float?
+  fcp               String?
+  lcp               String?
+  tti               String?
   hasSSL            Boolean   @default(false)
   isMobileFriendly  Boolean   @default(false)
   results           Json?

@@ -17,7 +17,9 @@
     "db:seed": "node packages/database/prisma/seed.js",
     "db:seed:production": "npx tsx packages/database/prisma/seed-production.ts",
     "db:seed:features": "node packages/database/prisma/seed_features.js",
-    "db:seed:journey": "node packages/database/prisma/seed_journey.js"
+    "db:seed:journey": "node packages/database/prisma/seed_journey.js",
+    "seed:all": "npx tsx packages/database/prisma/seed-all.ts",
+    "seed:admin": "npx tsx packages/database/prisma/seed-all.ts"
   },
   "devDependencies": {
     "bcryptjs": "^3.0.3",
