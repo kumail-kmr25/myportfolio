@@ -20,7 +20,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kumailkmr.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://kumailkmr.com'),
   title: {
     default: "Kumail KMR | Premium Full-Stack Developer & SaaS Expert",
     template: "%s | Kumail KMR"
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Kumail KMR | Full-Stack Engineering & SaaS Development",
     description: "Launch your next production-ready platform with an expert Next.js & DevOps engineer.",
-    url: "https://kumailkmr.com",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://kumailkmr.com",
     siteName: "Kumail KMR | Portfolio",
     images: [
       {
@@ -79,7 +79,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Kumail KMR",
-    "url": "https://kumailkmr.com",
+    "url": process.env.NEXT_PUBLIC_SITE_URL || "https://kumailkmr.com",
     "jobTitle": "Full Stack Developer & DevOps Engineer",
     "description": "Expert Full Stack Developer specializing in Next.js, MERN stack, and cloud architecture.",
     "sameAs": [

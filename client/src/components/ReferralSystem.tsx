@@ -7,7 +7,8 @@ import { Share2, Copy, Gift, Users, TrendingUp, Check, ExternalLink, Mail, Twitt
 export default function ReferralSystem() {
   const [copied, setCopied] = useState(false);
   const referralCode = "KMR-REF-77X";
-  const referralLink = `https://kumailkmr.vercel.app/r/${referralCode}`;
+  const baseUrl = typeof window !== "undefined" ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://kumailkmr.vercel.app');
+  const referralLink = `${baseUrl}/r/${referralCode}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);

@@ -58,6 +58,27 @@ const RecruiterView = dynamic(() => import("@/components/features/RecruiterView"
 const ViralROIEngine = dynamic(() => import("@/components/features/ViralROIEngine"), {
     loading: () => <SectionSkeleton minHeight="600px" />
 });
+const RevenueDashboard = dynamic(() => import("@/components/features/RevenueDashboard"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
+const TechRadar = dynamic(() => import("@/components/features/TechRadar"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
+const BeforeAfter = dynamic(() => import("@/components/features/BeforeAfter"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
+const MilestoneTracker = dynamic(() => import("@/components/features/MilestoneTracker"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
+const AchievementBadges = dynamic(() => import("@/components/features/AchievementBadges"), {
+    loading: () => <SectionSkeleton minHeight="200px" />
+});
+const ClientMap = dynamic(() => import("@/components/features/ClientMap"), {
+    loading: () => <SectionSkeleton minHeight="600px" />
+});
+const QRBusinessCard = dynamic(() => import("@/components/features/QRBusinessCard"), {
+    loading: () => <SectionSkeleton minHeight="400px" />
+});
 const NewsletterHook = dynamic(() => import("@/components/features/NewsletterHook"), {
     loading: () => <SectionSkeleton minHeight="300px" />
 });
@@ -71,19 +92,26 @@ export default function MainContent() {
             <ViewportReveal><About /></ViewportReveal>
             <ViewportReveal><Services /></ViewportReveal>
             <ViewportReveal><Process /></ViewportReveal>
+            <ViewportReveal><BeforeAfter /></ViewportReveal>
             <ViewportReveal><CaseStudies /></ViewportReveal>
             <ViewportReveal><Projects /></ViewportReveal>
             <ViewportReveal><HireMeCTA /></ViewportReveal>
             <ViewportReveal><StatsDashboard /></ViewportReveal>
+            <ViewportReveal><TechRadar /></ViewportReveal>
             <ViewportReveal><Skills /></ViewportReveal>
             <ViewportReveal><TrustSignals /></ViewportReveal>
+            <ViewportReveal><AchievementBadges /></ViewportReveal>
             <ViewportReveal><Testimonials /></ViewportReveal>
             <ViewportReveal><Pricing /></ViewportReveal>
             <ViewportReveal><MyJourney /></ViewportReveal>
+            <ViewportReveal><MilestoneTracker /></ViewportReveal>
             <ViewportReveal><DeveloperHub /></ViewportReveal>
+            <ViewportReveal><RevenueDashboard /></ViewportReveal>
             <ViewportReveal><ViralROIEngine /></ViewportReveal>
             <ViewportReveal><RecruiterView /></ViewportReveal>
             <ViewportReveal><NewsletterHook /></ViewportReveal>
+            <ViewportReveal><ClientMap /></ViewportReveal>
+            <ViewportReveal><QRBusinessCard /></ViewportReveal>
             <ViewportReveal><ReferralHook /></ViewportReveal>
             <ViewportReveal><Contact /></ViewportReveal>
             <Footer />

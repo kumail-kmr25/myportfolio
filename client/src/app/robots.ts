@@ -11,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
                 '/private/',
             ],
         },
-        sitemap: 'https://kumailkmr.com/sitemap.xml',
+        sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://kumailkmr.com'}/sitemap.xml`,
     };
 }

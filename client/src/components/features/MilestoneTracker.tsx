@@ -1,110 +1,149 @@
 "use client";
 
-import React from 'react';
-import useSWR from 'swr';
-import { motion } from 'framer-motion';
-import { Calendar, CheckCircle2, Circle, Clock, Building2, MapPin } from 'lucide-react';
-import { format } from 'date-fns';
+import React from "react";
+import { m } from "framer-motion";
+import { 
+    Zap, 
+    Search, 
+    TrendingUp, 
+    Award, 
+    CheckCircle2, 
+    Clock, 
+    Milestone,
+    Flag
+} from "lucide-react";
+import useSWR from "swr";
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = (url: string) => fetch(url).then(res => res.json()).then(data => data.data);
 
-interface Milestone {
+interface MilestoneItem {
     id: string;
-    displayName: string;
-    industry: string;
-    phase: string;
-    progress: number;
-    startDate: string;
-    launchDate: string | null;
+    date: string;
+    title: string;
+    description: string;
+    icon?: string;
 }
 
-export const MilestoneTracker: React.FC = () => {
-    const { data, error } = useSWR('/api/milestones', fetcher);
-    const milestones: Milestone[] = data?.milestones || [];
+interface MilestoneData {
+    milestones: MilestoneItem[];
+}
 
-    const getPhaseColor = (phase: string) => {
-        switch (phase) {
-            case 'launched': return 'bg-emerald-500';
-            case 'development': return 'bg-blue-500';
-            case 'testing': return 'bg-amber-500';
-            default: return 'bg-gray-500';
-        }
-    };
+const iconMap: Record<string, any> = {
+    "Search": Search,
+    "Zap": Zap,
+    "TrendingUp": TrendingUp,
+    "Award": Award,
+    "CheckCircle2": CheckCircle2,
+};
 
-    if (error || !milestones.length) return null;
+export default function MilestoneTracker() {
+    const { data, isLoading } = useSWR<MilestoneData>("/api/milestones", fetcher);
+
+    if (isLoading) return null;
+
+    const milestones = data?.milestones || [];
 
     return (
-        <section className="py-20 px-6 max-w-7xl mx-auto">
-            <div className="mb-16">
-                <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Project <span className="text-blue-500">Milestones</span></h2>
-                <p className="text-gray-500 max-w-2xl px-1">Transparent progress tracking for active enterprise engagements.</p>
-            </div>
+        <section id="milestones" className="py-32 px-6 bg-[#030303] relative overflow-hidden">
+             {/* Background elements */}
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-full bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                {milestones.map((ms, idx) => (
-                    <motion.div
-                        key={ms.id}
-                        initial={{ opacity: 0, x: idx % 2 === 0 ? -20 : 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        className="relative group p-8 bg-[#0a0a0a] border border-white/5 rounded-[32px] overflow-hidden"
+            <div className="max-w-5xl mx-auto relative z-10">
+                <div className="text-center mb-24 space-y-6">
+                    <m.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-[0.3em]"
                     >
-                        <div className="flex items-start justify-between mb-8">
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-blue-600/10 transition-colors">
-                                    <Building2 size={24} className="text-gray-400 group-hover:text-blue-400" />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold text-white mb-1">{ms.displayName}</h3>
-                                    <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold px-2 py-0.5 bg-white/5 rounded">
-                                        {ms.industry}
-                                    </span>
-                                </div>
-                            </div>
-                            <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${getPhaseColor(ms.phase)}/10 border ${getPhaseColor(ms.phase)}/30 text-white`}>
-                                {ms.phase}
-                            </div>
-                        </div>
+                        <Clock size={12} /> Execution_Velocity_v4.0
+                    </m.div>
+                    <h2 className="text-6xl md:text-8xl font-black italic tracking-tighter leading-none uppercase text-white">
+                        PROJECT <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-600">BEAT.</span>
+                    </h2>
+                    <p className="max-w-2xl mx-auto text-gray-500 text-lg font-medium leading-relaxed italic">
+                        Visualizing the lifecycle of a high-growth project, from clinical audit to global scale.
+                    </p>
+                </div>
 
-                        <div className="space-y-6">
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
-                                    <span className="text-gray-500">Completion</span>
-                                    <span className="text-white">{ms.progress}%</span>
-                                </div>
-                                <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                                    <motion.div 
-                                        initial={{ width: 0 }}
-                                        whileInView={{ width: `${ms.progress}%` }}
-                                        transition={{ duration: 1.5, ease: "easeOut" }}
-                                        className={`h-full ${getPhaseColor(ms.phase)}`}
-                                    />
-                                </div>
-                            </div>
+                <div className="space-y-12 relative">
+                    {milestones.map((milestone, i) => {
+                        const Icon = iconMap[milestone.icon || ""] || Flag;
+                        const isEven = i % 2 === 0;
 
-                            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
-                                <div className="flex items-center gap-3">
-                                    <Calendar size={16} className="text-gray-500" />
-                                    <div>
-                                        <div className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">Started</div>
-                                        <div className="text-xs text-white font-medium">{format(new Date(ms.startDate), "MMM yyyy")}</div>
-                                    </div>
+                        return (
+                            <m.div 
+                                key={milestone.id}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                                className={`flex flex-col md:flex-row items-center gap-8 md:gap-20 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+                            >
+                                {/* Date / Label */}
+                                <div className={`flex-1 text-center ${isEven ? 'md:text-right' : 'md:text-left'} space-y-2`}>
+                                    <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest leading-none">{milestone.date}</p>
+                                    <h3 className="text-2xl font-black text-white italic tracking-tight">{milestone.title}</h3>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <Clock size={16} className="text-gray-500" />
-                                    <div>
-                                        <div className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">Delivery</div>
-                                        <div className="text-xs text-white font-medium">
-                                            {ms.launchDate ? format(new Date(ms.launchDate), "MMM yyyy") : "In Progress"}
-                                        </div>
+
+                                {/* Center Icon */}
+                                <div className="relative z-10">
+                                    <div className="w-16 h-16 rounded-2xl bg-[#0a0a0a] border border-white/10 flex items-center justify-center text-blue-400 shadow-2xl relative">
+                                        <div className="absolute -inset-2 bg-blue-600/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <Icon size={24} />
                                     </div>
+                                    {i < milestones.length - 1 && (
+                                        <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[1px] h-12 bg-white/10 hidden md:block" />
+                                    )}
                                 </div>
-                            </div>
+
+                                {/* Description */}
+                                <div className={`flex-1 text-center ${isEven ? 'md:text-left' : 'md:text-right'}`}>
+                                    <p className="text-sm text-gray-500 font-medium leading-relaxed italic max-w-sm mx-auto md:mx-0">
+                                        {milestone.description}
+                                    </p>
+                                </div>
+                            </m.div>
+                        );
+                    })}
+                </div>
+
+                <div className="mt-24 p-10 rounded-[3rem] bg-white/[0.02] border border-white/5 flex flex-col md:flex-row items-center justify-between gap-8 group">
+                    <div className="flex items-center gap-6">
+                        <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500">
+                            <CheckCircle2 size={28} />
                         </div>
-                    </motion.div>
-                ))}
+                        <div>
+                            <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest leading-none mb-1">Status: Operational</p>
+                            <h4 className="text-xl font-black text-white italic">Continuous Delivery Protocols Active</h4>
+                        </div>
+                    </div>
+                    <button className="px-8 py-4 bg-blue-600 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white shadow-xl shadow-blue-600/20 hover:bg-blue-500 transition-all flex items-center gap-3">
+                        DISCUSS_YOUR_PROJECT <ArrowRight size={14} />
+                    </button>
+                    
+                    {/* Background Glow for Card */}
+                    <div className="absolute inset-0 bg-blue-600/[0.01] pointer-events-none rounded-[3rem] group-hover:bg-blue-600/[0.03] transition-all" />
+                </div>
             </div>
         </section>
     );
-};
+}
 
-export default MilestoneTracker;
+function ArrowRight(props: any) {
+    return (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+        </svg>
+    );
+}

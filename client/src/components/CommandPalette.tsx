@@ -216,7 +216,7 @@ export default function CommandPalette() {
                                 </div>
                             </div>
                             <div className="text-[10px] text-gray-600 font-black uppercase tracking-widest flex items-center gap-2">
-                                <Command size={10} /> kumail-kmr.dev
+                                <Command size={10} /> {(process.env.NEXT_PUBLIC_SITE_URL || "kumail-kmr.com").replace('https://', '')}
                             </div>
                         </div>
                     </m.div>

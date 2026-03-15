@@ -13,7 +13,7 @@ export const BusinessCard: React.FC = () => {
         title: "Full-Stack Developer",
         email: "ka6307464@gmail.com",
         phone: "+91 1234567890",
-        website: "https://kumailkmr.vercel.app",
+        website: process.env.NEXT_PUBLIC_SITE_URL || "https://kumailkmr.vercel.app",
         linkedin: "https://linkedin.com/in/kumail-kmr25"
     };
 

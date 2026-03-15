@@ -1,93 +1,148 @@
 "use client";
 
-import React from 'react';
-import useSWR from 'swr';
-import { motion } from 'framer-motion';
-import { Hexagon, Zap, Shield, Globe, Cpu } from 'lucide-react';
+import React from "react";
+import { m } from "framer-motion";
+import { 
+    Terminal, 
+    Cpu, 
+    Layers, 
+    Globe, 
+    Zap, 
+    Shield, 
+    Code2, 
+    Database, 
+    Cloud, 
+    Sparkles
+} from "lucide-react";
+import useSWR from "swr";
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = (url: string) => fetch(url).then(res => res.json()).then(data => data.data);
 
-interface TechItem {
-    id: string;
-    name: string;
+interface TechCategory {
     category: string;
-    proficiency: number;
-    years: number;
-    color?: string;
+    skills: string[];
 }
 
-const CategoryIcon = ({ cat }: { cat: string }) => {
-    switch(cat) {
-        case 'frontend': return <Globe size={20} />;
-        case 'backend': return <Cpu size={20} />;
-        case 'devops': return <Shield size={20} />;
-        default: return <Zap size={20} />;
-    }
+interface TechData {
+    categories: TechCategory[];
+}
+
+const iconMap: Record<string, any> = {
+    "Frontend": Globe,
+    "Backend": Database,
+    "DevOps": Cloud,
+    "AI/ML": Sparkles,
+    "Tools": Terminal,
+    "Languages": Code2,
 };
 
-export const TechRadar: React.FC = () => {
-    const { data, error } = useSWR('/api/tech-radar', fetcher);
-    const items: TechItem[] = data?.items || [];
+export default function TechRadar() {
+    const { data, isLoading } = useSWR<TechData>("/api/tech-radar", fetcher);
 
-    if (error || !items.length) return null;
+    if (isLoading) return null;
 
-    const categories = ['frontend', 'backend', 'devops'];
+    const categories = data?.categories || [];
 
     return (
-        <section className="py-20 px-6 max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                    Technology <span className="text-blue-500">Spectrum</span>
-                </h2>
-                <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-                    A comprehensive map of my technical arsenal, showcasing proficiency levels and deep-dive specializations developed over years of production engineering.
-                </p>
+        <section id="tech-radar" className="py-32 px-6 bg-[#050505] relative overflow-hidden">
+            {/* Background Narrative */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-blue-600/[0.02] blur-[120px] rounded-full" />
+                {/* Grid Lines Overlay */}
+                <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {categories.map((cat, catIdx) => (
-                    <div key={cat} className="space-y-6">
-                        <div className="flex items-center gap-3 p-4 bg-white/5 border border-white/5 rounded-2xl">
-                            <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500">
-                                <CategoryIcon cat={cat} />
-                            </div>
-                            <h3 className="text-lg font-bold text-white capitalize">{cat}</h3>
-                        </div>
+            <div className="max-w-7xl mx-auto relative z-10">
+                <div className="text-center mb-24 space-y-6">
+                    <m.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.3em]"
+                    >
+                        <Cpu size={12} /> Technical_Stack_Evaluation_v2.5
+                    </m.div>
+                    <h2 className="text-6xl md:text-8xl font-black italic tracking-tighter leading-none uppercase">
+                        TECH <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-600">RADAR.</span>
+                    </h2>
+                    <p className="max-w-2xl mx-auto text-gray-500 text-lg font-medium leading-relaxed italic">
+                        A multidimensional visualization of my current production stack, architectural capabilities, and experimental frontier.
+                    </p>
+                </div>
 
-                        <div className="space-y-4">
-                            {items.filter(item => item.category === cat).map((item, idx) => (
-                                <motion.div
-                                    key={item.id}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: (catIdx * 0.2) + (idx * 0.1) }}
-                                    className="p-5 bg-[#050505] border border-white/5 rounded-2xl group hover:border-blue-500/30 transition-all duration-300"
-                                >
-                                    <div className="flex justify-between items-center mb-3">
-                                        <span className="text-white font-bold">{item.name}</span>
-                                        <span className="text-[10px] text-gray-500 uppercase font-black">{item.years} Years</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {categories.map((cat, i) => {
+                        const Icon = iconMap[cat.category] || Layers;
+                        return (
+                            <m.div 
+                                key={cat.category}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                                className="group relative"
+                            >
+                                <div className="absolute -inset-0.5 bg-gradient-to-b from-indigo-500/10 to-transparent rounded-[2.5rem] blur opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <div className="relative p-10 rounded-[2.5rem] bg-[#0a0a0a]/80 border border-white/5 backdrop-blur-3xl hover:border-indigo-500/20 transition-all space-y-8 h-full">
+                                    <div className="flex items-center justify-between">
+                                        <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500/10 group-hover:scale-110 transition-all">
+                                            <Icon size={28} />
+                                        </div>
+                                        <div className="w-2 h-2 rounded-full bg-indigo-500/20 animate-pulse" />
                                     </div>
                                     
-                                    <div className="relative h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                        <motion.div 
-                                            initial={{ width: 0 }}
-                                            whileInView={{ width: `${item.proficiency}%` }}
-                                            transition={{ duration: 1.5, ease: "circOut" }}
-                                            className="absolute top-0 left-0 h-full rounded-full"
-                                            style={{ backgroundColor: item.color || '#3b82f6' }}
-                                        />
+                                    <div className="space-y-4">
+                                        <h3 className="text-xl font-black text-white italic uppercase tracking-tight">{cat.category}</h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {cat.skills.map((skill) => (
+                                                <span 
+                                                    key={skill}
+                                                    className="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/5 text-[10px] font-bold text-gray-400 group-hover:text-white group-hover:border-indigo-500/20 transition-all uppercase tracking-widest"
+                                                >
+                                                    {skill}
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
-                                    <div className="mt-2 flex justify-end">
-                                        <span className="text-[10px] text-gray-400 font-mono">{item.proficiency}%</span>
+
+                                    {/* Progress Indicator */}
+                                    <div className="pt-4 border-t border-white/5 mt-auto">
+                                        <div className="flex justify-between items-center mb-2">
+                                            <span className="text-[8px] font-black uppercase tracking-widest text-gray-700">Competency_Index</span>
+                                            <span className="text-[10px] font-black text-indigo-500 italic">95%</span>
+                                        </div>
+                                        <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                                            <m.div 
+                                                initial={{ width: 0 }}
+                                                whileInView={{ width: '95%' }}
+                                                transition={{ duration: 1.5, delay: i * 0.2 }}
+                                                className="h-full bg-gradient-to-r from-indigo-600 to-purple-500"
+                                            />
+                                        </div>
                                     </div>
-                                </motion.div>
-                            ))}
+                                </div>
+                            </m.div>
+                        );
+                    })}
+                </div>
+
+                <div className="mt-20 p-8 border border-white/5 rounded-[3rem] bg-black/40 text-center">
+                    <p className="text-[10px] font-black text-gray-700 uppercase tracking-[0.5em] mb-4">Mastery_Protocol_Active</p>
+                    <div className="flex flex-wrap justify-center gap-12 opacity-40 grayscale group-hover:grayscale-0 transition-all">
+                        {/* Placeholder for tool logos if needed, otherwise just text stats */}
+                        <div className="flex flex-col items-center">
+                            <span className="text-2xl font-black text-white tracking-tighter">150+</span>
+                            <span className="text-[8px] font-black text-gray-600 uppercase tracking-widest">Git Commits / Mo</span>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <span className="text-2xl font-black text-white tracking-tighter">10k+</span>
+                            <span className="text-[8px] font-black text-gray-600 uppercase tracking-widest">Build Hours</span>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <span className="text-2xl font-black text-white tracking-tighter">Perfect</span>
+                            <span className="text-[8px] font-black text-gray-600 uppercase tracking-widest">Lighthouse Scores</span>
                         </div>
                     </div>
-                ))}
+                </div>
             </div>
         </section>
     );
-};
-
-export default TechRadar;
+}

@@ -4,7 +4,7 @@ import { highConversionProjects } from '@/lib/projects-data';
 import { PLAYGROUND_CHALLENGES } from '@/lib/playground-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://kumailkmr.com';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kumailkmr.com';
     const lastModified = new Date();
 
     const routes = [
