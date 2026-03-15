@@ -5,6 +5,7 @@ import Link from "next/link";
 import "./globals.css";
 
 import ClientProviders from "@/components/ClientProviders";
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,27 +22,27 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL('https://kumailkmr.com'),
   title: {
-    default: "Kumale Ali Bhat | Premium Full-Stack Developer & SaaS Expert",
-    template: "%s | Kumale Ali Bhat"
+    default: "Kumail KMR | Premium Full-Stack Developer & SaaS Expert",
+    template: "%s | Kumail KMR"
   },
   description: "I build high-performance, scalable web applications that drive results. Specializing in Next.js, Node.js, and DevOps for startups and businesses.",
   keywords: ["Full Stack Developer", "SaaS Developer", "Next.js Expert", "React Developer", "DevOps Engineer", "Premium Web Design", "Startup Developer", "Performance Optimization"],
-  authors: [{ name: "Kumale Ali Bhat" }],
-  creator: "Kumale Ali Bhat",
+  authors: [{ name: "Kumail KMR" }],
+  creator: "Kumail KMR",
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: "Kumale Ali Bhat | Full-Stack Engineering & SaaS Development",
+    title: "Kumail KMR | Full-Stack Engineering & SaaS Development",
     description: "Launch your next production-ready platform with an expert Next.js & DevOps engineer.",
     url: "https://kumailkmr.com",
-    siteName: "Kumale Ali Bhat | Portfolio",
+    siteName: "Kumail KMR | Portfolio",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Kumale Ali Bhat - Full Stack Engineering",
+        alt: "Kumail KMR - Full Stack Engineering",
       },
     ],
     locale: "en_US",
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kumale Ali Bhat | Premium Full-Stack Developer",
+    title: "Kumail KMR | Premium Full-Stack Developer",
     description: "Building fast, scalable web apps that drive real business results.",
     images: ["/og-image.jpg"],
     creator: "@kumailkmr",
@@ -77,13 +78,13 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Kumale Ali Bhat",
+    "name": "Kumail KMR",
     "url": "https://kumailkmr.com",
     "jobTitle": "Full Stack Developer & DevOps Engineer",
     "description": "Expert Full Stack Developer specializing in Next.js, MERN stack, and cloud architecture.",
     "sameAs": [
       "https://github.com/kumail-kmr25",
-      "https://www.linkedin.com/in/kumale-ali-bhat-6196a0384/",
+      "https://www.linkedin.com/in/kumail-kmr25",
       "https://x.com/KumailKmr"
     ],
     "knowsAbout": ["Next.js", "React", "Node.js", "DevOps", "TypeScript", "PostgreSQL", "MongoDB"]
@@ -105,6 +106,7 @@ export default function RootLayout({
         <ClientProviders>
           {children}
         </ClientProviders>
+        {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
       </body>
     </html>
   );

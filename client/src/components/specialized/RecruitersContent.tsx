@@ -53,7 +53,7 @@ export default function RecruitersContent() {
                             <button onClick={() => openModal({ service: "Technical Placement", description: "Requesting full technical dossier and resume for placement audit." })} className="btn-primary py-5 px-10 flex items-center gap-3 group text-xs uppercase tracking-widest font-black">
                                 <FileText size={18} /> Download Full Dossier
                             </button>
-                            <a href="https://www.linkedin.com/in/kumale-ali-bhat-6196a0384/" target="_blank" className="px-10 py-5 rounded-2xl bg-white/5 border border-white/10 text-white text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-3">
+                            <a href="https://www.linkedin.com/in/kumail-kmr25" target="_blank" className="px-10 py-5 rounded-2xl bg-white/5 border border-white/10 text-white text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-3">
                                 <Linkedin size={18} /> Review Track Record
                             </a>
                         </div>

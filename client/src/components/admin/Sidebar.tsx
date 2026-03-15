@@ -188,7 +188,7 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, messageCoun
                         <div className="flex items-center justify-between px-2 relative z-10">
                             <div className="flex flex-col">
                                 <span className="text-[9px] font-black text-gray-700 uppercase tracking-widest">Operator_Session</span>
-                                <span className="text-[11px] font-bold text-white uppercase italic tracking-tighter">Kumale_Ali_Bhat // S-01</span>
+                                <span className="text-[11px] font-bold text-white uppercase italic tracking-tighter">Kumail_KMR // S-01</span>
                             </div>
                             <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center relative">
                                 <div className="absolute inset-0 bg-blue-500/20 blur-lg rounded-full animate-pulse" />

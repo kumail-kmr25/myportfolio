@@ -101,8 +101,8 @@ async function main() {
             create: {
                 id: "default-ai-config",
                 enabled: true,
-                botName: "Kumale's Assistant",
-                welcomeMessage: "Hi! I'm Kumale's AI assistant. How can I help you build something amazing today?",
+                botName: "Kumail KMR's Assistant",
+                welcomeMessage: "Hi! I'm Kumail KMR's AI assistant. How can I help you build something amazing today?",
                 quickQuestions: ["What services do you offer?", "How much does a website cost?", "Are you available for hire?"],
             }
         });
@@ -158,7 +158,7 @@ async function main() {
             id: "default-voice-intro",
             enabled: true,
             audioUrl: "/audio/intro.mp3",
-            transcript: "Hi, I'm Kumale. I build high-performance systems that drive real business impact. Welcome to my engineering repository."
+            transcript: "Hi, I'm Kumail KMR. I build high-performance systems that drive real business impact. Welcome to my engineering repository."
         }
     });
 }

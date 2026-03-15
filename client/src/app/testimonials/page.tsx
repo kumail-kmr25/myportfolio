@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import ClientShell from "@/components/ClientShell";
 
 export const metadata = {
-  title: "Testimonials | Kumale Ali Bhat",
+  title: "Testimonials | Kumail KMR",
   description: "Real-world feedback from engineering partners and institutional clients. Unfiltered technical validation.",
 };
 

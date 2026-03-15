@@ -10,7 +10,7 @@ async function main() {
     // 1. Create Admin
     const adminEmail = process.env.ADMIN_EMAIL || "ka6307464@gmail.com";
     const adminPassword = process.env.ADMIN_PASSWORD || "KUMAIL@admin25?";
-    const adminName = process.env.ADMIN_NAME || "Kumale";
+    const adminName = process.env.ADMIN_NAME || "Kumail KMR";
     const adminPhone = process.env.ADMIN_PHONE || "6006121193";
     
     console.log(`Setting up admin: ${adminEmail}`);

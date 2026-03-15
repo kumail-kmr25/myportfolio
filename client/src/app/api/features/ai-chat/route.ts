@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@portfolio/database";
-export const dynamic = "force-dynamic";
 import { apiResponse, apiError } from "@/lib/rate-limit";
+import { openai } from "@/lib/openai";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
     try {
@@ -11,28 +13,29 @@ export async function POST(request: Request) {
 
         // Fetch AI Config
         const config = await prisma.aIChatConfig.findFirst();
+        const systemPrompt = config?.systemPrompt || "You are Kumail KMR's AI assistant. Answer professionally and help users understand Kumail's expertise in Full-Stack development and AI.";
         
-        // Mocking AI Response logic
-        // In a real scenario, you'd call OpenAI/Anthropic here using config.systemPrompt
-        
-        const lowerMsg = message.toLowerCase();
-        let response = "That's a great question! I'm still learning Kumale's full history, but I'd be happy to connect you with him directly for more details.";
+        // Prepare messages for OpenAI
+        const messages = [
+            { role: "system", content: systemPrompt },
+            ...(history || []).map((h: any) => ({
+                role: h.role,
+                content: h.content
+            })),
+            { role: "user", content: message }
+        ];
 
-        if (lowerMsg.includes("price") || lowerMsg.includes("cost") || lowerMsg.includes("budget")) {
-            response = "Project pricing varies based on complexity. Kumale specializes in high-performance web systems and AI integrations. For a precise estimate, feel free to use the 'ROI Engine' or the contact form!";
-        } else if (lowerMsg.includes("offer") || lowerMsg.includes("service") || lowerMsg.includes("work")) {
-            response = "Kumale offers Full-Stack Development, AI System Architecture, and Technical Consulting. You can see his flagship projects like CUE AI and MedQ AI in the Engineering Repository section!";
-        } else if (lowerMsg.includes("availability") || lowerMsg.includes("hiring")) {
-            response = "Kumale is currently open to high-impact projects. You can check his live telemetry status in the dashboard or send a deployment request directly!";
-        } else if (lowerMsg.includes("hello") || lowerMsg.includes("hi")) {
-            response = config?.welcomeMessage || "Hello! I'm Kumale's AI assistant. How can I help you today?";
-        }
+        const completion = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo", // Defaulting to 3.5-turbo for cost/speed, can be gpt-4
+            messages: messages as any,
+            max_tokens: 500,
+            temperature: 0.7,
+        });
 
-        // Store conversation if we want to track leads (optional)
-        // await prisma.aiChatConversation.create({...});
+        const responseContent = completion.choices[0]?.message?.content || "I'm sorry, I couldn't process that right now.";
 
         return apiResponse({
-            content: response,
+            content: responseContent,
             role: "assistant"
         });
 

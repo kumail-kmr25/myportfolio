@@ -65,7 +65,7 @@ export default function About() {
                                 <div className="w-full h-full rounded-full overflow-hidden relative">
                                     <Image
                                         src="https://github.com/kumail-kmr25.png"
-                                        alt="Kumale Ali Bhat"
+                                        alt="Kumail KMR"
                                         fill
                                         priority
                                         className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -103,7 +103,7 @@ export default function About() {
                             className="space-y-6 text-gray-400 text-lg leading-relaxed max-w-2xl"
                         >
                             <p>
-                                I&apos;m Kumale, a Full-Stack Engineer specializing in high-performance digital solutions that drive business growth. 
+                                I&apos;m Kumail KMR, a Full-Stack Engineer specializing in high-performance digital solutions that drive business growth. 
                                 I bridge the gap between complex technical requirements and commercial results, ensuring your platform isn&apos;t just code—it&apos;s a revenue-generating asset.
                             </p>
                             <p>

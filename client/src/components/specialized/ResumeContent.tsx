@@ -94,7 +94,7 @@ export default function ResumeContent() {
                             <p className="text-[10px] text-blue-500 font-black uppercase tracking-[0.5em]">Identity_Matrix // VERIFIED</p>
                         </div>
                         <h1 className="text-7xl lg:text-9xl font-black italic tracking-tighter uppercase leading-none text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/20">
-                            Kumale<br />Ali_Bhat
+                            Kumail<br />KMR
                         </h1>
                         <p className="text-xl lg:text-2xl text-gray-500 font-medium max-w-2xl leading-relaxed italic">
                             Elite Full-Stack Engineer & Strategic Technical Consultant. Transforming complex operational requirements into high-performance digital assets.
@@ -109,7 +109,7 @@ export default function ResumeContent() {
                             <Globe size={16} /> Dubai, UAE (Remote-Global)
                         </div>
                         <div className="flex items-center gap-3 group cursor-pointer hover:text-blue-500 transition-colors">
-                            <Linkedin size={16} /> /in/kumale-ali-bhat
+                            <Linkedin size={16} /> /in/kumail-kmr25
                         </div>
                     </div>
                 </div>

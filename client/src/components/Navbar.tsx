@@ -15,6 +15,7 @@ import {
     ArrowRight,
     ShieldCheck
 } from "lucide-react";
+import KKLogo from "@/components/ui/KKLogo";
 import { m, AnimatePresence } from "framer-motion";
 import { useHireModal } from "@/context/HireModalContext";
 import { LiveStatusBadge } from "@/components/LiveStatusBadge";
@@ -82,30 +83,7 @@ export default function Navbar() {
             className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 ${scrolled ? "py-4 bg-white/70 backdrop-blur-3xl border-b border-black/[0.05]" : "py-8 bg-transparent"}`}
         >
             <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-                <Link
-                    href="/"
-                    onClick={(e) => {
-                        // Only scroll if on home page, otherwise let normal link behavior handle it
-                        if (window.location.pathname === "/") {
-                            e.preventDefault();
-                            document.getElementById("home")?.scrollIntoView({ behavior: "smooth" });
-                        }
-                    }}
-                    className="group relative z-10"
-                >
-                    <m.span
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, ease: premiumEase as any }}
-                        className={`text-2xl font-black tracking-tighter transition-colors ${scrolled ? "text-black" : "text-white"}`}
-                    >
-                        <span className="text-white">K</span><span className="text-blue-600 italic">B</span>
-                    </m.span>
-                    <m.div
-                        className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"
-                        transition={{ duration: 0.5, ease: premiumEase as any }}
-                    />
-                </Link>
+                <KKLogo className="relative z-10" showText={false} />
 
                 <div className="flex-1 px-8 hidden md:block" />
 

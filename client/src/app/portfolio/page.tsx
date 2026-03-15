@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import ClientShell from "@/components/ClientShell";
 
 export const metadata = {
-  title: "My Projects | Kumale Ali Bhat",
+  title: "My Projects | Kumail KMR",
   description: "Technical deep-dives into end-to-end product engineering, architectural decision logs, and systemic impact analysis.",
 };
 

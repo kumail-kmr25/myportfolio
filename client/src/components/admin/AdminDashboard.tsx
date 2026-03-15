@@ -536,7 +536,7 @@ export default function AdminDashboard({ initialActivities = [], initialAvailabi
                     <footer className="pt-24 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-10 opacity-30 group-hover:opacity-50 transition-opacity">
                         <div className="flex items-center gap-4">
                              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center font-black text-[10px] text-gray-400">K</div>
-                             <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 italic">Kumale_Operational_Framework_V2.0</p>
+                             <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 italic">Kumail_Operational_Framework_V2.0</p>
                         </div>
                         <div className="flex flex-wrap items-center justify-center gap-12">
                             {[

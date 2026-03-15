@@ -188,7 +188,7 @@ export default function DashboardOverview({ stats, recentActivity, availabilityS
                                 </div>
                                 
                                 <div className="space-y-1">
-                                    <h4 className="text-2xl font-black text-white tracking-tighter uppercase italic">Kumale_Ali_Bhat</h4>
+                                    <h4 className="text-2xl font-black text-white tracking-tighter uppercase italic">Kumail_KMR</h4>
                                     <div className="flex items-center justify-center gap-3">
                                         <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
                                         <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.3em]">Root_Authorized</p>

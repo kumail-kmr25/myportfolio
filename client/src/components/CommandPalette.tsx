@@ -216,7 +216,7 @@ export default function CommandPalette() {
                                 </div>
                             </div>
                             <div className="text-[10px] text-gray-600 font-black uppercase tracking-widest flex items-center gap-2">
-                                <Command size={10} /> kumale-ali.dev
+                                <Command size={10} /> kumail-kmr.dev
                             </div>
                         </div>
                     </m.div>

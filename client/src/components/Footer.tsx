@@ -32,7 +32,7 @@ export default function Footer() {
     const socialLinks = [
         { href: settings?.githubUrl || "https://github.com/kumail-kmr25", icon: Github, label: "GitHub" },
         { href: settings?.twitterUrl || "https://x.com/KumailKmr", icon: Twitter, label: "Twitter" },
-        { href: settings?.linkedinUrl || "https://www.linkedin.com/in/kumale-ali-bhat-6196a0384/", icon: Linkedin, label: "LinkedIn" },
+        { href: settings?.linkedinUrl || "https://www.linkedin.com/in/kumail-kmr-6196a0384/", icon: Linkedin, label: "LinkedIn" },
         { href: settings?.instagramUrl || "https://www.instagram.com/kumail.kmr", icon: Instagram, label: "Instagram" }
     ];
 
@@ -99,7 +99,7 @@ export default function Footer() {
                         className="flex flex-col gap-2"
                     >
                         <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.3em]">
-                            © {new Date().getFullYear()} Kumale Ali Bhat Studio
+                            © {new Date().getFullYear()} Kumail KMR Studio
                         </p>
                         <p className="text-gray-800 text-[9px] font-black uppercase tracking-[0.2em]">
                             Built for peak performance & horizontal scalability
