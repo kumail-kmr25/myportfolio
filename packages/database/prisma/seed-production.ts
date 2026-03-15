@@ -244,10 +244,53 @@ async function main() {
     },
   });
 
+  // 11. Resume Access
+  console.log('Seeding Resume...');
+  const existingResume = await prisma.resume.findFirst();
+  if (!existingResume) {
+    await prisma.resume.create({
+      data: {
+        url: 'https://kumailkmr.vercel.app/resume.pdf',
+        visible: true,
+      }
+    });
+  }
+
+  // 12. Active Projects
+  console.log('Seeding ActiveProject...');
+  const existingActiveProject = await prisma.activeProject.findFirst();
+  if (!existingActiveProject) {
+    await prisma.activeProject.create({
+      data: {
+        clientName: 'Demo Client',
+        projectTitle: 'Modern Web Platform',
+        status: 'In Development',
+        startDate: new Date(),
+        expectedEndDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+      }
+    });
+  }
+
+  // 13. Site Stats
+  console.log('Seeding SiteStats...');
+  const existingStats = await prisma.siteStats.findFirst();
+  if (!existingStats) {
+    await prisma.siteStats.create({
+      data: {
+        totalProjects: 15,
+        bugsFixed: 450,
+        caseStudiesWritten: 8,
+        yearsLearning: 4,
+        auditCount: 120,
+      }
+    });
+  }
+
   console.log('Production seeding complete.');
 }
 
 main()
+
   .catch((e) => {
     console.error(e);
     process.exit(1);
