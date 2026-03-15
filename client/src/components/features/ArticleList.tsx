@@ -25,8 +25,8 @@ export const ArticleList: React.FC = () => {
     const categories = ['all', 'general', 'startup', 'technical'];
 
     const filtered = selectedCategory === 'all' 
-        ? articles 
-        : articles.filter(a => a.category === selectedCategory);
+        ? (articles || [])
+        : (articles || []).filter(a => a.category === selectedCategory);
 
     if (error) return null;
 

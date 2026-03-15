@@ -68,7 +68,7 @@ export default function AIChatAssistant() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
                     message: input,
-                    history: messages.slice(-5) 
+                    history: (messages || []).slice(-5) 
                 })
             });
             const data = await res.json();
