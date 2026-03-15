@@ -1,11 +1,10 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@portfolio/database";
 import { apiResponse } from "@/lib/rate-limit";
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-const FALLBACK_REVENUE = {
+// Curated revenue showcase — update via admin or manually
+const REVENUE_DATA = {
     stats: {
         totalGenerated: "1.2Cr+",
         averageROI: "340%",
@@ -29,31 +28,19 @@ const FALLBACK_REVENUE = {
             revenueAfter: 1200000,
             growth: "140%",
             currency: "INR"
+        },
+        {
+            id: "rev-3",
+            clientName: "RetailPro Group",
+            industry: "E-Commerce",
+            revenueBefore: 800000,
+            revenueAfter: 2400000,
+            growth: "200%",
+            currency: "INR"
         }
     ]
 };
 
 export async function GET() {
-    try {
-        const revenueData = await prisma.clientRevenue.findMany({
-            where: { isLive: true },
-            orderBy: { totalRevenueGenerated: 'desc' }
-        });
-
-        if (revenueData.length === 0) {
-            return apiResponse(FALLBACK_REVENUE);
-        }
-
-        // Transform if needed
-        const stats = {
-            totalGenerated: "1.2Cr+", // Aggregated logic here
-            averageROI: "340%",
-            clientRetention: "95%"
-        };
-
-        return apiResponse({ stats, items: revenueData });
-    } catch (error) {
-        console.error("GET_REVENUE_ERROR:", error);
-        return apiResponse(FALLBACK_REVENUE);
-    }
+    return apiResponse(REVENUE_DATA);
 }
