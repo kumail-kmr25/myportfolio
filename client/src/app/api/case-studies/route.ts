@@ -27,7 +27,7 @@ const FALLBACK_CASES = [
             ]
         },
         isPublished: true,
-        created_at: new Date().toISOString()
+        createdAt: new Date().toISOString()
     }
 ];
 
@@ -35,7 +35,7 @@ export async function GET() {
     try {
         const caseStudies = await prisma.caseStudy.findMany({
             where: { isPublished: true },
-            orderBy: { created_at: "desc" },
+            orderBy: { createdAt: "desc" },
         });
         return apiResponse(caseStudies);
     } catch (error) {

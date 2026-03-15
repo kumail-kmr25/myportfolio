@@ -14,7 +14,7 @@ const FALLBACK_POSTS = [
         category: "Engineering",
         readTime: "12 min read",
         published: true,
-        created_at: new Date().toISOString()
+        createdAt: new Date().toISOString()
     }
 ];
 
@@ -22,7 +22,7 @@ export async function GET() {
     try {
         const posts = await prisma.blogPost.findMany({
             where: { published: true },
-            orderBy: { created_at: "desc" },
+            orderBy: { createdAt: "desc" },
         });
         return apiResponse(posts);
     } catch (error) {

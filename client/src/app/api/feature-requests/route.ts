@@ -9,7 +9,7 @@ export async function GET() {
     try {
         const completedRequests = await prisma.featureRequest.findMany({
             where: { status: "completed" },
-            orderBy: { created_at: "desc" },
+            orderBy: { createdAt: "desc" },
             take: 10
         });
         return apiResponse(completedRequests);

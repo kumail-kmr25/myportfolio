@@ -23,7 +23,7 @@ export interface Project {
     securityDepth?: number;
     scalabilityDepth?: number;
     valuePoints?: string[];
-    created_at?: string;
+    createdAt?: string;
     systemArchitecture?: { name: string; value: string }[];
     engineeringDecisions?: { title: string; reason: string; benefits: string }[];
     codeSnippet?: { language: string; description: string; code: string };
