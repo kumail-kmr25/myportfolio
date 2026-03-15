@@ -17,9 +17,11 @@ export async function GET() {
         return apiResponse({ logs, version: "v1.0.0" });
     } catch (error) {
         console.error("GET_DEVLOGS_ERROR:", error);
-        return apiError("Failed to fetch dev logs");
+        // Return empty array instead of 500 to prevent frontend crash
+        return apiResponse({ logs: [], version: "v1.0.0-fallback" });
     }
 }
+
 
 export async function POST(req: Request) {
     try {

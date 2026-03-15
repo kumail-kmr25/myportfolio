@@ -14,6 +14,8 @@ export async function GET() {
         return apiResponse({ milestones });
     } catch (error) {
         console.error("GET_MILESTONES_ERROR:", error);
-        return apiError("Failed to fetch milestones");
+        // Return empty array instead of 500 to prevent frontend crash
+        return apiResponse({ milestones: [] });
     }
 }
+

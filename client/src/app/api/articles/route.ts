@@ -21,6 +21,8 @@ export async function GET(req: Request) {
         return apiResponse({ articles });
     } catch (error) {
         console.error("GET_ARTICLES_ERROR:", error);
-        return apiError("Failed to fetch articles");
+        // Return empty array instead of 500 to prevent frontend crash
+        return apiResponse({ articles: [] });
     }
 }
+

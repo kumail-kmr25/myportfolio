@@ -16,9 +16,11 @@ export async function GET() {
         return apiResponse({ links });
     } catch (error) {
         console.error("GET_PAYMENTS_ERROR:", error);
-        return apiError("Failed to fetch payment links");
+        // Return empty array instead of 500 to prevent frontend crash
+        return apiResponse({ links: [] });
     }
 }
+
 
 export async function POST(req: Request) {
     try {

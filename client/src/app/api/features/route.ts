@@ -26,6 +26,8 @@ export async function GET() {
         return apiResponse(featureMap);
     } catch (error) {
         console.error("Public features GET error:", error);
-        return apiError("Failed to synchronization feature states");
+        // Return empty map instead of error to prevent frontend crash
+        return apiResponse({}); 
     }
 }
+

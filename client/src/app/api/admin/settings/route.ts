@@ -6,24 +6,32 @@ import { apiResponse, apiError } from "@/lib/rate-limit";
 export const dynamic = 'force-dynamic';
 export const runtime = "nodejs";
 
+const DEFAULT_SETTINGS = {
+    id: "default-settings",
+    heroHeadline: "Building the Future of Digital Experience",
+    heroSubheadline: "Premium Full-Stack Engineering & SaaS Development",
+    adminName: "Kumail KMR",
+    emailAddress: "ka6307464@gmail.com",
+    linkedinUrl: "https://www.linkedin.com/in/kumail-kmr25",
+    githubUrl: "https://github.com/kumail-kmr25"
+};
+
 export async function GET() {
     try {
-        // We allow GET for public use (footer/contact)
         let settings = await prisma.settings.findFirst();
         
         if (!settings) {
-            // Initialize if not exists
-            settings = await prisma.settings.create({
-                data: {}
-            });
+            return apiResponse(DEFAULT_SETTINGS);
         }
         
         return apiResponse(settings);
     } catch (error: any) {
         console.error("Settings GET error:", error);
-        return apiError("Failed to fetch settings");
+        // Return default instead of error
+        return apiResponse(DEFAULT_SETTINGS);
     }
 }
+
 
 export async function PATCH(request: Request) {
     try {
