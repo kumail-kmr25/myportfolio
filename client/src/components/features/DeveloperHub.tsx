@@ -14,7 +14,7 @@ export default function DeveloperHub() {
     const { data: adrs } = useSWR("/api/adrs", fetcher);
     const { data: blogPosts } = useSWR("/api/blog", fetcher);
 
-    const techInsights = (blogPosts || [])?.filter((post: any) => 
+    const techInsights = (Array.isArray(blogPosts) ? blogPosts : []).filter((post: any) => 
         post?.category === "Engineering" || post?.category === "Development" || post?.category === "Architecture"
     ).slice(0, 2);
     return (

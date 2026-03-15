@@ -176,7 +176,7 @@ export default function AdminActivityLog({ logs = [] }: { logs: ActivityLog[], o
                                             {log.details && (
                                                 <div className="hidden lg:flex items-center gap-4 px-5 py-2.5 bg-white/[0.03] border border-white/10 rounded-2xl shadow-xl">
                                                     <Hash size={14} className="text-blue-500/60" />
-                                                    <span className="text-[10px] text-gray-400 font-mono italic font-black uppercase tracking-widest">TRACE_NODE_{log.id.slice(-8).toUpperCase()}</span>
+                                                    <span className="text-[10px] text-gray-400 font-mono italic font-black uppercase tracking-widest">TRACE_NODE_{(log.id || "").slice(-8).toUpperCase()}</span>
                                                 </div>
                                             )}
                                         </div>
